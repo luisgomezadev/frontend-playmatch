@@ -1,0 +1,35 @@
+<section>
+  <div class="min-h-fit w-full bg-gray-100 pb-14 pt-14">
+    <div class="max-w-6xl mx-auto px-4">
+      <h1 class="text-3xl font-bold mb-10 text-center">Lista de canchas sintéticas disponibles</h1>
+      @if (loading) {
+        <div class="flex flex-col gap-3 justify-center items-center">
+          <h2 class="text-lg">Cargando...</h2>
+          <svg class="animate-spin h-20 w-20 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+        </div>
+      } @else {
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (field of fields; track $index) {
+          <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow duration-200">
+            <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
+            <h2 class="text-2xl font-semibold text-center mb-2">{{ field.name }}</h2>
+            <hr class="mb-4">
+            <p class="text-gray-800 mb-2"><strong>Ciudad:</strong> {{ field.city }}</p>
+            <p class="text-gray-800 mb-2"><strong>Dirección:</strong> {{ field.address }}</p>
+            <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> ${{ field.hourlyRate }}</p>
+            <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin.firstName }} {{ field.admin.lastName }}
+            </p>
+            <button
+              class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-lg transition duration-200 mt-2">
+              Reservar
+            </button>
+          </div>
+          }
+          </div>
+      }
+    </div>
+  </div>
+</section>
