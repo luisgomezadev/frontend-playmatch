@@ -37,6 +37,7 @@ export class ButtonActionComponent {
   @Input() routerLink: string | any[] | null = null;
   @Input() type: 'button' | 'submit' = 'button';
   @Input() loading: boolean = false;
+  @Input() withIcon: boolean = false;
 
   @Output() clicked = new EventEmitter<void>();
 
@@ -47,7 +48,8 @@ export class ButtonActionComponent {
   }
 
   get classes(): string {
-    const base = 'text-sm font-semibold px-4 py-2 rounded-xl hover:scale-[1.03] transition-all w-full';
+    let base = 'text-sm font-semibold px-4 py-2 rounded-xl hover:scale-[1.03] transition-all w-full';
+    if (this.withIcon) base += ' pl-8';
     const styles = {
       black: 'bg-black/70 text-white hover:bg-black/90',
       red: 'bg-red-600/70 text-white hover:bg-red-600/90',

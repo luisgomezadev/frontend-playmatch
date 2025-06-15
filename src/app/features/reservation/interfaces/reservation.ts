@@ -14,5 +14,6 @@ export interface Reservation {
 
 export enum StatusReservation {
   ACTIVE = 'ACTIVE',
+  CANCELED = 'CANCELED',
   FINISHED = 'FINISHED'
 }

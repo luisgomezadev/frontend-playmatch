@@ -1,13 +1,9 @@
 export const LINKS_DASHBOARD = [
+  // LINKS ADMIN
   {
     name: "Inicio",
     link: "home-admin",
     role: "admin"
-  },
-  {
-    name: "Inicio",
-    link: "home-player",
-    role: "player"
   },
   {
     name: "Mi cancha",
@@ -15,8 +11,24 @@ export const LINKS_DASHBOARD = [
     role: "admin"
   },
   {
+    name: "Reservas",
+    link: "reservation/list/field",
+    role: "admin"
+  },
+  // LINKS PLAYER
+  {
+    name: "Inicio",
+    link: "home-player",
+    role: "player"
+  },
+  {
     name: "Mi equipo",
     link: "team",
+    role: "player"
+  },
+  {
+    name: "Reservas",
+    link: "reservation/list/team",
     role: "player"
   },
   {
@@ -29,16 +41,12 @@ export const LINKS_DASHBOARD = [
     link: "team/add/player",
     role: "player"
   },
-  {
-    name: "Reservas",
-    link: "reservation/list/field",
-    role: "admin"
-  },
-  {
-    name: "Hacer reserva",
-    link: "field/list",
-    role: "player"
-  },
+  // {
+  //   name: "Hacer reserva",
+  //   link: "field/list",
+  //   role: "player"
+  // },
+  // LINKS PLAYER AND ADMIN
   {
     name: "Perfil",
     link: "profile",

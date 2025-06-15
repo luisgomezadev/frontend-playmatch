@@ -49,6 +49,8 @@ export class TeamDetailComponent {
   }
 
   isOwnerTeam(): boolean {
+    console.log(this.team)
+
     return this.user.id == this.team.ownerId;
   }
 

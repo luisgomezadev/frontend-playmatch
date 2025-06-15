@@ -22,11 +22,10 @@
         } @else {
           @if (!user) {
             <div class="text-center border mb-5 border-gray-300 p-4 rounded-lg">
-              <p class="text-sm text-gray-600">Inicia sesión para reservar las canchas directamente desde la aplicación o has click
-                en el número para contactar directamene con el administrador</p>
+              <p class="text-sm text-gray-600">Inicia sesión para reservar las canchas directamente desde la aplicación o has click en el número para contactar directamene con el administrador</p>
             </div>
           }
-          @if (user.team) {
+          @if (!user || user.team) {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               @for (field of fields; track field.id) {
                 @if (user) {
@@ -37,9 +36,17 @@
                   <hr class="mb-4">
                   <p class="text-gray-800 mb-2"><strong>Ciudad:</strong> {{ field.city }}</p>
                   <p class="text-gray-800 mb-2"><strong>Dirección:</strong> {{ field.address }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> ${{ field.hourlyRate }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin?.firstName }} {{ field.admin?.lastName
-                    }}
+                  <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> {{ field.hourlyRate | moneyFormat }}</p>
+                  <p class="text-gray-800 mb-2"><strong>Horario: </strong>
+                    {{ field.openingHour | timeFormat }} - {{ field.closingHour | timeFormat }}
+                    <span class="font-semibold"
+                      [ngClass]="isFieldOpen(field.openingHour, field.closingHour) ? 'text-green-600' : 'text-red-600'">
+                      {{ isFieldOpen(field.openingHour, field.closingHour) ? 'Abierto ahora' : 'Cerrado ahora' }}
+                    </span>
+                  </p>
+                  <p class="text-gray-800 mb-2">
+                    <strong>Administrador: </strong>
+                    {{ field.admin?.firstName }} {{ field.admin?.lastName }}
                   </p>
                 </a>
                 } @else {
@@ -50,6 +57,13 @@
                   <p class="text-gray-800 mb-2"><strong>Ciudad:</strong> {{ field.city }}</p>
                   <p class="text-gray-800 mb-2"><strong>Dirección:</strong> {{ field.address }}</p>
                   <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> ${{ field.hourlyRate }}</p>
+                  <p class="text-gray-800 mb-2"><strong>Horario: </strong>
+                    {{ field.openingHour | timeFormat }} - {{ field.closingHour | timeFormat }}
+                    <span class="font-semibold"
+                      [ngClass]="isFieldOpen(field.openingHour, field.closingHour) ? 'text-green-600' : 'text-red-600'">
+                      {{ isFieldOpen(field.openingHour, field.closingHour) ? 'Abierto ahora' : 'Cerrado ahora' }}
+                    </span>
+                  </p>
                   <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin?.firstName }} {{ field.admin?.lastName
                     }}
                   </p>

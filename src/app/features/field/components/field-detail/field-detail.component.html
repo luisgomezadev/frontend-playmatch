@@ -49,7 +49,7 @@
           <button-action text="Editar" color="black" [routerLink]="['/dashboard/field/form', field.id]"></button-action>
           <button-action text="Eliminar" color="red" (clicked)="deleteField()"></button-action>
           } @else {
-          <button-action text="Reservar" color="primary" (clicked)="deleteField()"></button-action>
+          <button-action text="Reservar" color="primary" [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
           }
         </div>
       </div>
@@ -90,7 +90,7 @@
             </div>
           }
         </div>
-        <app-reservation-list [reservations]="reservationList"></app-reservation-list>
+        <app-reservation-list [fromDetail]="'field'" [reservations]="reservationList"></app-reservation-list>
       </div>
     </div>
 

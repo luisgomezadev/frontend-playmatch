@@ -16,6 +16,7 @@ import { TeamListComponent } from './features/team/components/team-list/team-lis
 import { FieldsListComponent } from './features/field/components/fields-list/fields-list.component';
 import { ReservationListComponent } from './features/reservation/components/reservation-list/reservation-list.component';
 import { TeamAddPlayerComponent } from './features/team/components/team-add-player/team-add-player.component';
+import { ReservationFormComponent } from './features/reservation/components/reservation-form/reservation-form.component';
 
 
 export const routes: Routes = [
@@ -46,6 +47,7 @@ export const routes: Routes = [
 
       // Rutas de reserva
       { path: 'reservation/list/:var', component: ReservationListComponent },
+      { path: 'reservation/form/field/:id', component: ReservationFormComponent },
 
       { path: 'player/list', component: PlayerListComponent },
       { path: 'profile', component: ProfileComponent }

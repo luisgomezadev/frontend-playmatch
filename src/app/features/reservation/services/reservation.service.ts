@@ -44,6 +44,10 @@ export class ReservationService {
     return this.http.post(`${this.url}/finalize/${id}`, null);
   }
 
+  canceledReservationById(id: number): Observable<any> {
+    return this.http.post(`${this.url}/canceled/${id}`, null);
+  }
+
   getCountActiveByTeam(teamId: number): Observable<any> {
     return this.http.get(`${this.url}/team/${teamId}/active`);
   }

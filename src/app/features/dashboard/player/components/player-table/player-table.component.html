@@ -6,7 +6,7 @@
       </div>
       <div class="flex-1">
         {{ player.firstName }} {{ player.lastName }}
-        @if (user.team?.id == player.id) {
+        @if (user.team?.ownerId == player.id) {
           <span class="text-primary font-bold text-sm">(Dueño del equipo)</span>
         }
       </div>

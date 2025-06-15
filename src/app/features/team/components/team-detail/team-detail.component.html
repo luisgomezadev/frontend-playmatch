@@ -38,8 +38,23 @@
                 <button-action text="Eliminar" color="red" (clicked)="deleteTeam()">
                 </button-action>
               } @else {
-                <button-action text="Salir de equipo" color="red" (clicked)="leaveTeam()">
-                </button-action>
+                <div class="relative flex items-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="absolute left-1 text-white h-5 w-5 z-10">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" />
+                    <path d="M15 12h-12l3 -3" />
+                    <path d="M6 15l-3 -3" />
+                  </svg>
+                  <button-action 
+                    text="Salir de equipo"
+                    [withIcon]="true"
+                    color="red"
+                    (clicked)="leaveTeam()">
+                  </button-action>
+                </div>
+                
               }
             </div>
         </div>
@@ -55,7 +70,7 @@
 
         <div class="bg-white p-6 rounded-lg shadow-md animate-slide-down">
           <h3 class="text-2xl font-bold text-gray-800 mb-2">Últimas reservas</h3>
-          <app-reservation-list [reservations]="reservationList"></app-reservation-list>
+          <app-reservation-list [fromDetail]="'team'" [reservations]="reservationList"></app-reservation-list>
         </div>
       </div>
       } @else {

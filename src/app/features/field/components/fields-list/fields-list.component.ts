@@ -5,11 +5,14 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { User, UserPlayer } from '../../../../core/interfaces/user';
 import { WithoutTeamComponent } from '../../../team/components/without-team/without-team.component';
+import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
+import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-fields-list',
   standalone: true,
-  imports: [RouterModule, WithoutTeamComponent],
+  imports: [RouterModule, WithoutTeamComponent, MoneyFormatPipe, TimeFormatPipe, CommonModule],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss'
 })
@@ -48,6 +51,19 @@ export class FieldsListComponent {
         console.error('Error cargando campos', err.error.errorMessage || 'Error desconocido');
       }
     });
+  }
+
+  isFieldOpen(opening: string, closing: string): boolean {
+    const now = new Date();
+    const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  
+    const [openHour, openMin] = opening.split(':').map(Number);
+    const [closeHour, closeMin] = closing.split(':').map(Number);
+  
+    const openingMinutes = openHour * 60 + openMin;
+    const closingMinutes = closeHour * 60 + closeMin;
+  
+    return nowMinutes >= openingMinutes && nowMinutes <= closingMinutes;
   }
 
 }
