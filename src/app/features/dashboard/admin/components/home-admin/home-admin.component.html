@@ -1,0 +1,46 @@
+<section class="p-8 bg-gray-100 min-h-screen">
+  <div class="max-w-6xl mx-auto space-y-8">
+
+    <!-- Bienvenida -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h1 class="text-3xl font-bold text-primary">Bienvenido, {{ fullName }}</h1>
+      <p class="text-gray-600 mt-2">Aquí puedes gestionar tu cancha, ver tus reservas y más.</p>
+    </div>
+
+    <!-- Accesos rápidos -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <article
+        class="p-6 bg-white rounded-xl shadow transition-all flex flex-col items-center text-center border-t-4 border border-primary">
+        <img src="/assets/cancha.webp" class="w-20 h-20 object-cover rounded-full mb-4" alt="Cancha" />
+        <h3 class="text-xl font-semibold text-gray-800">{{ fieldName }}</h3>
+      </article>
+
+      <article
+        class="p-6 bg-white rounded-xl shadow transition-all flex flex-col items-center text-center border-t-4 border border-primary">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-primary mb-3">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M12 2l.117 .007a1 1 0 0 1 .876 .876l.007 .117v4l.005 .15a2 2 0 0 0 1.838 1.844l.157 .006h4l.117 .007a1 1 0 0 1 .876 .876l.007 .117v9a3 3 0 0 1 -2.824 2.995l-.176 .005h-10a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-14a3 3 0 0 1 2.824 -2.995l.176 -.005zm3 14h-6a1 1 0 0 0 0 2h6a1 1 0 0 0 0 -2m0 -4h-6a1 1 0 0 0 0 2h6a1 1 0 0 0 0 -2" />
+          <path d="M19 7h-4l-.001 -4.001z" />
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-800">Reservas activas</h3>
+        <p class="text-4xl font-bold text-gray-500 mt-2">{{ reservationsActive }}</p>
+      </article>
+
+      <article
+        class="p-6 bg-white rounded-xl shadow transition-all flex flex-col items-center text-center border-t-4 border border-primary">
+        <svg class="w-10 h-10 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="2"
+        viewBox="0 0 24 24">
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+          <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+          <path d="M9 17h6" />
+          <path d="M9 13h6" />
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-800">Reservas finalizadas</h3>
+        <p class="text-4xl font-bold text-gray-500 mt-2">{{ reservationsFinished }}</p>
+      </article>
+    </div>
+
+  </div>
+</section>

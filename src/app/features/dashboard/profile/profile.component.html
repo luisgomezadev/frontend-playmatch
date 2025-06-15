@@ -1,0 +1,72 @@
+<section class="p-8 bg-gray-100 min-h-screen">
+  <div class="max-w-6xl mx-auto space-y-8">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h1 class="text-3xl font-bold text-primary">Perfil</h1>
+      <p class="text-gray-600 mt-2">Aquí puedes ver tu perfil personal y modificar tu información.</p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6">
+      <!-- Card principal -->
+      <div class="flex items-center gap-6 md:gap-8 animate-slide-down p-6 bg-white rounded-2xl shadow-lg">
+        <!-- Imagen -->
+        <div class="shrink-0 hidden md:block">
+          <img src="/assets/profile_icon.webp" alt="{{ user.firstName }}"
+            class="w-28 h-28 object-cover rounded-full ring-2 ring-primary/30" />
+        </div>
+    
+        <!-- Info -->
+        <div class="flex-1 space-y-2">
+          <h2 class="text-2xl font-bold text-gray-800">{{ user.firstName }} {{ user.lastName }}</h2>
+          <p class="text-gray-500 flex items-center gap-2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-5 w-5 text-primary">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+              <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+            </svg>
+            {{ user.city }}, Colombia
+          </p>
+        </div>
+      </div>
+    
+      <!-- Datos del perfil -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 animate-slide-down p-6 bg-white rounded-2xl shadow-lg">
+        <div class="space-y-1">
+          <p class="text-sm text-gray-500 font-semibold">Edad</p>
+          <p class="text-base text-gray-700">{{ user.age }} años</p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm text-gray-500 font-semibold">Celular</p>
+          <p class="text-primary text-base font-medium flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 5a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V8a1 1 0 01-1 1H9v1c0 1.656.895 3.223 2.243 4.243C12.777 14.105 14.344 15 16 15h1v-1a1 1 0 011-1h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-4C8.268 21 3 15.732 3 9V5z" />
+            </svg>
+            +57 {{ user.cellphone }}
+          </p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm text-gray-500 font-semibold">Documento</p>
+          <p class="text-base text-gray-700 flex items-center">
+            <span class="bg-gray-200 text-xs font-semibold px-2 py-0.5 rounded-full mr-1">{{ user.documentType }}</span>
+            {{ user.documentNumber }}
+          </p>
+        </div>
+        <div class="space-y-1">
+          <p class="text-sm text-gray-500 font-semibold">Correo electrónico</p>
+          <p class="text-base text-gray-700 flex items-center gap-1">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
+              <path d="M3 7l9 6l9 -6" />
+            </svg>
+            {{ user.email }}
+          </p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</section>

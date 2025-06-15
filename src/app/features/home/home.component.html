@@ -1,4 +1,16 @@
-<router-outlet />
+<section class="h-auto w-full bg-gray-100 px-5 pt-20 pb-32 md:py-32">
+  <div class="flex items-center gap-10 h-full justify-center max-w-6xl mx-auto">
+    <div class="flex flex-col justify-center items-center text-center">
+      <img src="assets/logo_sin_fondo.png" alt="Logo" class="md:w-96 w-52 h-auto">
+      <h1 class="text-2xl md:text-4xl font-bold text-gray-800 mb-4">Bienvenido al panel</h1>
+      <p class="text-base md:text-lg text-gray-600 mb-2 max-w-lg">¿Buscas dónde jugar o tienes una cancha? Reserva,
+        reúne jugadores o publica tu cancha en un solo lugar.</p>
+      <p class="font-bold text-sm text-primary max-w-lg">Importante: aplicación en desarrollo. Las primeras peticiones
+        pueden tardar un poco más de lo normal ya que está alojado en un servidor gratuito. Gracias por tu paciencia.
+      </p>
+    </div>
+  </div>
+</section>
 <div class="relative">
   <svg class="absolute bottom-0 md:-bottom-14 left-0 w-full rotate-180" viewBox="0 0 1440 150" preserveAspectRatio="none">
     <path fill="#00bf63"
@@ -8,7 +20,7 @@
 </div>
 <section class="z-20 relative">
   <div class="min-h-fit w-full bg-primary text-white pb-12">
-    <div class="max-w-5xl mx-auto flex items-center justify-around">
+    <div class="max-w-6xl mx-auto flex items-center justify-around">
       <div class="hidden justify-center items-center md:flex">
         <img src="assets/icon_white.webp" alt="Logo" class="w-56 h-auto">
       </div>
@@ -20,12 +32,4 @@
     </div>
   </div>
 </section>
-<!-- <div class="relative">
-  <svg class="absolute top-0 md:-top-14 left-0 w-full" viewBox="0 0 1440 150"
-    preserveAspectRatio="none">
-    <path fill="#00bf63"
-      d="M0,64L60,69.3C120,75,240,85,360,90.7C480,96,600,96,720,106.7C840,117,960,139,1080,138.7C1200,139,1320,117,1380,106.7L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z">
-    </path>
-  </svg>
-</div> -->
-<app-fields-list></app-fields-list>
+<app-fields-list [showHeader]="false"></app-fields-list>

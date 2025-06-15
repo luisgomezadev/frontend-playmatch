@@ -17,10 +17,14 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['luis@gmail.com', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      role: ['', Validators.required]
+      role: ['ADMIN', Validators.required]
     });
+  }
+
+  ngOnInit(): void {
+    this.authService.redirectIfAuthenticated();
   }
 
   onSubmit() {
@@ -43,7 +47,7 @@ export class LoginComponent {
   
     const handleSuccess = () => {
       this.loading = false;
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/home-' + role.toLowerCase()]);
     };
   
     let loginObservable;

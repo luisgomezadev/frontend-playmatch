@@ -1,0 +1,42 @@
+<section class="p-8 bg-gray-100 min-h-screen">
+  <div class="max-w-6xl mx-auto space-y-8">
+
+    <!-- Bienvenida -->
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h1 class="text-3xl font-bold text-primary">Bienvenido, {{ fullName }}</h1>
+      <p class="text-gray-600 mt-2">Aquí puedes gestionar tu equipo, ver tus reservas y más.</p>
+    </div>
+
+    <!-- Accesos rápidos -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a routerLink="/dashboard/team"
+        class="p-6 bg-white rounded-xl shadow hover:scale-105 transition-all flex flex-col items-center text-center">
+        <img src="/assets/team.webp" class="w-20 h-20 object-cover rounded-full mb-4" alt="Cancha" />
+        <h3 class="text-xl font-semibold text-gray-800">Tu equipo</h3>
+        <p class="text-sm text-gray-500 mt-2">Ver información y editarla.</p>
+      </a>
+
+      <a routerLink="/dashboard/reservations"
+        class="p-6 bg-white rounded-xl shadow hover:scale-105 transition-all flex flex-col items-center text-center">
+        <svg class="w-10 h-10 text-primary mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z"></path>
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-800">Reservas</h3>
+        <p class="text-sm text-gray-500 mt-2">Administra tus reservas activas.</p>
+      </a>
+
+      <a routerLink="/dashboard/statistics"
+        class="p-6 bg-white rounded-xl shadow hover:scale-105 transition-all flex flex-col items-center text-center">
+        <svg class="w-10 h-10 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="2"
+          viewBox="0 0 24 24">
+          <path d="M11 3H3v18h18V13"></path>
+          <path d="M18 2v6h6"></path>
+          <path d="M12 12l8-8"></path>
+        </svg>
+        <h3 class="text-xl font-semibold text-gray-800">Estadísticas</h3>
+        <p class="text-sm text-gray-500 mt-2">Revisa el rendimiento de tu cancha.</p>
+      </a>
+    </div>
+
+  </div>
+</section>

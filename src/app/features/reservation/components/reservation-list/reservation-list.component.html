@@ -1,0 +1,69 @@
+<section [ngClass]="{'p-8 bg-gray-100 min-h-screen': !listOfDetailsField}">
+  <div class="max-w-6xl mx-auto space-y-8">
+    @if (!listOfDetailsField) {
+      <div class="bg-white p-6 rounded-xl shadow-md"> 
+          <h1 class="text-3xl font-bold text-primary">Tus reservas</h1>
+          <p class="text-gray-600 mt-2">Aquí puedes ver todas tus reservas.</p>
+      </div>
+    }
+    @if (reservationList.length > 0) {
+      <div class="grid gap-6" [ngClass]="{
+              'grid-cols-1': listOfDetailsField,
+              'md:grid-cols-2 grid-cols-1': !listOfDetailsField
+            }">
+        @for (reservation of reservationList; track reservation.id) {
+        <article class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all p-6 space-y-4 relative">
+          <!-- Cabecera -->
+          <div class="flex justify-between items-start">
+            <div>
+              <h2 class="text-xl font-bold text-primary">
+                {{ reservation.field?.name || 'Sin cancha asignada' }}
+              </h2>
+              <p class="text-sm text-gray-500">
+                {{ reservation.reservationDate }} &bull;
+                {{ reservation.startTime | timeFormat }} - {{ reservation.endTime | timeFormat }}
+                ({{ reservation.hours }} h)
+              </p>
+            </div>
+            <!-- Estado -->
+            <span class="text-xs font-semibold px-3 py-1 rounded-full" [ngClass]="{
+                                'bg-green-100 text-green-700': reservation.status === StatusReservation.ACTIVE,
+                                'bg-gray-200 text-gray-700': reservation.status === StatusReservation.FINISHED
+                              }">
+              {{
+              reservation.status === StatusReservation.ACTIVE
+              ? 'Reserva activa'
+              : 'Reserva finalizada'
+              }}
+            </span>
+          </div>
+      
+          <!-- Equipo -->
+          <div class="text-sm text-gray-700">
+            <span class="font-medium text-gray-500">Equipo:</span>
+            {{ reservation.team?.name || 'Sin equipo asignado' }}
+          </div>
+
+          @if (isReservationExpired(reservation) && reservation.status === StatusReservation.ACTIVE) {
+            <p class="text-xs text-red-500 font-medium">
+              La reserva ha superado su hora final. Debe finalizarse.
+            </p>
+          }
+      
+          <!-- Botón (condicional) -->
+          @if (!listOfDetailsField && reservation.status === StatusReservation.ACTIVE) {
+          <div class="pt-2">
+            <button-action text="Finalizar reserva" color="red"
+              (clicked)="finalizeReservation(reservation.id, reservation.team?.name)">
+            </button-action>
+          </div>
+          }
+        </article>
+      
+        }
+        </div>
+    } @else {
+      <p class="text-gray-600" [ngClass]="{'px-3': !listOfDetailsField}">No tienes reservas hasta el momento.</p>
+    }
+  </div>
+</section>
