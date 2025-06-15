@@ -10,11 +10,12 @@ import { ButtonActionComponent } from '../../../../shared/components/button-acti
 import { ReservationListComponent } from '../../../reservation/components/reservation-list/reservation-list.component';
 import { Reservation } from '../../../reservation/interfaces/reservation';
 import { PlayerTableComponent } from '../../../dashboard/player/components/player-table/player-table.component';
+import { WithoutTeamComponent } from '../without-team/without-team.component';
 
 @Component({
   selector: 'app-team-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonActionComponent, ReservationListComponent, PlayerTableComponent],
+  imports: [CommonModule, RouterModule, ButtonActionComponent, ReservationListComponent, PlayerTableComponent, WithoutTeamComponent],
   templateUrl: './team-detail.component.html',
   styleUrl: './team-detail.component.scss'
 })
@@ -25,6 +26,7 @@ export class TeamDetailComponent {
   loading = false;
   reservationList: Reservation[] = [];
   playerList: UserPlayer[] = [];
+  teamEmpty: boolean = false;
 
   constructor(private route: ActivatedRoute, private teamService: TeamService, private authService: AuthService) {
 
@@ -44,6 +46,10 @@ export class TeamDetailComponent {
 
   private isUserPlayer(user: any): user is UserPlayer {
     return 'team' in user;
+  }
+
+  isOwnerTeam(): boolean {
+    return this.user.id == this.team.ownerId;
   }
 
   getTeam() {
@@ -74,6 +80,46 @@ export class TeamDetailComponent {
     }
   }
 
+  leaveTeam() {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción te dejará sin equipo temporalmente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, salir',
+      cancelButtonText: 'No, quedarse',
+      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
+      buttonsStyling: false
+    }).then((result) => {
+      if (result.isConfirmed && this.team) {
+        this.teamService.deletePlayerOfTeam(this.team.id, this.user.id).subscribe({
+          next: () => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Sin equipo',
+              text: `Has salido del equipo de ${this.team.name}.`,
+              confirmButtonText: 'Aceptar',
+              customClass: { confirmButton: 'swal-confirm-btn' },
+              buttonsStyling: false
+            });
+            this.teamEmpty = true;
+            this.authService.setUser({ ...this.user, team: null });
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al salirte del equipo',
+              text: err?.error?.errorMessage || 'No se pudo salir del equipo.',
+              confirmButtonText: 'Aceptar',
+              customClass: { confirmButton: 'swal-confirm-btn' },
+              buttonsStyling: false
+            });
+          }
+        });
+      }
+    });
+  }
+
   deleteTeam() {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -96,6 +142,7 @@ export class TeamDetailComponent {
               customClass: { confirmButton: 'swal-confirm-btn' },
               buttonsStyling: false
             });
+            this.teamEmpty = true;
             this.authService.setUser({ ...this.user, team: null });
           },
           error: (err) => {

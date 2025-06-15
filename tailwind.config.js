@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       colors: {
         primary: '#00BF63',
-        secondary: '#F5F5F5',
+        dashblue: '#555DDD',
+        dashyellow: '#F4C216',
       },
       keyframes: {
         'slide-down': {

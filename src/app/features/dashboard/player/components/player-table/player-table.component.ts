@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UserPlayer } from '../../../../../core/interfaces/user';
+import { AuthService } from '../../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-player-table',
@@ -11,6 +12,15 @@ import { UserPlayer } from '../../../../../core/interfaces/user';
 export class PlayerTableComponent {
 
   @Input() players: UserPlayer[] = [];
+  user!: UserPlayer;
+
+  constructor(private authService: AuthService){
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.user = user;
+      }
+    });
+  }
 
   ngOnInit(): void {
     console.log(this.players)

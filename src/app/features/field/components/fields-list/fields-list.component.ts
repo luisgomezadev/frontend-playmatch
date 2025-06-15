@@ -3,19 +3,20 @@ import { Field } from '../../interfaces/field';
 import { FieldService } from '../../services/field.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { User } from '../../../../core/interfaces/user';
+import { User, UserPlayer } from '../../../../core/interfaces/user';
+import { WithoutTeamComponent } from '../../../team/components/without-team/without-team.component';
 
 @Component({
   selector: 'app-fields-list',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, WithoutTeamComponent],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss'
 })
 export class FieldsListComponent {
 
   fields: Field[] = [];
-  user!: User;
+  user!: UserPlayer;
   loading = false;
 
   @Input() showHeader: boolean = true;
@@ -31,7 +32,6 @@ export class FieldsListComponent {
         this.user = user;
       }
     });
-    console.log(this.user)
     this.loadFields();
   }
 

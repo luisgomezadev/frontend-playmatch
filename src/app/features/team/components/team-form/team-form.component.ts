@@ -77,7 +77,6 @@ export class TeamFormComponent {
   }
 
   onSubmit() {
-    console.log(this.teamForm.value)
     if (this.teamForm.invalid) return;
 
     this.loading = true;

@@ -33,7 +33,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ButtonActionComponent {
   @Input() text: string = 'Botón';
-  @Input() color: 'black' | 'red' | 'primary' = 'black';
+  @Input() color: 'black' | 'red' | 'primary' | 'blue' = 'black';
   @Input() routerLink: string | any[] | null = null;
   @Input() type: 'button' | 'submit' = 'button';
   @Input() loading: boolean = false;
@@ -52,6 +52,7 @@ export class ButtonActionComponent {
       black: 'bg-black/70 text-white hover:bg-black/90',
       red: 'bg-red-600/70 text-white hover:bg-red-600/90',
       primary:'bg-primary/70 text-white hover:bg-primary/90',
+      blue:'bg-blue-600/70 text-white hover:bg-blue-600/90',
     };
     return `${styles[this.color]} ${base}`;
   }

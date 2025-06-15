@@ -26,9 +26,10 @@
                 en el número para contactar directamene con el administrador</p>
             </div>
           }
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            @for (field of fields; track field.id) {
-              @if (user) {
+          @if (user.team) {
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              @for (field of fields; track field.id) {
+                @if (user) {
                 <a [routerLink]="['/dashboard/field/detail', field.id]"
                   class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
                   <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
@@ -37,9 +38,11 @@
                   <p class="text-gray-800 mb-2"><strong>Ciudad:</strong> {{ field.city }}</p>
                   <p class="text-gray-800 mb-2"><strong>Dirección:</strong> {{ field.address }}</p>
                   <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> ${{ field.hourlyRate }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin?.firstName }} {{ field.admin?.lastName }}
-                  </p></a>
-              } @else {
+                  <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin?.firstName }} {{ field.admin?.lastName
+                    }}
+                  </p>
+                </a>
+                } @else {
                 <article class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-default">
                   <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
                   <h2 class="text-2xl font-semibold text-center mb-2">{{ field.name }}</h2>
@@ -47,15 +50,22 @@
                   <p class="text-gray-800 mb-2"><strong>Ciudad:</strong> {{ field.city }}</p>
                   <p class="text-gray-800 mb-2"><strong>Dirección:</strong> {{ field.address }}</p>
                   <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> ${{ field.hourlyRate }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin?.firstName }} {{ field.admin?.lastName }}
+                  <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin?.firstName }} {{ field.admin?.lastName
+                    }}
                   </p>
                   <p class="text-gray-800 mb-2"><strong>Contacto: </strong>
                     <a [href]="'https://wa.me/57' + field.admin?.cellphone" target="_blank"
                       class="text-primary hover:text-primary-dark">{{ field.admin?.cellphone }}</a>
-                  </p></article>
+                  </p>
+                </article>
+                }
               }
-            }
-          </div>
+            </div>
+          } @else {
+            <div>
+              <app-without-team></app-without-team>
+            </div>
+          }
         }
       }
   </div>
