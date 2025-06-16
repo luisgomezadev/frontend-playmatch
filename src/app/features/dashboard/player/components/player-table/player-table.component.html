@@ -1,18 +1,18 @@
 <div class="flex flex-col gap-2">
-@for (player of players; let i = $index; track player.id) {
-    <div class="flex items-center bg-black/5 py-2 px-3 rounded gap-3">
-      <div>
-        <span>{{ i + 1}}.</span>
-      </div>
-      <div class="flex-1">
-        {{ player.firstName }} {{ player.lastName }}
-        @if (user.team?.ownerId == player.id) {
-          <span class="text-primary font-bold text-sm">(Dueño del equipo)</span>
-        }
-      </div>
-      <div>
-        <span>{{ player.age }} años</span>
-      </div>
+  @for (player of players; let i = $index; track player.id) {
+  <div class="flex items-center bg-black/5 py-2 px-3 rounded gap-3">
+    <div>
+      <span>{{ i + 1 }}.</span>
     </div>
-}
+    <div class="flex-1">
+      {{ player.firstName }} {{ player.lastName }}
+      @if (user.team?.ownerId == player.id) {
+      <span class="text-primary font-bold text-sm">(Dueño del equipo)</span>
+      }
+    </div>
+    <div>
+      <span>{{ player.age }} años</span>
+    </div>
+  </div>
+  }
 </div>

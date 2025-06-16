@@ -1,86 +1,157 @@
 <section class="p-8 bg-gray-100 min-h-screen">
   <div class="max-w-6xl mx-auto space-y-8">
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-3xl font-bold text-primary">Canchas disponibles</h1>
-        @if (showHeader) {
-          <p class="text-gray-600 mt-2">Aquí puedes explorar las canchas disponibles. Haz clic en una para ver sus detalles y poder reservar.</p>
-        }
-      </div>
-      @if (loading) {
-        <div class="flex flex-col gap-3 justify-center items-center">
-          <h2 class="text-lg">Cargando...</h2>
-          <svg class="animate-spin h-20 w-20 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-        </div>
-      } @else {
-        @if (fields.length === 0) {
-          <div class="text-center">
-            <h2 class="text-lg">No hay canchas disponibles.</h2>
-          </div>
-        } @else {
-          @if (!user) {
-            <div class="text-center border mb-5 border-gray-300 p-4 rounded-lg">
-              <p class="text-sm text-gray-600">Inicia sesión para reservar las canchas directamente desde la aplicación o has click en el número para contactar directamene con el administrador</p>
-            </div>
-          }
-          @if (!user || user.team) {
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              @for (field of fields; track field.id) {
-                @if (user) {
-                <a [routerLink]="['/dashboard/field/detail', field.id]"
-                  class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
-                  <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
-                  <h2 class="text-2xl font-semibold text-center mb-2">{{ field.name }}</h2>
-                  <hr class="mb-4">
-                  <p class="text-gray-800 mb-2"><strong>Ciudad:</strong> {{ field.city }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Dirección:</strong> {{ field.address }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> {{ field.hourlyRate | moneyFormat }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Horario: </strong>
-                    {{ field.openingHour | timeFormat }} - {{ field.closingHour | timeFormat }}
-                    <span class="font-semibold"
-                      [ngClass]="isFieldOpen(field.openingHour, field.closingHour) ? 'text-green-600' : 'text-red-600'">
-                      {{ isFieldOpen(field.openingHour, field.closingHour) ? 'Abierto ahora' : 'Cerrado ahora' }}
-                    </span>
-                  </p>
-                  <p class="text-gray-800 mb-2">
-                    <strong>Administrador: </strong>
-                    {{ field.admin?.firstName }} {{ field.admin?.lastName }}
-                  </p>
-                </a>
-                } @else {
-                <article class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-default">
-                  <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-48 object-cover rounded-lg mb-4">
-                  <h2 class="text-2xl font-semibold text-center mb-2">{{ field.name }}</h2>
-                  <hr class="mb-4">
-                  <p class="text-gray-800 mb-2"><strong>Ciudad:</strong> {{ field.city }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Dirección:</strong> {{ field.address }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Precio por hora:</strong> ${{ field.hourlyRate }}</p>
-                  <p class="text-gray-800 mb-2"><strong>Horario: </strong>
-                    {{ field.openingHour | timeFormat }} - {{ field.closingHour | timeFormat }}
-                    <span class="font-semibold"
-                      [ngClass]="isFieldOpen(field.openingHour, field.closingHour) ? 'text-green-600' : 'text-red-600'">
-                      {{ isFieldOpen(field.openingHour, field.closingHour) ? 'Abierto ahora' : 'Cerrado ahora' }}
-                    </span>
-                  </p>
-                  <p class="text-gray-800 mb-2"><strong>Administrador:</strong> {{ field.admin?.firstName }} {{ field.admin?.lastName
-                    }}
-                  </p>
-                  <p class="text-gray-800 mb-2"><strong>Contacto: </strong>
-                    <a [href]="'https://wa.me/57' + field.admin?.cellphone" target="_blank"
-                      class="text-primary hover:text-primary-dark">{{ field.admin?.cellphone }}</a>
-                  </p>
-                </article>
-                }
-              }
-            </div>
-          } @else {
-            <div>
-              <app-without-team></app-without-team>
-            </div>
-          }
-        }
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h1 class="text-3xl font-bold text-primary">Canchas disponibles</h1>
+      @if (showHeader) {
+      <p class="text-gray-600 mt-2">
+        Aquí puedes explorar las canchas disponibles. Haz clic en una para ver
+        sus detalles y poder reservar.
+      </p>
       }
+    </div>
+    @if (loading) {
+    <div class="flex flex-col gap-3 justify-center items-center">
+      <h2 class="text-lg">Cargando...</h2>
+      <svg
+        class="animate-spin h-20 w-20 text-primary"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        ></path>
+      </svg>
+    </div>
+    } @else { @if (fields.length === 0) {
+    <div class="text-center">
+      <h2 class="text-lg">No hay canchas disponibles.</h2>
+    </div>
+    } @else { @if (!user) {
+    <div class="text-center border mb-5 border-gray-300 p-4 rounded-lg">
+      <p class="text-sm text-gray-600">
+        Inicia sesión para reservar las canchas directamente desde la aplicación
+        o has click en el número para contactar directamene con el administrador
+      </p>
+    </div>
+    } @if (!user || user.team) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (field of fields; track field.id) { @if (user) {
+      <a
+        [routerLink]="['/dashboard/field/detail', field.id]"
+        class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      >
+        <img
+          src="/assets/cancha.webp"
+          alt="{{ field.name }}"
+          class="w-full h-48 object-cover rounded-lg mb-4"
+        />
+        <h2 class="text-2xl font-semibold text-center mb-2">
+          {{ field.name }}
+        </h2>
+        <hr class="mb-4" />
+        <p class="text-gray-800 mb-2">
+          <strong>Ciudad:</strong> {{ field.city }}
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Dirección:</strong> {{ field.address }}
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Precio por hora:</strong> {{ field.hourlyRate | moneyFormat }}
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Horario: </strong> {{ field.openingHour | timeFormat }} -
+          {{ field.closingHour | timeFormat }}
+          <span
+            class="font-semibold"
+            [ngClass]="
+              isFieldOpen(field.openingHour, field.closingHour)
+                ? 'text-green-600'
+                : 'text-red-600'
+            "
+          >
+            {{
+              isFieldOpen(field.openingHour, field.closingHour)
+                ? "Abierto ahora"
+                : "Cerrado ahora"
+            }}
+          </span>
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Administrador: </strong>
+          {{ field.admin?.firstName }} {{ field.admin?.lastName }}
+        </p>
+      </a>
+      } @else {
+      <article
+        class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-default"
+      >
+        <img
+          src="/assets/cancha.webp"
+          alt="{{ field.name }}"
+          class="w-full h-48 object-cover rounded-lg mb-4"
+        />
+        <h2 class="text-2xl font-semibold text-center mb-2">
+          {{ field.name }}
+        </h2>
+        <hr class="mb-4" />
+        <p class="text-gray-800 mb-2">
+          <strong>Ciudad:</strong> {{ field.city }}
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Dirección:</strong> {{ field.address }}
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Precio por hora:</strong> ${{ field.hourlyRate }}
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Horario: </strong> {{ field.openingHour | timeFormat }} -
+          {{ field.closingHour | timeFormat }}
+          <span
+            class="font-semibold"
+            [ngClass]="
+              isFieldOpen(field.openingHour, field.closingHour)
+                ? 'text-green-600'
+                : 'text-red-600'
+            "
+          >
+            {{
+              isFieldOpen(field.openingHour, field.closingHour)
+                ? "Abierto ahora"
+                : "Cerrado ahora"
+            }}
+          </span>
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Administrador:</strong> {{ field.admin?.firstName }}
+          {{ field.admin?.lastName }}
+        </p>
+        <p class="text-gray-800 mb-2">
+          <strong>Contacto: </strong>
+          <a
+            [href]="'https://wa.me/57' + field.admin?.cellphone"
+            target="_blank"
+            class="text-primary hover:text-primary-dark"
+            >{{ field.admin?.cellphone }}</a
+          >
+        </p>
+      </article>
+      } }
+    </div>
+    } @else {
+    <div>
+      <app-without-team></app-without-team>
+    </div>
+    } } }
   </div>
 </section>

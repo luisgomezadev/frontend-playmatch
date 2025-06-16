@@ -1,47 +1,91 @@
-<div class="relative min-h-screen flex items-center flex-col justify-center bg-gray-100">
+<div
+  class="relative min-h-screen flex items-center flex-col justify-center bg-gray-100"
+>
   <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-xl z-30">
-      <h2 class="text-2xl font-bold text-center mb-6 text-primary">Iniciar sesión</h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Tipo de usuario</label>
-          <select formControlName="role"
-          class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200">
-            <option value="PLAYER">Jugador</option>
-            <option value="ADMIN">Administrador</option>
-          </select>
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Correo electrónico</label>
-          <input type="email" formControlName="email" placeholder="Correo electrónico"
-            class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200" />
-        </div>
-        <div class="mb-6">
-          <label class="block text-sm font-medium mb-1">Contraseña</label>
-          <input type="password" formControlName="password" placeholder="Contraseña"
-          class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200" />
-        </div>
-        <button type="submit" [disabled]="loading || !loginForm.valid"
-          class="w-full bg-primary hover:opacity-80 cursor-pointer text-white font-semibold py-2 px-4 rounded-lg transition h-10 duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-          @if (loading) {
-            <div class="flex justify-center items-center">
-              <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-              </svg>
-            </div>
-          } @else {
-            <span>Entrar</span>
-          }
-        </button>
-      </form>
-      <div class="mt-4 text-center">
-        <p class="text-sm text-gray-600">¿No tienes una cuenta? <a routerLink="/register"
-            class="text-blue-500 hover:underline cursor-pointer">Regístrate</a></p>
+    <h2 class="text-2xl font-bold text-center mb-6 text-primary">
+      Iniciar sesión
+    </h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Tipo de usuario</label>
+        <select
+          formControlName="role"
+          class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200"
+        >
+          <option value="PLAYER">Jugador</option>
+          <option value="ADMIN">Administrador</option>
+        </select>
       </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Correo electrónico</label>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Correo electrónico"
+          class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200"
+        />
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm font-medium mb-1">Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Contraseña"
+          class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200"
+        />
+      </div>
+      <button
+        type="submit"
+        [disabled]="loading || !loginForm.valid"
+        class="w-full bg-primary hover:opacity-80 cursor-pointer text-white font-semibold py-2 px-4 rounded-lg transition h-10 duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        @if (loading) {
+        <div class="flex justify-center items-center">
+          <svg
+            class="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+        </div>
+        } @else {
+        <span>Entrar</span>
+        }
+      </button>
+    </form>
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">
+        ¿No tienes una cuenta?
+        <a
+          routerLink="/register"
+          class="text-blue-500 hover:underline cursor-pointer"
+          >Regístrate</a
+        >
+      </p>
+    </div>
   </div>
-  <svg class="absolute bottom-0 left-0 w-full rotate-180" viewBox="0 0 1440 150" preserveAspectRatio="none">
-    <path fill="#00bf63"
-      d="M0,64L60,69.3C120,75,240,85,360,90.7C480,96,600,96,720,106.7C840,117,960,139,1080,138.7C1200,139,1320,117,1380,106.7L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z">
-    </path>
+  <svg
+    class="absolute bottom-0 left-0 w-full rotate-180"
+    viewBox="0 0 1440 150"
+    preserveAspectRatio="none"
+  >
+    <path
+      fill="#00bf63"
+      d="M0,64L60,69.3C120,75,240,85,360,90.7C480,96,600,96,720,106.7C840,117,960,139,1080,138.7C1200,139,1320,117,1380,106.7L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
+    ></path>
   </svg>
 </div>

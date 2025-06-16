@@ -7,20 +7,18 @@ import { AuthService } from '../../../core/services/auth.service';
   standalone: true,
   imports: [],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
-
   user!: User;
-  
-  constructor(private authService: AuthService){}
-  
+
+  constructor(private authService: AuthService) {}
+
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
       }
     });
   }
-
 }

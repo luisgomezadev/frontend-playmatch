@@ -1,20 +1,25 @@
 import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { PlayerService } from '../../../dashboard/player/services/player.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { User, UserPlayer } from '../../../../core/interfaces/user';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { TeamService } from '../../services/team.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { WithoutTeamComponent } from "../without-team/without-team.component";
+import { WithoutTeamComponent } from '../without-team/without-team.component';
 
 @Component({
   selector: 'app-team-add-player',
   standalone: true,
   imports: [ReactiveFormsModule, ButtonActionComponent, WithoutTeamComponent],
   templateUrl: './team-add-player.component.html',
-  styleUrl: './team-add-player.component.scss'
+  styleUrl: './team-add-player.component.scss',
 })
 export class TeamAddPlayerComponent {
   searchForm: FormGroup;
@@ -28,14 +33,15 @@ export class TeamAddPlayerComponent {
     private playerService: PlayerService,
     private teamService: TeamService,
     private authService: AuthService,
-    private router: Router) {
+    private router: Router
+  ) {
     this.searchForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
         if (this.isUserPlayer(user) && user.team) {
@@ -49,8 +55,8 @@ export class TeamAddPlayerComponent {
     return 'team' in user;
   }
 
-  isOwner(): boolean{
-    return this.user.id == this.user.team?.ownerId
+  isOwner(): boolean {
+    return this.user.id == this.user.team?.ownerId;
   }
 
   searchPlayer() {
@@ -68,7 +74,7 @@ export class TeamAddPlayerComponent {
         this.player = null;
         this.loading = false;
         Swal.fire('Jugador no encontrado', '', 'warning');
-      }
+      },
     });
   }
 
@@ -80,9 +86,13 @@ export class TeamAddPlayerComponent {
           this.router.navigate(['/dashboard/team']);
         },
         error: (err) => {
-          Swal.fire('Error al inscribir jugador', err.error.errorMessage || 'Error desconocido', 'error');
-        }
-      })
+          Swal.fire(
+            'Error al inscribir jugador',
+            err.error.errorMessage || 'Error desconocido',
+            'error'
+          );
+        },
+      });
     } else {
       Swal.fire('No eres dueño del equipo', '', 'error');
     }

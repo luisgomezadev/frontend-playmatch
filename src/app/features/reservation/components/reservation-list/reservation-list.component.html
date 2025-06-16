@@ -1,85 +1,123 @@
-<section [ngClass]="{'p-8 bg-gray-100 min-h-screen': !listOfDetailsField}">
+<section [ngClass]="{ 'p-8 bg-gray-100 min-h-screen': !listOfDetailsField }">
   <div class="max-w-6xl mx-auto space-y-8">
     @if (!listOfDetailsField) {
-      <div class="bg-white p-6 rounded-xl shadow-md"> 
-          <h1 class="text-3xl font-bold text-primary">Tus reservas</h1>
-          <p class="text-gray-600 mt-2">Aquí puedes ver todas tus reservas ordenadas a más recientes.</p>
-      </div>
-      @if (reservationBy == 'team') {
-        <div class="w-60">
-          <button-action text="Hacer reserva" color="primary" [routerLink]="['/dashboard/field/list']" />
-        </div>
-      }
-    }
-    @if (reservationList.length > 0) {
-      <div class="grid gap-3" [ngClass]="listOfDetailsField ? 'grid-cols-1' : 'md:grid-cols-3 grid-cols-1'">
-        @for (reservation of reservationList; track reservation.id) {
-          <article class="rounded-2xl shadow-md hover:shadow-lg transition-all px-6 py-3 space-y-4 relative"
-            [ngClass]="listOfDetailsField ? 'bg-black/5' : 'bg-white'">
-          <!-- Cabecera -->
-          <div class="flex justify-between items-start">
-            <div [ngClass]="{
+    <div class="bg-white p-6 rounded-xl shadow-md">
+      <h1 class="text-3xl font-bold text-primary">Tus reservas</h1>
+      <p class="text-gray-600 mt-2">
+        Aquí puedes ver todas tus reservas ordenadas a más recientes.
+      </p>
+    </div>
+    @if (reservationBy == 'team') {
+    <div class="w-60">
+      <button-action
+        text="Hacer reserva"
+        color="primary"
+        [routerLink]="['/dashboard/field/list']"
+      />
+    </div>
+    } } @if (reservationList.length > 0) {
+    <div
+      class="grid gap-3"
+      [ngClass]="
+        listOfDetailsField ? 'grid-cols-1' : 'md:grid-cols-3 grid-cols-1'
+      "
+    >
+      @for (reservation of reservationList; track reservation.id) {
+      <article
+        class="rounded-2xl shadow-md hover:shadow-lg transition-all px-6 py-3 space-y-4 relative"
+        [ngClass]="listOfDetailsField ? 'bg-black/5' : 'bg-white'"
+      >
+        <!-- Cabecera -->
+        <div class="flex justify-between items-start">
+          <div
+            [ngClass]="{
               'max-w-64': listOfDetailsField,
               'max-w-48': !listOfDetailsField
-            }">
-              @if (reservationBy == 'field' || fromDetail == 'field') {
-                <p class="text-gray-500">Equipo:</p>
-                <h2 class="text-base font-bold text-black">
-                  {{ reservation.team?.name || 'Sin equipo asignado' }}
-                </h2>
-              }
-              @if (reservationBy == 'team' || fromDetail == 'team') {
-                <p class="text-gray-500">Cancha:</p>
-                <h2 class="text-base font-bold text-black text-wrap">
-                  {{ reservation.field?.name || 'Sin cancha asignada' }}
-                </h2>
-              }
-            </div>
-            <!-- Estado -->
-            <div class="flex-1 text-end">
-              <span class="text-xs font-semibold px-3 py-1 rounded-full" [ngClass]="{
-                              'bg-green-100 text-green-700': reservation.status === StatusReservation.ACTIVE,
-                              'bg-gray-200 text-gray-700': reservation.status === StatusReservation.FINISHED,
-                              'bg-red-200 text-red-700': reservation.status === StatusReservation.CANCELED
-                            }">
-                {{ reservation.status | statusReservation }}
-              </span>
-            </div>
+            }"
+          >
+            @if (reservationBy == 'field' || fromDetail == 'field') {
+            <p class="text-gray-500">Equipo:</p>
+            <h2 class="text-base font-bold text-black">
+              {{ reservation.team?.name || "Sin equipo asignado" }}
+            </h2>
+            } @if (reservationBy == 'team' || fromDetail == 'team') {
+            <p class="text-gray-500">Cancha:</p>
+            <h2 class="text-base font-bold text-black text-wrap">
+              {{ reservation.field?.name || "Sin cancha asignada" }}
+            </h2>
+            }
           </div>
-          <p class="text-sm text-black">
-            {{ isReservationToday(reservation) }} &bull;
-            {{ reservation.startTime | timeFormat }} - {{ reservation.endTime | timeFormat }}
-            ({{ reservation.hours }} h)
-          </p>
-
-          @if (isReservationExpired(reservation) && reservation.status === StatusReservation.ACTIVE) {
-            <p class="text-xs text-red-500 font-medium">
-              La reserva ha superado su hora final. Debe finalizarse.
-            </p>
-          }
-      
-          <!-- Botón (condicional) -->
-          @if (!listOfDetailsField && reservation.status === StatusReservation.ACTIVE) {
-          <div class="pt-2">
-            @switch(getReservationStatus(reservation)) {
-            @case('upcoming') {
-            <button-action text="Cancelar reserva" color="red"
-              (clicked)="cancelReservation(reservation.id, reservation.team?.name)">
-            </button-action>
-            }
-            @case('inProgress') {
-            <button-action text="Finalizar reserva" color="red"
-              (clicked)="finalizeReservation(reservation.id, reservation.team?.name)">
-            </button-action>
-            }
-            }
-          </div>         }
-        </article>
-      
-        }
+          <!-- Estado -->
+          <div class="flex-1 text-end">
+            <span
+              class="text-xs font-semibold px-3 py-1 rounded-full"
+              [ngClass]="{
+                'bg-green-100 text-green-700':
+                  reservation.status === StatusReservation.ACTIVE,
+                'bg-gray-200 text-gray-700':
+                  reservation.status === StatusReservation.FINISHED,
+                'bg-red-200 text-red-700':
+                  reservation.status === StatusReservation.CANCELED
+              }"
+            >
+              {{ reservation.status | statusReservation }}
+            </span>
+          </div>
         </div>
+        <p class="text-sm text-black">
+          {{ isReservationToday(reservation) }} &bull;
+          ({{ reservation.startTime | timeFormat }} -
+          {{ reservation.endTime | timeFormat }})
+        </p>
+
+        @if (isReservationExpired(reservation) && reservation.status ===
+        StatusReservation.ACTIVE) {
+        <p class="text-xs text-red-500 font-medium">
+          La reserva ha superado su hora final. Debe finalizarse.
+        </p>
+        } @if (!isReservationExpired(reservation) && reservation.status ===
+        StatusReservation.ACTIVE && getReservationStatus(reservation) ===
+        'upcoming') {
+        <p class="text-xs text-yellow-600 font-medium">Empieza pronto.</p>
+        } @if (getReservationStatus(reservation) === 'inProgress' &&
+        reservation.status === StatusReservation.ACTIVE) {
+        <p class="text-xs text-green-600 font-medium">En curso.</p>
+        }
+
+        <!-- Botón (condicional) -->
+        @if (!listOfDetailsField && reservation.status ===
+        StatusReservation.ACTIVE) { @switch(getReservationStatus(reservation)) {
+        @case('upcoming') {
+        <div class="pt-2">
+          <button-action
+            text="Cancelar reserva"
+            color="red"
+            (clicked)="
+              cancelReservation(reservation.id, reservation.team?.name)
+            "
+          >
+          </button-action>
+        </div>
+        } @case('inProgress') { @if (reservationBy == 'field') {
+        <div class="pt-2">
+          <button-action
+            text="Finalizar reserva"
+            color="black"
+            (clicked)="
+              finalizeReservation(reservation.id, reservation.team?.name)
+            "
+          >
+          </button-action>
+        </div>
+        } } } }
+      </article>
+
+      }
+    </div>
     } @else {
-      <p class="text-gray-600" [ngClass]="{'px-3': !listOfDetailsField}">No tienes reservas hasta el momento.</p>
+    <p class="text-gray-600" [ngClass]="{ 'px-3': !listOfDetailsField }">
+      No tienes reservas hasta el momento.
+    </p>
     }
   </div>
 </section>

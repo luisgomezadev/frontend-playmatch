@@ -8,17 +8,12 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [ButtonActionComponent, RouterModule],
   templateUrl: './reservation-form.component.html',
-  styleUrl: './reservation-form.component.scss'
+  styleUrl: './reservation-form.component.scss',
 })
 export class ReservationFormComponent {
-
-  constructor(private location: Location){
-
-  }
-
+  constructor(private location: Location) {}
 
   goBack(): void {
     this.location.back();
   }
-
 }

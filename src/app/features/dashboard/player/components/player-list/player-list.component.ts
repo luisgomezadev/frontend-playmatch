@@ -10,15 +10,17 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './player-list.component.html',
-  styleUrl: './player-list.component.scss'
+  styleUrl: './player-list.component.scss',
 })
 export class PlayerListComponent {
-
   user!: User;
   playerList: UserPlayer[] = [];
 
-  constructor(private playerService: PlayerService, private authService: AuthService){
-    this.authService.currentUser$.subscribe(user => {
+  constructor(
+    private playerService: PlayerService,
+    private authService: AuthService
+  ) {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
         this.playerService.getPlayers().subscribe({
@@ -29,13 +31,11 @@ export class PlayerListComponent {
             Swal.fire({
               title: 'Error',
               text: 'Error al cargar la lista de jugadores',
-              timer: 2000
-            })
+              timer: 2000,
+            });
           },
-        })
+        });
       }
     });
-    
   }
-
 }

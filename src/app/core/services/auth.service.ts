@@ -12,7 +12,7 @@ interface LoginResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private tokenKey = 'token';
@@ -20,30 +20,42 @@ export class AuthService {
   private url = environment.authUrlLocal;
 
   authStatus$ = this.authStatus.asObservable();
-  
-  private currentUser = new BehaviorSubject<UserAdmin | UserPlayer | null>(null);
+
+  private currentUser = new BehaviorSubject<UserAdmin | UserPlayer | null>(
+    null
+  );
   currentUser$ = this.currentUser.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
 
   loginPlayer(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.url}/authenticate/player`, { email, password }).pipe(
-      tap(response => {
-        this.setToken(response.token);
-        this.authStatus.next(true);
+    return this.http
+      .post<LoginResponse>(`${this.url}/authenticate/player`, {
+        email,
+        password,
       })
-    );
+      .pipe(
+        tap((response) => {
+          this.setToken(response.token);
+          this.authStatus.next(true);
+        })
+      );
   }
-  
+
   loginAdmin(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.url}/authenticate/admin`, { email, password }).pipe(
-      tap(response => {
-        this.setToken(response.token);
-        this.authStatus.next(true);
+    return this.http
+      .post<LoginResponse>(`${this.url}/authenticate/admin`, {
+        email,
+        password,
       })
-    );
+      .pipe(
+        tap((response) => {
+          this.setToken(response.token);
+          this.authStatus.next(true);
+        })
+      );
   }
-  
+
   logout(): void {
     this.clearToken();
     this.currentUser.next(null);
@@ -61,16 +73,18 @@ export class AuthService {
 
   private getTokenExpirationDate(token: string): Date | null {
     if (!token) return null;
-  
+
     const payloadBase64 = token.split('.')[1];
     if (!payloadBase64) return null;
-  
+
     try {
-      const payloadJson = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
+      const payloadJson = atob(
+        payloadBase64.replace(/-/g, '+').replace(/_/g, '/')
+      );
       const payload = JSON.parse(payloadJson);
-  
+
       if (!payload.exp) return null;
-  
+
       const date = new Date(0);
       date.setUTCSeconds(payload.exp);
       return date;
@@ -78,7 +92,7 @@ export class AuthService {
       return null;
     }
   }
-  
+
   public isTokenExpired(token: string): boolean {
     const expirationDate = this.getTokenExpirationDate(token);
     if (!expirationDate) return false;
@@ -116,12 +130,14 @@ export class AuthService {
   getClaimsFromToken(): any | null {
     const token = this.getToken();
     if (!token) return null;
-  
+
     const payloadBase64 = token.split('.')[1];
     if (!payloadBase64) return null;
-  
+
     try {
-      const payloadJson = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
+      const payloadJson = atob(
+        payloadBase64.replace(/-/g, '+').replace(/_/g, '/')
+      );
       return JSON.parse(payloadJson);
     } catch (e) {
       return null;

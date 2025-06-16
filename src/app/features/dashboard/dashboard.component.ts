@@ -14,10 +14,9 @@ import { PlayerService } from './player/services/player.service';
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-
   userActive: User | null = null;
   sidebarOpen = false;
   userRole: string | undefined = '';
@@ -41,14 +40,14 @@ export class DashboardComponent {
         this.adminService.getAdminByEmail(email).subscribe({
           next: (admin: UserAdmin) => {
             this.loading = false;
-            this.userActive = {...admin, role: "admin"};
+            this.userActive = { ...admin, role: 'admin' };
             this.authService.setUser(admin);
             this.loadLinks();
           },
           error: (err) => {
             this.loading = false;
             console.error('Error obteniendo admin:', err);
-          }
+          },
         });
       }
 
@@ -56,14 +55,14 @@ export class DashboardComponent {
         this.playerService.getPlayerByEmail(email).subscribe({
           next: (player: UserPlayer) => {
             this.loading = false;
-            this.userActive = {...player, role: "player"};
+            this.userActive = { ...player, role: 'player' };
             this.authService.setUser(player);
             this.loadLinks();
           },
           error: (err) => {
             this.loading = false;
             console.error('Error obteniendo admin:', err);
-          }
+          },
         });
       }
     }
@@ -71,7 +70,7 @@ export class DashboardComponent {
 
   loadLinks() {
     this.links = LINKS_DASHBOARD.filter(
-      item => item.role === this.userActive?.role || item.role === 'all'
+      (item) => item.role === this.userActive?.role || item.role === 'all'
     );
   }
 
@@ -92,8 +91,11 @@ export class DashboardComponent {
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Sí, salir',
       cancelButtonText: 'Cancelar',
-      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-      buttonsStyling: false
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+        cancelButton: 'swal-cancel-btn',
+      },
+      buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed) {
         this.authService.logout();
@@ -102,10 +104,9 @@ export class DashboardComponent {
           text: 'Has cerrado sesión correctamente.',
           icon: 'success',
           customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false
+          buttonsStyling: false,
         });
       }
     });
   }
-
 }

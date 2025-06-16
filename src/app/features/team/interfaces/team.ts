@@ -1,5 +1,5 @@
-import { UserPlayer } from "../../../core/interfaces/user";
-import { Reservation } from "../../reservation/interfaces/reservation";
+import { UserPlayer } from '../../../core/interfaces/user';
+import { Reservation } from '../../reservation/interfaces/reservation';
 
 export interface Team {
   id: number;
@@ -9,5 +9,5 @@ export interface Team {
   maxPlayers: number;
   ownerId: number;
   members: UserPlayer[];
-  reservations: Reservation[]
+  reservations: Reservation[];
 }

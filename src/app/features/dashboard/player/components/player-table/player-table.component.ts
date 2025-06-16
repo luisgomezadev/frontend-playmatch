@@ -7,15 +7,14 @@ import { AuthService } from '../../../../../core/services/auth.service';
   standalone: true,
   imports: [],
   templateUrl: './player-table.component.html',
-  styleUrl: './player-table.component.scss'
+  styleUrl: './player-table.component.scss',
 })
 export class PlayerTableComponent {
-
   @Input() players: UserPlayer[] = [];
   user!: UserPlayer;
 
-  constructor(private authService: AuthService){
-    this.authService.currentUser$.subscribe(user => {
+  constructor(private authService: AuthService) {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
       }
@@ -23,7 +22,6 @@ export class PlayerTableComponent {
   }
 
   ngOnInit(): void {
-    console.log(this.players)
+    console.log(this.players);
   }
-
 }

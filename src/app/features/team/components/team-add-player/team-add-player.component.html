@@ -2,42 +2,70 @@
   <div class="max-w-6xl mx-auto space-y-8">
     <div class="bg-white p-6 rounded-xl shadow-md">
       <h1 class="text-3xl font-bold text-primary">Agregar jugadores</h1>
-      <p class="text-gray-600 mt-2">Aquí puedes buscar jugadores por su correo y agregarlos a tu equipo.</p>
+      <p class="text-gray-600 mt-2">
+        Aquí puedes buscar jugadores por su correo y agregarlos a tu equipo.
+      </p>
     </div>
     @if (user.team) {
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Buscar jugador -->
-        <div class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down">
-          <h2 class="text-xl font-semibold">Buscar jugador</h2>
-          <form (ngSubmit)="searchPlayer()" [formGroup]="searchForm" class="space-y-4">
-            <input type="email" formControlName="email" placeholder="Email del jugador"
-              class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200 mb-3" />
-            <button-action text="Buscar" color="primary" [loading]="loading" type="submit">
-            </button-action>
-          </form>
-        </div>
-      
-        <!-- Información del jugador -->
-        <div class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down">
-          <h2 class="text-xl font-semibold">Información del jugador</h2>
-      
-          @if (player) {
-          <p><strong>Nombre:</strong> {{ player.firstName }} {{ player.lastName }}</p>
-          <p><strong>Edad:</strong> {{ player.age }} años</p>
-          <p><strong>Ciudad:</strong> {{ player.city }}</p>
-          <p><strong>Celular:</strong> {{ player.cellphone }}</p>
-          <p><strong>Documento:</strong> {{ player.documentType }} {{ player.documentNumber }}</p>
-          <button-action text="Añadir al equipo" color="blue" (clicked)="addToTeam(player.id)">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Buscar jugador -->
+      <div
+        class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down"
+      >
+        <h2 class="text-xl font-semibold">Buscar jugador</h2>
+        <form
+          (ngSubmit)="searchPlayer()"
+          [formGroup]="searchForm"
+          class="space-y-4"
+        >
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Email del jugador"
+            class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200 mb-3"
+          />
+          <button-action
+            text="Buscar"
+            color="primary"
+            [loading]="loading"
+            type="submit"
+          >
           </button-action>
-          } @else {
-          <p class="text-gray-500">No hay jugador seleccionado.</p>
-          }
-        </div>
+        </form>
       </div>
+
+      <!-- Información del jugador -->
+      <div
+        class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down"
+      >
+        <h2 class="text-xl font-semibold">Información del jugador</h2>
+
+        @if (player) {
+        <p>
+          <strong>Nombre:</strong> {{ player.firstName }} {{ player.lastName }}
+        </p>
+        <p><strong>Edad:</strong> {{ player.age }} años</p>
+        <p><strong>Ciudad:</strong> {{ player.city }}</p>
+        <p><strong>Celular:</strong> {{ player.cellphone }}</p>
+        <p>
+          <strong>Documento:</strong> {{ player.documentType }}
+          {{ player.documentNumber }}
+        </p>
+        <button-action
+          text="Añadir al equipo"
+          color="blue"
+          (clicked)="addToTeam(player.id)"
+        >
+        </button-action>
+        } @else {
+        <p class="text-gray-500">No hay jugador seleccionado.</p>
+        }
+      </div>
+    </div>
     } @else {
-      <div>
-        <app-without-team></app-without-team>
-      </div>
+    <div>
+      <app-without-team></app-without-team>
+    </div>
     }
   </div>
 </section>

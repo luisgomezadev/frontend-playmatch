@@ -1,5 +1,5 @@
-import { Field } from "../../features/field/interfaces/field";
-import { Team } from "../../features/team/interfaces/team";
+import { Field } from '../../features/field/interfaces/field';
+import { Team } from '../../features/team/interfaces/team';
 
 export interface User {
   id: number;

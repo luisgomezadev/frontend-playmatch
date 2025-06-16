@@ -13,9 +13,15 @@ import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe
 @Component({
   selector: 'app-reservation-list',
   standalone: true,
-  imports: [CommonModule, TimeFormatPipe, ButtonActionComponent, RouterModule, StatusReservationPipe],
+  imports: [
+    CommonModule,
+    TimeFormatPipe,
+    ButtonActionComponent,
+    RouterModule,
+    StatusReservationPipe,
+  ],
   templateUrl: './reservation-list.component.html',
-  styleUrl: './reservation-list.component.scss'
+  styleUrl: './reservation-list.component.scss',
 })
 export class ReservationListComponent {
   @Input() reservations!: Reservation[];
@@ -28,12 +34,14 @@ export class ReservationListComponent {
   StatusReservation = StatusReservation;
   listOfDetailsField = false;
 
-  constructor(private reservationService: ReservationService, private route: ActivatedRoute, private authService: AuthService) {
-    
-  }
+  constructor(
+    private reservationService: ReservationService,
+    private route: ActivatedRoute,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         if (this.isUserAdmin(user) && user.field) {
           this.fieldId = user.field.id;
@@ -71,7 +79,7 @@ export class ReservationListComponent {
       next: (data) => {
         this.reservationList = data;
       },
-    })
+    });
   }
 
   getReservationsTeam() {
@@ -79,81 +87,101 @@ export class ReservationListComponent {
       next: (data) => {
         this.reservationList = data;
       },
-    })
+    });
   }
 
   finalizeReservation(reservationId: number, teamName?: string) {
     Swal.fire({
-          title: '¿Finalizar reserva?',
-          text: `La reserva de ${teamName} quizas aún no finaliza, ¿Estás seguro de finalizar reserva?`,
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Sí, finalizar',
-          cancelButtonText: 'No',
-          customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-          buttonsStyling: false
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.reservationService.finalizeReservationById(reservationId).subscribe({
-              next: () => {
-                if(this.reservationBy=='field') this.getReservationsField();
-                else this.getReservationsTeam();
-                Swal.fire({
-                  title: 'Reserva finalizada',
-                  text: `Has finalizado la reserva de ${teamName} correctamente.`,
-                  icon: 'success',
-                  customClass: { confirmButton: 'swal-confirm-btn' },
-                  buttonsStyling: false
-                });
-              }
-            })
-          }
-        });
+      title: '¿Estás seguro de finalizar reserva?',
+      text: `La reserva de ${teamName} aún no finaliza`,
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, finalizar',
+      cancelButtonText: 'No',
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+        cancelButton: 'swal-cancel-btn',
+      },
+      buttonsStyling: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reservationService
+          .finalizeReservationById(reservationId)
+          .subscribe({
+            next: () => {
+              if (this.reservationBy == 'field') this.getReservationsField();
+              else this.getReservationsTeam();
+              Swal.fire({
+                title: 'Reserva finalizada',
+                text: `Has finalizado la reserva de ${teamName} correctamente.`,
+                icon: 'success',
+                customClass: { confirmButton: 'swal-confirm-btn' },
+                buttonsStyling: false,
+              });
+            },
+          });
+      }
+    });
   }
 
   cancelReservation(reservationId: number, teamName?: string) {
     Swal.fire({
-          title: '¿Estás seguro de cancelar la reserva?',
-          text: `Esta acción cancelará la reserva permanentemente.`,
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Sí, cancelar',
-          cancelButtonText: 'No',
-          customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-          buttonsStyling: false
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.reservationService.canceledReservationById(reservationId).subscribe({
-              next: () => {
-                if(this.reservationBy=='field') this.getReservationsField();
-                else this.getReservationsTeam();
-                Swal.fire({
-                  title: 'Reserva finalizada',
-                  text: `Has cancelado la reserva de ${teamName} correctamente.`,
-                  icon: 'success',
-                  customClass: { confirmButton: 'swal-confirm-btn' },
-                  buttonsStyling: false
-                });
-              }
-            })
-          }
-        });
+      title: '¿Estás seguro de cancelar la reserva?',
+      text: `Esta acción cancelará la reserva permanentemente.`,
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, cancelar',
+      cancelButtonText: 'No',
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+        cancelButton: 'swal-cancel-btn',
+      },
+      buttonsStyling: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reservationService
+          .canceledReservationById(reservationId)
+          .subscribe({
+            next: () => {
+              if (this.reservationBy == 'field') this.getReservationsField();
+              else this.getReservationsTeam();
+              Swal.fire({
+                title: 'Reserva finalizada',
+                text: `Has cancelado la reserva de ${teamName} correctamente.`,
+                icon: 'success',
+                customClass: { confirmButton: 'swal-confirm-btn' },
+                buttonsStyling: false,
+              });
+            },
+          });
+      }
+    });
   }
 
   isReservationExpired(reservation: Reservation): boolean {
     const now = new Date();
-    const endDateTime = new Date(`${reservation.reservationDate}T${reservation.endTime}`);
+    const endDateTime = new Date(
+      `${reservation.reservationDate}T${reservation.endTime}`
+    );
     return now > endDateTime;
   }
 
-  getReservationStatus(reservation: Reservation): 'upcoming' | 'inProgress' | 'expired' {
+  getReservationStatus(
+    reservation: Reservation
+  ): 'upcoming' | 'inProgress' | 'expired' {
     const now = new Date();
-    const start = new Date(`${reservation.reservationDate}T${reservation.startTime}`);
-    const end = new Date(`${reservation.reservationDate}T${reservation.endTime}`);
-  
-    if (now < start) return 'upcoming';
+    const start = new Date(
+      `${reservation.reservationDate}T${reservation.startTime}`
+    );
+    const end = new Date(
+      `${reservation.reservationDate}T${reservation.endTime}`
+    );
+
+    const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+
+    if (now < start && start <= twoHoursLater) return 'upcoming';
     if (now > end) return 'expired';
     return 'inProgress';
   }
@@ -161,17 +189,19 @@ export class ReservationListComponent {
   isReservationToday(reservation: Reservation): string {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  
-    const [year, month, day] = reservation.reservationDate.split('-').map(Number);
+
+    const [year, month, day] = reservation.reservationDate
+      .split('-')
+      .map(Number);
     const reservationDate = new Date(year, month - 1, day);
-  
+
     const timeDiff = reservationDate.getTime() - today.getTime();
-    const dayDiff = timeDiff / (1000 * 60 * 60 * 24); // diferencia en días
-  
+    const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
+
     if (dayDiff === 0) return 'HOY';
     if (dayDiff === 1) return 'MAÑANA';
     if (dayDiff === -1) return 'AYER';
-  
+
     return reservationDate.toLocaleDateString(); // o personaliza formato
   }
 }

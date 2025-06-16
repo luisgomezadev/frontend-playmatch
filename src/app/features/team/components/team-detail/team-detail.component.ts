@@ -15,9 +15,16 @@ import { WithoutTeamComponent } from '../without-team/without-team.component';
 @Component({
   selector: 'app-team-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonActionComponent, ReservationListComponent, PlayerTableComponent, WithoutTeamComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    ButtonActionComponent,
+    ReservationListComponent,
+    PlayerTableComponent,
+    WithoutTeamComponent,
+  ],
   templateUrl: './team-detail.component.html',
-  styleUrl: './team-detail.component.scss'
+  styleUrl: './team-detail.component.scss',
 })
 export class TeamDetailComponent {
   user!: UserPlayer;
@@ -28,12 +35,14 @@ export class TeamDetailComponent {
   playerList: UserPlayer[] = [];
   teamEmpty: boolean = false;
 
-  constructor(private route: ActivatedRoute, private teamService: TeamService, private authService: AuthService) {
-
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private teamService: TeamService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
         if (this.isUserPlayer(user) && user.team) {
@@ -49,35 +58,35 @@ export class TeamDetailComponent {
   }
 
   isOwnerTeam(): boolean {
-    console.log(this.team)
+    console.log(this.team);
 
     return this.user.id == this.team.ownerId;
   }
 
   getTeam() {
-      this.loading = true;
-      // this.editing = true;
-      this.teamService.getTeamById(this.teamId).subscribe({
-        next: (value: Team) => {
-          this.loading = false;
-          this.getTeamDetails(value);
-        },
-        error: (err) => {
-          this.loading = false;
-          Swal.fire({
-            title: 'Error',
-            text: 'No se puedo cargar la información de la cancha',
-            timer: 3000
-          })
-        },
-      })
-    }
-  
+    this.loading = true;
+    // this.editing = true;
+    this.teamService.getTeamById(this.teamId).subscribe({
+      next: (value: Team) => {
+        this.loading = false;
+        this.getTeamDetails(value);
+      },
+      error: (err) => {
+        this.loading = false;
+        Swal.fire({
+          title: 'Error',
+          text: 'No se puedo cargar la información de la cancha',
+          timer: 3000,
+        });
+      },
+    });
+  }
+
   getTeamDetails(team: Team) {
     if (team) {
       this.team = team;
       this.playerList = this.team.members;
-      team.reservations.forEach(re => re.team = this.team);
+      team.reservations.forEach((re) => (re.team = this.team));
       this.reservationList = team.reservations.slice(-2).reverse();
     }
   }
@@ -90,34 +99,40 @@ export class TeamDetailComponent {
       showCancelButton: true,
       confirmButtonText: 'Sí, salir',
       cancelButtonText: 'No, quedarse',
-      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-      buttonsStyling: false
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+        cancelButton: 'swal-cancel-btn',
+      },
+      buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed && this.team) {
-        this.teamService.deletePlayerOfTeam(this.team.id, this.user.id).subscribe({
-          next: () => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Sin equipo',
-              text: `Has salido del equipo de ${this.team.name}.`,
-              confirmButtonText: 'Aceptar',
-              customClass: { confirmButton: 'swal-confirm-btn' },
-              buttonsStyling: false
-            });
-            this.teamEmpty = true;
-            this.authService.setUser({ ...this.user, team: null });
-          },
-          error: (err) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al salirte del equipo',
-              text: err?.error?.errorMessage || 'No se pudo salir del equipo.',
-              confirmButtonText: 'Aceptar',
-              customClass: { confirmButton: 'swal-confirm-btn' },
-              buttonsStyling: false
-            });
-          }
-        });
+        this.teamService
+          .deletePlayerOfTeam(this.team.id, this.user.id)
+          .subscribe({
+            next: () => {
+              Swal.fire({
+                icon: 'success',
+                title: 'Sin equipo',
+                text: `Has salido del equipo de ${this.team.name}.`,
+                confirmButtonText: 'Aceptar',
+                customClass: { confirmButton: 'swal-confirm-btn' },
+                buttonsStyling: false,
+              });
+              this.teamEmpty = true;
+              this.authService.setUser({ ...this.user, team: null });
+            },
+            error: (err) => {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error al salirte del equipo',
+                text:
+                  err?.error?.errorMessage || 'No se pudo salir del equipo.',
+                confirmButtonText: 'Aceptar',
+                customClass: { confirmButton: 'swal-confirm-btn' },
+                buttonsStyling: false,
+              });
+            },
+          });
       }
     });
   }
@@ -130,8 +145,11 @@ export class TeamDetailComponent {
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
-      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-      buttonsStyling: false
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+        cancelButton: 'swal-cancel-btn',
+      },
+      buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed && this.team) {
         this.teamService.deleteTeam(this.team.id).subscribe({
@@ -142,7 +160,7 @@ export class TeamDetailComponent {
               text: 'El equipo ha sido eliminado correctamente.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
-              buttonsStyling: false
+              buttonsStyling: false,
             });
             this.teamEmpty = true;
             this.authService.setUser({ ...this.user, team: null });
@@ -152,12 +170,13 @@ export class TeamDetailComponent {
             Swal.fire({
               icon: 'error',
               title: 'Error al eliminar el equipo',
-              text: err?.error?.errorMessage || 'No se pudo eliminar el equipo.',
+              text:
+                err?.error?.errorMessage || 'No se pudo eliminar el equipo.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
-              buttonsStyling: false
+              buttonsStyling: false,
             });
-          }
+          },
         });
       }
     });

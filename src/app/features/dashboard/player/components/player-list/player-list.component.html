@@ -2,42 +2,63 @@
   <div class="max-w-6xl mx-auto space-y-8">
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h1 class="text-3xl font-bold text-primary">Jugadores disponibles</h1>
-      <p class="text-gray-600 mt-2">Aquí puedes ver una lista de jugadores disponibles para contactar.</p>
+      <p class="text-gray-600 mt-2">
+        Aquí puedes ver una lista de jugadores disponibles para contactar.
+      </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       @for (player of playerList; track player.id) {
       <div
-        class="bg-white rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 p-6 flex flex-col items-center text-center space-y-3">
-    
-        <img src="/assets/profile_icon.webp" alt="{{ player.firstName }}"
-          class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20" />
-    
+        class="bg-white rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 p-6 flex flex-col items-center text-center space-y-3"
+      >
+        <img
+          src="/assets/profile_icon.webp"
+          alt="{{ player.firstName }}"
+          class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20"
+        />
+
         <div>
-          <h2 class="text-lg font-bold text-gray-800">{{ player.firstName }} {{ player.lastName }}</h2>
+          <h2 class="text-lg font-bold text-gray-800">
+            {{ player.firstName }} {{ player.lastName }}
+          </h2>
           <p class="text-sm text-gray-500">{{ player.age }} años</p>
         </div>
-    
+
         <div class="text-sm text-gray-600 flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 5a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V8a1 1 0 01-1 1H9v1c0 1.656.895 3.223 2.243 4.243C12.777 14.105 14.344 15 16 15h1v-1a1 1 0 011-1h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-4C8.268 21 3 15.732 3 9V5z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-green-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 5a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V8a1 1 0 01-1 1H9v1c0 1.656.895 3.223 2.243 4.243C12.777 14.105 14.344 15 16 15h1v-1a1 1 0 011-1h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-4C8.268 21 3 15.732 3 9V5z"
+            />
           </svg>
-          <a [href]="'https://wa.me/57' + player.cellphone" target="_blank" class="hover:underline text-primary font-medium">
+          <a
+            [href]="'https://wa.me/57' + player.cellphone"
+            target="_blank"
+            class="hover:underline text-primary font-medium"
+          >
             {{ player.cellphone }}
           </a>
         </div>
-    
+
         <div class="text-sm">
-          <span class="px-3 py-1 rounded-full text-white text-xs font-semibold"
-            [ngClass]="player.team ? 'bg-primary' : 'bg-gray-400'">
-            {{ player.team?.name || 'Sin equipo' }}
+          <span
+            class="px-3 py-1 rounded-full text-white text-xs font-semibold"
+            [ngClass]="player.team ? 'bg-primary' : 'bg-gray-400'"
+          >
+            {{ player.team?.name || "Sin equipo" }}
           </span>
         </div>
       </div>
       }
     </div>
-    
   </div>
 </section>

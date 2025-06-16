@@ -11,21 +11,24 @@ import { ActivatedRoute } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './team-list.component.html',
-  styleUrl: './team-list.component.scss'
+  styleUrl: './team-list.component.scss',
 })
 export class TeamListComponent {
-
   user!: User;
   teamList: Team[] = [];
   @Input() showHeader: boolean = true;
 
-  constructor(private teamService: TeamService, private authService: AuthService, private route: ActivatedRoute){
-    this.route.queryParams.subscribe(params => {
+  constructor(
+    private teamService: TeamService,
+    private authService: AuthService,
+    private route: ActivatedRoute
+  ) {
+    this.route.queryParams.subscribe((params) => {
       if (params['showHeader'] !== undefined) {
         this.showHeader = params['showHeader'] !== 'false';
       }
     });
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
       }
@@ -42,10 +45,9 @@ export class TeamListComponent {
         Swal.fire({
           title: 'Error',
           text: 'Error al cargar la lista de equipos',
-          timer: 2000
-        })
+          timer: 2000,
+        });
       },
-    })
+    });
   }
-
 }

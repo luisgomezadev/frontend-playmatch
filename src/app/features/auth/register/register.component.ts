@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import Swal from 'sweetalert2';
@@ -14,32 +20,41 @@ const passwordPattern =
   standalone: true,
   imports: [ReactiveFormsModule, RouterModule, NgSelectModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-
   registerForm: FormGroup;
   loading = false;
   showPassword: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
-    this.registerForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      city: [{value: 'Cartagena', disabled: true}, [Validators.required]],
-      age: ['', [Validators.required]],
-      cellphone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      documentType: ['CC', [Validators.required]],
-      documentNumber: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.pattern(passwordPattern)
-      ]],
-      role: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
-    }, { validators: this.passwordMatchValidator });
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private authService: AuthService
+  ) {
+    this.registerForm = this.fb.group(
+      {
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        city: [{ value: 'Cartagena', disabled: true }, [Validators.required]],
+        age: ['', [Validators.required]],
+        cellphone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+        documentType: ['CC', [Validators.required]],
+        documentNumber: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(passwordPattern),
+          ],
+        ],
+        role: ['', Validators.required],
+        confirmPassword: ['', Validators.required],
+      },
+      { validators: this.passwordMatchValidator }
+    );
   }
 
   ngOnInit(): void {
@@ -57,48 +72,52 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (this.registerForm.invalid || this.registerForm.hasError('passwordMismatch')) return;
+    if (
+      this.registerForm.invalid ||
+      this.registerForm.hasError('passwordMismatch')
+    )
+      return;
 
     const { confirmPassword, ...formData } = this.registerForm.value;
 
     this.loading = true;
 
     const handleError = (err: any) => {
-          this.loading = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al registrar',
-            text: err?.error?.errorMessage || 'Falló el registro',
-            confirmButtonText: 'Aceptar',
-            customClass: { confirmButton: 'swal-confirm-btn' },
-            buttonsStyling: false
-          });
-        };
-      
-        const handleSuccess = () => {
-          this.loading = false;
-          Swal.fire({
-            icon: 'success',
-            title: 'Registro exitoso',
-            text: 'Ahora puedes iniciar sesión',
-            confirmButtonText: 'Aceptar',
-            customClass: {
-              confirmButton: 'swal-confirm-btn'
-            },
-            buttonsStyling: false
-          });
-          this.router.navigate(['/login']);
-      };
-      
+      this.loading = false;
+      Swal.fire({
+        icon: 'error',
+        title: 'Error al registrar',
+        text: err?.error?.errorMessage || 'Falló el registro',
+        confirmButtonText: 'Aceptar',
+        customClass: { confirmButton: 'swal-confirm-btn' },
+        buttonsStyling: false,
+      });
+    };
+
+    const handleSuccess = () => {
+      this.loading = false;
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: 'Ahora puedes iniciar sesión',
+        confirmButtonText: 'Aceptar',
+        customClass: {
+          confirmButton: 'swal-confirm-btn',
+        },
+        buttonsStyling: false,
+      });
+      this.router.navigate(['/login']);
+    };
+
     let loginObservable;
 
     switch (this.registerForm.value.role) {
       case 'ADMIN':
-        const {role: adminRole, ...adminData} = formData;
+        const { role: adminRole, ...adminData } = formData;
         loginObservable = this.authService.registerAdmin(adminData);
         break;
       case 'PLAYER':
-        const {role: playerRole, ...playerData} = formData;
+        const { role: playerRole, ...playerData } = formData;
         loginObservable = this.authService.registerPlayer(playerData);
         break;
       default:
@@ -107,14 +126,13 @@ export class RegisterComponent {
           icon: 'warning',
           title: 'Rol no válido',
           text: 'Selecciona un tipo de usuario válido.',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
         });
         return;
-      }
-      loginObservable.subscribe({
-        next: handleSuccess,
-        error: handleError
-      });
+    }
+    loginObservable.subscribe({
+      next: handleSuccess,
+      error: handleError,
+    });
   }
-
 }

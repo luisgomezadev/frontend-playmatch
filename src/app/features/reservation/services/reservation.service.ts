@@ -1,11 +1,11 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "../../../../environments/environment";
-import { Reservation } from "../interfaces/reservation";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { Reservation } from '../interfaces/reservation';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReservationService {
   private url = environment.apiUrlLocal + '/reservation';
@@ -63,5 +63,4 @@ export class ReservationService {
   getCountFinishedByField(fieldId: number): Observable<any> {
     return this.http.get(`${this.url}/field/${fieldId}/finished`);
   }
-
 }

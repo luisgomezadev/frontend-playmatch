@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FieldService } from '../../services/field.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -13,7 +18,7 @@ import { ButtonActionComponent } from '../../../../shared/components/button-acti
   standalone: true,
   imports: [ReactiveFormsModule, ButtonActionComponent],
   templateUrl: './field-form.component.html',
-  styleUrl: './field-form.component.scss'
+  styleUrl: './field-form.component.scss',
 })
 export class FieldFormComponent {
   fieldForm: FormGroup;
@@ -43,7 +48,7 @@ export class FieldFormComponent {
 
   ngOnInit(): void {
     // Obtener el usuario
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.adminId = user.id;
         this.userActive = user;
@@ -73,7 +78,7 @@ export class FieldFormComponent {
         this.loading = false;
         Swal.fire('Error', 'No se pudo cargar la cancha', 'error');
         this.router.navigate(['/dashboard/home-admin']);
-      }
+      },
     });
   }
 
@@ -85,7 +90,7 @@ export class FieldFormComponent {
     const fieldData = {
       ...this.fieldForm.value,
       status: 'ACTIVE',
-      admin: { id: this.adminId }
+      admin: { id: this.adminId },
     };
 
     if (this.editing) {
@@ -102,10 +107,13 @@ export class FieldFormComponent {
         Swal.fire({
           icon: 'success',
           title: this.editing ? 'Cancha actualizada' : 'Cancha registrada',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
         });
         const { admin, ...fieldWithoutAdmin } = data;
-        this.authService.setUser({ ...this.userActive, field: fieldWithoutAdmin });
+        this.authService.setUser({
+          ...this.userActive,
+          field: fieldWithoutAdmin,
+        });
         this.router.navigate(['/dashboard/field']);
       },
       error: (err) => {
@@ -115,7 +123,7 @@ export class FieldFormComponent {
           title: 'Error',
           text: err.error?.errorMessage || 'Algo salió mal',
         });
-      }
+      },
     });
   }
 }
