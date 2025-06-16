@@ -17,6 +17,7 @@ import { FieldsListComponent } from './features/field/components/fields-list/fie
 import { ReservationListComponent } from './features/reservation/components/reservation-list/reservation-list.component';
 import { TeamAddPlayerComponent } from './features/team/components/team-add-player/team-add-player.component';
 import { ReservationFormComponent } from './features/reservation/components/reservation-form/reservation-form.component';
+import { ProfileFormComponent } from './features/dashboard/profile/profile-form/profile-form.component';
 
 
 export const routes: Routes = [
@@ -47,12 +48,16 @@ export const routes: Routes = [
 
       // Rutas de reserva
       { path: 'reservation/list/:var', component: ReservationListComponent },
-      { path: 'reservation/form/field/:id', component: ReservationFormComponent },
+      {
+        path: 'reservation/form/field/:id',
+        component: ReservationFormComponent,
+      },
 
       { path: 'player/list', component: PlayerListComponent },
-      { path: 'profile', component: ProfileComponent }
-    ]
+      { path: 'profile', component: ProfileComponent },
+      { path: 'profile/:id', component: ProfileFormComponent },
+    ],
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home' } // opcional para manejar rutas inválidas
+  { path: '**', redirectTo: 'home' }, // opcional para manejar rutas inválidas
 ];

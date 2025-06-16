@@ -5,17 +5,18 @@
       <span>{{ i + 1 }}.</span>
     </div>
     <div class="flex-1">
-      {{ player.firstName }} {{ player.lastName }}
-      @if (user.team?.ownerId == player.id) {
-      <span class="text-primary font-bold text-sm">(Dueño del equipo)</span>
-      }
+      <div class="flex flex-col md:flex-row justify-items-start gap-x-1">
+        <span>{{ player.firstName }} {{ player.lastName }}</span>
+        @if (user.team?.ownerId == player.id) {
+        <span class="text-primary font-bold text-sm">(Dueño del equipo)</span>
+        }
+      </div>
     </div>
     <div>
       <span>{{ player.age }} años</span>
     </div>
-    @if (user.team?.ownerId == user.id) {
+    @if (user.team?.ownerId != player.id) {
     <div class="w-10 flex justify-center">
-      @if (user.team?.ownerId != player.id) {
       <button
         class="grid content-center bg-red-400 hover:bg-red-600 transition-all p-1 rounded"
         title="Eliminar de equipo"
@@ -35,7 +36,6 @@
           <path d="M6 6l12 12" />
         </svg>
       </button>
-      }
     </div>
     }
   </div>
