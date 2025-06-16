@@ -40,8 +40,8 @@ export class TeamFormComponent {
         this.playerId = user.id;
         this.userActive = user;
         this.teamForm = this.fb.group({
-          name: ['Equipo', Validators.required],
-          neighborhood: ['Zaragocilla', Validators.required],
+          name: ['', Validators.required],
+          neighborhood: ['', Validators.required],
           city: ['Cartagena', Validators.required],
           maxPlayers: [4, [Validators.required, Validators.min(3)]],
           ownerId: [this.playerId, Validators.required]
