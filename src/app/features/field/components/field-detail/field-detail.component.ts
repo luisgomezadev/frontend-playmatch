@@ -58,7 +58,7 @@ export class FieldDetailComponent {
     }
   }
 
-  private isUserAdmin(user: any): user is UserAdmin {
+  public isUserAdmin(user: any): user is UserAdmin {
     return 'field' in user;
   }
 
