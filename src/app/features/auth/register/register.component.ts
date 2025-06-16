@@ -36,7 +36,7 @@ export class RegisterComponent {
       {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
-        city: [{ value: 'Cartagena', disabled: true }, [Validators.required]],
+        city: ['Cartagena', [Validators.required]],
         age: ['', [Validators.required]],
         cellphone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
         documentType: ['CC', [Validators.required]],
