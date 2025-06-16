@@ -17,7 +17,7 @@ interface LoginResponse {
 export class AuthService {
   private tokenKey = 'token';
   private authStatus = new BehaviorSubject<boolean>(this.hasToken());
-  private url = environment.authUrlLocal;
+  private url = environment.authUrl;
 
   authStatus$ = this.authStatus.asObservable();
 

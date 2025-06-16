@@ -8,7 +8,7 @@ import { ConfirmedReservation, Reservation } from '../interfaces/reservation';
   providedIn: 'root',
 })
 export class ReservationService {
-  private url = environment.apiUrlLocal + '/reservation';
+  private url = environment.apiUrl + '/reservation';
 
   constructor(private http: HttpClient) {}
 

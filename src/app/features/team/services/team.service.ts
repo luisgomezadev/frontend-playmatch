@@ -1,14 +1,14 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "../../../../environments/environment";
-import { Team } from "../interfaces/team";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { Team } from '../interfaces/team';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TeamService {
-  private url = environment.apiUrlLocal + '/team';
+  private url = environment.apiUrl + '/team';
 
   constructor(private http: HttpClient) {}
 
@@ -33,10 +33,13 @@ export class TeamService {
   }
 
   addMemberToTeam(teamId: number, playerId: number): Observable<any> {
-    return this.http.post(`${this.url}/${teamId}/member/${playerId}`, null)
+    return this.http.post(`${this.url}/${teamId}/member/${playerId}`, null);
   }
 
   deletePlayerOfTeam(teamId: number, playerId: number): Observable<any> {
-    return this.http.post(`${this.url}/delete/${playerId}/team/${teamId}`, null)
+    return this.http.post(
+      `${this.url}/delete/${playerId}/team/${teamId}`,
+      null
+    );
   }
 }

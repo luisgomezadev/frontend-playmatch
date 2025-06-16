@@ -1,15 +1,15 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "../../../../../environments/environment";
-import { UserPlayer } from "../../../../core/interfaces/user";
-import { List } from "postcss/lib/list";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment';
+import { UserPlayer } from '../../../../core/interfaces/user';
+import { List } from 'postcss/lib/list';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlayerService {
-  private url = environment.apiUrlLocal + '/person/player';
+  private url = environment.apiUrl + '/person/player';
 
   constructor(private http: HttpClient) {}
 
@@ -22,12 +22,12 @@ export class PlayerService {
   }
 
   getPlayersByTeamId(teamId: number): Observable<UserPlayer[]> {
-    return this.http.get<UserPlayer[]>(`${this.url}/team/${teamId}`)
+    return this.http.get<UserPlayer[]>(`${this.url}/team/${teamId}`);
   }
 
   getPlayerByEmail(email: string): Observable<UserPlayer> {
     return this.http.get<UserPlayer>(`${this.url}/by-email`, {
-      params: { email }
+      params: { email },
     });
   }
 }

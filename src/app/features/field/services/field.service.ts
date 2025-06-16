@@ -1,14 +1,14 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { environment } from "../../../../environments/environment";
-import { Field } from "../interfaces/field";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { Field } from '../interfaces/field';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FieldService {
-  private url = environment.apiUrlLocal;
+  private url = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -35,5 +35,4 @@ export class FieldService {
   deleteField(id: number): Observable<any> {
     return this.http.delete(`${this.url}/field/${id}`);
   }
-
 }
