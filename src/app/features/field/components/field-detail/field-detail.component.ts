@@ -30,7 +30,7 @@ import { Reservation } from '../../../reservation/interfaces/reservation';
 })
 export class FieldDetailComponent {
   user!: UserAdmin;
-  field!: Field;
+  field: Field | null = null;
   fieldId!: number;
   loading = false;
   reservationList: Reservation[] = [];
@@ -93,7 +93,7 @@ export class FieldDetailComponent {
   getFieldDetails(field: Field) {
     if (field) {
       this.field = field;
-      field.reservations.forEach((re) => (re.field = this.field));
+      field.reservations.forEach((re) => (re.field = this.field!));
       this.reservationList = field.reservations.slice(-2).reverse();
     }
   }
@@ -123,10 +123,10 @@ export class FieldDetailComponent {
               customClass: { confirmButton: 'swal-confirm-btn' },
               buttonsStyling: false,
             });
+            this.field = null;
             this.authService.setUser({ ...this.user, field: null });
           },
           error: (err) => {
-            console.error('Error al eliminar el campo:', err);
             Swal.fire({
               icon: 'error',
               title: 'Error al eliminar el campo',

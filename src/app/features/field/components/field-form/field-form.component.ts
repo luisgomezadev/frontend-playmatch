@@ -37,10 +37,10 @@ export class FieldFormComponent {
     private location: Location
   ) {
     this.fieldForm = this.fb.group({
-      name: ['Cancha', Validators.required],
-      address: ['Zaragocilla sector 9', Validators.required],
+      name: ['', Validators.required],
+      address: ['', Validators.required],
       city: ['Cartagena', Validators.required],
-      hourlyRate: [120000, [Validators.required, Validators.min(0)]],
+      hourlyRate: [0, [Validators.required, Validators.min(0)]],
       openingHour: ['', Validators.required],
       closingHour: ['', Validators.required],
     });
