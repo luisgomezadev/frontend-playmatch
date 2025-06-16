@@ -55,7 +55,7 @@ export const routes: Routes = [
 
       { path: 'player/list', component: PlayerListComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'profile/:id', component: ProfileFormComponent },
+      { path: 'profile/:user/:id', component: ProfileFormComponent },
     ],
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
