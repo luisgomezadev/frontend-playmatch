@@ -5,7 +5,7 @@ import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { ReservationService } from '../../services/reservation.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
-import { UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
+import { User, UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
 import Swal from 'sweetalert2';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe';
@@ -33,6 +33,7 @@ export class ReservationListComponent {
   reservationBy!: string;
   StatusReservation = StatusReservation;
   listOfDetailsField = false;
+  user!: UserPlayer | UserAdmin;
 
   constructor(
     private reservationService: ReservationService,
@@ -43,6 +44,7 @@ export class ReservationListComponent {
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
+        this.user = user;
         if (this.isUserAdmin(user) && user.field) {
           this.fieldId = user.field.id;
         }
@@ -57,13 +59,29 @@ export class ReservationListComponent {
       this.reservationList = this.reservations;
     } else {
       this.reservationBy = this.route.snapshot.paramMap.get('var')!;
-      if (this.reservationBy === 'field') {
+      if (this.isReservationField()) {
         this.getReservationsField();
       }
-      if (this.reservationBy === 'team') {
+      if (this.isReservationTeam()) {
         this.getReservationsTeam();
       }
     }
+  }
+
+  public isReservationTeam(): boolean {
+    return (
+      this.reservationBy === 'team' &&
+      this.isUserPlayer(this.user) &&
+      !!this.user.team
+    );
+  }
+
+  public isReservationField(): boolean {
+    return (
+      this.reservationBy === 'field' &&
+      this.isUserAdmin(this.user) &&
+      !!this.user.field
+    );
   }
 
   private isUserAdmin(user: any): user is UserAdmin {
@@ -170,7 +188,7 @@ export class ReservationListComponent {
 
   getReservationStatus(
     reservation: Reservation
-  ): 'upcoming' | 'inProgress' | 'expired' {
+  ): 'upcoming' | 'inProgress' | 'expired' | 'other' {
     const now = new Date();
     const start = new Date(
       `${reservation.reservationDate}T${reservation.startTime}`
@@ -182,8 +200,10 @@ export class ReservationListComponent {
     const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
 
     if (now < start && start <= twoHoursLater) return 'upcoming';
+    if (now >= start && now <= end) return 'inProgress';
     if (now > end) return 'expired';
-    return 'inProgress';
+
+    return 'other';
   }
 
   isReservationToday(reservation: Reservation): string {
@@ -198,10 +218,23 @@ export class ReservationListComponent {
     const timeDiff = reservationDate.getTime() - today.getTime();
     const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
 
-    if (dayDiff === 0) return 'HOY';
-    if (dayDiff === 1) return 'MAÑANA';
-    if (dayDiff === -1) return 'AYER';
+    if (dayDiff === 0 && reservation.status != 'CANCELED') return 'HOY';
+    if (dayDiff === 1 && reservation.status != 'CANCELED') return 'MAÑANA';
+    if (dayDiff === -1 && reservation.status != 'CANCELED') return 'AYER';
 
-    return reservationDate.toLocaleDateString(); // o personaliza formato
+    return reservationDate.toLocaleDateString();
+  }
+
+  isInProgressAndActive(reservation: Reservation): boolean {
+    return (
+      this.getReservationStatus(reservation) === 'inProgress' &&
+      reservation.status === StatusReservation.ACTIVE
+    );
+  }
+
+  hasActiveReservation(): boolean {
+    return this.reservationList.some(
+      (r) => r.status === StatusReservation.ACTIVE
+    );
   }
 }

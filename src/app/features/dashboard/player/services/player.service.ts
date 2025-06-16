@@ -9,20 +9,24 @@ import { List } from "postcss/lib/list";
   providedIn: 'root'
 })
 export class PlayerService {
-  private url = environment.apiUrlLocal + '/person';
+  private url = environment.apiUrlLocal + '/person/player';
 
   constructor(private http: HttpClient) {}
 
   getPlayers(): Observable<UserPlayer[]> {
-    return this.http.get<UserPlayer[]>(`${this.url}/player`);
+    return this.http.get<UserPlayer[]>(`${this.url}`);
   }
 
   getPlayerById(id: number | undefined): Observable<UserPlayer> {
-    return this.http.get<UserPlayer>(`${this.url}/player/${id}`);
+    return this.http.get<UserPlayer>(`${this.url}/${id}`);
+  }
+
+  getPlayersByTeamId(teamId: number): Observable<UserPlayer[]> {
+    return this.http.get<UserPlayer[]>(`${this.url}/team/${teamId}`)
   }
 
   getPlayerByEmail(email: string): Observable<UserPlayer> {
-    return this.http.get<UserPlayer>(`${this.url}/player/by-email`, {
+    return this.http.get<UserPlayer>(`${this.url}/by-email`, {
       params: { email }
     });
   }

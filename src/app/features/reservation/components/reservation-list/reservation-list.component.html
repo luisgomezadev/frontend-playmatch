@@ -7,12 +7,16 @@
         Aquí puedes ver todas tus reservas ordenadas a más recientes.
       </p>
     </div>
-    @if (reservationBy == 'team') {
-    <div class="w-60">
+    @if (isReservationTeam()) {
+    <div
+      class="w-60"
+      [title]="hasActiveReservation() ? 'Ya tienes una reserva activa' : ''"
+    >
       <button-action
         text="Hacer reserva"
         color="primary"
         [routerLink]="['/dashboard/field/list']"
+        [disabled]="hasActiveReservation()"
       />
     </div>
     } } @if (reservationList.length > 0) {
@@ -24,25 +28,25 @@
     >
       @for (reservation of reservationList; track reservation.id) {
       <article
-        class="rounded-2xl shadow-md hover:shadow-lg transition-all px-6 py-3 space-y-4 relative"
+        class="rounded-2xl shadow-md hover:shadow-lg transition-all px-6 py-3 space-y-2 md:space-y-4 relative"
         [ngClass]="listOfDetailsField ? 'bg-black/5' : 'bg-white'"
       >
         <!-- Cabecera -->
         <div class="flex justify-between items-start">
           <div
             [ngClass]="{
-              'max-w-64': listOfDetailsField,
-              'max-w-48': !listOfDetailsField
+              'md:max-w-64': listOfDetailsField,
+              'md:max-w-48': !listOfDetailsField
             }"
           >
             @if (reservationBy == 'field' || fromDetail == 'field') {
             <p class="text-gray-500">Equipo:</p>
-            <h2 class="text-base font-bold text-black">
+            <h2 class="text-base font-bold text-black md:block hidden">
               {{ reservation.team?.name || "Sin equipo asignado" }}
             </h2>
             } @if (reservationBy == 'team' || fromDetail == 'team') {
             <p class="text-gray-500">Cancha:</p>
-            <h2 class="text-base font-bold text-black text-wrap">
+            <h2 class="text-base font-bold text-black md:block hidden">
               {{ reservation.field?.name || "Sin cancha asignada" }}
             </h2>
             }
@@ -50,7 +54,7 @@
           <!-- Estado -->
           <div class="flex-1 text-end">
             <span
-              class="text-xs font-semibold px-3 py-1 rounded-full"
+              class="text-xs font-semibold px-3 py-1 rounded-full text-nowrap"
               [ngClass]="{
                 'bg-green-100 text-green-700':
                   reservation.status === StatusReservation.ACTIVE,
@@ -64,10 +68,22 @@
             </span>
           </div>
         </div>
+        <div class="md:hidden block">
+          @if (reservationBy == 'field' || fromDetail == 'field') {
+          <h2 class="text-base font-bold text-black">
+            {{ reservation.team?.name || "Sin equipo asignado" }}
+          </h2>
+          } @if (reservationBy == 'team' || fromDetail == 'team') {
+          <h2 class="text-base font-bold text-black text-wrap">
+            {{ reservation.field?.name || "Sin cancha asignada" }}
+          </h2>
+          }
+        </div>
         <p class="text-sm text-black">
-          {{ isReservationToday(reservation) }} &bull;
-          ({{ reservation.startTime | timeFormat }} -
-          {{ reservation.endTime | timeFormat }})
+          {{ isReservationToday(reservation) }} &bull; ({{
+            reservation.startTime | timeFormat
+          }}
+          - {{ reservation.endTime | timeFormat }})
         </p>
 
         @if (isReservationExpired(reservation) && reservation.status ===
@@ -79,8 +95,7 @@
         StatusReservation.ACTIVE && getReservationStatus(reservation) ===
         'upcoming') {
         <p class="text-xs text-yellow-600 font-medium">Empieza pronto.</p>
-        } @if (getReservationStatus(reservation) === 'inProgress' &&
-        reservation.status === StatusReservation.ACTIVE) {
+        } @if (isInProgressAndActive(reservation)) {
         <p class="text-xs text-green-600 font-medium">En curso.</p>
         }
 
@@ -92,6 +107,19 @@
           <button-action
             text="Cancelar reserva"
             color="red"
+            title="Cancelar esta reserva"
+            (clicked)="
+              cancelReservation(reservation.id, reservation.team?.name)
+            "
+          >
+          </button-action>
+        </div>
+        } @case('other') {
+        <div class="pt-2">
+          <button-action
+            text="Cancelar reserva"
+            color="red"
+            title="Cancelar esta reserva"
             (clicked)="
               cancelReservation(reservation.id, reservation.team?.name)
             "
@@ -103,6 +131,7 @@
           <button-action
             text="Finalizar reserva"
             color="black"
+            title="Finalizar esta reserva"
             (clicked)="
               finalizeReservation(reservation.id, reservation.team?.name)
             "

@@ -13,6 +13,31 @@
     <div>
       <span>{{ player.age }} años</span>
     </div>
+    @if (user.team?.ownerId == user.id) {
+    <div class="w-10 flex justify-center">
+      @if (user.team?.ownerId != player.id) {
+      <button
+        class="grid content-center bg-red-400 hover:bg-red-600 transition-all p-1 rounded"
+        title="Eliminar de equipo"
+        (click)="deletePlayerOfTeam(player)"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="text-white h-4 w-4"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M18 6l-12 12" />
+          <path d="M6 6l12 12" />
+        </svg>
+      </button>
+      }
+    </div>
+    }
   </div>
   }
 </div>

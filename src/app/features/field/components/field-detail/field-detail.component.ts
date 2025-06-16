@@ -16,9 +16,17 @@ import { Reservation } from '../../../reservation/interfaces/reservation';
 @Component({
   selector: 'app-field-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, StatusDescriptionPipe, TimeFormatPipe, MoneyFormatPipe, ButtonActionComponent, ReservationListComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    StatusDescriptionPipe,
+    TimeFormatPipe,
+    MoneyFormatPipe,
+    ButtonActionComponent,
+    ReservationListComponent,
+  ],
   templateUrl: './field-detail.component.html',
-  styleUrl: './field-detail.component.scss'
+  styleUrl: './field-detail.component.scss',
 })
 export class FieldDetailComponent {
   user!: UserAdmin;
@@ -27,12 +35,14 @@ export class FieldDetailComponent {
   loading = false;
   reservationList: Reservation[] = [];
 
-  constructor(private route: ActivatedRoute, private fieldService: FieldService, private authService: AuthService) {
-
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private fieldService: FieldService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
         if (this.isUserAdmin(user) && user.field) {
@@ -53,7 +63,12 @@ export class FieldDetailComponent {
   }
 
   isOwnerField(): boolean {
-    return !!this.user && !!this.field && !!this.field.admin && this.user.id === this.field.admin.id;
+    return (
+      !!this.user &&
+      !!this.field &&
+      !!this.field.admin &&
+      this.user.id === this.field.admin.id
+    );
   }
 
   getField() {
@@ -69,16 +84,16 @@ export class FieldDetailComponent {
         Swal.fire({
           title: 'Error',
           text: 'No se puedo cargar la información de la cancha',
-          timer: 3000
-        })
+          timer: 3000,
+        });
       },
-    })
+    });
   }
-  
+
   getFieldDetails(field: Field) {
     if (field) {
       this.field = field;
-      field.reservations.forEach(re => re.field = this.field);
+      field.reservations.forEach((re) => (re.field = this.field));
       this.reservationList = field.reservations.slice(-2).reverse();
     }
   }
@@ -91,8 +106,11 @@ export class FieldDetailComponent {
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar',
-      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-      buttonsStyling: false
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+        cancelButton: 'swal-cancel-btn',
+      },
+      buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed && this.field) {
         this.fieldService.deleteField(this.field.id).subscribe({
@@ -103,7 +121,7 @@ export class FieldDetailComponent {
               text: 'El campo ha sido eliminado correctamente.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
-              buttonsStyling: false
+              buttonsStyling: false,
             });
             this.authService.setUser({ ...this.user, field: null });
           },
@@ -115,9 +133,9 @@ export class FieldDetailComponent {
               text: err?.error?.errorMessage || 'No se pudo eliminar el campo.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
-              buttonsStyling: false
+              buttonsStyling: false,
             });
-          }
+          },
         });
       }
     });

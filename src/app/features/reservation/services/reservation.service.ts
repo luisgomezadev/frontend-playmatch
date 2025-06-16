@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Reservation } from '../interfaces/reservation';
+import { ConfirmedReservation, Reservation } from '../interfaces/reservation';
 
 @Injectable({
   providedIn: 'root',
@@ -62,5 +62,14 @@ export class ReservationService {
 
   getCountFinishedByField(fieldId: number): Observable<any> {
     return this.http.get(`${this.url}/field/${fieldId}/finished`);
+  }
+
+  getReservationAvailability(
+    reservation: any
+  ): Observable<ConfirmedReservation> {
+    return this.http.post<ConfirmedReservation>(
+      `${this.url}/availability`,
+      reservation
+    );
   }
 }

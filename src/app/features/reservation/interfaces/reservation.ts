@@ -12,6 +12,15 @@ export interface Reservation {
   status: StatusReservation;
 }
 
+export interface ConfirmedReservation {
+  team?: Team;
+  field?: Field;
+  hours: number;
+  startTime: string;
+  endTime: string;
+  reservationDate: string;
+}
+
 export enum StatusReservation {
   ACTIVE = 'ACTIVE',
   CANCELED = 'CANCELED',
