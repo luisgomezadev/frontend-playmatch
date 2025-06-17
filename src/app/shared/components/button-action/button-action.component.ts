@@ -67,10 +67,10 @@ export class ButtonActionComponent {
     if (this.withIcon) base += ' pl-8';
     if (!this.disabled) base += ' hover:scale-[1.03]';
     const styles = {
-      black: 'bg-black/70 text-white hover:bg-black/90',
-      red: 'bg-red-600/70 text-white hover:bg-red-600/90',
-      primary: 'bg-primary/70 text-white hover:bg-primary/90',
-      blue: 'bg-blue-600/70 text-white hover:bg-blue-600/90',
+      black: 'bg-black/90 text-white hover:bg-black/100',
+      red: 'bg-red-600/90 text-white hover:bg-red-600/100',
+      primary: 'bg-primary/90 text-white hover:bg-primary/100',
+      blue: 'bg-blue-600/90 text-white hover:bg-blue-600/100',
     };
     return `${styles[this.color]} ${base}`;
   }

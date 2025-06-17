@@ -3,11 +3,13 @@ import { AuthService } from '../../../../../core/services/auth.service';
 import { User, UserPlayer } from '../../../../../core/interfaces/user';
 import { RouterModule } from '@angular/router';
 import { ReservationService } from '../../../../reservation/services/reservation.service';
+import { ButtonActionComponent } from '../../../../../shared/components/button-action/button-action.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home-player',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, ButtonActionComponent, CommonModule],
   templateUrl: './home-player.component.html',
   styleUrl: './home-player.component.scss',
 })
@@ -16,7 +18,7 @@ export class HomePlayerComponent {
   fullName: string = '';
   reservationsActive: number = 0;
   reservationsFinished: number = 0;
-  teamName: string = 'No pertenes a ningun equipo';
+  teamName: string = 'No tienes equipo';
 
   constructor(
     private authService: AuthService,
@@ -48,5 +50,9 @@ export class HomePlayerComponent {
         }
       }
     });
+  }
+
+  hasTeam(): boolean {
+    return this.teamName != 'No tienes equipo';
   }
 }

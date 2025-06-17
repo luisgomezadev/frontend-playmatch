@@ -3,11 +3,13 @@ import { User, UserAdmin } from '../../../../../core/interfaces/user';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { RouterModule } from '@angular/router';
 import { ReservationService } from '../../../../reservation/services/reservation.service';
+import { ButtonActionComponent } from '../../../../../shared/components/button-action/button-action.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home-admin',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, ButtonActionComponent, CommonModule],
   templateUrl: './home-admin.component.html',
   styleUrl: './home-admin.component.scss',
 })
@@ -21,7 +23,7 @@ export class HomeAdminComponent {
   constructor(
     private authService: AuthService,
     private reservationService: ReservationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -47,5 +49,9 @@ export class HomeAdminComponent {
         }
       }
     });
+  }
+
+  hasField(): boolean {
+    return this.fieldName != 'No tienes cancha registrada';
   }
 }

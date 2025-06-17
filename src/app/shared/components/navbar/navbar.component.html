@@ -4,40 +4,13 @@
       <span>P</span><span class="text-black">M</span>
     </a>
 
-    <!-- Botón hamburguesa para móviles -->
-    <div class="md:hidden">
-      <button (click)="toggleMenu()" class="text-gray-600 focus:outline-none">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          @if (mobileMenuOpen) {
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M6 18L18 6M6 6l12 12" />
-          } @else {
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16" />
-          }
-          
-          
-        </svg>
-      </button>
-    </div>
-
     <!-- Links navegación (escritorio) -->
-    <div class="space-x-6 hidden md:flex items-center">
-      <a routerLink="/login" routerLinkActive="text-primary font-semibold" class="text-gray-700 hover:text-primary">Iniciar sesión</a>
+    <div class="space-x-6 items-center">
+      <a routerLink="/login" routerLinkActive="text-primary font-semibold"
+        class="text-gray-700 hover:text-primary">Iniciar sesión</a>
       <a routerLink="/register" routerLinkActive="text-primary font-semibold"
         class="text-gray-700 hover:text-primary">Registrarse</a>
     </div>
   </div>
 
-  <!-- Menú móvil -->
-   @if (mobileMenuOpen) {
-    <div class="md:hidden bg-white border-t px-4 py-2 space-y-2 animate-slide-down">
-      <a routerLink="/login" routerLinkActive="text-primary font-semibold" (click)="closeMenu()"
-        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Iniciar
-        sesión</a>
-      <a routerLink="/register" routerLinkActive="text-primary font-semibold" (click)="closeMenu()"
-        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Registrarse</a>
-    </div>
-   }
-  
 </nav>
