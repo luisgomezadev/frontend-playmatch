@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class PlayerListComponent {
   user!: User;
   playerList: UserPlayer[] = [];
+  loading: boolean = false;
 
   constructor(
     private playerService: PlayerService,
@@ -23,11 +24,14 @@ export class PlayerListComponent {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
+        this.loading = true;
         this.playerService.getPlayers().subscribe({
           next: (data) => {
+            this.loading = false;
             this.playerList = data.filter((player) => player.id !== user.id);
           },
           error: (err) => {
+            this.loading = false;
             Swal.fire({
               title: 'Error',
               text: 'Error al cargar la lista de jugadores',

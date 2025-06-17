@@ -41,6 +41,7 @@ export class ReservationFormComponent {
   confirmedReservation!: ConfirmedReservation | null;
   verifiedReservation = false;
   today: string = '';
+  loading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -87,6 +88,9 @@ export class ReservationFormComponent {
 
   verifyReservation() {
     if (this.formReservation.valid) {
+
+      this.loading = true;
+
       const reservationData = {
         ...this.formReservation.value,
         team: { id: this.team.id },
@@ -97,9 +101,11 @@ export class ReservationFormComponent {
         .getReservationAvailability(reservationData)
         .subscribe({
           next: (data: ConfirmedReservation) => {
+            this.loading = false;
             this.confirmedReservation = data;
           },
           error: (err) => {
+            this.loading = false;
             Swal.fire('Error', err.error.errorMessage, 'error');
           },
         });
