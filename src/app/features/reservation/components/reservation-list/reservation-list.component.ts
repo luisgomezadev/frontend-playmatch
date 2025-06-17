@@ -34,12 +34,13 @@ export class ReservationListComponent {
   StatusReservation = StatusReservation;
   listOfDetailsField = false;
   user!: UserPlayer | UserAdmin;
+  loading: boolean = false;
 
   constructor(
     private reservationService: ReservationService,
     private route: ActivatedRoute,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -84,28 +85,49 @@ export class ReservationListComponent {
     );
   }
 
-  private isUserAdmin(user: any): user is UserAdmin {
+  public isUserAdmin(user: any): user is UserAdmin {
     return 'field' in user;
   }
 
-  private isUserPlayer(user: any): user is UserPlayer {
+  public isUserPlayer(user: any): user is UserPlayer {
     return 'team' in user;
   }
 
+  isOwnerTeam(reservation: Reservation): boolean {
+    return this.isUserPlayer(this.user) && this.user.id == reservation.team?.ownerId;
+  }
+
   getReservationsField() {
+    this.loading = true;
     this.reservationService.getReservationsByFieldId(this.fieldId).subscribe({
       next: (data) => {
+        this.loading = false;
         this.reservationList = data;
+      },
+      error: (err) => {
+        this.loading = false;
+        Swal.fire('Error', err.error.errorMessage || 'No se pudo cargar las reservas', 'error');
       },
     });
   }
 
   getReservationsTeam() {
+    this.loading = true;
     this.reservationService.getReservationsByTeamId(this.teamId).subscribe({
       next: (data) => {
+        this.loading = false;
         this.reservationList = data;
       },
+      error: (err) => {
+        this.loading = false;
+        Swal.fire('Error', err.error.errorMessage || 'No se pudo cargar las reservas', 'error');
+      },
     });
+  }
+
+  showButtons(reservation: Reservation): boolean {
+    return !this.listOfDetailsField && reservation.status ===
+      StatusReservation.ACTIVE && (this.isOwnerTeam(reservation) || this.isUserAdmin(this.user));
   }
 
   finalizeReservation(reservationId: number, teamName?: string) {

@@ -58,7 +58,7 @@ export class FieldsListComponent {
       error: (err) => {
         this.loading = false;
         console.error(
-          'Error cargando campos',
+          'Error cargando canchas',
           err.error.errorMessage || 'Error desconocido'
         );
       },

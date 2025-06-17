@@ -18,7 +18,7 @@
     <!-- Loading -->
     @if (loading) {
     <div class="flex flex-col gap-3 justify-center items-center">
-      <h2 class="text-lg">Cargando detalle del campo, espere un momento...</h2>
+      <h2 class="text-lg text-gray-600">Cargando detalle del campo, espere un momento...</h2>
     </div>
     } @else {
 
@@ -30,7 +30,7 @@
         class="flex flex-col md:flex-row items-center gap-4 md:gap-6 animate-slide-down p-6 bg-white rounded-lg shadow-md col-span-1 md:col-span-2"
       >
         <!-- Imagen -->
-        <div class="shrink-0 md:w-32 md:h-32 w-24 h-24">
+        <div class="shrink-0 md:w-32 w-24">
           <img
             src="/assets/cancha.webp"
             alt="{{ field.name }}"
@@ -47,7 +47,13 @@
             📍 {{ field.city }}, Colombia
           </h3>
           <span
-            class="inline-block text-xs font-medium uppercase tracking-wide bg-primary text-white py-1 px-3 rounded-full shadow-sm"
+            class="inline-block text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm"
+            [ngClass]="{
+              'bg-green-100 text-green-700':
+              field.status === Status.ACTIVE,
+              'bg-red-200 text-red-700':
+              field.status === Status.INACTIVE
+            }"
           >
             {{ field.status | statusDescription }}
           </span>

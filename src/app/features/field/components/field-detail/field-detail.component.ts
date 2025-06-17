@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FieldService } from '../../services/field.service';
-import { Field } from '../../interfaces/field';
+import { Field, Status } from '../../interfaces/field';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { StatusDescriptionPipe } from '../../../../pipes/status-description.pipe';
@@ -33,6 +33,7 @@ export class FieldDetailComponent {
   field: Field | null = null;
   fieldId!: number;
   loading = false;
+  Status = Status;
   reservationList: Reservation[] = [];
 
   constructor(

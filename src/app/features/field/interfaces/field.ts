@@ -9,7 +9,12 @@ export interface Field {
   hourlyRate: number;
   openingHour: string;
   closingHour: string;
-  status: string;
+  status: Status;
   admin?: User;
   reservations: Reservation[]
+}
+
+export enum Status {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE'
 }
