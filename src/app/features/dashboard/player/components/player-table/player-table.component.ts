@@ -30,6 +30,10 @@ export class PlayerTableComponent {
     console.log(this.players);
   }
 
+  isOwner():boolean {
+    return this.user.team?.ownerId == this.user.id;
+  }
+
   deletePlayerOfTeam(player: UserPlayer) {
     Swal.fire({
       title: '¿Estás seguro de eliminar jugador?',
