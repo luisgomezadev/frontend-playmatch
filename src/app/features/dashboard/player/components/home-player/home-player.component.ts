@@ -19,6 +19,7 @@ export class HomePlayerComponent {
   reservationsActive: number = 0;
   reservationsFinished: number = 0;
   teamName: string = 'No tienes equipo';
+  loading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -31,12 +32,13 @@ export class HomePlayerComponent {
         this.user = user;
         this.fullName = `${this.user.firstName} ${this.user.lastName}`;
         if (this.user.team?.id) {
-          console.log(this.user.team);
+          this.loading = true;
           this.teamName = this.user.team?.name;
           this.reservationService
             .getCountActiveByTeam(this.user.team.id)
             .subscribe({
               next: (value) => {
+                this.loading = false;
                 this.reservationsActive = value;
               },
             });
@@ -44,6 +46,7 @@ export class HomePlayerComponent {
             .getCountFinishedByTeam(this.user.team.id)
             .subscribe({
               next: (value) => {
+                this.loading = false;
                 this.reservationsFinished = value;
               },
             });

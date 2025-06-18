@@ -19,6 +19,7 @@ export class HomeAdminComponent {
   reservationsActive: number = 0;
   reservationsFinished: number = 0;
   fieldName: string = 'No tienes cancha registrada';
+  loading: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -31,11 +32,13 @@ export class HomeAdminComponent {
         this.user = user;
         this.fullName = `${this.user.firstName} ${this.user.lastName}`;
         if (this.user.field?.id) {
+          this.loading = true;
           this.fieldName = this.user.field?.name;
           this.reservationService
             .getCountActiveByField(this.user.field.id)
             .subscribe({
               next: (value) => {
+                this.loading = false;
                 this.reservationsActive = value;
               },
             });
@@ -43,6 +46,7 @@ export class HomeAdminComponent {
             .getCountFinishedByField(this.user.field.id)
             .subscribe({
               next: (value) => {
+                this.loading = false;
                 this.reservationsFinished = value;
               },
             });
