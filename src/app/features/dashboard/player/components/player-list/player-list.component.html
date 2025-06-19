@@ -15,8 +15,8 @@
     } @else {
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       @for (player of playerList; track player.id) {
-      <div
-        class="bg-white rounded-2xl shadow-md hover:shadow-lg hover:scale-[1.02] transition-all duration-300 p-6 flex flex-col items-center text-center space-y-3 animate-slide-down">
+      <article
+        class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-center text-center space-y-3 animate-slide-down">
         <img src="/assets/profile_icon.webp" alt="{{ player.firstName }}"
           class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20" />
 
@@ -45,7 +45,7 @@
             {{ player.team?.name || "Sin equipo" }}
           </span>
         </div>
-      </div>
+      </article>
       }
     </div>
     }

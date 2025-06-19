@@ -8,9 +8,8 @@
       </p>
     </div>
     @if (isReservationTeam()) {
-    <div class="w-60" [title]="hasActiveReservation() ? 'Ya tienes una reserva activa' : ''">
-      <button-action text="Hacer reserva" color="primary" [routerLink]="['/dashboard/field/list']"
-        [disabled]="hasActiveReservation()" />
+    <div class="w-60">
+      <button-action text="Hacer reserva" color="primary" (clicked)="makeReservation()" />
     </div>
     } }
     @if (loading) {
@@ -98,7 +97,13 @@
             ">
           </button-action>
         </div>
-        } @case('other') {
+        } @case('expired') {
+        <div class="pt-2">
+          <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
+            (clicked)="finalizeReservation(reservation.id, reservation.team?.name)">
+          </button-action>
+        </div>
+        }@case('other') {
         <div class="pt-2">
           <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva" (clicked)="
               cancelReservation(reservation.id, reservation.team?.name)

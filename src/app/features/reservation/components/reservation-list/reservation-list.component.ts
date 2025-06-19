@@ -3,7 +3,7 @@ import { Reservation, StatusReservation } from '../../interfaces/reservation';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { ReservationService } from '../../services/reservation.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import { User, UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
 import Swal from 'sweetalert2';
@@ -39,7 +39,8 @@ export class ReservationListComponent {
   constructor(
     private reservationService: ReservationService,
     private route: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -130,6 +131,20 @@ export class ReservationListComponent {
       StatusReservation.ACTIVE && (this.isOwnerTeam(reservation) || this.isUserAdmin(this.user));
   }
 
+  makeReservation(): void {
+    if (this.hasActiveReservation()) {
+      Swal.fire({
+        title: 'Tienes una reserva activa',
+        text: `Si no eres el dueño del equipo y la quieres cancelar comunicate con el dueño o el administrador de la cancha.`,
+        icon: 'warning',
+        customClass: { confirmButton: 'swal-confirm-btn' },
+        buttonsStyling: false,
+      });
+    } else {
+      this.router.navigate(['/dashboard/field/list']);
+    }
+  }
+
   finalizeReservation(reservationId: number, teamName?: string) {
     Swal.fire({
       title: '¿Estás seguro de finalizar reserva?',
@@ -160,6 +175,9 @@ export class ReservationListComponent {
                 buttonsStyling: false,
               });
             },
+            error: (err) => {
+              Swal.fire('Error', err.error.errorMessage, 'error');
+            }
           });
       }
     });
@@ -195,6 +213,9 @@ export class ReservationListComponent {
                 buttonsStyling: false,
               });
             },
+            error: (err) => {
+              Swal.fire('Error', err.error.errorMessage, 'error');
+            }
           });
       }
     });
