@@ -25,6 +25,7 @@ export class TeamAddPlayerComponent {
   searchForm: FormGroup;
   player!: UserPlayer | null;
   loading = false;
+  loadingPlayer = false;
   user!: UserPlayer;
   teamId!: number;
 
@@ -80,12 +81,15 @@ export class TeamAddPlayerComponent {
 
   addToTeam(playerId: number) {
     if (this.isOwner()) {
+      this.loadingPlayer = true;
       this.teamService.addMemberToTeam(this.teamId, playerId).subscribe({
         next: (response) => {
+          this.loadingPlayer = false;
           Swal.fire(response.message, 'Jugador inscrito', 'success');
           this.router.navigate(['/dashboard/team']);
         },
         error: (err) => {
+          this.loadingPlayer = false;
           Swal.fire(
             'Error al inscribir jugador',
             err.error.errorMessage || 'Error desconocido',

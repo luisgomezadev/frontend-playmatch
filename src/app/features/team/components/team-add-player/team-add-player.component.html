@@ -54,11 +54,12 @@
         <button-action
           text="Añadir al equipo"
           color="blue"
+          [loading]="loadingPlayer"
           (clicked)="addToTeam(player.id)"
         >
         </button-action>
         } @else {
-        <p class="text-gray-500">No hay jugador seleccionado.</p>
+        <p class="text-gray-500">No ha buscado jugador.</p>
         }
       </div>
     </div>
