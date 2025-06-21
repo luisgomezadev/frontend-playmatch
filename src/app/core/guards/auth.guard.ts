@@ -1,18 +1,23 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { catchError, Observable, of, tap } from 'rxjs';
 
-export const authGuard: CanActivateFn = () => {
+export const authGuard: CanActivateFn = (): Observable<boolean> => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const token = authService.getToken();
-
-  if (token && !authService.isTokenExpired(token)) {
-    return true;
-  } else {
-    authService.logout();
-    router.navigate(['/login']);
-    return false;
-  }
+  return authService.checkAuth().pipe(
+    tap((isAuth) => {
+      if (!isAuth) {
+        authService.logout();
+        router.navigate(['/login']);
+      }
+    }),
+    catchError(() => {
+      authService.logout();
+      router.navigate(['/login']);
+      return of(false);
+    })
+  );
 };

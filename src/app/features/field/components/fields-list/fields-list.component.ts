@@ -7,7 +7,8 @@ import { UserPlayer } from '../../../../core/interfaces/user';
 import { WithoutTeamComponent } from '../../../team/components/without-team/without-team.component';
 import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
+import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 
 @Component({
   selector: 'app-fields-list',
@@ -18,6 +19,7 @@ import { CommonModule } from '@angular/common';
     MoneyFormatPipe,
     TimeFormatPipe,
     CommonModule,
+    ButtonActionComponent
   ],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss',
@@ -32,7 +34,8 @@ export class FieldsListComponent {
   constructor(
     private fieldService: FieldService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params['showHeader'] !== undefined) {
@@ -76,5 +79,12 @@ export class FieldsListComponent {
     const closingMinutes = closeHour * 60 + closeMin;
 
     return nowMinutes >= openingMinutes && nowMinutes <= closingMinutes;
+  }
+
+  goBack(): void {
+    this.location.back();
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
 }

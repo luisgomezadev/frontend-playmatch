@@ -85,7 +85,7 @@ export class TeamDetailComponent {
   getTeamDetails(team: Team) {
     if (team) {
       this.team = team;
-      this.playerList = this.team.members;
+      this.playerList = this.team.members.reverse();
       team.reservations.forEach((re) => (re.team = this.team));
       this.reservationList = team.reservations.slice(-2).reverse();
     }

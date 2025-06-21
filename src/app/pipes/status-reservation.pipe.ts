@@ -7,9 +7,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StatusReservationPipe implements PipeTransform {
   transform(value: string): string {
     switch (value) {
-      case 'ACTIVE': return 'Reserva activa';
-      case 'FINISHED': return 'Reserva finalizada';
-      case 'CANCELED': return 'Reserva cancelada';
+      case 'ACTIVE': return 'Activa';
+      case 'FINISHED': return 'Finalizada';
+      case 'CANCELED': return 'Cancelada';
       default: return value;
     }
   }

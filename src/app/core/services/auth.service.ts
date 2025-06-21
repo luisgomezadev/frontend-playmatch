@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { User, UserAdmin, UserPlayer } from '../interfaces/user';
 import { environment } from '../../../environments/environment';
-import { AdminService } from '../../features/dashboard/admin/services/admin.service';
 
 interface LoginResponse {
   token: string;
@@ -37,6 +36,7 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.setToken(response.token);
+          this.currentUser.next(response.user);
           this.authStatus.next(true);
         })
       );
@@ -51,10 +51,53 @@ export class AuthService {
       .pipe(
         tap((response) => {
           this.setToken(response.token);
+          this.currentUser.next(response.user);
           this.authStatus.next(true);
         })
       );
   }
+
+  tryRenewToken(role: 'PLAYER' | 'ADMIN'): Observable<boolean> {
+    const token = this.getToken();
+    const email = this.getClaimsFromToken().sub;
+
+    if (!token || !email) return of(false);
+
+    const endpoint = role === 'ADMIN' ? 'refresh/admin' : 'refresh/player';
+
+    return this.http
+      .post<LoginResponse>(`${this.url}/${endpoint}`, { email, token })
+      .pipe(
+        map((res) => {
+          this.setToken(res.token);
+          this.currentUser.next(res.user);
+          this.authStatus.next(true);
+          return true;
+        }),
+        catchError(() => of(false))
+      );
+  }
+
+  checkAuth(): Observable<boolean> {
+    const role = this.getClaimsFromToken().role;
+    if (!role) {
+      this.logout();
+      return of(false);
+    }
+
+    if (!this.isTokenExpired(this.getToken()!)) {
+      if (this.currentUser.value) return of(true);
+      return of(true);
+    }
+
+    return this.tryRenewToken(role).pipe(
+      map((renewed) => {
+        if (!renewed) this.logout();
+        return renewed;
+      })
+    );
+  }
+  
 
   logout(): void {
     this.clearToken();

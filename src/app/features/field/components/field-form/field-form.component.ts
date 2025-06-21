@@ -65,6 +65,9 @@ export class FieldFormComponent {
 
   goBack(): void {
     this.location.back();
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
 
   loadField() {

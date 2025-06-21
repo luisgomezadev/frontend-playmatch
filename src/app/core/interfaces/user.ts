@@ -11,7 +11,7 @@ export interface User {
   documentType: string;
   documentNumber: string;
   email: string;
-  role: string;
+  role: 'PLAYER' | 'ADMIN';
 }
 
 // Interfaz que extiende User y agrega la propiedad 'field'

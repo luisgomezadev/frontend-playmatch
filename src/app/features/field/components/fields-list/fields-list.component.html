@@ -1,7 +1,15 @@
 <section class="p-8 bg-gray-100 min-h-screen">
   <div class="max-w-6xl mx-auto space-y-8">
     <div class="bg-white p-6 rounded-lg shadow-md">
-      <h1 class="text-3xl font-bold text-primary">Canchas disponibles</h1>
+      <div class="flex items-center gap-4">
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold text-primary">Canchas disponibles</h1>
+        </div>@if (showHeader) {
+        <div>
+          <button-action text="Volver" color="black" (clicked)="goBack()">
+          </button-action>
+        </div> }
+      </div>
       @if (showHeader) {
       <p class="text-gray-600 mt-2">
         Aquí puedes explorar las canchas disponibles. Haz clic en una para ver
@@ -12,25 +20,10 @@
     @if (loading) {
     <div class="flex flex-col gap-3 justify-center items-center">
       <h2 class="text-lg text-gray-600">Cargando...</h2>
-      <svg
-        class="animate-spin h-20 w-20 text-primary"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        ></circle>
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        ></path>
+      <svg class="animate-spin h-20 w-20 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
       </svg>
     </div>
     } @else { @if (fields.length === 0) {
@@ -47,15 +40,9 @@
     } @if (!user || user.team) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       @for (field of fields; track field.id) { @if (user) {
-      <a
-        [routerLink]="['/dashboard/field/detail', field.id]"
-        class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer"
-      >
-        <img
-          src="/assets/cancha.webp"
-          alt="{{ field.name }}"
-          class="w-full h-48 object-cover rounded-lg mb-4"
-        />
+      <a [routerLink]="['/dashboard/field/detail', field.id]"
+        class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+        <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-48 object-cover rounded-lg mb-4" />
         <h2 class="text-2xl font-semibold text-center mb-2">
           {{ field.name }}
         </h2>
@@ -72,18 +59,15 @@
         <p class="text-gray-800 mb-2">
           <strong>Horario: </strong> {{ field.openingHour | timeFormat }} -
           {{ field.closingHour | timeFormat }}
-          <span
-            class="font-semibold"
-            [ngClass]="
+          <span class="font-semibold" [ngClass]="
               isFieldOpen(field.openingHour, field.closingHour)
                 ? 'text-green-600'
                 : 'text-red-600'
-            "
-          >
+            ">
             {{
-              isFieldOpen(field.openingHour, field.closingHour)
-                ? "Abierto ahora"
-                : "Cerrado ahora"
+            isFieldOpen(field.openingHour, field.closingHour)
+            ? "Abierto ahora"
+            : "Cerrado ahora"
             }}
           </span>
         </p>
@@ -93,14 +77,8 @@
         </p>
       </a>
       } @else {
-      <article
-        class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-default"
-      >
-        <img
-          src="/assets/cancha.webp"
-          alt="{{ field.name }}"
-          class="w-full h-48 object-cover rounded-lg mb-4"
-        />
+      <article class="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 cursor-default">
+        <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-48 object-cover rounded-lg mb-4" />
         <h2 class="text-2xl font-semibold text-center mb-2">
           {{ field.name }}
         </h2>
@@ -117,18 +95,15 @@
         <p class="text-gray-800 mb-2">
           <strong>Horario: </strong> {{ field.openingHour | timeFormat }} -
           {{ field.closingHour | timeFormat }}
-          <span
-            class="font-semibold"
-            [ngClass]="
+          <span class="font-semibold" [ngClass]="
               isFieldOpen(field.openingHour, field.closingHour)
                 ? 'text-green-600'
                 : 'text-red-600'
-            "
-          >
+            ">
             {{
-              isFieldOpen(field.openingHour, field.closingHour)
-                ? "Abierto ahora"
-                : "Cerrado ahora"
+            isFieldOpen(field.openingHour, field.closingHour)
+            ? "Abierto ahora"
+            : "Cerrado ahora"
             }}
           </span>
         </p>
@@ -138,12 +113,8 @@
         </p>
         <p class="text-gray-800 mb-2">
           <strong>Contacto: </strong>
-          <a
-            [href]="'https://wa.me/57' + field.admin?.cellphone"
-            target="_blank"
-            class="text-primary hover:text-primary-dark"
-            >{{ field.admin?.cellphone }}</a
-          >
+          <a [href]="'https://wa.me/57' + field.admin?.cellphone" target="_blank"
+            class="text-primary hover:text-primary-dark">{{ field.admin?.cellphone }}</a>
         </p>
       </article>
       } }

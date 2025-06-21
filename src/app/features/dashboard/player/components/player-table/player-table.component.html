@@ -5,10 +5,11 @@
       <span>{{ i + 1 }}.</span>
     </div>
     <div class="flex-1">
-      <div class="flex flex-col md:flex-row justify-items-start gap-x-1">
+      <div class="flex justify-items-start items-center gap-x-1">
         <span>{{ player.firstName }} {{ player.lastName }}</span>
         @if (user.team?.ownerId == player.id) {
-        <span class="text-primary font-bold text-sm">(Dueño del equipo)</span>
+        <span class="text-primary font-bold text-sm hidden lg:inline-block">(Dueño del equipo)</span>
+        <span class="text-primary font-bold text-sm inline-block lg:hidden">(DE)</span>
         }
       </div>
     </div>
@@ -17,7 +18,7 @@
     </div>
     @if (isOwner()) {
     @if (user.team?.ownerId != player.id) {
-    <div class="w-10 flex justify-center">
+    <div class="w-5 flex justify-center">
       <button class="grid content-center bg-red-400 hover:bg-red-600 transition-all p-1 rounded"
         title="Eliminar de equipo" (click)="deletePlayerOfTeam(player)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -33,3 +34,4 @@
   </div>
   }
 </div>
+<p class="text-sm text-gray-600 mt-5 font-semibold block lg:hidden">DE: Dueño del equipo</p>

@@ -32,15 +32,15 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     const claims = this.authService.getClaimsFromToken();
+    console.log(claims);
     if (claims) {
       const email = claims.sub;
       const role = claims.role;
-
-      if (role === 'admin') {
+      if (role === 'ADMIN') {
         this.adminService.getAdminByEmail(email).subscribe({
           next: (admin: UserAdmin) => {
             this.loading = false;
-            this.userActive = { ...admin, role: 'admin' };
+            this.userActive = { ...admin, role: 'ADMIN' };
             this.authService.setUser(admin);
             this.loadLinks();
           },
@@ -51,11 +51,11 @@ export class DashboardComponent {
         });
       }
 
-      if (role === 'player') {
+      if (role === 'PLAYER') {
         this.playerService.getPlayerByEmail(email).subscribe({
           next: (player: UserPlayer) => {
             this.loading = false;
-            this.userActive = { ...player, role: 'player' };
+            this.userActive = { ...player, role: 'PLAYER' };
             this.authService.setUser(player);
             this.loadLinks();
           },
@@ -65,6 +65,9 @@ export class DashboardComponent {
           },
         });
       }
+    } else {
+      this.authService.logout();
+      this.loading = false;
     }
   }
 

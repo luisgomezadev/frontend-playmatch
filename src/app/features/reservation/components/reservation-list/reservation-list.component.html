@@ -8,7 +8,7 @@
       </p>
     </div>
     @if (isReservationTeam()) {
-    <div class="w-60">
+    <div class="w-full md:w-60">
       <button-action text="Hacer reserva" color="primary" (clicked)="makeReservation()" />
     </div>
     } }
@@ -19,107 +19,90 @@
     } @else {
     @if (reservationList.length > 0) {
     <div class="grid gap-3" [ngClass]="
-        listOfDetailsField ? 'grid-cols-1' : 'md:grid-cols-3 grid-cols-1'
+        listOfDetailsField ? 'grid-cols-1' : 'lg:grid-cols-3 md:grid-cols-2 grid-cols-1'
       ">
       @for (reservation of reservationList; track reservation.id) {
-      <article
-        class="rounded-2xl shadow-md hover:shadow-lg transition-all px-6 py-3 space-y-2 md:space-y-4 relative animate-slide-down"
-        [ngClass]="listOfDetailsField ? 'bg-black/5' : 'bg-white'">
-        <!-- Cabecera -->
-        <div class="flex justify-between items-start">
-          <div [ngClass]="{
-              'md:max-w-64': listOfDetailsField,
-              'md:max-w-48': !listOfDetailsField
-            }">
-            @if (reservationBy == 'field' || fromDetail == 'field') {
-            <p class="text-gray-500">Equipo:</p>
-            <h2 class="text-base font-bold text-black md:block hidden">
-              {{ reservation.team?.name || "Sin equipo asignado" }}
-            </h2>
-            } @if (reservationBy == 'team' || fromDetail == 'team') {
-            <p class="text-gray-500">Cancha:</p>
-            <h2 class="text-base font-bold text-black md:block hidden">
-              {{ reservation.field?.name || "Sin cancha asignada" }}
-            </h2>
-            }
-          </div>
-          <!-- Estado -->
-          <div class="flex-1 text-end">
-            <span class="text-xs font-semibold px-3 py-1 rounded-full text-nowrap" [ngClass]="{
-                'bg-green-100 text-green-700':
-                  reservation.status === StatusReservation.ACTIVE,
-                'bg-gray-200 text-gray-700':
-                  reservation.status === StatusReservation.FINISHED,
-                'bg-red-200 text-red-700':
-                  reservation.status === StatusReservation.CANCELED
-              }">
+        <article
+          class="rounded-2xl shadow hover:shadow-lg transition-all p-5 space-y-4 bg-white border border-gray-100 relative animate-slide-down">
+          <!-- Cabecera -->
+          <div class="flex justify-between items-start">
+            <div class="space-y-1">
+              <p class="text-xs text-gray-400 uppercase font-medium tracking-wide">
+                {{ reservationBy == 'field' || fromDetail == 'field' ? 'Equipo' : 'Cancha' }}
+              </p>
+              <h2 class="text-base font-semibold text-primary truncate">
+                {{
+                reservationBy == 'field' || fromDetail == 'field'
+                ? reservation.team?.name || 'Sin equipo asignado'
+                : reservation.field?.name || 'Sin cancha asignada'
+                }}
+              </h2>
+            </div>
+        
+            <span class="text-xs font-semibold px-3 py-1 rounded-full text-nowrap border truncate" [ngClass]="{
+                      'bg-green-50 text-green-700 border-green-200': reservation.status === StatusReservation.ACTIVE,
+                      'bg-gray-50 text-gray-700 border-gray-300': reservation.status === StatusReservation.FINISHED,
+                      'bg-red-50 text-red-700 border-red-200': reservation.status === StatusReservation.CANCELED
+                    }">
               {{ reservation.status | statusReservation }}
             </span>
           </div>
-        </div>
-        <div class="md:hidden block">
-          @if (reservationBy == 'field' || fromDetail == 'field') {
-          <h2 class="text-base font-bold text-black">
-            {{ reservation.team?.name || "Sin equipo asignado" }}
-          </h2>
-          } @if (reservationBy == 'team' || fromDetail == 'team') {
-          <h2 class="text-base font-bold text-black text-wrap">
-            {{ reservation.field?.name || "Sin cancha asignada" }}
-          </h2>
-          }
-        </div>
-        <p class="text-sm text-black">
-          {{ isReservationToday(reservation) }} &bull; ({{
-          reservation.startTime | timeFormat
-          }}
-          - {{ reservation.endTime | timeFormat }})
-        </p>
-
-        @if (isReservationExpired(reservation) && reservation.status ===
-        StatusReservation.ACTIVE) {
-        <p class="text-xs text-red-500 font-medium">
-          La reserva ha superado su hora final. Debe finalizarse.
-        </p>
-        } @if (!isReservationExpired(reservation) && reservation.status ===
-        StatusReservation.ACTIVE && getReservationStatus(reservation) ===
-        'upcoming') {
-        <p class="text-xs text-yellow-600 font-medium">Empieza pronto.</p>
-        } @if (isInProgressAndActive(reservation)) {
-        <p class="text-xs text-green-600 font-medium">En curso.</p>
-        }
-
-        <!-- Botón (condicional) -->
-        @if (showButtons(reservation)) { @switch(getReservationStatus(reservation)) {
-        @case('upcoming') {
-        <div class="pt-2">
-          <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva" (clicked)="
-              cancelReservation(reservation.id, reservation.team?.name)
-            ">
-          </button-action>
-        </div>
-        } @case('expired') {
-        <div class="pt-2">
-          <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
-            (clicked)="finalizeReservation(reservation.id, reservation.team?.name)">
-          </button-action>
-        </div>
-        }@case('other') {
-        <div class="pt-2">
-          <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva" (clicked)="
-              cancelReservation(reservation.id, reservation.team?.name)
-            ">
-          </button-action>
-        </div>
-        } @case('inProgress') { @if (reservationBy == 'field') {
-        <div class="pt-2">
-          <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva" (clicked)="
-              finalizeReservation(reservation.id, reservation.team?.name)
-            ">
-          </button-action>
-        </div>
-        } } } }
-      </article>
-
+        
+          <!-- Detalles -->
+          <div class="text-sm text-gray-600">
+            <p>
+              <span class="font-medium text-gray-800">Fecha:</span>
+              {{ isReservationToday(reservation) }}
+            </p>
+            <p>
+              <span class="font-medium text-gray-800">Hora:</span>
+              {{ reservation.startTime | timeFormat }} - {{ reservation.endTime | timeFormat }}
+            </p>
+          </div>
+        
+          <!-- Estado dinámico -->
+          <div *ngIf="reservation.status === StatusReservation.ACTIVE">
+            <p class="text-xs font-medium" [ngClass]="{
+                      'text-red-500': isReservationExpired(reservation),
+                      'text-yellow-600': getReservationStatus(reservation) === 'upcoming',
+                      'text-green-600': isInProgressAndActive(reservation)
+                    }">
+              {{
+              isReservationExpired(reservation)
+              ? 'La reserva ha superado su hora final. Debe finalizarse.'
+              : getReservationStatus(reservation) === 'upcoming'
+              ? 'Empieza pronto.'
+              : isInProgressAndActive(reservation)
+              ? 'En curso.'
+              : ''
+              }}
+            </p>
+          </div>
+        
+          <!-- Botones -->
+          <div *ngIf="showButtons(reservation)" class="pt-2">
+            @switch(getReservationStatus(reservation)) {
+            @case('upcoming') {
+            <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva"
+              (clicked)="cancelReservation(reservation.id, reservation.team?.name)" />
+            }
+            @case('expired') {
+            <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
+              (clicked)="finalizeReservation(reservation.id, reservation.team?.name)" />
+            }
+            @case('inProgress') {
+            @if (reservationBy == 'field') {
+            <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
+              (clicked)="finalizeReservation(reservation.id, reservation.team?.name)" />
+            }
+            }
+            @case('other') {
+            <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva"
+              (clicked)="cancelReservation(reservation.id, reservation.team?.name)" />
+            }
+            }
+          </div>
+        </article>
       }
     </div>
     } @else {

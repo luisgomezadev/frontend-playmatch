@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FieldService } from '../../services/field.service';
 import { Field, Status } from '../../interfaces/field';
 import Swal from 'sweetalert2';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { StatusDescriptionPipe } from '../../../../pipes/status-description.pipe';
 import { AuthService } from '../../../../core/services/auth.service';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
@@ -39,7 +39,8 @@ export class FieldDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private fieldService: FieldService,
-    private authService: AuthService
+    private authService: AuthService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -140,5 +141,12 @@ export class FieldDetailComponent {
         });
       }
     });
+  }
+
+  goBack(): void {
+    this.location.back();
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   }
 }

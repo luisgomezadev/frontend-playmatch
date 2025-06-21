@@ -8,7 +8,15 @@
         Aquí puedes gestionar tu cancha y ver últimas reservas.
       </p>
       } @else {
-      <h1 class="text-3xl font-bold text-primary">Detalles de la cancha</h1>
+      <div class="flex items-center gap-4">
+        <div class="flex-1">
+          <h1 class="text-3xl font-bold text-primary">Detalles de la cancha</h1>
+        </div>
+        <div>
+          <button-action text="Volver" color="black" (clicked)="goBack()">
+          </button-action>
+        </div>
+      </div>
       <p class="text-gray-600 mt-2">
         Aquí puedes ver la información de la cancha y reservarla.
       </p>
@@ -27,15 +35,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Card principal -->
       <div
-        class="flex flex-col md:flex-row items-center gap-4 md:gap-6 animate-slide-down p-6 bg-white rounded-lg shadow-md col-span-1 md:col-span-2"
-      >
+        class="flex flex-col md:flex-row items-center gap-4 md:gap-6 animate-slide-down p-6 bg-white rounded-lg shadow-md col-span-1 md:col-span-2">
         <!-- Imagen -->
         <div class="shrink-0 md:w-32 w-24">
-          <img
-            src="/assets/cancha.webp"
-            alt="{{ field.name }}"
-            class="object-cover rounded-2xl shadow-md"
-          />
+          <img src="/assets/cancha.webp" alt="{{ field.name }}" class="object-cover rounded-2xl shadow-md" />
         </div>
 
         <!-- Información -->
@@ -46,15 +49,13 @@
           <h3 class="text-sm text-gray-500 mb-2">
             📍 {{ field.city }}, Colombia
           </h3>
-          <span
-            class="inline-block text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm"
+          <span class="inline-block text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm"
             [ngClass]="{
               'bg-green-100 text-green-700':
               field.status === Status.ACTIVE,
               'bg-red-200 text-red-700':
               field.status === Status.INACTIVE
-            }"
-          >
+            }">
             {{ field.status | statusDescription }}
           </span>
         </div>
@@ -62,30 +63,17 @@
         <!-- Botones -->
         <div class="flex md:flex-col gap-2">
           @if (isOwnerField()) {
-          <button-action
-            text="Editar"
-            color="black"
-            [routerLink]="['/dashboard/field/form', field.id]"
-          ></button-action>
-          <button-action
-            text="Eliminar"
-            color="red"
-            (clicked)="deleteField()"
-          ></button-action>
+          <button-action text="Editar" color="black" [routerLink]="['/dashboard/field/form', field.id]"></button-action>
+          <button-action text="Eliminar" color="red" (clicked)="deleteField()"></button-action>
           } @else {
-          <button-action
-            text="Reservar"
-            color="primary"
-            [routerLink]="['/dashboard/reservation/form/field', field.id]"
-          ></button-action>
+          <button-action text="Reservar" color="primary"
+            [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
           }
         </div>
       </div>
 
       <!-- Detalles adicionales -->
-      <div
-        class="bg-white p-6 rounded-lg shadow-md animate-slide-down space-y-4"
-      >
+      <div class="bg-white p-6 rounded-lg shadow-md animate-slide-down space-y-4">
         <h3 class="text-2xl font-bold text-gray-800 mb-2">
           Información de la Cancha
         </h3>
@@ -132,18 +120,11 @@
           </h3>
           @if (reservationList.length > 0 && isOwnerField()) {
           <div class="w-fit">
-            <a
-              class="text-primary hover:underline"
-              [routerLink]="['/dashboard/reservation/list/field']"
-              >Ver todas</a
-            >
+            <a class="text-primary hover:underline" [routerLink]="['/dashboard/reservation/list/field']">Ver todas</a>
           </div>
           }
         </div>
-        <app-reservation-list
-          [fromDetail]="'field'"
-          [reservations]="reservationList"
-        ></app-reservation-list>
+        <app-reservation-list [fromDetail]="'field'" [reservations]="reservationList"></app-reservation-list>
       </div>
     </div>
 
@@ -152,23 +133,11 @@
     <div class="text-center">
       <h2 class="text-lg">No tienes una cancha registrada.</h2>
       <div class="flex justify-center items-center">
-        <a
-          routerLink="/dashboard/field/form"
-          class="p-12 border-dashed border-2 border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors duration-200 mt-12 flex items-center justify-center w-fit"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 inline-block mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 4v16m8-8H4"
-            />
+        <a routerLink="/dashboard/field/form"
+          class="p-12 border-dashed border-2 border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors duration-200 mt-12 flex items-center justify-center w-fit">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
           <span class="font-semibold">Registra una cancha</span>
         </a>

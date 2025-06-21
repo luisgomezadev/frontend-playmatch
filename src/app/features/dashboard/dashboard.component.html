@@ -52,14 +52,14 @@
       'translate-x-0': sidebarOpen,
       '-translate-x-full': !sidebarOpen
     }"
-    class="fixed z-40 top-0 left-0 md:w-64 w-full bg-gray-700 text-white shadow-md transform transition-transform duration-300 md:translate-x-0 md:fixed md:block h-screen"
+    class="fixed z-40 top-0 left-0 md:w-64 w-full bg-white text-black shadow-md transform transition-transform duration-300 md:translate-x-0 md:fixed md:block h-screen"
   >
-    <div class="p-6 text-center bg-primary hidden md:block">
-      <img src="../../../assets/logo_blanco.png" alt="" />
+    <div class="p-6 text-center hidden md:block shadow-sm">
+      <img src="../../../assets/logo_sin_fondo.png" alt="" />
     </div>
     <nav class="mt-6 relative">
       <div class="flex justify-between mx-6 py-4 items-center md:hidden border-b-2">
-        <h2 class="text-2xl font-bold">PlayMatch | Menu</h2>
+        <h2 class="text-2xl font-bold"><span class="text-primary">Play</span>Match | Menu</h2>
         <button (click)="closeSidebar()">
           <svg
             viewBox="0 0 24 24"
@@ -68,7 +68,7 @@
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="text-white w-7 h-7 font-bold"
+            class="text-black w-7 h-7 font-bold"
           >
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M18 6l-12 12" />
@@ -82,18 +82,22 @@
           <a
             (click)="closeSidebar()"
             [routerLink]="link.link"
-            class="block py-2 px-4 rounded-lg hover:bg-primary hover:text-white transition"
-            >{{ link.name }}</a
-          >
+            class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition"
+            >
+            <i [class]="link.iconClass"></i>
+            <span>{{ link.name }}</span>
+          </a>
         </li>
         }
         <li>
           <a
             (click)="closeSidebar()"
             (click)="logout()"
-            class="block py-2 px-4 rounded-lg hover:bg-red-500 hover:text-white transition cursor-pointer"
-            >Cerrar sesión</a
-          >
+            class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-700 hover:bg-red-500 hover:text-white transition cursor-pointer"
+            >
+            <i class="fa-solid fa-right-from-bracket w-6"></i>
+            <span>Cerrar sesión</span>
+          </a>
         </li>
       </ul>
     </nav>

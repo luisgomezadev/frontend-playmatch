@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { ConfirmedReservation, Reservation } from '../interfaces/reservation';
+import { ConfirmedReservation, Reservation, StatusReservation } from '../interfaces/reservation';
 
 @Injectable({
   providedIn: 'root',
@@ -41,11 +41,11 @@ export class ReservationService {
   }
 
   finalizeReservationById(id: number): Observable<any> {
-    return this.http.post(`${this.url}/finalize/${id}`, null);
+    return this.http.put(`${this.url}/${id}/status/finalize`, null);
   }
 
   canceledReservationById(id: number): Observable<any> {
-    return this.http.post(`${this.url}/canceled/${id}`, null);
+    return this.http.put(`${this.url}/${id}/status/canceled`, null);
   }
 
   getCountActiveByTeam(teamId: number): Observable<any> {
