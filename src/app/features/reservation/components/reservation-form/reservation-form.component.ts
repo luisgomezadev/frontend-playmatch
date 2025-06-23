@@ -138,14 +138,22 @@ export class ReservationFormComponent {
       },
       buttonsStyling: false,
     }).then((result) => {
-      if (result.isConfirmed) {
+      if (result.isConfirmed && this.confirmedReservation) {
+        const reservationRequest = {
+          teamId: this.confirmedReservation.team?.id,
+          fieldId: this.confirmedReservation.field?.id,
+          reservationDate: this.confirmedReservation.reservationDate,
+          startTime: this.confirmedReservation.startTime,
+          endTime: this.confirmedReservation.endTime,
+          hours: this.confirmedReservation.hours,
+        };
         this.reservationService
-          .createReservation(this.confirmedReservation)
+          .createReservation(reservationRequest)
           .subscribe({
             next: () => {
               Swal.fire({
                 title: 'Reserva creada',
-                text: `Has creado una reserva en la cancha (${this.confirmedReservation?.field?.name}) para el día ${this.confirmedReservation?.reservationDate}.`,
+                text: `Has creado una reserva para el día ${reservationRequest.reservationDate}.`,
                 icon: 'success',
                 customClass: { confirmButton: 'swal-confirm-btn' },
                 buttonsStyling: false,

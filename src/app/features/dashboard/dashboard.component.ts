@@ -32,7 +32,6 @@ export class DashboardComponent {
 
   ngOnInit(): void {
     const claims = this.authService.getClaimsFromToken();
-    console.log(claims);
     if (claims) {
       const email = claims.sub;
       const role = claims.role;

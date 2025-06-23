@@ -27,7 +27,7 @@ export class PlayerTableComponent {
   }
 
   ngOnInit(): void {
-    console.log(this.players);
+    
   }
 
   isOwner():boolean {
