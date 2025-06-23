@@ -71,7 +71,7 @@ export class FieldDetailComponent {
       !!this.user &&
       !!this.field &&
       !!this.field.admin &&
-      this.user.id === this.field.admin.id
+      this.user.documentNumber === this.field.admin.documentNumber
     );
   }
 
