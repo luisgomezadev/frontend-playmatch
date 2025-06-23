@@ -9,6 +9,8 @@ import { User, UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
 import Swal from 'sweetalert2';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
 
 @Component({
   selector: 'app-reservation-list',
@@ -19,6 +21,9 @@ import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe
     ButtonActionComponent,
     RouterModule,
     StatusReservationPipe,
+    LoadingComponent,
+    MoneyFormatPipe,
+    TimeFormatPipe
   ],
   templateUrl: './reservation-list.component.html',
   styleUrl: './reservation-list.component.scss',
@@ -35,6 +40,10 @@ export class ReservationListComponent {
   listOfDetailsField = false;
   user!: UserPlayer | UserAdmin;
   loading: boolean = false;
+
+  selectedItem: any = null;
+  selectedType: 'team' | 'field' | null = null;
+  showModal = false;
 
   constructor(
     private reservationService: ReservationService,
@@ -206,8 +215,8 @@ export class ReservationListComponent {
               if (this.reservationBy == 'field') this.getReservationsField();
               else this.getReservationsTeam();
               Swal.fire({
-                title: 'Reserva finalizada',
-                text: `Has cancelado la reserva de ${teamName} correctamente.`,
+                title: 'Reserva cancelada',
+                text: `Has cancelado la reserva correctamente.`,
                 icon: 'success',
                 customClass: { confirmButton: 'swal-confirm-btn' },
                 buttonsStyling: false,
@@ -279,5 +288,17 @@ export class ReservationListComponent {
     return this.reservationList.some(
       (r) => r.status === StatusReservation.ACTIVE
     );
+  }
+
+  openModal(item: any, type: 'team' | 'field'): void {
+    this.selectedItem = item;
+    this.selectedType = type;
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedItem = null;
+    this.selectedType = null;
   }
 }

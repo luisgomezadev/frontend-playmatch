@@ -15,7 +15,15 @@ import { RouterModule } from '@angular/router';
       [class.cursor-not-allowed]="loading"
     >
       @if(!loading) {
-      <span>{{ text }}</span>
+        
+          @if (hasIcon) {
+            <div class="flex items-center gap-3">
+              <i [class]="icon"></i>
+              <span>{{ text }}</span>
+            </div>
+          } @else {
+            <span>{{ text }}</span>
+          }
       } @else {
       <span class="flex items-center gap-2 justify-center">
         {{ text }}
@@ -46,12 +54,13 @@ import { RouterModule } from '@angular/router';
 })
 export class ButtonActionComponent {
   @Input() text: string = 'Botón';
-  @Input() color: 'black' | 'red' | 'primary' | 'blue' = 'black';
+  @Input() color: 'black' | 'red' | 'primary' | 'blue' | 'yellow' = 'black';
   @Input() routerLink: string | any[] | null = null;
   @Input() type: 'button' | 'submit' = 'button';
   @Input() loading: boolean = false;
-  @Input() withIcon: boolean = false;
   @Input() disabled: boolean = false;
+  @Input() hasIcon: boolean = false;
+  @Input() icon: string = '';
 
   @Output() clicked = new EventEmitter<void>();
 
@@ -64,13 +73,13 @@ export class ButtonActionComponent {
   get classes(): string {
     let base =
       'text-sm font-semibold px-4 py-2 rounded-xl transition-all w-full';
-    if (this.withIcon) base += ' pl-8';
     if (!this.disabled) base += ' hover:scale-[1.03]';
     const styles = {
-      black: 'bg-black/90 text-white hover:bg-black/100',
-      red: 'bg-red-600/90 text-white hover:bg-red-600/100',
-      primary: 'bg-primary/90 text-white hover:bg-primary/100',
-      blue: 'bg-blue-600/90 text-white hover:bg-blue-600/100',
+      black: 'bg-black text-white',
+      red: 'bg-red-600 text-white',
+      primary: 'bg-primary text-white',
+      blue: 'bg-blue-600 text-white',
+      yellow: 'bg-yellow-600 text-white',
     };
     return `${styles[this.color]} ${base}`;
   }

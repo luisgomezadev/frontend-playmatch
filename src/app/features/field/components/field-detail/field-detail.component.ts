@@ -8,10 +8,11 @@ import { StatusDescriptionPipe } from '../../../../pipes/status-description.pipe
 import { AuthService } from '../../../../core/services/auth.service';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
-import { UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
+import { UserAdmin } from '../../../../core/interfaces/user';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { ReservationListComponent } from '../../../reservation/components/reservation-list/reservation-list.component';
 import { Reservation } from '../../../reservation/interfaces/reservation';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-field-detail',
@@ -24,6 +25,7 @@ import { Reservation } from '../../../reservation/interfaces/reservation';
     MoneyFormatPipe,
     ButtonActionComponent,
     ReservationListComponent,
+    LoadingComponent
   ],
   templateUrl: './field-detail.component.html',
   styleUrl: './field-detail.component.scss',

@@ -11,6 +11,7 @@ import { ReservationListComponent } from '../../../reservation/components/reserv
 import { Reservation } from '../../../reservation/interfaces/reservation';
 import { PlayerTableComponent } from '../../../dashboard/player/components/player-table/player-table.component';
 import { WithoutTeamComponent } from '../without-team/without-team.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-team-detail',
@@ -22,6 +23,7 @@ import { WithoutTeamComponent } from '../without-team/without-team.component';
     ReservationListComponent,
     PlayerTableComponent,
     WithoutTeamComponent,
+    LoadingComponent
   ],
   templateUrl: './team-detail.component.html',
   styleUrl: './team-detail.component.scss',
@@ -85,7 +87,7 @@ export class TeamDetailComponent {
   getTeamDetails(team: Team) {
     if (team) {
       this.team = team;
-      this.playerList = this.team.members.reverse();
+      this.playerList = this.team.members;
       team.reservations.forEach((re) => (re.team = this.team));
       this.reservationList = team.reservations.slice(-2).reverse();
     }

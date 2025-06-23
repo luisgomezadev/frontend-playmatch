@@ -13,7 +13,7 @@
     <!-- Accesos rápidos -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <article
-        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-primary"
+        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-primary animate-slide-down"
         [ngClass]="{'border-gray-950': !hasField()}">
         <div class="text-start flex flex-col gap-2">
           <p class="text-xl font-semibold text-primary" [ngClass]="{'text-gray-950/70': !hasField()}">
@@ -35,7 +35,7 @@
       </article>
 
       <article
-        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashblue">
+        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashblue animate-slide-down">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
           <svg class="animate-spin h-7 w-7 text-dashblue" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -51,17 +51,12 @@
           <h3 class="text-lg font-semibold text-gray-600 uppercase">Reservas Activas</h3>
         </div>
         <div>
-          <svg viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 text-dashblue">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path
-              d="M12 2l.117 .007a1 1 0 0 1 .876 .876l.007 .117v4l.005 .15a2 2 0 0 0 1.838 1.844l.157 .006h4l.117 .007a1 1 0 0 1 .876 .876l.007 .117v9a3 3 0 0 1 -2.824 2.995l-.176 .005h-10a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-14a3 3 0 0 1 2.824 -2.995l.176 -.005zm3 147a1 1 0 0 0 0 2h6a1 1 0 0 0 0 -2m0 -4h-6a1 1 0 0 0 0 2h6a1 1 0 0 0 0 -2" />
-            <path d="M19 7h-4l-.001 -4.001z" />
-          </svg>
+          <i class="fa-solid fa-calendar text-dashblue text-4xl"></i>
         </div>
       </article>
 
       <article
-        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashyellow">
+        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashyellow animate-slide-down">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
           <svg class="animate-spin h-7 w-7 text-dashyellow" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -77,18 +72,12 @@
           <h3 class="text-lg font-semibold text-gray-600 uppercase">Reservas Finalizadas</h3>
         </div>
         <div>
-          <svg class="w-12 h-12 text-dashyellow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
-            <path d="M9 17h6" />
-            <path d="M9 13h6" />
-          </svg>
+          <i class="fa-solid fa-calendar-check text-dashyellow text-4xl"></i>
         </div>
       </article>
     </div>
     <footer>
-      <div class="p-6 bg-white rounded-xl shadow transition-all flex flex-col gap-3">
+      <div class="p-6 bg-white rounded-xl shadow transition-all flex flex-col gap-3 animate-slide-down">
         <header class="flex gap-2 items-center">
           <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-yellow-500">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />

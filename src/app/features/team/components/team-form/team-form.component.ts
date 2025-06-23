@@ -7,11 +7,12 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-team-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonActionComponent],
+  imports: [ReactiveFormsModule, ButtonActionComponent, LoadingComponent],
   templateUrl: './team-form.component.html',
   styleUrl: './team-form.component.scss'
 })
@@ -22,6 +23,7 @@ export class TeamFormComponent {
   userActive!: User;
   editing = false;
   teamId!: number;
+  loadingForm: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -65,16 +67,16 @@ export class TeamFormComponent {
   }
 
   loadTeam() {
-    this.loading = true;
+    this.loadingForm = true;
     this.teamService.getTeamById(this.teamId).subscribe({
       next: (team) => {
         this.teamForm.patchValue(team);
-        this.loading = false;
+        this.loadingForm = false;
       },
       error: () => {
-        this.loading = false;
-        Swal.fire('Error', 'No se pudo cargar el equipo', 'error');
-        this.router.navigate(['/dashboard/home-player']);
+        this.loadingForm = false;
+        Swal.fire('Error', 'No se pudo cargar información del equipo', 'error');
+        this.router.navigate(['/dashboard/team']);
       }
     });
   }

@@ -50,7 +50,7 @@ export class ReservationFormComponent {
     private authService: AuthService,
     private reservationService: ReservationService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const today = new Date();
@@ -96,8 +96,8 @@ export class ReservationFormComponent {
 
       const reservationData = {
         ...this.formReservation.value,
-        team: { id: this.team.id },
-        field: { id: this.fieldId },
+        teamId: this.team.id,
+        fieldId: this.fieldId
       };
 
       this.reservationService
@@ -126,38 +126,38 @@ export class ReservationFormComponent {
 
   confirmReservation() {
     Swal.fire({
-          title: '¿Estás seguro de crear la reserva?',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Sí, crear',
-          cancelButtonText: 'No',
-          customClass: {
-            confirmButton: 'swal-confirm-btn',
-            cancelButton: 'swal-cancel-btn',
-          },
-          buttonsStyling: false,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.reservationService
-              .createReservation(this.confirmedReservation)
-              .subscribe({
-                next: () => {
-                  Swal.fire({
-                    title: 'Reserva creada',
-                    text: `Has creado una reserva en la cancha (${this.confirmedReservation?.field?.name}) para el día ${this.confirmedReservation?.reservationDate}.`,
-                    icon: 'success',
-                    customClass: { confirmButton: 'swal-confirm-btn' },
-                    buttonsStyling: false,
-                  });
-                  this.router.navigate(['/dashboard/reservation/list/team']);
-                },
-                error: (err) => {
-                  Swal.fire('Error', err.error.errorMessage, 'error');
-                },
+      title: '¿Estás seguro de crear la reserva?',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, crear',
+      cancelButtonText: 'No',
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+        cancelButton: 'swal-cancel-btn',
+      },
+      buttonsStyling: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reservationService
+          .createReservation(this.confirmedReservation)
+          .subscribe({
+            next: () => {
+              Swal.fire({
+                title: 'Reserva creada',
+                text: `Has creado una reserva en la cancha (${this.confirmedReservation?.field?.name}) para el día ${this.confirmedReservation?.reservationDate}.`,
+                icon: 'success',
+                customClass: { confirmButton: 'swal-confirm-btn' },
+                buttonsStyling: false,
               });
-          }
-        });
-    
+              this.router.navigate(['/dashboard/reservation/list/team']);
+            },
+            error: (err) => {
+              Swal.fire('Error', err.error.errorMessage, 'error');
+            },
+          });
+      }
+    });
+
   }
 }

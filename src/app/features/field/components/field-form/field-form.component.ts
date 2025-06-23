@@ -12,11 +12,12 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { User } from '../../../../core/interfaces/user';
 import { Location } from '@angular/common';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-field-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonActionComponent],
+  imports: [ReactiveFormsModule, ButtonActionComponent, LoadingComponent],
   templateUrl: './field-form.component.html',
   styleUrl: './field-form.component.scss',
 })
@@ -27,6 +28,7 @@ export class FieldFormComponent {
   userActive!: User;
   editing = false;
   fieldId!: number;
+  loadingForm: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -71,15 +73,15 @@ export class FieldFormComponent {
   }
 
   loadField() {
-    this.loading = true;
+    this.loadingForm = true;
     this.fieldService.getFieldById(this.fieldId).subscribe({
       next: (field) => {
         this.fieldForm.patchValue(field);
-        this.loading = false;
+        this.loadingForm = false;
       },
       error: () => {
-        this.loading = false;
-        Swal.fire('Error', 'No se pudo cargar la cancha', 'error');
+        this.loadingForm = false;
+        Swal.fire('Error', 'No se pudo cargar la información de la cancha', 'error');
         this.router.navigate(['/dashboard/home-admin']);
       },
     });
@@ -93,7 +95,7 @@ export class FieldFormComponent {
     const fieldData = {
       ...this.fieldForm.value,
       status: 'ACTIVE',
-      admin: { id: this.adminId },
+      adminId: this.adminId
     };
 
     if (this.editing) {

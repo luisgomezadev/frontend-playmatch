@@ -9,9 +9,7 @@
 
     <!-- Loading -->
     @if (loading) {
-    <div class="flex flex-col gap-3 justify-center items-center">
-      <h2 class="text-lg text-gray-600">Cargando lista de jugadores, espere un momento...</h2>
-    </div>
+      <loading-component text="Cargando lista de jugadores" />
     } @else {
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       @for (player of playerList; track player.id) {

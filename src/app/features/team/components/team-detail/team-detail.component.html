@@ -8,9 +8,7 @@
     </div>
     <!-- Loading -->
     @if (loading) {
-    <div class="flex flex-col gap-3 justify-center items-center">
-      <h2 class="text-lg text-gray-600">Cargando detalle del equipo, espere un momento...</h2>
-    </div>
+      <loading-component text="Cargando detalle del equipo" />
     } @else { @if (team && !teamEmpty) {
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div
@@ -34,23 +32,15 @@
 
         <div class="flex flex-col gap-2">
           @if (isOwnerTeam()) {
-          <button-action text="Editar" color="black" [routerLink]="['/dashboard/team/form', team.id]">
+          <button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
+            [routerLink]="['/dashboard/team/form', team.id]">
           </button-action>
-          <button-action text="Eliminar" color="red" (clicked)="deleteTeam()">
+          <button-action text="Eliminar" icon="fa-solid fa-trash" [hasIcon]="true" color="red" (clicked)="deleteTeam()">
           </button-action>
           } @else {
-          <div class="relative flex items-center">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" class="absolute left-1 text-white h-5 w-5 z-10">
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" />
-              <path d="M15 12h-12l3 -3" />
-              <path d="M6 15l-3 -3" />
-            </svg>
-            <button-action text="Salir de equipo" [withIcon]="true" color="red" (clicked)="leaveTeam()">
-            </button-action>
-          </div>
-
+          <button-action text="Salir de equipo" icon="fa-solid fa-door-open" [hasIcon]="true" color="red"
+            (clicked)="leaveTeam()">
+          </button-action>
           }
         </div>
       </div>

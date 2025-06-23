@@ -4,11 +4,12 @@ import { PlayerService } from '../../services/player.service';
 import { AuthService } from '../../../../../core/services/auth.service';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
+import { LoadingComponent } from "../../../../../shared/components/loading/loading.component";
 
 @Component({
   selector: 'app-player-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingComponent],
   templateUrl: './player-list.component.html',
   styleUrl: './player-list.component.scss',
 })

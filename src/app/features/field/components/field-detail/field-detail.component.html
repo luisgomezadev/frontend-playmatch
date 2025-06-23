@@ -13,7 +13,7 @@
           <h1 class="text-3xl font-bold text-primary">Detalles de la cancha</h1>
         </div>
         <div>
-          <button-action text="Volver" color="black" (clicked)="goBack()">
+          <button-action text="Volver" icon="fa-solid fa-backward" [hasIcon]="true" color="black" (clicked)="goBack()">
           </button-action>
         </div>
       </div>
@@ -25,9 +25,7 @@
 
     <!-- Loading -->
     @if (loading) {
-    <div class="flex flex-col gap-3 justify-center items-center">
-      <h2 class="text-lg text-gray-600">Cargando detalle del campo, espere un momento...</h2>
-    </div>
+      <loading-component text="Cargando detalle del campo" />
     } @else {
 
     <!-- Cancha encontrada -->
@@ -63,8 +61,8 @@
         <!-- Botones -->
         <div class="flex md:flex-col gap-2">
           @if (isOwnerField()) {
-          <button-action text="Editar" color="black" [routerLink]="['/dashboard/field/form', field.id]"></button-action>
-          <button-action text="Eliminar" color="red" (clicked)="deleteField()"></button-action>
+          <button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow" [routerLink]="['/dashboard/field/form', field.id]"></button-action>
+          <button-action text="Eliminar" icon="fa-solid fa-trash" [hasIcon]="true"color="red" (clicked)="deleteField()"></button-action>
           } @else {
           <button-action text="Reservar" color="primary"
             [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
