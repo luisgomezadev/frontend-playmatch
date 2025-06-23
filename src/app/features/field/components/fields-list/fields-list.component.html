@@ -90,7 +90,7 @@
           <strong>Dirección:</strong> {{ field.address }}
         </p>
         <p class="text-gray-800 mb-2">
-          <strong>Precio por hora:</strong> ${{ field.hourlyRate | moneyFormat }}
+          <strong>Precio por hora:</strong> {{ field.hourlyRate | moneyFormat }}
         </p>
         <p class="text-gray-800 mb-2">
           <strong>Horario: </strong> {{ field.openingHour | timeFormat }} -
