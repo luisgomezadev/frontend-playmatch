@@ -11,7 +11,7 @@
     </div>
 
     <!-- Accesos rápidos -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <article
         class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-primary animate-slide-down"
         [ngClass]="{'border-gray-950': !hasField()}">
@@ -22,15 +22,7 @@
           <h3 class="text-lg font-semibold text-gray-600 uppercase"> Tu Cancha</h3>
         </div>
         <div>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" class="w-12 h-12 text-primary" [ngClass]="{'text-gray-950/70': !hasField()}">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-            <path d="M3 9h3v6h-3z" />
-            <path d="M18 9h3v6h-3z" />
-            <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-            <path d="M12 5l0 14" />
-          </svg>
+          <i class="fa-solid fa-futbol text-primary text-4xl" [ngClass]="{'text-gray-800': !hasField()}"></i>
         </div>
       </article>
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from '../../../core/interfaces/user';
+import { User, UserAdmin, UserPlayer } from '../../../core/interfaces/user';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
-  user!: User;
+  user!: UserPlayer | UserAdmin;
 
   constructor(private authService: AuthService) {}
 
@@ -20,5 +20,13 @@ export class ProfileComponent {
         this.user = user;
       }
     });
+  }
+
+  public isUserAdmin(user: any): user is UserAdmin {
+    return 'field' in user;
+  }
+
+  public isUserPlayer(user: any): user is UserPlayer {
+    return 'team' in user;
   }
 }

@@ -11,23 +11,23 @@
     </div>
 
     <!-- Accesos rápidos -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <article
-        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-primary gap-4 animate-slide-down"
-        [ngClass]="{'border-gray-950': !hasTeam()}">
+        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border gap-4 animate-slide-down"
+        [ngClass]="{'border-gray-950': !hasTeam(),
+          'border-primary': hasTeam()
+        }">
         <div class="text-start flex flex-col gap-2">
-          <p class="text-xl font-semibold text-primary" [ngClass]="{'text-gray-950/70': !hasTeam()}">
+          <p class="text-xl font-semibold"
+          [ngClass]="{'text-gray-950/70': !hasTeam(),
+            'text-primary': hasTeam()
+          }">
             {{ teamName }}
           </p>
           <h3 class="text-lg font-semibold text-gray-600 uppercase">Tu equipo</h3>
         </div>
         <div>
-          <svg viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 text-primary"
-            [ngClass]="{'text-gray-950/70': !hasTeam()}">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path
-              d="M11.884 2.007l.114 -.007l.118 .007l.059 .008l.061 .013l.111 .034a.993 .993 0 0 1 .217 .112l.104 .082l.255 .218a11 11 0 0 0 7.189 2.537l.342 -.01a1 1 0 0 1 1.005 .717a13 13 0 0 1 -9.208 16.25a1 1 0 0 1 -.502 0a13 13 0 0 1 -9.209 -16.25a1 1 0 0 1 1.005 -.717a11 11 0 0 0 7.531 -2.527l.263 -.225l.096 -.075a.993 .993 0 0 1 .217 -.112l.112 -.034a.97 .97 0 0 1 .119 -.021z" />
-          </svg>
+          <i class="fa-solid fa-shield text-4xl" [ngClass]="{'text-gray-800': !hasTeam(), 'text-primary':hasTeam()}"></i>
         </div>
       </article>
 
@@ -56,7 +56,8 @@
         class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashyellow animate-slide-down">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
-          <svg class="animate-spin h-7 w-7 text-dashyellow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg class="animate-spin h-7 w-7 text-dashyellow" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
           </svg>
@@ -64,7 +65,7 @@
           <p class="text-4xl font-bold text-dashyellow">
             {{ reservationsFinished }}
           </p>
-        }
+          }
           <h3 class="text-lg font-semibold text-gray-600 uppercase">Reservas Finalizadas</h3>
         </div>
         <div>

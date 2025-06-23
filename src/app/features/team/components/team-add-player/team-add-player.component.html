@@ -8,36 +8,29 @@
     </div>
     @if (user.team) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Buscar jugador -->
-      <div
-        class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down"
-      >
+      <article class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down">
         <h2 class="text-xl font-semibold">Buscar jugador</h2>
-        <form
-          (ngSubmit)="searchPlayer()"
-          [formGroup]="searchForm"
-          class="space-y-4"
-        >
-          <input
-            type="email"
-            formControlName="email"
-            placeholder="Email del jugador"
-            class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200 mb-3"
-          />
-          <button-action
-            text="Buscar"
-            color="primary"
-            [loading]="loading"
-            type="submit"
-          >
+        <form (ngSubmit)="searchPlayer()" [formGroup]="searchForm" class="space-y-4">
+          <div class="mb-3">
+            <input type="email" formControlName="email" placeholder="Correo electrónico del jugador"
+              class="w-full px-4 py-2 bg-gray-400/15 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200" />
+            @if (searchForm.get('email')?.touched && searchForm.get('email')?.invalid) {
+            <div class="text-red-500 text-sm mt-1">
+              @if (searchForm.get('email')?.errors?.['required']) {
+              <span>El correo del jugador es obligatorio.</span>
+              } @else if (searchForm.get('email')?.errors?.['email']) {
+                <span>El correo no es valido.</span>
+              }
+            </div>
+            }
+          </div>
+          <button-action text="Buscar" color="primary" [loading]="loading" type="submit">
           </button-action>
         </form>
-      </div>
+      </article>
 
       <!-- Información del jugador -->
-      <div
-        class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down"
-      >
+      <article class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down">
         <h2 class="text-xl font-semibold">Información del jugador</h2>
 
         @if (player) {
@@ -51,17 +44,21 @@
           <strong>Documento:</strong> {{ player.documentType }}
           {{ player.documentNumber }}
         </p>
-        <button-action
-          text="Añadir al equipo"
-          color="blue"
-          [loading]="loadingPlayer"
-          (clicked)="addToTeam(player.id)"
-        >
-        </button-action>
+        <div class="flex gap-2">
+          <div class="flex-1">
+            <button-action text="Añadir al equipo" color="blue" [loading]="loadingPlayer"
+              (clicked)="addToTeam(player.id)">
+            </button-action>
+          </div>
+          <div class="flex-1">
+            <button-action text="Cancelar" color="red" (clicked)="cancelAddPlayer()">
+            </button-action>
+          </div>
+        </div>
         } @else {
         <p class="text-gray-500">No ha buscado jugador.</p>
         }
-      </div>
+      </article>
     </div>
     } @else {
     <div>

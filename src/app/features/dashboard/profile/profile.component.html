@@ -10,41 +10,63 @@
     <div class="grid grid-cols-1 gap-6">
       <!-- Card principal -->
       <div
-        class="flex items-center gap-6 md:gap-8 animate-slide-down p-6 bg-white rounded-2xl shadow-lg"
+        class="flex md:items-center flex-col md:flex-row justify-between animate-slide-down p-6 bg-white rounded-2xl shadow-lg"
       >
-        <!-- Imagen -->
-        <div class="shrink-0 hidden md:block">
-          <img
-            src="/assets/profile_icon.webp"
-            alt="{{ user.firstName }}"
-            class="w-28 h-28 object-cover rounded-full ring-2 ring-primary/30"
-          />
+        <div class="flex items-center gap-6">
+          <!-- Imagen -->
+          <div class="shrink-0 hidden md:block">
+            <img src="/assets/profile_icon.webp" alt="{{ user.firstName }}"
+              class="w-28 h-28 object-cover rounded-full ring-2 ring-primary/30" />
+          </div>
+          
+          <!-- Info -->
+          <div class="flex-1 space-y-2">
+            <h2 class="text-2xl font-bold text-gray-800">
+              {{ user.firstName }} {{ user.lastName }}
+            </h2>
+            <p class="text-gray-500 flex items-center gap-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="h-5 w-5 text-primary">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+              </svg>
+              {{ user.city }}, Colombia
+            </p>
+          </div>
         </div>
-
-        <!-- Info -->
-        <div class="flex-1 space-y-2">
-          <h2 class="text-2xl font-bold text-gray-800">
-            {{ user.firstName }} {{ user.lastName }}
-          </h2>
-          <p class="text-gray-500 flex items-center gap-2">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="h-5 w-5 text-primary"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-              <path
-                d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"
-              />
-            </svg>
-            {{ user.city }}, Colombia
-          </p>
-        </div>
+        @if (isUserPlayer(user)) {
+          @if (user.team) {
+          <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:block">
+            <img src="/assets/team.webp" alt="{{ user.team.name }}" class="object-cover rounded-2xl shadow-md" />
+          </div>
+          <div class="mt-2 flex md:hidden items-center gap-3">
+            <i class="fa-solid fa-shield text-primary"></i>
+            <p class="text-gray-500">{{ user.team.name }}</p>
+          </div>
+          }@else {
+            <div class="mt-2 flex md:hidden items-center gap-3">
+              <i class="fa-solid fa-shield text-gray-500"></i>
+              <p class="text-gray-500">Sin equipo</p>
+            </div>
+          }
+        }
+        @if (isUserAdmin(user)) {
+          @if (user.field) {
+            <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:block">
+              <img src="/assets/cancha.webp" alt="{{ user.field.name }}" class="object-cover rounded-2xl shadow-md" />
+            </div>
+            <div class="mt-2 flex md:hidden items-center gap-3">
+              <i class="fa-solid fa-futbol text-primary"></i>
+              <p class="text-gray-500">{{ user.field.name }}</p>
+            </div>
+          }@else {
+            <div class="mt-2 flex md:hidden items-center gap-3">
+              <i class="fa-solid fa-futbol text-gray-500"></i>
+              <p class="text-gray-500">Sin cancha</p>
+            </div>
+          }
+        }
       </div>
 
       <!-- Datos del perfil -->

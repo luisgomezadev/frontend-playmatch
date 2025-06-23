@@ -61,7 +61,10 @@ export class TeamAddPlayerComponent {
   }
 
   searchPlayer() {
-    if (this.searchForm.invalid) return;
+    if (this.searchForm.invalid) {
+      this.searchForm.markAllAsTouched();
+      return;
+    }
 
     this.loading = true;
     const email = this.searchForm.value.email;
@@ -77,6 +80,11 @@ export class TeamAddPlayerComponent {
         Swal.fire('Jugador no encontrado', '', 'warning');
       },
     });
+  }
+
+  cancelAddPlayer() {
+    this.player = null;
+    this.searchForm.reset();
   }
 
   addToTeam(playerId: number) {
