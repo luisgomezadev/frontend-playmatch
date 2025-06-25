@@ -18,6 +18,7 @@ export class HomeAdminComponent {
   fullName: string = '';
   reservationsActive: number = 0;
   reservationsFinished: number = 0;
+  reservationsCanceled: number = 0;
   fieldName: string = 'No tienes cancha registrada';
   loading: boolean = false;
 
@@ -48,6 +49,14 @@ export class HomeAdminComponent {
               next: (value) => {
                 this.loading = false;
                 this.reservationsFinished = value;
+              },
+            });
+          this.reservationService
+            .getCountCanceledByField(this.user.field.id)
+            .subscribe({
+              next: (value) => {
+                this.loading = false;
+                this.reservationsCanceled = value;
               },
             });
         }

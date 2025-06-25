@@ -99,7 +99,7 @@ export class TeamAddPlayerComponent {
         error: (err) => {
           this.loadingPlayer = false;
           Swal.fire(
-            'Error al inscribir jugador',
+            'Error al añadir jugador',
             err.error.errorMessage || 'Error desconocido',
             'error'
           );

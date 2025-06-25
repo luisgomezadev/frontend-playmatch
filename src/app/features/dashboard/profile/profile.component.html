@@ -10,16 +10,14 @@
     <div class="grid grid-cols-1 gap-6">
       <!-- Card principal -->
       <div
-        class="flex md:items-center flex-col md:flex-row justify-between animate-slide-down p-6 bg-white rounded-2xl shadow-lg"
-      >
+        class="flex md:items-center flex-col md:flex-row justify-between animate-slide-down p-6 bg-white rounded-2xl shadow-lg">
         <div class="flex items-center gap-6">
-          <!-- Imagen -->
+
           <div class="shrink-0 hidden md:block">
             <img src="/assets/profile_icon.webp" alt="{{ user.firstName }}"
               class="w-28 h-28 object-cover rounded-full ring-2 ring-primary/30" />
           </div>
-          
-          <!-- Info -->
+
           <div class="flex-1 space-y-2">
             <h2 class="text-2xl font-bold text-gray-800">
               {{ user.firstName }} {{ user.lastName }}
@@ -35,44 +33,37 @@
             </p>
           </div>
         </div>
-        @if (isUserPlayer(user)) {
-          @if (user.team) {
-          <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:block">
-            <img src="/assets/team.webp" alt="{{ user.team.name }}" class="object-cover rounded-2xl shadow-md" />
-          </div>
-          <div class="mt-2 flex md:hidden items-center gap-3">
-            <i class="fa-solid fa-shield text-primary"></i>
-            <p class="text-gray-500">{{ user.team.name }}</p>
-          </div>
-          }@else {
-            <div class="mt-2 flex md:hidden items-center gap-3">
-              <i class="fa-solid fa-shield text-gray-500"></i>
-              <p class="text-gray-500">Sin equipo</p>
-            </div>
-          }
-        }
-        @if (isUserAdmin(user)) {
-          @if (user.field) {
-            <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:block">
-              <img src="/assets/cancha.webp" alt="{{ user.field.name }}" class="object-cover rounded-2xl shadow-md" />
-            </div>
-            <div class="mt-2 flex md:hidden items-center gap-3">
-              <i class="fa-solid fa-futbol text-primary"></i>
-              <p class="text-gray-500">{{ user.field.name }}</p>
-            </div>
-          }@else {
-            <div class="mt-2 flex md:hidden items-center gap-3">
-              <i class="fa-solid fa-futbol text-gray-500"></i>
-              <p class="text-gray-500">Sin cancha</p>
-            </div>
-          }
-        }
+        @if (isUserPlayer(user)) { @if (user.team) {
+        <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:flex md:items-center">
+          <img src="/assets/team.webp" alt="{{ user.team.name }}" class="object-cover rounded-2xl shadow-md" />
+        </div>
+        <div class="mt-2 flex md:hidden items-center gap-3">
+          <i class="fa-solid fa-shield text-primary"></i>
+          <p class="text-gray-500">{{ user.team.name }}</p>
+        </div>
+        }@else {
+        <div class="mt-2 flex md:hidden items-center gap-3">
+          <i class="fa-solid fa-shield text-gray-500"></i>
+          <p class="text-gray-500">Sin equipo</p>
+        </div>
+        } } @if (isUserAdmin(user)) { @if (user.field) {
+        <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:flex md:items-center">
+          <img src="/assets/cancha.webp" alt="{{ user.field.name }}" class="object-cover rounded-2xl shadow-md" />
+        </div>
+        <div class="mt-2 flex md:hidden items-center gap-3">
+          <i class="fa-solid fa-futbol text-primary"></i>
+          <p class="text-gray-500">{{ user.field.name }}</p>
+        </div>
+        }@else {
+        <div class="mt-2 flex md:hidden items-center gap-3">
+          <i class="fa-solid fa-futbol text-gray-500"></i>
+          <p class="text-gray-500">Sin cancha</p>
+        </div>
+        } }
       </div>
 
       <!-- Datos del perfil -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-4 gap-6 animate-slide-down p-6 bg-white rounded-2xl shadow-lg"
-      >
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 animate-slide-down p-6 bg-white rounded-2xl shadow-lg">
         <div class="space-y-1">
           <p class="text-sm text-gray-500 font-semibold">Edad</p>
           <p class="text-base text-gray-700">{{ user.age }} años</p>
@@ -80,19 +71,10 @@
         <div class="space-y-1">
           <p class="text-sm text-gray-500 font-semibold">Celular</p>
           <p class="text-primary text-base font-medium flex items-center gap-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 5a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V8a1 1 0 01-1 1H9v1c0 1.656.895 3.223 2.243 4.243C12.777 14.105 14.344 15 16 15h1v-1a1 1 0 011-1h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-4C8.268 21 3 15.732 3 9V5z"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 5a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V8a1 1 0 01-1 1H9v1c0 1.656.895 3.223 2.243 4.243C12.777 14.105 14.344 15 16 15h1v-1a1 1 0 011-1h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-4C8.268 21 3 15.732 3 9V5z" />
             </svg>
             +57 {{ user.cellphone }}
           </p>
@@ -100,28 +82,17 @@
         <div class="space-y-1">
           <p class="text-sm text-gray-500 font-semibold">Documento</p>
           <p class="text-base text-gray-700 flex items-center">
-            <span
-              class="bg-gray-200 text-xs font-semibold px-2 py-0.5 rounded-full mr-1"
-              >{{ user.documentType }}</span
-            >
+            <span class="bg-gray-200 text-xs font-semibold px-2 py-0.5 rounded-full mr-1">{{ user.documentType }}</span>
             {{ user.documentNumber }}
           </p>
         </div>
         <div class="space-y-1">
           <p class="text-sm text-gray-500 font-semibold">Correo electrónico</p>
           <p class="text-base text-gray-700 flex items-center gap-1">
-            <svg
-              class="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path
-                d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"
-              />
+              <path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" />
               <path d="M3 7l9 6l9 -6" />
             </svg>
             {{ user.email }}

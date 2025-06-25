@@ -13,7 +13,13 @@
           <h1 class="text-3xl font-bold text-primary">Detalles de la cancha</h1>
         </div>
         <div>
-          <button-action text="Volver" icon="fa-solid fa-backward" [hasIcon]="true" color="black" (clicked)="goBack()">
+          <button-action
+            text="Volver"
+            icon="fa-solid fa-backward"
+            [hasIcon]="true"
+            color="black"
+            (clicked)="goBack()"
+          >
           </button-action>
         </div>
       </div>
@@ -25,7 +31,7 @@
 
     <!-- Loading -->
     @if (loading) {
-      <loading-component text="Cargando detalle del campo" />
+    <loading-component text="Cargando detalle del campo" />
     } @else {
 
     <!-- Cancha encontrada -->
@@ -33,27 +39,29 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Card principal -->
       <div
-        class="flex flex-col md:flex-row items-center gap-4 md:gap-6 animate-slide-down p-6 bg-white rounded-lg shadow-md col-span-1 md:col-span-2">
+        class="flex flex-col md:flex-row items-center gap-4 md:gap-6 animate-slide-down p-6 bg-white rounded-lg shadow-md col-span-1 md:col-span-2"
+      >
         <!-- Imagen -->
         <div class="shrink-0 md:w-32 w-24">
-          <img src="/assets/cancha.webp" alt="{{ field.name }}" class="object-cover rounded-2xl shadow-md" />
+          <img
+            src="/assets/cancha.webp"
+            alt="{{ field.name }}"
+            class="object-cover rounded-2xl shadow-md"
+          />
         </div>
 
         <!-- Información -->
         <div class="flex-1 w-full md:w-auto text-center md:text-start">
-          <h2 class="text-xl md:text-3xl font-bold text-gray-800">
+          <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-3">
             {{ field.name }}
           </h2>
-          <h3 class="text-sm text-gray-500 mb-2">
-            📍 {{ field.city }}, Colombia
-          </h3>
-          <span class="inline-block text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm"
+          <span
+            class="inline-block text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm border border-green-300"
             [ngClass]="{
-              'bg-green-100 text-green-700':
-              field.status === Status.ACTIVE,
-              'bg-red-200 text-red-700':
-              field.status === Status.INACTIVE
-            }">
+              'bg-green-100 text-green-700': field.status === Status.ACTIVE,
+              'bg-red-200 text-red-700': field.status === Status.INACTIVE
+            }"
+          >
             {{ field.status | statusDescription }}
           </span>
         </div>
@@ -61,56 +69,73 @@
         <!-- Botones -->
         <div class="flex md:flex-col gap-2">
           @if (isOwnerField()) {
-          <button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow" [routerLink]="['/dashboard/field/form', field.id]"></button-action>
-          <button-action text="Eliminar" icon="fa-solid fa-trash" [hasIcon]="true"color="red" (clicked)="deleteField()"></button-action>
+          <button-action
+            text="Editar"
+            icon="fa-solid fa-pen-to-square"
+            [hasIcon]="true"
+            color="yellow"
+            [routerLink]="['/dashboard/field/form', field.id]"
+          ></button-action>
+          <button-action
+            text="Eliminar"
+            icon="fa-solid fa-trash"
+            [hasIcon]="true"
+            color="red"
+            (clicked)="deleteField()"
+          ></button-action>
           } @else {
-          <button-action text="Reservar" color="primary"
-            [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
+          <button-action
+            text="Reservar"
+            color="primary"
+            [routerLink]="['/dashboard/reservation/form/field', field.id]"
+          ></button-action>
           }
         </div>
       </div>
 
-      <!-- Detalles adicionales -->
-      <div class="bg-white p-6 rounded-lg shadow-md animate-slide-down space-y-4">
+      <div
+        class="bg-white p-6 rounded-lg shadow-md animate-slide-down space-y-6"
+      >
         <h3 class="text-2xl font-bold text-gray-800 mb-2">
           Información de la Cancha
         </h3>
 
         <div>
-          <p class="text-sm text-gray-500 mb-1 font-semibold">📍 Dirección</p>
+          <p
+            class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2"
+          >
+            <i class="fa-solid fa-location-dot text-primary"></i>Ciudad
+          </p>
+          <p class="text-base text-gray-700">{{ field.city }}</p>
+        </div>
+
+        <div>
+          <p class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-location-dot text-primary"></i>Dirección
+          </p>
           <p class="text-base text-gray-700">{{ field.address }}</p>
         </div>
 
         <div>
-          <p class="text-sm text-gray-500 mb-1 font-semibold">
-            💰 Precio por hora
+          <p class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-sack-dollar text-primary"></i>Precio por hora
           </p>
           <p class="text-base text-gray-700">
             {{ field.hourlyRate | moneyFormat }}
           </p>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-6 mt-4">
-          <div class="flex-1">
-            <p class="text-sm text-gray-500 mb-1 font-semibold">
-              🕒 Hora de apertura
-            </p>
-            <p class="text-base text-gray-700">
-              {{ field.openingHour | timeFormat }}
-            </p>
-          </div>
-          <div class="flex-1">
-            <p class="text-sm text-gray-500 mb-1 font-semibold">
-              🕔 Hora de cierre
-            </p>
-            <p class="text-base text-gray-700">
-              {{ field.closingHour | timeFormat }}
-            </p>
-          </div>
+        <div>
+          <p class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-clock text-primary"></i>Horario
+          </p>
+          <p class="text-base text-gray-700">
+            {{ field.openingHour | timeFormat }} A {{ field.closingHour | timeFormat }}
+          </p>
         </div>
+
       </div>
 
-      <!-- Reservas recientes -->
       <div class="bg-white p-6 rounded-lg shadow-md animate-slide-down">
         <div class="flex items-center justify-between mb-2">
           <h3 class="text-2xl font-bold text-gray-800 mb-2">
@@ -118,24 +143,42 @@
           </h3>
           @if (reservationList.length > 0 && isOwnerField()) {
           <div class="w-fit">
-            <a class="text-primary hover:underline" [routerLink]="['/dashboard/reservation/list/field']">Ver todas</a>
+            <a
+              class="text-primary hover:underline"
+              [routerLink]="['/dashboard/reservation/list/field']"
+              >Ver todas</a
+            >
           </div>
           }
         </div>
-        <app-reservation-list [fromDetail]="'field'" [reservations]="reservationList"></app-reservation-list>
+        <app-reservation-list
+          [fromDetail]="'field'"
+          [reservations]="reservationList"
+        ></app-reservation-list>
       </div>
     </div>
 
-    <!-- Sin cancha -->
     } @else {
     <div class="text-center">
       <h2 class="text-lg">No tienes una cancha registrada.</h2>
       <div class="flex justify-center items-center">
-        <a routerLink="/dashboard/field/form"
-          class="p-12 border-dashed border-2 border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors duration-200 mt-12 flex items-center justify-center w-fit">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        <a
+          routerLink="/dashboard/field/form"
+          class="p-12 border-dashed border-2 border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors duration-200 mt-12 flex items-center justify-center w-fit"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 inline-block mr-2"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           <span class="font-semibold">Registra una cancha</span>
         </a>

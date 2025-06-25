@@ -79,7 +79,7 @@ export class ButtonActionComponent {
       red: 'bg-red-600 text-white',
       primary: 'bg-primary text-white',
       blue: 'bg-blue-600 text-white',
-      yellow: 'bg-yellow-600 text-white',
+      yellow: 'bg-yellow-500 text-white',
     };
     return `${styles[this.color]} ${base}`;
   }

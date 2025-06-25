@@ -64,6 +64,10 @@ export class ReservationService {
     return this.http.get(`${this.url}/field/${fieldId}/finished`);
   }
 
+  getCountCanceledByField(fieldId: number): Observable<any> {
+    return this.http.get(`${this.url}/field/${fieldId}/canceled`);
+  }
+
   getReservationAvailability(
     reservation: any
   ): Observable<ConfirmedReservation> {
