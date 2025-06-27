@@ -1,14 +1,14 @@
 <section class="p-8 bg-gray-100 min-h-screen">
   <div class="max-w-6xl mx-auto space-y-8">
     <!-- Bienvenida -->
-    <div class="bg-white p-6 rounded-xl shadow-md">
-      <h1 class="text-3xl font-bold text-primary">
+    <header class="bg-white p-6 rounded-xl shadow-md">
+      <h1 class="text-2xl md:text-3xl font-bold text-primary">
         Bienvenido, {{ fullName }}
       </h1>
-      <p class="text-gray-600 mt-2">
+      <p class="text-gray-600 mt-2 md:text-base text-sm">
         Aquí puedes gestionar tu equipo, ver tus reservas y más.
       </p>
-    </div>
+    </header>
 
     <!-- Accesos rápidos -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -17,16 +17,12 @@
         [ngClass]="{
           'border-gray-950': !hasTeam(),
           'border-primary': hasTeam()
-        }"
-      >
+        }">
         <div class="text-start flex flex-col gap-2">
-          <p
-            class="text-xl font-semibold"
-            [ngClass]="{
+          <p class="text-xl font-semibold" [ngClass]="{
               'text-gray-950/70': !hasTeam(),
               'text-primary': hasTeam()
-            }"
-          >
+            }">
             {{ teamName }}
           </p>
           <h3 class="text-lg font-semibold text-gray-600 uppercase">
@@ -34,40 +30,21 @@
           </h3>
         </div>
         <div>
-          <i
-            class="fa-solid fa-shield text-4xl"
-            [ngClass]="{
+          <i class="fa-solid fa-shield text-4xl" [ngClass]="{
               'text-gray-800': !hasTeam(),
               'text-primary': hasTeam()
-            }"
-          ></i>
+            }"></i>
         </div>
       </article>
 
       <article
-        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashblue animate-slide-down"
-      >
+        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashblue animate-slide-down">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
-          <svg
-            class="animate-spin h-7 w-7 text-dashblue"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            ></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-            ></path>
+          <svg class="animate-spin h-7 w-7 text-dashblue" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
           </svg>
           } @else {
           <p class="text-4xl font-bold text-dashblue">
@@ -84,29 +61,13 @@
       </article>
 
       <article
-        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashyellow animate-slide-down"
-      >
+        class="px-6 py-6 bg-white rounded-xl shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashyellow animate-slide-down">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
-          <svg
-            class="animate-spin h-7 w-7 text-dashyellow"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"
-            ></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-            ></path>
+          <svg class="animate-spin h-7 w-7 text-dashyellow" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
           </svg>
           } @else {
           <p class="text-4xl font-bold text-dashyellow">
@@ -123,38 +84,21 @@
       </article>
     </div>
     <footer>
-      <div
-        class="p-6 bg-white rounded-xl shadow transition-all flex flex-col gap-3 animate-slide-down"
-      >
+      <div class="p-6 bg-white rounded-xl shadow transition-all flex flex-col gap-3 animate-slide-down">
         <header class="flex gap-2 items-center">
-          <svg
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="h-5 w-5 text-yellow-500"
-          >
+          <svg viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-yellow-500">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path
-              d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z"
-            />
+              d="M8.243 7.34l-6.38 .925l-.113 .023a1 1 0 0 0 -.44 1.684l4.622 4.499l-1.09 6.355l-.013 .11a1 1 0 0 0 1.464 .944l5.706 -3l5.693 3l.1 .046a1 1 0 0 0 1.352 -1.1l-1.091 -6.355l4.624 -4.5l.078 -.085a1 1 0 0 0 -.633 -1.62l-6.38 -.926l-2.852 -5.78a1 1 0 0 0 -1.794 0l-2.853 5.78z" />
           </svg>
           <h2 class="font-semibold">Acciones Rápidas</h2>
         </header>
         <div class="flex flex-wrap gap-3">
-          <button-action
-            text="Detalles de tu equipo"
-            color="primary"
-            [routerLink]="['/dashboard/team']"
-          />
-          <button-action
-            text="Reservas"
-            color="primary"
-            [routerLink]="['/dashboard/reservation/list/team']"
-          />
-          <button-action
-            text="Agregar jugador"
-            color="primary"
-            [routerLink]="['/dashboard/team/add/player']"
-          />
+          <button-action text="Detalles de tu equipo" color="primary" [routerLink]="['/dashboard/team']" />
+          @if (hasTeam()) {
+            <button-action text="Reservas" color="primary" [routerLink]="['/dashboard/reservation/list/team']" />
+            <button-action text="Agregar jugador" color="primary" [routerLink]="['/dashboard/team/add/player']" />
+          }
         </div>
       </div>
     </footer>

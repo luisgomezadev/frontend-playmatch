@@ -87,7 +87,7 @@ export class RegisterComponent {
       Swal.fire({
         icon: 'error',
         title: 'Error al registrar',
-        text: err?.error?.errorMessage || 'Falló el registro',
+        text: err?.error?.message || 'Falló el registro',
         confirmButtonText: 'Aceptar',
         customClass: { confirmButton: 'swal-confirm-btn' },
         buttonsStyling: false,

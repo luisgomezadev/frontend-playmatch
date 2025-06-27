@@ -1,14 +1,14 @@
 <section class="p-8 bg-gray-100 min-h-screen">
   <div class="max-w-6xl mx-auto space-y-8">
-    <div class="bg-white p-6 rounded-xl shadow-md">
-      <h1 class="text-3xl font-bold text-primary">Agregar jugadores</h1>
-      <p class="text-gray-600 mt-2">
+    <header class="bg-white p-6 rounded-xl shadow-md">
+      <h1 class="text-2xl md:text-3xl font-bold text-primary">Agregar jugadores</h1>
+      <p class="text-gray-600 mt-2 md:text-base text-sm">
         Aquí puedes buscar jugadores por su correo y agregarlos a tu equipo.
       </p>
-    </div>
+    </header>
     @if (user.team) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <article class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down">
+      <article class="flex flex-col gap-4 p-6 bg-white rounded-xl shadow-md animate-slide-down">
         <h2 class="text-xl font-semibold">Buscar jugador</h2>
         <form (ngSubmit)="searchPlayer()" [formGroup]="searchForm" class="space-y-4">
           <div class="mb-3">
@@ -19,7 +19,7 @@
               @if (searchForm.get('email')?.errors?.['required']) {
               <span>El correo del jugador es obligatorio.</span>
               } @else if (searchForm.get('email')?.errors?.['email']) {
-                <span>El correo no es valido.</span>
+              <span>El correo no es valido.</span>
               }
             </div>
             }
@@ -30,7 +30,7 @@
       </article>
 
       <!-- Información del jugador -->
-      <article class="flex flex-col gap-4 p-6 bg-white rounded-lg shadow-md animate-slide-down">
+      <article class="flex flex-col gap-4 p-6 bg-white rounded-xl shadow-md animate-slide-down">
         <h2 class="text-xl font-semibold">Información del jugador</h2>
 
         @if (player) {

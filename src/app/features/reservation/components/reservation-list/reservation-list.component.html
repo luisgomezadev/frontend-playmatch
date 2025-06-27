@@ -1,116 +1,116 @@
 <section [ngClass]="{ 'p-8 bg-gray-100 min-h-screen': !listOfDetailsField }">
   <div class="max-w-6xl mx-auto space-y-8">
     @if (!listOfDetailsField) {
-    <div class="bg-white p-6 rounded-xl shadow-md">
-      <h1 class="text-3xl font-bold text-primary">Tus reservas</h1>
-      <p class="text-gray-600 mt-2">
+    <header class="bg-white p-6 rounded-xl shadow-md">
+      <h1 class="text-2xl md:text-3xl font-bold text-primary">Tus reservas</h1>
+      <p class="text-gray-600 mt-2 md:text-base text-sm">
         Aquí puedes ver todas tus reservas ordenadas a más recientes.
       </p>
-    </div>
+    </header>
     @if (isReservationTeam()) {
     <div class="w-full md:w-60">
       <button-action text="Hacer reserva" color="primary" (clicked)="makeReservation()" />
     </div>
     } }
     @if (loading) {
-      <loading-component text="Cargando lista de reservas" />
+    <loading-component text="Cargando lista de reservas" />
     } @else {
-      @if (reservationList.length > 0) {
-      <div class="grid gap-3" [ngClass]="
+    @if (reservationList.length > 0) {
+    <div class="grid gap-3" [ngClass]="
           listOfDetailsField ? 'grid-cols-1' : 'lg:grid-cols-3 md:grid-cols-2 grid-cols-1'
         ">
-        @for (reservation of reservationList; track reservation.id) {
-        <article
-          class="rounded-2xl shadow hover:shadow-lg transition-all p-5 space-y-4 bg-white border border-gray-100 relative animate-slide-down overflow-hidden">
-          <!-- Cabecera -->
-          <div class="flex justify-between items-start">
-            <div class="space-y-1">
-              <p class="text-xs text-gray-400 uppercase font-medium tracking-wide">
-                {{ reservationBy == 'field' || fromDetail == 'field' ? 'Equipo' : 'Cancha' }}
-              </p>
-              <h2 class="text-base font-semibold text-primary truncate cursor-pointer hover:underline" (click)="reservationBy == 'field' || fromDetail == 'field'
+      @for (reservation of reservationList; track reservation.id) {
+      <article
+        class="rounded-xl shadow-md hover:shadow-lg transition-all p-5 space-y-4 bg-white border border-gray-100 relative animate-slide-down overflow-hidden">
+        <!-- Cabecera -->
+        <div class="flex justify-between items-start">
+          <div class="space-y-1">
+            <p class="text-xs text-gray-400 uppercase font-medium tracking-wide">
+              {{ reservationBy == 'field' || fromDetail == 'field' ? 'Equipo' : 'Cancha' }}
+            </p>
+            <h2 class="text-base font-semibold text-primary truncate cursor-pointer hover:underline" (click)="reservationBy == 'field' || fromDetail == 'field'
                 ? openModal(reservation.team, 'team')
                 : openModal(reservation.field, 'field')">
-                {{
-                reservationBy == 'field' || fromDetail == 'field'
-                ? reservation.team?.name || 'Sin equipo asignado'
-                : reservation.field?.name || 'Sin cancha asignada'
-                }}
-              </h2>
-            </div>
+              {{
+              reservationBy == 'field' || fromDetail == 'field'
+              ? reservation.team?.name || 'Sin equipo asignado'
+              : reservation.field?.name || 'Sin cancha asignada'
+              }}
+            </h2>
+          </div>
 
-            <span class="text-xs font-semibold px-3 py-1 rounded-full text-nowrap border truncate" [ngClass]="{
+          <span class="text-xs font-semibold px-3 py-1 rounded-full text-nowrap border truncate" [ngClass]="{
                         'bg-green-50 text-green-700 border-green-200': reservation.status === StatusReservation.ACTIVE,
                         'bg-gray-50 text-gray-700 border-gray-300': reservation.status === StatusReservation.FINISHED,
                         'bg-red-50 text-red-700 border-red-200': reservation.status === StatusReservation.CANCELED
                       }">
-              {{ reservation.status | statusReservation }}
-            </span>
-          </div>
+            {{ reservation.status | statusReservation }}
+          </span>
+        </div>
 
-          <!-- Detalles -->
-          <div class="text-sm text-gray-600">
-            <p>
-              <span class="font-medium text-gray-800">Fecha:</span>
-              {{ isReservationToday(reservation) }}
-            </p>
-            <p>
-              <span class="font-medium text-gray-800">Hora:</span>
-              {{ reservation.startTime | timeFormat }} - {{ reservation.endTime | timeFormat }}
-            </p>
-          </div>
+        <!-- Detalles -->
+        <div class="text-sm text-gray-600">
+          <p>
+            <span class="font-medium text-gray-800">Fecha:</span>
+            {{ isReservationToday(reservation) }}
+          </p>
+          <p>
+            <span class="font-medium text-gray-800">Hora:</span>
+            {{ reservation.startTime | timeFormat }} - {{ reservation.endTime | timeFormat }}
+          </p>
+        </div>
 
-          <!-- Estado dinámico -->
-          <div *ngIf="reservation.status === StatusReservation.ACTIVE">
-            <p class="text-xs font-medium" [ngClass]="{
+        <!-- Estado dinámico -->
+        <div *ngIf="reservation.status === StatusReservation.ACTIVE">
+          <p class="text-xs font-medium" [ngClass]="{
                         'text-red-500': isReservationExpired(reservation),
                         'text-yellow-600': getReservationStatus(reservation) === 'upcoming',
                         'text-green-600': isInProgressAndActive(reservation)
                       }">
-              {{
-              isReservationExpired(reservation)
-              ? 'La reserva ha superado su hora final. Debe finalizarse.'
-              : getReservationStatus(reservation) === 'upcoming'
-              ? 'Empieza pronto.'
-              : isInProgressAndActive(reservation)
-              ? 'En curso.'
-              : ''
-              }}
-            </p>
-          </div>
+            {{
+            isReservationExpired(reservation)
+            ? 'La reserva ha superado su hora final. Debe finalizarse.'
+            : getReservationStatus(reservation) === 'upcoming'
+            ? 'Empieza pronto.'
+            : isInProgressAndActive(reservation)
+            ? 'En curso.'
+            : ''
+            }}
+          </p>
+        </div>
 
-          <!-- Botones -->
-          <div *ngIf="showButtons(reservation)" class="pt-2 z-20 relative">
-            @switch(getReservationStatus(reservation)) {
-            @case('upcoming') {
-            <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva"
-              (clicked)="cancelReservation(reservation.id, reservation.team?.name)" />
-            }
-            @case('expired') {
-            <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
-              (clicked)="finalizeReservation(reservation.id, reservation.team?.name)" />
-            }
-            @case('inProgress') {
-            @if (reservationBy == 'field') {
-            <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
-              (clicked)="finalizeReservation(reservation.id, reservation.team?.name)" />
-            }
-            }
-            @case('other') {
-            <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva"
-              (clicked)="cancelReservation(reservation.id, reservation.team?.name)" />
-            }
-            }
-          </div>
-          <img src="/assets/ball.webp" class="absolute z-10 w-64 -bottom-40 -right-20 opacity-20" alt="" />
-        </article>
-        }
-      </div>
-      } @else {
-      <p class="text-gray-600" [ngClass]="{ 'px-3': !listOfDetailsField }">
-        No tienes reservas hasta el momento.
-      </p>
+        <!-- Botones -->
+        <div *ngIf="showButtons(reservation)" class="pt-2 z-20 relative">
+          @switch(getReservationStatus(reservation)) {
+          @case('upcoming') {
+          <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva"
+            (clicked)="cancelReservation(reservation.id, reservation.team?.name)" />
+          }
+          @case('expired') {
+          <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
+            (clicked)="finalizeReservation(reservation.id, reservation.team?.name)" />
+          }
+          @case('inProgress') {
+          @if (reservationBy == 'field') {
+          <button-action text="Finalizar reserva" color="black" title="Finalizar esta reserva"
+            (clicked)="finalizeReservation(reservation.id, reservation.team?.name)" />
+          }
+          }
+          @case('other') {
+          <button-action text="Cancelar reserva" color="red" title="Cancelar esta reserva"
+            (clicked)="cancelReservation(reservation.id, reservation.team?.name)" />
+          }
+          }
+        </div>
+        <img src="/assets/ball.webp" class="absolute z-10 w-64 -bottom-40 -right-20 opacity-20" alt="" />
+      </article>
       }
+    </div>
+    } @else {
+    <p class="text-gray-600" [ngClass]="{ 'px-3': !listOfDetailsField }">
+      No tienes reservas hasta el momento.
+    </p>
+    }
     }
   </div>
 </section>
@@ -119,32 +119,30 @@
 @if (showModal && selectedItem) {
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all px-3">
   <div class="bg-white w-full max-w-md mx-auto rounded-2xl p-6 relative shadow-2xl animate-fade-in">
-    <button class="absolute top-3 right-4 text-gray-500 hover:text-red-600" (click)="closeModal()">
-      <i class="fa-solid fa-x text-xl"></i>
-    </button>
+    <button (click)="closeModal()" class="absolute top-2 right-4 text-gray-400 hover:text-red-500 text-xl">&times;</button>
 
     <h2 class="text-2xl font-bold text-primary mb-4">
       {{ selectedItem.name }}
     </h2>
 
     @switch (selectedType) {
-      @case ('team') {
-        <div class="space-y-2 text-sm text-gray-700">
-          <p><span class="font-medium">Ciudad:</span> {{ selectedItem.city || 'No definida' }}</p>
-          <p><span class="font-medium">Barrio:</span> {{ selectedItem.neighborhood || 'No definido' }}</p>
-        </div>
-      }
-      @case ('field') {
-        <div class="space-y-2 text-sm text-gray-700">
-          <p><span class="font-medium">Dirección:</span> {{ selectedItem.address || 'No definida' }}</p>
-          <p><span class="font-medium">Ciudad:</span> {{ selectedItem.city || 'No definida' }}</p>
-          <p><span class="font-medium">Precio por hora:</span> {{ selectedItem.hourlyRate | moneyFormat }}</p>
-          <p>
-            <span class="font-medium">Horario:</span>
-            {{ selectedItem.openingHour | timeFormat }} - {{ selectedItem.closingHour | timeFormat }}
-          </p>
-        </div>
-      }
+    @case ('team') {
+    <div class="space-y-2 text-sm text-gray-700">
+      <p><span class="font-medium">Ciudad:</span> {{ selectedItem.city || 'No definida' }}</p>
+      <p><span class="font-medium">Barrio:</span> {{ selectedItem.neighborhood || 'No definido' }}</p>
+    </div>
+    }
+    @case ('field') {
+    <div class="space-y-2 text-sm text-gray-700">
+      <p><span class="font-medium">Dirección:</span> {{ selectedItem.address || 'No definida' }}</p>
+      <p><span class="font-medium">Ciudad:</span> {{ selectedItem.city || 'No definida' }}</p>
+      <p><span class="font-medium">Precio por hora:</span> {{ selectedItem.hourlyRate | moneyFormat }}</p>
+      <p>
+        <span class="font-medium">Horario:</span>
+        {{ selectedItem.openingHour | timeFormat }} - {{ selectedItem.closingHour | timeFormat }}
+      </p>
+    </div>
+    }
     }
   </div>
 </div>

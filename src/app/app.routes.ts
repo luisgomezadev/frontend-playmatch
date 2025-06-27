@@ -18,7 +18,7 @@ import { ReservationListComponent } from './features/reservation/components/rese
 import { TeamAddPlayerComponent } from './features/team/components/team-add-player/team-add-player.component';
 import { ReservationFormComponent } from './features/reservation/components/reservation-form/reservation-form.component';
 import { ProfileFormComponent } from './features/dashboard/profile/profile-form/profile-form.component';
-
+import { TeamApplicationListComponent } from './features/team-application/components/team-application-list/team-application-list.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -51,6 +51,12 @@ export const routes: Routes = [
       {
         path: 'reservation/form/field/:id',
         component: ReservationFormComponent,
+      },
+
+      // Ruta de solicitud
+      {
+        path: 'requests',
+        component: TeamApplicationListComponent,
       },
 
       { path: 'player/list', component: PlayerListComponent },

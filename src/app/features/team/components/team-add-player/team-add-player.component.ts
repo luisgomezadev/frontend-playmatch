@@ -100,7 +100,7 @@ export class TeamAddPlayerComponent {
           this.loadingPlayer = false;
           Swal.fire(
             'Error al añadir jugador',
-            err.error.errorMessage || 'Error desconocido',
+            err.error.message || 'Error desconocido',
             'error'
           );
         },

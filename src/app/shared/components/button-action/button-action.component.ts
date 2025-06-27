@@ -72,7 +72,7 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'text-sm font-semibold px-4 py-2 rounded-xl transition-all w-full';
+      'text-sm font-semibold md:px-4 md:py-2 px-2 py-1 md:rounded-xl rounded-md transition-all w-full';
     if (!this.disabled) base += ' hover:scale-[1.03]';
     const styles = {
       black: 'bg-black text-white',

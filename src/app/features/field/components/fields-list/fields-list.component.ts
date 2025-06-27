@@ -62,7 +62,7 @@ export class FieldsListComponent {
         this.loading = false;
         console.error(
           'Error cargando canchas',
-          err.error.errorMessage || 'Error desconocido'
+          err.error.message || 'Error desconocido'
         );
       },
     });

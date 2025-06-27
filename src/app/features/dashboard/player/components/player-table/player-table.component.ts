@@ -27,10 +27,10 @@ export class PlayerTableComponent {
   }
 
   ngOnInit(): void {
-    
+
   }
 
-  isOwner():boolean {
+  isOwner(): boolean {
     return this.user.team?.ownerId == this.user.id;
   }
 
@@ -55,7 +55,7 @@ export class PlayerTableComponent {
             Swal.fire({
               icon: 'success',
               title: 'Jugador eliminado',
-              text: `Sacaste a ${player.firstName} ${player.lastName} de tu equipo.`,
+              text: `Eliminaste a ${player.firstName} ${player.lastName} de tu equipo.`,
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
               buttonsStyling: false,
@@ -64,8 +64,8 @@ export class PlayerTableComponent {
           error: (err) => {
             Swal.fire({
               icon: 'error',
-              title: 'Error al sacar jugador',
-              text: err?.error?.errorMessage || 'No se pudo sacar jugador.',
+              title: 'Error al eliminar jugador',
+              text: err?.error?.message || 'No se pudo eliminar jugador.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
               buttonsStyling: false,

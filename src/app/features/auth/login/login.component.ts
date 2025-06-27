@@ -47,7 +47,7 @@ export class LoginComponent {
       Swal.fire({
         icon: 'error',
         title: 'Error al iniciar sesión',
-        text: err?.error?.errorMessage || 'Falló la autenticación',
+        text: err?.error?.message || 'Falló la autenticación',
         confirmButtonText: 'Aceptar',
         customClass: { confirmButton: 'swal-confirm-btn' },
         buttonsStyling: false,

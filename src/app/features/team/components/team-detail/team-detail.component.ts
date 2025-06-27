@@ -41,7 +41,7 @@ export class TeamDetailComponent {
     private route: ActivatedRoute,
     private teamService: TeamService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -126,7 +126,7 @@ export class TeamDetailComponent {
                 icon: 'error',
                 title: 'Error al salirte del equipo',
                 text:
-                  err?.error?.errorMessage || 'No se pudo salir del equipo.',
+                  err?.error?.message || 'No se pudo salir del equipo.',
                 confirmButtonText: 'Aceptar',
                 customClass: { confirmButton: 'swal-confirm-btn' },
                 buttonsStyling: false,
@@ -171,7 +171,7 @@ export class TeamDetailComponent {
               icon: 'error',
               title: 'Error al eliminar el equipo',
               text:
-                err?.error?.errorMessage || 'No se pudo eliminar el equipo.',
+                err?.error?.message || 'No se pudo eliminar el equipo.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
               buttonsStyling: false,

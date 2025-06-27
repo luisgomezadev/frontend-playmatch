@@ -116,7 +116,7 @@ export class ReservationListComponent {
       },
       error: (err) => {
         this.loading = false;
-        Swal.fire('Error', err.error.errorMessage || 'No se pudo cargar las reservas', 'error');
+        Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
       },
     });
   }
@@ -130,7 +130,7 @@ export class ReservationListComponent {
       },
       error: (err) => {
         this.loading = false;
-        Swal.fire('Error', err.error.errorMessage || 'No se pudo cargar las reservas', 'error');
+        Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
       },
     });
   }
@@ -185,7 +185,7 @@ export class ReservationListComponent {
               });
             },
             error: (err) => {
-              Swal.fire('Error', err.error.errorMessage, 'error');
+              Swal.fire('Error', err.error.message, 'error');
             }
           });
       }
@@ -223,7 +223,7 @@ export class ReservationListComponent {
               });
             },
             error: (err) => {
-              Swal.fire('Error', err.error.errorMessage, 'error');
+              Swal.fire('Error', err.error.message, 'error');
             }
           });
       }

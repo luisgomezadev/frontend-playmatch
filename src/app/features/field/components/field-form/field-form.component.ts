@@ -126,7 +126,7 @@ export class FieldFormComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: err.error?.errorMessage || 'Algo salió mal',
+          text: err.error?.message || 'Algo salió mal',
         });
       },
     });

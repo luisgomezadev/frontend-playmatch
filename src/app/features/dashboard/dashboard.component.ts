@@ -17,7 +17,7 @@ import { PlayerService } from './player/services/player.service';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  userActive: User | null = null;
+  userActive: UserPlayer | UserAdmin | null = null;
   sidebarOpen = false;
   userRole: string | undefined = '';
   field: Field | null = null;
@@ -74,6 +74,18 @@ export class DashboardComponent {
     this.links = LINKS_DASHBOARD.filter(
       (item) => item.role === this.userActive?.role || item.role === 'all'
     );
+
+    if (this.isUserPlayer(this.userActive) && !this.userActive.team) {
+      this.links = this.links.filter((item) => item.requiredTeam !== true)
+    }
+  }
+
+  public isUserAdmin(user: any): user is UserAdmin {
+    return user.role === 'ADMIN';
+  }
+
+  public isUserPlayer(user: any): user is UserPlayer {
+    return user.role === 'PLAYER';
   }
 
   toggleSidebar() {

@@ -43,7 +43,7 @@ export class FieldDetailComponent {
     private fieldService: FieldService,
     private authService: AuthService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -134,7 +134,7 @@ export class FieldDetailComponent {
             Swal.fire({
               icon: 'error',
               title: 'Error al eliminar el campo',
-              text: err?.error?.errorMessage || 'No se pudo eliminar el campo.',
+              text: err?.error?.message || 'No se pudo eliminar el campo.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
               buttonsStyling: false,

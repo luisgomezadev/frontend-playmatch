@@ -23,31 +23,43 @@ export const LINKS_DASHBOARD = [
     name: "Inicio",
     link: "home-player",
     role: "PLAYER",
+    requiredTeam: false,
     iconClass: "fa-solid fa-house w-6"
   },
   {
     name: "Mi equipo",
     link: "team",
     role: "PLAYER",
+    requiredTeam: false,
     iconClass: "fa-solid fa-users w-6"
   },
   {
     name: "Reservas",
     link: "reservation/list/team",
     role: "PLAYER",
+    requiredTeam: true,
     iconClass: "fa-solid fa-calendar w-6"
   },
   {
     name: "Ver jugadores",
     link: "player/list",
     role: "PLAYER",
+    requiredTeam: true,
     iconClass: "fa-solid fa-user-group w-6"
   },
   {
     name: "Agregar jugadores",
     link: "team/add/player",
     role: "PLAYER",
+    requiredTeam: true,
     iconClass: "fa-solid fa-user-plus w-6"
+  },
+  {
+    name: "Solicitudes",
+    link: "requests",
+    role: "PLAYER",
+    requiredTeam: false,
+    iconClass: "fa-solid fa-inbox w-6"
   },
   // LINKS PLAYER AND ADMIN
   {

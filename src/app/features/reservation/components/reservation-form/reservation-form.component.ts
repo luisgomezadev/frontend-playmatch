@@ -109,7 +109,7 @@ export class ReservationFormComponent {
           },
           error: (err) => {
             this.loading = false;
-            Swal.fire('Error', err.error.errorMessage, 'error');
+            Swal.fire('Error', err.error.message, 'error');
           },
         });
 
@@ -161,7 +161,7 @@ export class ReservationFormComponent {
               this.router.navigate(['/dashboard/reservation/list/team']);
             },
             error: (err) => {
-              Swal.fire('Error', err.error.errorMessage, 'error');
+              Swal.fire('Error', err.error.message, 'error');
             },
           });
       }

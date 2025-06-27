@@ -1,9 +1,9 @@
 <section class="p-8 bg-gray-100 min-h-screen">
   <div class="max-w-6xl mx-auto space-y-8">
-    <div class="bg-white p-6 rounded-lg shadow-md">
+    <header class="bg-white p-6 rounded-xl shadow-md">
       <div class="flex items-center gap-4">
         <div class="flex-1">
-          <h1 class="text-3xl font-bold text-primary">Canchas disponibles</h1>
+          <h1 class="text-2xl md:text-3xl font-bold text-primary">Canchas disponibles</h1>
         </div>@if (showHeader) {
         <div>
           <button-action text="Volver" icon="fa-solid fa-backward" [hasIcon]="true" color="black" (clicked)="goBack()">
@@ -11,12 +11,12 @@
         </div> }
       </div>
       @if (showHeader) {
-      <p class="text-gray-600 mt-2">
+      <p class="text-gray-600 mt-2 md:text-base text-sm">
         Aquí puedes explorar las canchas disponibles. Haz clic en una para ver
         sus detalles y poder reservar.
       </p>
       }
-    </div>
+    </header>
     @if (loading) {
     <div class="flex flex-col gap-3 justify-center items-center">
       <h2 class="text-lg text-gray-600">Cargando...</h2>
@@ -31,7 +31,7 @@
       <h2 class="text-lg">No hay canchas disponibles.</h2>
     </div>
     } @else { @if (!user) {
-    <div class="text-center border mb-5 border-gray-300 p-4 rounded-lg">
+    <div class="text-center border mb-5 border-gray-300 p-4 rounded-xl">
       <p class="text-sm text-gray-600">
         Inicia sesión para reservar las canchas directamente desde la aplicación
         o has click en el número para contactar con el administrador
