@@ -127,6 +127,8 @@ export class RegisterComponent {
           title: 'Rol no válido',
           text: 'Selecciona un tipo de usuario válido.',
           confirmButtonText: 'Aceptar',
+          customClass: { confirmButton: 'swal-confirm-btn' },
+          buttonsStyling: false,
         });
         return;
     }

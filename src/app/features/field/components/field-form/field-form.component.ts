@@ -116,6 +116,8 @@ export class FieldFormComponent {
           icon: 'success',
           title: this.editing ? 'Cancha actualizada' : 'Cancha registrada',
           confirmButtonText: 'Aceptar',
+          customClass: { confirmButton: 'swal-confirm-btn' },
+          buttonsStyling: false,
         });
         const { admin, ...fieldWithoutAdmin } = data;
         this.authService.setUser({

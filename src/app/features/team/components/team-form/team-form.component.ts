@@ -102,7 +102,9 @@ export class TeamFormComponent {
         Swal.fire({
           icon: 'success',
           title: this.editing ? 'Equipo actualizado' : 'Equipo registrado',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
+          customClass: { confirmButton: 'swal-confirm-btn' },
+          buttonsStyling: false,
         });
         this.authService.setUser({ ...this.userActive, team: data });
         this.router.navigate(['/dashboard/team']);

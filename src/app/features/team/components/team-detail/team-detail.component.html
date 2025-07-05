@@ -15,7 +15,7 @@
         class="flex flex-col md:flex-row items-center gap-8 md:gap-6 animate-slide-down p-6 bg-white rounded-xl shadow-md col-span-1 lg:col-span-2">
         <div class="group cursor-pointer relative overflow-hidden rounded-full"
           (click)="showImageModal = true">
-          <img [src]="getImageUrl(team)" alt="{{ team.name }}" class="size-20 md:size-28 object-cover" />
+          <img [src]="getImageUrl(team)" alt="{{ team.name }}" class="size-20 md:size-28 object-contain" />
           <div
             class="w-full h-full rounded-full bg-black/30 absolute inset-0 flex items-center justify-center flex-col gap-1 text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <i class="fa-solid fa-camera text-white text-3xl"></i>
