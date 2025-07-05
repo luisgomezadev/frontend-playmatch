@@ -45,6 +45,7 @@ export class FieldFormComponent {
       hourlyRate: [0, [Validators.required, Validators.min(0)]],
       openingHour: ['', Validators.required],
       closingHour: ['', Validators.required],
+      status: ['ACTIVE', Validators.required]
     });
   }
 
@@ -76,6 +77,8 @@ export class FieldFormComponent {
     this.loadingForm = true;
     this.fieldService.getFieldById(this.fieldId).subscribe({
       next: (field) => {
+        console.log('Field loaded:', field);
+
         this.fieldForm.patchValue(field);
         this.loadingForm = false;
       },
@@ -94,7 +97,7 @@ export class FieldFormComponent {
 
     const fieldData = {
       ...this.fieldForm.value,
-      status: 'ACTIVE',
+      status: this.editing ? this.fieldForm.value.status : 'ACTIVE',
       adminId: this.adminId
     };
 

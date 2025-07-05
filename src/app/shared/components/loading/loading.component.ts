@@ -1,13 +1,20 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'loading-component',
   standalone: true,
   imports: [],
   template: `
-    <div class="flex flex-col gap-3 justify-center items-center mt-6">
-      <h2 class="text-lg text-gray-600">
-        {{ text }}{{ dots }}
+    <div
+      class="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center"
+    >
+      <h1 class="text-2xl font-bold text-primary mb-4">PlayMatch</h1>
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"
+      ></div>
+
+      <h2 class="text-lg text-gray-700">
+        {{ text || 'Cargando...' }}{{ dots }}
       </h2>
     </div>
   `,

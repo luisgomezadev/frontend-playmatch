@@ -8,18 +8,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  ConfirmedReservation,
-  Reservation,
-} from '../../interfaces/reservation';
+import { ConfirmedReservation } from '../../interfaces/reservation';
 import { UserPlayer } from '../../../../core/interfaces/user';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
 import { Team } from '../../../team/interfaces/team';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
-import { Field } from '../../../field/interfaces/field';
-import { FieldService } from '../../../field/services/field.service';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-reservation-form',
@@ -29,6 +25,7 @@ import { FieldService } from '../../../field/services/field.service';
     RouterModule,
     ReactiveFormsModule,
     TimeFormatPipe,
+    LoadingComponent,
   ],
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss',
@@ -42,6 +39,7 @@ export class ReservationFormComponent {
   verifiedReservation = false;
   today: string = '';
   loading: boolean = false;
+  loadingReservation: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,7 +48,7 @@ export class ReservationFormComponent {
     private authService: AuthService,
     private reservationService: ReservationService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     const today = new Date();
@@ -91,13 +89,12 @@ export class ReservationFormComponent {
 
   verifyReservation() {
     if (this.formReservation.valid) {
-
       this.loading = true;
 
       const reservationData = {
         ...this.formReservation.value,
         teamId: this.team.id,
-        fieldId: this.fieldId
+        fieldId: this.fieldId,
       };
 
       this.reservationService
@@ -139,6 +136,7 @@ export class ReservationFormComponent {
       buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed && this.confirmedReservation) {
+        this.loadingReservation = true;
         const reservationRequest = {
           teamId: this.confirmedReservation.team?.id,
           fieldId: this.confirmedReservation.field?.id,
@@ -151,6 +149,7 @@ export class ReservationFormComponent {
           .createReservation(reservationRequest)
           .subscribe({
             next: () => {
+              this.loadingReservation = false;
               Swal.fire({
                 title: 'Reserva creada',
                 text: `Has creado una reserva para el día ${reservationRequest.reservationDate}.`,
@@ -161,11 +160,11 @@ export class ReservationFormComponent {
               this.router.navigate(['/dashboard/reservation/list/team']);
             },
             error: (err) => {
+              this.loadingReservation = false;
               Swal.fire('Error', err.error.message, 'error');
             },
           });
       }
     });
-
   }
 }

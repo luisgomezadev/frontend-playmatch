@@ -53,7 +53,7 @@ export class FieldsListComponent {
   loadFields() {
     this.loading = true;
     this.fields = [];
-    this.fieldService.getFields().subscribe({
+    this.fieldService.getFieldsActive().subscribe({
       next: (data) => {
         this.loading = false;
         this.fields = data;

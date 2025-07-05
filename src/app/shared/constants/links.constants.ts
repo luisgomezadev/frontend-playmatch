@@ -1,21 +1,21 @@
 export const LINKS_DASHBOARD = [
-  // LINKS ADMIN
+  // LINKS FIELD_ADMIN
   {
     name: "Inicio",
     link: "home-admin",
-    role: "ADMIN",
+    role: "FIELD_ADMIN",
     iconClass: "fa-solid fa-house w-6"
   },
   {
     name: "Mi cancha",
     link: "field",
-    role: "ADMIN",
+    role: "FIELD_ADMIN",
     iconClass: "fa-solid fa-futbol w-6"
   },
   {
     name: "Reservas",
     link: "reservation/list/field",
-    role: "ADMIN",
+    role: "FIELD_ADMIN",
     iconClass: "fa-solid fa-calendar-check w-6"
   },
   // LINKS PLAYER
@@ -49,7 +49,7 @@ export const LINKS_DASHBOARD = [
   },
   {
     name: "Agregar jugadores",
-    link: "team/add/player",
+    link: "add/player",
     role: "PLAYER",
     requiredTeam: true,
     iconClass: "fa-solid fa-user-plus w-6"
@@ -61,7 +61,7 @@ export const LINKS_DASHBOARD = [
     requiredTeam: false,
     iconClass: "fa-solid fa-inbox w-6"
   },
-  // LINKS PLAYER AND ADMIN
+  // LINKS PLAYER AND FIELD_ADMIN
   {
     name: "Perfil",
     link: "profile",

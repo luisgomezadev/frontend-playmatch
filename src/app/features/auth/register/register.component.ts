@@ -112,7 +112,7 @@ export class RegisterComponent {
     let loginObservable;
 
     switch (this.registerForm.value.role) {
-      case 'ADMIN':
+      case 'FIELD_ADMIN':
         const { role: adminRole, ...adminData } = formData;
         loginObservable = this.authService.registerAdmin(adminData);
         break;

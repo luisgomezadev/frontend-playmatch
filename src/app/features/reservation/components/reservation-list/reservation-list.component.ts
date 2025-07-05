@@ -11,6 +11,7 @@ import { ButtonActionComponent } from '../../../../shared/components/button-acti
 import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
+import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 
 @Component({
   selector: 'app-reservation-list',
@@ -23,7 +24,8 @@ import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
     StatusReservationPipe,
     LoadingComponent,
     MoneyFormatPipe,
-    TimeFormatPipe
+    TimeFormatPipe,
+    ReservationCalendarComponent
   ],
   templateUrl: './reservation-list.component.html',
   styleUrl: './reservation-list.component.scss',
@@ -31,6 +33,11 @@ import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
 export class ReservationListComponent {
   @Input() reservations!: Reservation[];
   @Input() fromDetail: string = '';
+
+  calendarView: boolean = false;
+
+  groupedReservations: { [date: string]: any[] } = {};
+  groupedDates: string[] = [];
 
   reservationList: Reservation[] = [];
   fieldId!: number;
@@ -68,6 +75,7 @@ export class ReservationListComponent {
     if (this.reservations) {
       this.listOfDetailsField = true;
       this.reservationList = this.reservations;
+      this.groupReservationsByDate();
     } else {
       this.reservationBy = this.route.snapshot.paramMap.get('var')!;
       if (this.isReservationField()) {
@@ -103,6 +111,18 @@ export class ReservationListComponent {
     return 'team' in user;
   }
 
+  groupReservationsByDate(): void {
+    const grouped = this.reservationList.reduce((acc, reservation) => {
+      const date = reservation.reservationDate;
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(reservation);
+      return acc;
+    }, {} as { [date: string]: any[] });
+
+    this.groupedReservations = grouped;
+    this.groupedDates = Object.keys(grouped).sort();
+  }
+
   isOwnerTeam(reservation: Reservation): boolean {
     return this.isUserPlayer(this.user) && this.user.id == reservation.team?.ownerId;
   }
@@ -113,6 +133,7 @@ export class ReservationListComponent {
       next: (data) => {
         this.loading = false;
         this.reservationList = data;
+        this.groupReservationsByDate();
       },
       error: (err) => {
         this.loading = false;
@@ -127,6 +148,7 @@ export class ReservationListComponent {
       next: (data) => {
         this.loading = false;
         this.reservationList = data;
+        this.groupReservationsByDate();
       },
       error: (err) => {
         this.loading = false;
@@ -192,7 +214,7 @@ export class ReservationListComponent {
     });
   }
 
-  cancelReservation(reservationId: number, teamName?: string) {
+  cancelReservation(reservationId: number) {
     Swal.fire({
       title: '¿Estás seguro de cancelar la reserva?',
       text: `Esta acción cancelará la reserva permanentemente.`,

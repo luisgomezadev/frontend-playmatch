@@ -11,6 +11,7 @@ export interface Field {
   closingHour: string;
   status: Status;
   admin?: User;
+  imageUrl: string;
   reservations: Reservation[]
 }
 

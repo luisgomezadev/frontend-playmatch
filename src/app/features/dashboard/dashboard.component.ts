@@ -5,14 +5,15 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { AdminService } from './admin/services/admin.service';
 import { Field } from '../field/interfaces/field';
-import { User, UserAdmin, UserPlayer } from '../../core/interfaces/user';
+import { UserAdmin, UserPlayer } from '../../core/interfaces/user';
 import { LINKS_DASHBOARD } from '../../shared/constants/links.constants';
 import { PlayerService } from './player/services/player.service';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, LoadingComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -28,18 +29,18 @@ export class DashboardComponent {
     private authService: AuthService,
     private adminService: AdminService,
     private playerService: PlayerService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const claims = this.authService.getClaimsFromToken();
     if (claims) {
       const email = claims.sub;
       const role = claims.role;
-      if (role === 'ADMIN') {
+      if (role === 'FIELD_ADMIN') {
         this.adminService.getAdminByEmail(email).subscribe({
           next: (admin: UserAdmin) => {
             this.loading = false;
-            this.userActive = { ...admin, role: 'ADMIN' };
+            this.userActive = { ...admin, role: 'FIELD_ADMIN' };
             this.authService.setUser(admin);
             this.loadLinks();
           },
@@ -81,7 +82,7 @@ export class DashboardComponent {
   }
 
   public isUserAdmin(user: any): user is UserAdmin {
-    return user.role === 'ADMIN';
+    return user.role === 'FIELD_ADMIN';
   }
 
   public isUserPlayer(user: any): user is UserPlayer {

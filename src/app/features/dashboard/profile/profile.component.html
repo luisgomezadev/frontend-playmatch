@@ -7,64 +7,55 @@
       </p>
     </header>
 
-    <div class="grid grid-cols-1 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <article
-        class="flex md:items-center flex-col md:flex-row justify-between animate-slide-down p-6 bg-white rounded-xl shadow-md">
-
+        class="animate-slide-down p-6 bg-white rounded-xl shadow-md"
+      >
         <!-- INFO PRINCIPAL -->
-        <div class="flex items-center gap-6">
-
-          <div class="shrink-0 hidden md:block">
-            <img src="/assets/profile_icon.webp" alt="{{ user.firstName }}"
-              class="w-28 h-28 object-cover rounded-full ring-2 ring-primary/30" />
+        <div class="flex flex-col items-center justify-center gap-6 h-full">
+          <div
+            class="group cursor-pointer relative overflow-hidden rounded-full ring-2 ring-primary/30"
+            (click)="showImageModal = true"
+          >
+            <img
+              [src]="getImageUrl(user)"
+              alt="{{ user.firstName }}"
+              class="size-20 md:size-28 object-cover"
+            />
+            <div
+              class="w-full h-full rounded-full bg-black/30 absolute inset-0 flex items-center justify-center flex-col gap-1 text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            >
+              <i class="fa-solid fa-camera text-white text-3xl"></i>
+              <span class="text-base leading-none">Cambiar imagen</span>
+            </div>
           </div>
 
-          <div class="flex-1 space-y-2">
-            <h2 class="text-2xl font-bold text-gray-800">
+          <div class="space-y-1 text-center">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-800">
               {{ user.firstName }} {{ user.lastName }}
             </h2>
-            <p class="text-gray-500 flex items-center gap-1 md:gap-2 text-sm md:text-base">
-              <i class="fa-solid fa-location-dot text-primary w-5 text-center"></i>
+            <p
+              class="text-gray-500 flex items-center gap-1 md:gap-2 text-sm md:text-base"
+            >
+              <i class="fa-solid fa-location-dot text-primary text-center"></i>
               {{ user.city }}, Colombia
             </p>
           </div>
         </div>
-
-        <!-- JUGADOR -->
-        @if (isUserPlayer(user)) { @if (user.team) {
-        <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:flex md:items-center">
-          <img src="/assets/team.webp" alt="{{ user.team.name }}" class="object-cover" />
-        </div>
-        <div class="mt-2 flex md:hidden items-center gap-1 md:gap-2 text-sm md:text-base">
-          <i class="fa-solid fa-shield text-primary w-5 text-center"></i>
-          <p class="text-gray-500">{{ user.team.name }}</p>
-        </div>
-        }@else {
-        <div class="mt-2 flex md:hidden items-center gap-1 md:gap-2 text-sm md:text-base">
-          <i class="fa-solid fa-shield text-gray-500 w-5 text-center"></i>
-          <p class="text-gray-500">Sin equipo</p>
-        </div>
-        } }
-
-        <!-- ADMIN -->
-        @if (isUserAdmin(user)) { @if (user.field) {
-        <div class="shrink-0 md:w-32 md:h-32 w-20 h-20 hidden md:flex md:items-center">
-          <img src="/assets/cancha.webp" alt="{{ user.field.name }}" class="object-cover" />
-        </div>
-        <div class="mt-2 flex md:hidden items-center gap-1 md:gap-2 text-sm md:text-base">
-          <i class="fa-solid fa-futbol text-primary w-5 text-center"></i>
-          <p class="text-gray-500">{{ user.field.name }}</p>
-        </div>
-        }@else {
-        <div class="mt-2 flex md:hidden items-center gap-1 md:gap-2 text-sm md:text-base">
-          <i class="fa-solid fa-futbol text-gray-500 w-5 text-center"></i>
-          <p class="text-gray-500">Sin cancha</p>
-        </div>
-        } }
       </article>
 
       <!-- Datos del perfil -->
-      <article class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-slide-down p-6 bg-white rounded-xl shadow-md">
+      <article
+        class="space-y-6 animate-slide-down p-6 bg-white rounded-xl shadow-md"
+      >
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Información del perfil</h3>
+        <div class="space-y-1">
+          <p class="text-sm text-gray-500 font-semibold">Correo electrónico</p>
+          <p class="text-base text-gray-700 flex items-center gap-2">
+            <i class="fa-regular fa-envelope"></i>
+            {{ user.email }}
+          </p>
+        </div>
         <div class="space-y-1">
           <p class="text-sm text-gray-500 font-semibold">Edad</p>
           <p class="text-base text-gray-700">{{ user.age }} años</p>
@@ -73,24 +64,66 @@
           <p class="text-sm text-gray-500 font-semibold">Celular</p>
           <p class="text-primary text-base font-medium flex items-center gap-1">
             <i class="fa-solid fa-mobile-screen-button"></i>
-            +57 {{ user.cellphone }}
+            {{ user.cellphone }}
           </p>
         </div>
         <div class="space-y-1">
           <p class="text-sm text-gray-500 font-semibold">Documento</p>
           <p class="text-base text-gray-700 flex items-center">
-            <span class="bg-gray-200 text-xs font-semibold px-2 py-0.5 rounded-full mr-1">{{ user.documentType }}</span>
+            <span
+              class="bg-gray-200 text-xs font-semibold px-2 py-0.5 rounded-full mr-1"
+              >{{ user.documentType }}</span
+            >
             {{ user.documentNumber }}
-          </p>
-        </div>
-        <div class="space-y-1">
-          <p class="text-sm text-gray-500 font-semibold">Correo electrónico</p>
-          <p class="text-base text-gray-700 flex items-center gap-2">
-            <i class="fa-regular fa-envelope"></i>
-            {{ user.email }}
           </p>
         </div>
       </article>
     </div>
   </div>
 </section>
+
+<!-- MODAL DE ACTUALIZACIÓN DE IMAGEN -->
+@if (showImageModal) {
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+>
+  <div class="bg-white rounded-xl p-6 shadow-xl w-full max-w-md relative mx-5">
+    <h2 class="text-xl font-bold text-gray-700 mb-4">
+      Actualizar foto de perfil
+    </h2>
+
+    <input
+      type="file"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+      class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-primary-700 hover:file:bg-green-100 cursor-pointer"
+    />
+
+    @if (imagePreview) {
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-500 mb-2">Previsualización:</p>
+      <img
+        [src]="imagePreview"
+        alt="Preview"
+        class="w-32 h-32 object-cover rounded-full mx-auto border border-gray-300"
+      />
+    </div>
+    }
+
+    <div class="flex justify-center mt-6 space-x-2">
+      <button-action
+        (clicked)="onCancelImageUpload()"
+        text="Cancelar"
+        color="black"
+      ></button-action>
+      <button-action
+        (clicked)="onUploadImage()"
+        color="primary"
+        text="Actualizar imagen"
+        [loading]="loading"
+        [disabled]="!selectedFile"
+      ></button-action>
+    </div>
+  </div>
+</div>
+}

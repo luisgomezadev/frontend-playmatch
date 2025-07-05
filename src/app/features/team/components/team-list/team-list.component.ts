@@ -114,4 +114,10 @@ export class TeamListComponent {
         },
       })
   }
+
+  getImageUrl(team: Team): string {
+    return team.imageUrl?.startsWith('http')
+      ? team.imageUrl
+      : '/assets/team.webp';
+  }
 }

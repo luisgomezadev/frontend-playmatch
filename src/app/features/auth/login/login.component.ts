@@ -27,7 +27,7 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['Contra-12345', Validators.required],
       role: ['', Validators.required],
     });
   }
@@ -56,13 +56,14 @@ export class LoginComponent {
 
     const handleSuccess = () => {
       this.loading = false;
-      this.router.navigate(['/dashboard/home-' + role.toLowerCase()]);
+      const link = role === 'FIELD_ADMIN' ? 'admin' : 'player';
+      this.router.navigate(['/dashboard/home-' + link]);
     };
 
     let loginObservable;
 
     switch (role) {
-      case 'ADMIN':
+      case 'FIELD_ADMIN':
         loginObservable = this.authService.loginAdmin(email, password);
         break;
       case 'PLAYER':

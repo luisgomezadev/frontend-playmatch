@@ -9,5 +9,6 @@ export interface Team {
   maxPlayers: number;
   ownerId: number;
   members: UserPlayer[];
+  imageUrl: string;
   reservations: Reservation[];
 }

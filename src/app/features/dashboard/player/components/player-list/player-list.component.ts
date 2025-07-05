@@ -14,7 +14,7 @@ import { LoadingComponent } from "../../../../../shared/components/loading/loadi
   styleUrl: './player-list.component.scss',
 })
 export class PlayerListComponent {
-  user!: User;
+  user!: UserPlayer;
   playerList: UserPlayer[] = [];
   loading: boolean = false;
 
@@ -35,12 +35,18 @@ export class PlayerListComponent {
             this.loading = false;
             Swal.fire({
               title: 'Error',
-              text: 'Error al cargar la lista de jugadores',
+              text: err.error.message || 'Error al cargar la lista de jugadores',
               timer: 2000,
             });
           },
         });
       }
     });
+  }
+
+  getImageUrl(user: User): string {
+    return user.imageUrl?.startsWith('http')
+      ? user.imageUrl
+      : '/assets/profile_icon.webp';
   }
 }

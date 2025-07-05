@@ -8,31 +8,35 @@ import { Field } from '../interfaces/field';
   providedIn: 'root',
 })
 export class FieldService {
-  private url = environment.apiUrl;
+  private url = environment.apiUrl + '/field';
 
   constructor(private http: HttpClient) {}
 
   getFields(): Observable<any> {
-    return this.http.get(`${this.url}/field`);
+    return this.http.get(`${this.url}`);
+  }
+
+  getFieldsActive(): Observable<any> {
+    return this.http.get(`${this.url}/active`);
   }
 
   getFieldById(id: number): Observable<Field> {
-    return this.http.get<Field>(`${this.url}/field/${id}`);
+    return this.http.get<Field>(`${this.url}/${id}`);
   }
 
   getFieldsByAdminId(adminId: number): Observable<any> {
-    return this.http.get(`${this.url}/field/admin/${adminId}`);
+    return this.http.get(`${this.url}/admin/${adminId}`);
   }
 
   createField(field: any): Observable<any> {
-    return this.http.post(`${this.url}/field`, field);
+    return this.http.post(`${this.url}`, field);
   }
 
   updateField(field: any): Observable<any> {
-    return this.http.put(`${this.url}/field`, field);
+    return this.http.put(`${this.url}`, field);
   }
 
   deleteField(id: number): Observable<any> {
-    return this.http.delete(`${this.url}/field/${id}`);
+    return this.http.delete(`${this.url}/${id}`);
   }
 }

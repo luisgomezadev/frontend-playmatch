@@ -44,7 +44,7 @@ export const routes: Routes = [
       { path: 'team/form', component: TeamFormComponent },
       { path: 'team/form/:id', component: TeamFormComponent },
       { path: 'team/list', component: TeamListComponent },
-      { path: 'team/add/player', component: TeamAddPlayerComponent },
+      { path: 'add/player', component: TeamAddPlayerComponent },
 
       // Rutas de reserva
       { path: 'reservation/list/:var', component: ReservationListComponent },

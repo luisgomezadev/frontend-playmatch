@@ -7,11 +7,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { StatusRequestPipe } from '../../../../pipes/status-request.pipe';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import Swal from 'sweetalert2';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-team-application-list',
   standalone: true,
-  imports: [CommonModule, DatePipe, StatusRequestPipe, ButtonActionComponent],
+  imports: [CommonModule, DatePipe, StatusRequestPipe, ButtonActionComponent, LoadingComponent],
   templateUrl: './team-application-list.component.html',
   styleUrl: './team-application-list.component.scss'
 })
@@ -20,6 +21,7 @@ export class TeamApplicationListComponent {
   user!: UserPlayer;
   StatusRequest = StatusRequest;
   isOwner: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private teamApplicationService: TeamApplicationService,
@@ -32,16 +34,22 @@ export class TeamApplicationListComponent {
         this.user = user;
       }
     });
-
+    this.loading = true;
     if (this.user.team) {
       if (this.user.team.ownerId == this.user.id) {
         this.isOwner = true;
       }
       this.teamApplicationService.getTeamApplicationsByTeam(this.user.team?.id)
-        .subscribe(apps => this.applications = apps.reverse());
+        .subscribe(apps => {
+          this.applications = apps.reverse()
+          this.loading = false;
+        });
     } else {
       this.teamApplicationService.getTeamApplicationsByPlayer(this.user.id)
-        .subscribe(apps => this.applications = apps.reverse());
+        .subscribe(apps => {
+          this.applications = apps.reverse()
+          this.loading = false;
+        });
     }
   }
 

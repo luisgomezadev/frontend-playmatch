@@ -42,4 +42,10 @@ export class TeamService {
       null
     );
   }
+
+  uploadTeamImage(userId: number, file: File): Observable<Team> {
+      const formData = new FormData();
+      formData.append('file', file);
+    return this.http.post<Team>(`${this.url}/${userId}/upload-image`, formData);
+    }
 }

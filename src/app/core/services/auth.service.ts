@@ -25,7 +25,7 @@ export class AuthService {
   );
   currentUser$ = this.currentUser.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   loginPlayer(email: string, password: string): Observable<LoginResponse> {
     return this.http
@@ -57,13 +57,13 @@ export class AuthService {
       );
   }
 
-  tryRenewToken(role: 'PLAYER' | 'ADMIN'): Observable<boolean> {
+  tryRenewToken(role: 'PLAYER' | 'FIELD_ADMIN'): Observable<boolean> {
     const token = this.getToken();
     const email = this.getClaimsFromToken().sub;
 
     if (!token || !email) return of(false);
 
-    const endpoint = role === 'ADMIN' ? 'refresh/admin' : 'refresh/player';
+    const endpoint = role === 'FIELD_ADMIN' ? 'refresh/admin' : 'refresh/player';
 
     return this.http
       .post<LoginResponse>(`${this.url}/${endpoint}`, { email, token })
@@ -97,7 +97,7 @@ export class AuthService {
       })
     );
   }
-  
+
 
   logout(): void {
     this.clearToken();
@@ -192,7 +192,8 @@ export class AuthService {
     if (token && !this.isTokenExpired(token)) {
       const role = this.getClaimsFromToken().role;
       if (role) {
-        this.router.navigate(['/dashboard/home-' + role.toLowerCase()]);
+        const link = role === 'FIELD_ADMIN' ? 'admin' : 'player';
+        this.router.navigate(['/dashboard/home-' + link]);
       }
     }
   }

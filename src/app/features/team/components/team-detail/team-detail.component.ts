@@ -23,7 +23,7 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading.
     ReservationListComponent,
     PlayerTableComponent,
     WithoutTeamComponent,
-    LoadingComponent
+    LoadingComponent,
   ],
   templateUrl: './team-detail.component.html',
   styleUrl: './team-detail.component.scss',
@@ -33,15 +33,20 @@ export class TeamDetailComponent {
   team!: Team;
   teamId!: number;
   loading = false;
+  loadingImage = false;
   reservationList: Reservation[] = [];
   playerList: UserPlayer[] = [];
   teamEmpty: boolean = false;
+
+  showImageModal = false;
+  selectedFile: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private teamService: TeamService,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -125,8 +130,7 @@ export class TeamDetailComponent {
               Swal.fire({
                 icon: 'error',
                 title: 'Error al salirte del equipo',
-                text:
-                  err?.error?.message || 'No se pudo salir del equipo.',
+                text: err?.error?.message || 'No se pudo salir del equipo.',
                 confirmButtonText: 'Aceptar',
                 customClass: { confirmButton: 'swal-confirm-btn' },
                 buttonsStyling: false,
@@ -170,8 +174,7 @@ export class TeamDetailComponent {
             Swal.fire({
               icon: 'error',
               title: 'Error al eliminar el equipo',
-              text:
-                err?.error?.message || 'No se pudo eliminar el equipo.',
+              text: err?.error?.message || 'No se pudo eliminar el equipo.',
               confirmButtonText: 'Aceptar',
               customClass: { confirmButton: 'swal-confirm-btn' },
               buttonsStyling: false,
@@ -180,5 +183,100 @@ export class TeamDetailComponent {
         });
       }
     });
+  }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => (this.imagePreview = reader.result);
+    if (this.selectedFile) {
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  onCancelImageUpload() {
+    this.selectedFile = null;
+    this.imagePreview = null;
+    this.showImageModal = false;
+  }
+
+  onUploadImage() {
+    if (!this.selectedFile) return;
+
+    const file = this.selectedFile;
+
+    if (!file.type.startsWith('image/')) {
+      this.showErrorAlert(
+        'Formato no válido',
+        'Por favor, selecciona un archivo de imagen.'
+      );
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      this.showErrorAlert(
+        'Tamaño de archivo demasiado grande',
+        'El archivo debe ser menor a 2MB.'
+      );
+      return;
+    }
+    this.loadingImage = true;
+
+    this.teamService.uploadTeamImage(this.teamId, file).subscribe({
+      next: (updatedUser) => this.handleSuccess(updatedUser),
+      error: (err) => {
+        this.showErrorAlert('Error al subir la imagen', err.message);
+        this.loadingImage = false;
+      },
+    });
+  }
+
+  private handleSuccess(updatedTeam: Team) {
+    // Actualizar el observable del usuario actual
+    this.authService.setUser({
+      ...this.user,
+      team: updatedTeam,
+    });
+    this.loadingImage = false;
+    Swal.fire({
+      icon: 'success',
+      title: 'Foto Actualizada',
+      text: 'Tu imagen de perfil ha sido cambiada.',
+      confirmButtonText: 'OK',
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+      },
+      buttonsStyling: false,
+    });
+
+    // Reset modal
+    this.showImageModal = false;
+    this.selectedFile = null;
+    this.imagePreview = null;
+
+    // Asignar nuevo usuario localmente
+    this.user = {
+      ...this.user,
+      team: updatedTeam
+    };
+  }
+
+  private showErrorAlert(title: string, text: string) {
+    Swal.fire({
+      icon: 'error',
+      title,
+      text,
+      confirmButtonText: 'OK',
+      customClass: {
+        confirmButton: 'swal-confirm-btn',
+      },
+      buttonsStyling: false,
+    });
+  }
+
+  getImageUrl(team: Team): string {
+    return team.imageUrl?.startsWith('http')
+      ? team.imageUrl
+      : '/assets/team.webp';
   }
 }
