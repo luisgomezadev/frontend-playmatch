@@ -75,7 +75,7 @@ export class ButtonActionComponent {
     let base =
       'text-sm font-semibold md:px-4 md:py-2 px-2 py-1 md:rounded-xl rounded-md transition-all w-full';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
-    if (!this.disabled) base += ' hover:scale-[1.03]';
+    if (!this.disabled) base += ' hover:scale-[1.02] active:scale-[0.98]';
     const styles = {
       black: 'bg-black text-white',
       red: 'bg-red-600 text-white',

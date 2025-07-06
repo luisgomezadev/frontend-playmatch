@@ -19,7 +19,7 @@ import { CalendarOptions } from '@fullcalendar/core';
   template: `<full-calendar [options]="calendarOptions"></full-calendar>`,
   styles: [`
     :host ::ng-deep .fc-button {
-      @apply bg-primary text-white rounded-md px-4 py-2 font-semibold shadow-md;
+      @apply bg-primary text-white rounded-md px-2 py-1 font-semibold shadow-md;
     }
     :host ::ng-deep .fc-button:hover {
       @apply bg-primary cursor-pointer;
@@ -80,8 +80,8 @@ export class ReservationCalendarComponent implements OnInit, OnDestroy {
         id: res.id,
         title:
           this.reservationBy === 'field'
-            ? res.team?.name || 'Sin equipo'
-            : res.field?.name || 'Sin cancha',
+            ? 'Equipo: ' + res.team?.name || 'Sin equipo'
+            : 'Cancha: ' + res.field?.name || 'Sin cancha',
         start: `${res.reservationDate}T${res.startTime}`,
         end: `${res.reservationDate}T${res.endTime}`,
         color: this.getReservationColor(res.status),

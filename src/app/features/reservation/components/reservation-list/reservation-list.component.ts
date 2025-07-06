@@ -46,6 +46,7 @@ export class ReservationListComponent {
   user!: UserPlayer | UserAdmin;
   loading: boolean = false;
   isSmallScreen: boolean = false;
+  showFilters = false;
 
   // Filters for reservations
   filters: ReservationFilter = {};
@@ -107,6 +108,7 @@ export class ReservationListComponent {
 
   checkScreenSize(): void {
     this.isSmallScreen = window.innerWidth < 768;
+    this.showFilters = !this.isSmallScreen; 
   }
 
   public isReservationTeam(): boolean {
