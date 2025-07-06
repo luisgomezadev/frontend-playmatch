@@ -1,5 +1,5 @@
 <section class="p-8 bg-gray-100 min-h-screen">
-  <div class="max-w-6xl mx-auto space-y-8">
+  <div class="space-y-8">
     <header class="bg-white p-6 rounded-xl shadow-md">
       <div class="flex justify-between items-center gap-x-10">
         <div>
@@ -10,34 +10,21 @@
             Aquí puedes hacer una reserva, llena la información requerida.
           </p>
         </div>
-        <button-action
-          text="Volver"
-          icon="fa-solid fa-backward"
-          [hasIcon]="true"
-          color="black"
-          (clicked)="goBack()"
-        >
+        <button-action text="Volver" icon="fa-solid fa-backward" [hasIcon]="true" color="black" (clicked)="goBack()">
         </button-action>
       </div>
     </header>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Columna 1: Formulario -->
-      <article
-        class="bg-white px-6 py-6 rounded-xl shadow-md space-y-4"
-        [formGroup]="formReservation"
-      >
+      <article class="bg-white px-6 py-6 rounded-xl shadow-md space-y-4" [formGroup]="formReservation">
         <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">
           Formulario de reserva
         </h3>
 
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1">Fecha de reserva</label>
-          <input
-            type="date"
-            formControlName="reservationDate"
-            [min]="today"
-            class="w-full px-4 py-2 bg-gray-400/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200"
-          />
+          <input type="date" formControlName="reservationDate" [min]="today"
+            class="w-full px-4 py-2 bg-gray-400/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200" />
           @if (formReservation.get('reservationDate')?.invalid &&
           formReservation.get('reservationDate')?.touched) {
           <div class="text-red-500 text-sm">
@@ -47,12 +34,8 @@
         </div>
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1">Hora de inicio</label>
-          <input
-            type="time"
-            formControlName="startTime"
-            step="1800"
-            class="w-full px-4 py-2 bg-gray-400/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200"
-          />
+          <input type="time" formControlName="startTime" step="1800"
+            class="w-full px-4 py-2 bg-gray-400/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200" />
           @if (formReservation.get('startTime')?.invalid &&
           formReservation.get('startTime')?.touched) {
           <div class="text-red-500 text-sm">
@@ -62,10 +45,8 @@
         </div>
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1">Horas de reserva</label>
-          <select
-            formControlName="hours"
-            class="w-full px-4 py-2 bg-gray-400/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200"
-          >
+          <select formControlName="hours"
+            class="w-full px-4 py-2 bg-gray-400/10 rounded-lg focus:outline-none focus:ring-1 focus:ring-green-400 transition-all duration-200">
             <option value="" disabled selected>Seleccione una opción</option>
             <option value="1">1 hora</option>
             <option value="2">2 horas</option>
@@ -81,12 +62,8 @@
         </div>
 
         <div class="md:flex md:justify-end">
-          <button-action
-            text="Verificar disponibilidad"
-            color="primary"
-            [loading]="loading"
-            (clicked)="verifyReservation()"
-          ></button-action>
+          <button-action text="Verificar disponibilidad" color="primary" [loading]="loading"
+            (clicked)="verifyReservation()"></button-action>
         </div>
       </article>
 
@@ -99,9 +76,7 @@
       </div>
       } @else { @if (confirmedReservation) {
       <article class="bg-white p-6 rounded-2xl shadow-md space-y-5 flex flex-col">
-        <h3
-          class="text-xl md:text-2xl font-semibold text-primary flex items-center gap-2"
-        >
+        <h3 class="text-xl md:text-2xl font-semibold text-primary flex items-center gap-2">
           Resumen de reserva
         </h3>
 
@@ -135,18 +110,10 @@
 
         <div class="pt-4 flex gap-3">
           <div class="flex-1">
-            <button-action
-              text="Confirmar reserva"
-              color="blue"
-              (clicked)="confirmReservation()"
-            ></button-action>
+            <button-action text="Confirmar reserva" color="blue" (clicked)="confirmReservation()"></button-action>
           </div>
           <div class="flex-1">
-            <button-action
-              text="Cancelar"
-              color="red"
-              (clicked)="cancelReservation()"
-            ></button-action>
+            <button-action text="Cancelar" color="red" (clicked)="cancelReservation()"></button-action>
           </div>
         </div>
       </article>
@@ -163,5 +130,5 @@
   </div>
 </section>
 @if (loadingReservation) {
-  <loading-component text="Creando reserva, espere un momento..." />
+<loading-component text="Creando reserva, espere un momento..." />
 }

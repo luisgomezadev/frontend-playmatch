@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ConfirmedReservation, Reservation, StatusReservation } from '../interfaces/reservation';
+import { ReservationFilter } from '../interfaces/reservation';
 
 @Injectable({
   providedIn: 'root',
@@ -66,6 +67,24 @@ export class ReservationService {
 
   getCountCanceledByField(fieldId: number): Observable<any> {
     return this.http.get(`${this.url}/field/${fieldId}/canceled`);
+  }
+
+  getReservationFiltered(filters: ReservationFilter): Observable<Reservation[]> {
+    let params = new HttpParams();
+
+    if (filters.date) {
+      params = params.set('date', filters.date);
+    }
+    if (filters.status) {
+      params = params.set('status', filters.status);
+    }
+    if (filters.teamId != null) {
+      params = params.set('teamId', filters.teamId.toString());
+    }
+    if (filters.fieldId != null) {
+      params = params.set('fieldId', filters.fieldId.toString());
+    }
+    return this.http.get<Reservation[]>(`${this.url}/filter`, { params });
   }
 
   getReservationAvailability(

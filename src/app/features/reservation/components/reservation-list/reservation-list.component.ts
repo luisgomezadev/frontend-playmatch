@@ -1,17 +1,18 @@
 import { Component, Input } from '@angular/core';
-import { Reservation, StatusReservation } from '../../interfaces/reservation';
+import { Reservation, ReservationFilter, StatusReservation } from '../../interfaces/reservation';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { ReservationService } from '../../services/reservation.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
-import { User, UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
+import { UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
 import Swal from 'sweetalert2';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
 import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reservation-list',
@@ -25,6 +26,7 @@ import { ReservationCalendarComponent } from '../reservation-calendar/reservatio
     LoadingComponent,
     MoneyFormatPipe,
     TimeFormatPipe,
+    ReactiveFormsModule,
     ReservationCalendarComponent
   ],
   templateUrl: './reservation-list.component.html',
@@ -36,30 +38,45 @@ export class ReservationListComponent {
 
   calendarView: boolean = false;
 
-  groupedReservations: { [date: string]: any[] } = {};
-  groupedDates: string[] = [];
-
   reservationList: Reservation[] = [];
   fieldId!: number;
   teamId!: number;
   reservationBy!: string;
-  StatusReservation = StatusReservation;
   listOfDetailsField = false;
   user!: UserPlayer | UserAdmin;
   loading: boolean = false;
+  isSmallScreen: boolean = false;
 
+  // Filters for reservations
+  filters: ReservationFilter = {};
+  formFilter!: FormGroup;
+
+  // Variables for modal
   selectedItem: any = null;
   selectedType: 'team' | 'field' | null = null;
   showModal = false;
+
+  // Enum for reservation status
+  StatusReservation = StatusReservation;
 
   constructor(
     private reservationService: ReservationService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
+
+    this.checkScreenSize();
+    window.addEventListener('resize', () => this.checkScreenSize());
+
+    this.formFilter = this.fb.group({
+      reservationDate: [''],
+      status: [''],
+    });
+
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
@@ -75,16 +92,21 @@ export class ReservationListComponent {
     if (this.reservations) {
       this.listOfDetailsField = true;
       this.reservationList = this.reservations;
-      this.groupReservationsByDate();
     } else {
       this.reservationBy = this.route.snapshot.paramMap.get('var')!;
       if (this.isReservationField()) {
-        this.getReservationsField();
+        this.filters = { fieldId: this.fieldId };
+        this.getReservations();
       }
       if (this.isReservationTeam()) {
-        this.getReservationsTeam();
+        this.filters = { teamId: this.teamId };
+        this.getReservations();
       }
     }
+  }
+
+  checkScreenSize(): void {
+    this.isSmallScreen = window.innerWidth < 768;
   }
 
   public isReservationTeam(): boolean {
@@ -111,29 +133,16 @@ export class ReservationListComponent {
     return 'team' in user;
   }
 
-  groupReservationsByDate(): void {
-    const grouped = this.reservationList.reduce((acc, reservation) => {
-      const date = reservation.reservationDate;
-      if (!acc[date]) acc[date] = [];
-      acc[date].push(reservation);
-      return acc;
-    }, {} as { [date: string]: any[] });
-
-    this.groupedReservations = grouped;
-    this.groupedDates = Object.keys(grouped).sort();
-  }
-
   isOwnerTeam(reservation: Reservation): boolean {
     return this.isUserPlayer(this.user) && this.user.id == reservation.team?.ownerId;
   }
 
-  getReservationsField() {
+  getReservations() {
     this.loading = true;
-    this.reservationService.getReservationsByFieldId(this.fieldId).subscribe({
+    this.reservationService.getReservationFiltered(this.filters).subscribe({
       next: (data) => {
         this.loading = false;
         this.reservationList = data;
-        this.groupReservationsByDate();
       },
       error: (err) => {
         this.loading = false;
@@ -142,24 +151,49 @@ export class ReservationListComponent {
     });
   }
 
-  getReservationsTeam() {
-    this.loading = true;
-    this.reservationService.getReservationsByTeamId(this.teamId).subscribe({
-      next: (data) => {
-        this.loading = false;
-        this.reservationList = data;
-        this.groupReservationsByDate();
-      },
-      error: (err) => {
-        this.loading = false;
-        Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
-      },
-    });
+  toggleCalendarView(): void {
+    this.calendarView = !this.calendarView;
+    if (this.calendarView) {
+      if (this.isReservationField()) {
+        this.filters = { fieldId: this.fieldId };
+        this.getReservations();
+      }
+      if (this.isReservationTeam()) {
+        this.filters = { teamId: this.teamId };
+        this.getReservations();
+      }
+    } else {
+      this.cleanFilter();
+    }
   }
 
   showButtons(reservation: Reservation): boolean {
     return !this.listOfDetailsField && reservation.status ===
       StatusReservation.ACTIVE && (this.isOwnerTeam(reservation) || this.isUserAdmin(this.user));
+  }
+
+  filter(): void {
+    if (this.formFilter.value.reservationDate) {
+      this.filters.date = this.formFilter.value.reservationDate;
+    } else {
+      delete this.filters.date;
+    }
+    if (this.formFilter.value.status) {
+      this.filters.status = this.formFilter.value.status;
+    } else {
+      delete this.filters.status;
+    }
+    this.getReservations();
+  }
+
+  cleanFilter(): void {
+    this.formFilter.reset({
+      reservationDate: null,
+      status: ''
+    });
+    delete this.filters.date;
+    delete this.filters.status;
+    this.getReservations();
   }
 
   makeReservation(): void {
@@ -196,8 +230,7 @@ export class ReservationListComponent {
           .finalizeReservationById(reservationId)
           .subscribe({
             next: () => {
-              if (this.reservationBy == 'field') this.getReservationsField();
-              else this.getReservationsTeam();
+              this.getReservations();
               Swal.fire({
                 title: 'Reserva finalizada',
                 text: `Has finalizado la reserva de ${teamName} correctamente.`,
@@ -234,8 +267,7 @@ export class ReservationListComponent {
           .canceledReservationById(reservationId)
           .subscribe({
             next: () => {
-              if (this.reservationBy == 'field') this.getReservationsField();
-              else this.getReservationsTeam();
+              this.getReservations();
               Swal.fire({
                 title: 'Reserva cancelada',
                 text: `Has cancelado la reserva correctamente.`,
@@ -292,9 +324,9 @@ export class ReservationListComponent {
     const timeDiff = reservationDate.getTime() - today.getTime();
     const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
 
-    if (dayDiff === 0 && reservation.status != 'CANCELED') return 'HOY';
-    if (dayDiff === 1 && reservation.status != 'CANCELED') return 'MAÑANA';
-    if (dayDiff === -1 && reservation.status != 'CANCELED') return 'AYER';
+    if (dayDiff === 0) return 'HOY';
+    if (dayDiff === 1) return 'MAÑANA';
+    if (dayDiff === -1) return 'AYER';
 
     return reservationDate.toLocaleDateString();
   }

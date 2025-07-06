@@ -15,11 +15,11 @@ import { RouterModule } from '@angular/router';
       [class.cursor-not-allowed]="loading"
     >
       @if(!loading) {
-        
+
           @if (hasIcon) {
             <div class="flex items-center gap-3">
               <i [class]="icon"></i>
-              <span>{{ text }}</span>
+              @if(!onlyIcon) {<span>{{ text }}</span>}
             </div>
           } @else {
             <span>{{ text }}</span>
@@ -61,6 +61,7 @@ export class ButtonActionComponent {
   @Input() disabled: boolean = false;
   @Input() hasIcon: boolean = false;
   @Input() icon: string = '';
+  @Input() onlyIcon: boolean = false;
 
   @Output() clicked = new EventEmitter<void>();
 
@@ -73,6 +74,7 @@ export class ButtonActionComponent {
   get classes(): string {
     let base =
       'text-sm font-semibold md:px-4 md:py-2 px-2 py-1 md:rounded-xl rounded-md transition-all w-full';
+    if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
     if (!this.disabled) base += ' hover:scale-[1.03]';
     const styles = {
       black: 'bg-black text-white',

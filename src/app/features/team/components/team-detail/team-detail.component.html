@@ -1,5 +1,5 @@
 <section class="p-8 bg-gray-100 min-h-screen">
-  <div class="max-w-6xl mx-auto space-y-8">
+  <div class="space-y-8">
     <header class="bg-white p-6 rounded-xl shadow-md">
       <h1 class="text-2xl md:text-3xl font-bold text-primary">Detalles de tu equipo</h1>
       <p class="text-gray-600 mt-2 md:text-base text-sm">
@@ -13,8 +13,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <article
         class="flex flex-col md:flex-row items-center gap-8 md:gap-6 animate-slide-down p-6 bg-white rounded-xl shadow-md col-span-1 lg:col-span-2">
-        <div class="group cursor-pointer relative overflow-hidden rounded-full"
-          (click)="showImageModal = true">
+        <div class="group cursor-pointer relative overflow-hidden rounded-full" (click)="showImageModal = true">
           <img [src]="getImageUrl(team)" alt="{{ team.name }}" class="size-20 md:size-28 object-contain" />
           <div
             class="w-full h-full rounded-full bg-black/30 absolute inset-0 flex items-center justify-center flex-col gap-1 text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
