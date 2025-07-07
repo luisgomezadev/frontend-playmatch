@@ -2,7 +2,9 @@ import {
   Component,
   Input,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -29,9 +31,10 @@ import { CalendarOptions } from '@fullcalendar/core';
     }
   `]
 })
-export class ReservationCalendarComponent implements OnInit, OnDestroy {
+export class ReservationCalendarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() reservationList: any[] = [];
   @Input() reservationBy: string = '';
+  @Input() isMobile: boolean = false;
 
   calendarOptions: CalendarOptions = this.buildCalendarOptions(window.innerWidth);
 
@@ -44,6 +47,12 @@ export class ReservationCalendarComponent implements OnInit, OnDestroy {
     window.removeEventListener('resize', this.handleResize);
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['reservationList']) {
+      this.updateCalendarOptions(window.innerWidth);
+    }
+  }
+
   handleResize = (): void => {
     const width = window.innerWidth;
     this.updateCalendarOptions(width);
@@ -54,7 +63,12 @@ export class ReservationCalendarComponent implements OnInit, OnDestroy {
   }
 
   buildCalendarOptions(width: number): CalendarOptions {
-    const isMobile = width <= 1000;
+    let isMobile: boolean = false;
+    if (this.isMobile) {
+      isMobile = this.isMobile;
+    } else {
+      isMobile = width <= 1000;
+    }
 
     return {
       initialView: isMobile ? 'timeGridDay' : 'timeGridWeek',
