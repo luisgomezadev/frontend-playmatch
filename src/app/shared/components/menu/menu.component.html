@@ -18,19 +18,19 @@
         @for (link of links; track $index) {
         <a
           [routerLink]="'../' + link.link"
-          class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center animate-slide-down"
+          class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center animate-slide-down text-gray-600"
         >
           <i [class]="link.iconClass"></i>
-          <h2 class="text-lg text-gray-700 mt-2">
+          <h2 class="text-lg mt-2">
             {{ link.name }}
           </h2>
         </a>
         }
         <a
         (click)="logout()"
-          class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center animate-slide-down">
+          class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center animate-slide-down text-red-600">
           <i class="fa-solid fa-right-from-bracket"></i>
-          <h2 class="text-lg text-gray-700 mt-2">
+          <h2 class="text-lg mt-2">
             Cerrar sesión
           </h2>
         </a>
