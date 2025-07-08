@@ -19,6 +19,7 @@ import { TeamAddPlayerComponent } from './features/team/components/team-add-play
 import { ReservationFormComponent } from './features/reservation/components/reservation-form/reservation-form.component';
 import { ProfileFormComponent } from './features/dashboard/profile/profile-form/profile-form.component';
 import { TeamApplicationListComponent } from './features/team-application/components/team-application-list/team-application-list.component';
+import { MenuComponent } from './shared/components/menu/menu.component';
 
 export const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -62,6 +63,7 @@ export const routes: Routes = [
       { path: 'player/list', component: PlayerListComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/:user/:id', component: ProfileFormComponent },
+      { path: 'menu', component: MenuComponent },
     ],
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },

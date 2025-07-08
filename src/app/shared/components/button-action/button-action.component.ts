@@ -14,17 +14,15 @@ import { RouterModule } from '@angular/router';
       [class.opacity-50]="loading"
       [class.cursor-not-allowed]="loading"
     >
-      @if(!loading) {
-
-          @if (hasIcon) {
-            <div class="flex items-center gap-3">
-              <i [class]="icon"></i>
-              @if(!onlyIcon) {<span>{{ text }}</span>}
-            </div>
-          } @else {
-            <span>{{ text }}</span>
-          }
+      @if(!loading) { @if (hasIcon) {
+      <div class="flex items-center gap-3">
+        <i [class]="icon"></i>
+        @if(!onlyIcon) {<span>{{ text }}</span
+        >}
+      </div>
       } @else {
+      <span>{{ text }}</span>
+      } } @else {
       <span class="flex items-center gap-2 justify-center">
         {{ text }}
         <svg
@@ -62,6 +60,7 @@ export class ButtonActionComponent {
   @Input() hasIcon: boolean = false;
   @Input() icon: string = '';
   @Input() onlyIcon: boolean = false;
+  @Input() bigButton: boolean = false;
 
   @Output() clicked = new EventEmitter<void>();
 
@@ -73,9 +72,14 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'text-sm font-semibold md:px-4 md:py-2 px-2 py-1 md:rounded-xl rounded-md transition-all w-full';
+      'font-semibold shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-xl disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-2 py-1';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
     if (!this.disabled) base += ' hover:scale-[1.02] active:scale-[0.98]';
+    if (this.bigButton)
+      base += ' text-lg rounded-full border-2 border-gray-500';
+    else
+      base +=
+        ' text-sm w-full';
     const styles = {
       black: 'bg-black text-white',
       red: 'bg-red-600 text-white',
