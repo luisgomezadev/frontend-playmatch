@@ -67,14 +67,14 @@
     </div>
     <!-- PAGINADOR -->
     <div class="flex justify-center items-center gap-2 mt-6">
-      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer" (click)="changePage(currentPage - 1)"
+      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm" (click)="changePage(currentPage - 1)"
         [disabled]="currentPage === 0">
         ← Anterior
       </button>
 
-      <span class="px-3 font-medium">Página {{ currentPage + 1 }} de {{ players.totalPages }}</span>
+      <span class="px-3 font-medium md:text-base text-xs">Página {{ currentPage + 1 }} de {{ players.totalPages }}</span>
 
-      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer" (click)="changePage(currentPage + 1)"
+      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm" (click)="changePage(currentPage + 1)"
         [disabled]="currentPage + 1 >= players.totalPages">
         Siguiente →
       </button>

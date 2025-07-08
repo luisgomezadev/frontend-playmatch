@@ -3,10 +3,14 @@
 } @else {
 <!-- sidebar toggle visible solo en móviles -->
 <div
-  class="md:hidden bg-white border-t-2 shadow-lg p-4 flex justify-around items-center fixed bottom-0 left-0 right-0 z-50"
+  class="md:hidden bg-white border-t-2 shadow-lg flex justify-center items-center fixed bottom-0 left-0 right-0 z-50"
 >
   @for (link of links; track $index) { @if (link.viewMovil) {
-  <a [routerLink]="link.link" class="text-sm text-gray-600 flex flex-col justify-center items-center gap-1">
+  <a
+    [routerLink]="link.link"
+    routerLinkActive="text-primary border-t-2 border-primary"
+    class="flex-1 text-xs text-gray-600 flex flex-col justify-center items-center gap-1 py-4 px-2"
+  >
     <i [class]="link.iconClass"></i>
     <span>{{ link.name }}</span></a
   >
@@ -49,8 +53,7 @@
         </button>
       </div>
       <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0">
-        @for (link of links; track $index) {
-          @if (link.viewDesktop) {
+        @for (link of links; track $index) { @if (link.viewDesktop) {
         <li>
           <a
             (click)="closeSidebar()"
@@ -62,8 +65,7 @@
             <span>{{ link.name }}</span>
           </a>
         </li>
-      }
-        }
+        } }
         <li>
           <a
             (click)="closeSidebar()"
