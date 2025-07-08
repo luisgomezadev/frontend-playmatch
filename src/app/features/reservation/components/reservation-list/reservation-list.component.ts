@@ -50,7 +50,7 @@ export class ReservationListComponent {
   user!: UserPlayer | UserAdmin;
   loading: boolean = false;
   isSmallScreen: boolean = false;
-  showFilters = false;
+  showFilters: boolean = false;
 
   // Filters for reservations
   filters: ReservationFilter = {};
@@ -200,6 +200,7 @@ export class ReservationListComponent {
     if (status) this.filters.status = status;
     else delete this.filters.status;
 
+    this.showFilters = false;
     this.getReservations();
   }
 
@@ -210,6 +211,7 @@ export class ReservationListComponent {
     });
     delete this.filters.date;
     delete this.filters.status;
+    this.showFilters = false;
     this.getReservations();
   }
 
