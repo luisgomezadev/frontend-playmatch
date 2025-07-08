@@ -1,5 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { Reservation, ReservationFilter, StatusReservation } from '../../interfaces/reservation';
+import {
+  Reservation,
+  ReservationFilter,
+  StatusReservation,
+} from '../../interfaces/reservation';
 import { CommonModule } from '@angular/common';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { ReservationService } from '../../services/reservation.service';
@@ -27,7 +31,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
     MoneyFormatPipe,
     TimeFormatPipe,
     ReactiveFormsModule,
-    ReservationCalendarComponent
+    ReservationCalendarComponent,
   ],
   templateUrl: './reservation-list.component.html',
   styleUrl: './reservation-list.component.scss',
@@ -66,10 +70,9 @@ export class ReservationListComponent {
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
 
@@ -95,15 +98,21 @@ export class ReservationListComponent {
       this.reservationList = this.reservations;
     } else {
       this.reservationBy = this.route.snapshot.paramMap.get('var')!;
-      if (this.isReservationField()) {
-        this.filters = { fieldId: this.fieldId };
-        this.getReservations();
-      }
-      if (this.isReservationTeam()) {
-        this.filters = { teamId: this.teamId };
-        this.getReservations();
-      }
+      this.setFiltersAndFetchReservations();
     }
+  }
+
+  get isFieldView(): boolean {
+    return this.reservationBy === 'field' || this.fromDetail === 'field';
+  }
+
+  private setFiltersAndFetchReservations(): void {
+    if (this.isReservationField()) {
+      this.filters = { fieldId: this.fieldId };
+    } else if (this.isReservationTeam()) {
+      this.filters = { teamId: this.teamId };
+    }
+    this.getReservations();
   }
 
   checkScreenSize(): void {
@@ -136,7 +145,9 @@ export class ReservationListComponent {
   }
 
   isOwnerTeam(reservation: Reservation): boolean {
-    return this.isUserPlayer(this.user) && this.user.id == reservation.team?.ownerId;
+    return (
+      this.isUserPlayer(this.user) && this.user.id == reservation.team?.ownerId
+    );
   }
 
   getReservations() {
@@ -148,7 +159,11 @@ export class ReservationListComponent {
       },
       error: (err) => {
         this.loading = false;
-        Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
+        Swal.fire(
+          'Error',
+          err.error.message || 'No se pudo cargar las reservas',
+          'error'
+        );
       },
     });
   }
@@ -170,28 +185,28 @@ export class ReservationListComponent {
   }
 
   showButtons(reservation: Reservation): boolean {
-    return !this.listOfDetailsField && reservation.status ===
-      StatusReservation.ACTIVE && (this.isOwnerTeam(reservation) || this.isUserAdmin(this.user));
+    return (
+      !this.listOfDetailsField &&
+      reservation.status === StatusReservation.ACTIVE &&
+      (this.isOwnerTeam(reservation) || this.isUserAdmin(this.user))
+    );
   }
 
   filter(): void {
-    if (this.formFilter.value.reservationDate) {
-      this.filters.date = this.formFilter.value.reservationDate;
-    } else {
-      delete this.filters.date;
-    }
-    if (this.formFilter.value.status) {
-      this.filters.status = this.formFilter.value.status;
-    } else {
-      delete this.filters.status;
-    }
+    const { reservationDate, status } = this.formFilter.value;
+    if (reservationDate) this.filters.date = reservationDate;
+    else delete this.filters.date;
+
+    if (status) this.filters.status = status;
+    else delete this.filters.status;
+
     this.getReservations();
   }
 
   cleanFilter(): void {
     this.formFilter.reset({
       reservationDate: null,
-      status: ''
+      status: '',
     });
     delete this.filters.date;
     delete this.filters.status;
@@ -212,51 +227,65 @@ export class ReservationListComponent {
     }
   }
 
-  finalizeReservation(reservationId: number, teamName?: string) {
-    Swal.fire({
+  finalizeReservation(reservationId: number, teamName?: string): void {
+    this.showConfirmationAlert({
       title: '¿Estás seguro de finalizar reserva?',
       text: `La reserva de ${teamName} aún no finaliza`,
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, finalizar',
-      cancelButtonText: 'No',
-      customClass: {
-        confirmButton: 'swal-confirm-btn',
-        cancelButton: 'swal-cancel-btn',
-      },
-      buttonsStyling: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
+      confirmText: 'Sí, finalizar',
+      onConfirm: () => {
         this.reservationService
           .finalizeReservationById(reservationId)
           .subscribe({
-            next: () => {
-              this.getReservations();
-              Swal.fire({
-                title: 'Reserva finalizada',
-                text: `Has finalizado la reserva de ${teamName} correctamente.`,
-                icon: 'success',
-                customClass: { confirmButton: 'swal-confirm-btn' },
-                buttonsStyling: false,
-              });
-            },
-            error: (err) => {
-              Swal.fire('Error', err.error.message, 'error');
-            }
+            next: () =>
+              this.handleSuccess(
+                `Has finalizado la reserva de ${teamName} correctamente.`
+              ),
+            error: (err) => Swal.fire('Error', err.error.message, 'error'),
           });
-      }
+      },
     });
   }
 
-  cancelReservation(reservationId: number) {
-    Swal.fire({
+  cancelReservation(reservationId: number): void {
+    this.showConfirmationAlert({
       title: '¿Estás seguro de cancelar la reserva?',
       text: `Esta acción cancelará la reserva permanentemente.`,
+      confirmText: 'Sí, cancelar',
+      onConfirm: () => {
+        this.reservationService
+          .canceledReservationById(reservationId)
+          .subscribe({
+            next: () =>
+              this.handleSuccess(`Has cancelado la reserva correctamente.`),
+            error: (err) => Swal.fire('Error', err.error.message, 'error'),
+          });
+      },
+    });
+  }
+
+  private handleSuccess(message: string): void {
+    this.getReservations();
+    Swal.fire({
+      title: message,
+      icon: 'success',
+      customClass: { confirmButton: 'swal-confirm-btn' },
+      buttonsStyling: false,
+    });
+  }
+
+  private showConfirmationAlert(options: {
+    title: string;
+    text: string;
+    confirmText: string;
+    onConfirm: () => void;
+  }): void {
+    Swal.fire({
+      title: options.title,
+      text: options.text,
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, cancelar',
+      confirmButtonText: options.confirmText,
       cancelButtonText: 'No',
       customClass: {
         confirmButton: 'swal-confirm-btn',
@@ -264,25 +293,7 @@ export class ReservationListComponent {
       },
       buttonsStyling: false,
     }).then((result) => {
-      if (result.isConfirmed) {
-        this.reservationService
-          .canceledReservationById(reservationId)
-          .subscribe({
-            next: () => {
-              this.getReservations();
-              Swal.fire({
-                title: 'Reserva cancelada',
-                text: `Has cancelado la reserva correctamente.`,
-                icon: 'success',
-                customClass: { confirmButton: 'swal-confirm-btn' },
-                buttonsStyling: false,
-              });
-            },
-            error: (err) => {
-              Swal.fire('Error', err.error.message, 'error');
-            }
-          });
-      }
+      if (result.isConfirmed) options.onConfirm();
     });
   }
 

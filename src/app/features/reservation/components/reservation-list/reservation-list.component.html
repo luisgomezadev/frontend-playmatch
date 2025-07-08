@@ -94,7 +94,7 @@
               class="text-xs text-gray-400 uppercase font-medium tracking-wide"
             >
               {{
-                reservationBy == "field" || fromDetail == "field"
+                isFieldView
                   ? "Equipo"
                   : "Cancha"
               }}
@@ -108,7 +108,7 @@
               "
             >
               {{
-                reservationBy == "field" || fromDetail == "field"
+                isFieldView
                   ? reservation.team?.name || "Sin equipo asignado"
                   : reservation.field?.name || "Sin cancha asignada"
               }}
