@@ -108,7 +108,7 @@ export class ReservationListComponent {
 
   checkScreenSize(): void {
     this.isSmallScreen = window.innerWidth < 768;
-    this.showFilters = !this.isSmallScreen; 
+    this.showFilters = !this.isSmallScreen;
   }
 
   public isReservationTeam(): boolean {

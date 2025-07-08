@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      @for (player of playerList; track player.id) {
+      @for (player of players.content; track player.id) {
       <article
         class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-center text-center space-y-3 animate-slide-down">
         <img [src]="getImageUrl(player)" alt="{{ player.firstName }}"
@@ -64,6 +64,20 @@
         </div>
       </article>
       }
+    </div>
+    <!-- PAGINADOR -->
+    <div class="flex justify-center items-center gap-2 mt-6">
+      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer" (click)="changePage(currentPage - 1)"
+        [disabled]="currentPage === 0">
+        ← Anterior
+      </button>
+
+      <span class="px-3 font-medium">Página {{ currentPage + 1 }} de {{ players.totalPages }}</span>
+
+      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer" (click)="changePage(currentPage + 1)"
+        [disabled]="currentPage + 1 >= players.totalPages">
+        Siguiente →
+      </button>
     </div>
     }
   </div>

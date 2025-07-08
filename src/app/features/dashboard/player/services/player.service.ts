@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { User, UserPlayer } from '../../../../core/interfaces/user';
+import { PagedResponse } from '../../../../core/interfaces/paged-response';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +13,9 @@ export class PlayerService {
 
   constructor(private http: HttpClient) {}
 
-  getPlayers(): Observable<UserPlayer[]> {
-    return this.http.get<UserPlayer[]>(`${this.url}`);
+  getPlayers(page: number, size: number): Observable<PagedResponse<UserPlayer>> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<PagedResponse<UserPlayer>>(this.url, { params });
   }
 
   getPlayerById(id: number | undefined): Observable<UserPlayer> {
