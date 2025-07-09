@@ -75,6 +75,10 @@ export class DashboardComponent {
     this.links = LINKS_DASHBOARD.filter(
       (item) => item.role === this.userActive?.role || item.role === 'all'
     );
+
+    if (this.isUserPlayer(this.userActive) && !this.userActive.team) {
+      this.links = this.links.filter((item) => item.requiredTeam !== true)
+    }
   }
 
   public isUserAdmin(user: any): user is UserAdmin {
