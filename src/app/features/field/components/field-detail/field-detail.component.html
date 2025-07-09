@@ -1,148 +1,114 @@
-<section class="p-8 bg-gray-100 min-h-screen">
-  <div class="space-y-8">
+<section class="p-6 md:p-8 bg-gray-50 min-h-screen">
+  <div class="space-y-10 max-w-7xl mx-auto">
+
     <!-- Header -->
-    <header class="bg-white p-6 rounded-xl shadow-md">
-      @if (user) { @if (isOwnerField() || isUserAdmin(user)) {
-      <h1 class="text-2xl md:text-3xl font-bold text-primary">
-        Detalles de tu cancha
-      </h1>
-      <p class="text-gray-600 mt-2 md:text-base text-sm">
-        Aquí puedes gestionar tu cancha y ver últimas reservas.
-      </p>
+    <header class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+      @if (user) {
+      @if (isOwnerField() || isUserAdmin(user)) {
+      <h1 class="text-3xl font-bold text-primary tracking-tight">Detalles de tu cancha</h1>
+      <p class="text-gray-600 mt-1 text-base">Gestiona tu cancha y revisa tus reservas más recientes.</p>
       } @else {
-      <div class="flex items-center gap-4">
-        <div class="flex-1">
-          <h1 class="text-2xl md:text-3xl font-bold text-primary">
-            Detalles de la cancha
-          </h1>
-        </div>
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <h1 class="text-3xl font-bold text-primary tracking-tight">Detalles de la cancha</h1>
         @if (field) {
-        <div>
-          <button-action text="Volver" icon="fa-solid fa-backward" [hasIcon]="true" color="black" (clicked)="goBack()">
-          </button-action>
-        </div>
+        <button-action text="Volver" icon="fa-solid fa-arrow-left" [hasIcon]="true" color="black"
+          (clicked)="goBack()"></button-action>
         }
       </div>
-      <p class="text-gray-600 mt-2 md:text-base text-sm">
-        Aquí puedes ver la información de la cancha y reservarla.
-      </p>
-      } }
+      <p class="text-gray-600 mt-1 text-base">Consulta la información de la cancha y haz tu reserva.</p>
+      }
+      }
     </header>
 
-    <!-- Loading -->
+    <!-- Cargando -->
     @if (loading) {
     <loading-component text="Cargando detalles de la cancha" />
     } @else {
 
-    <!-- Cancha encontrada -->
     @if (field) {
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <article
-        class="flex flex-col md:flex-row items-center gap-4 md:gap-6 animate-slide-down p-6 bg-white rounded-xl shadow-md col-span-1 md:col-span-2">
-        <div class="shrink-0 md:w-32 w-24">
-          <img src="/assets/cancha.webp" alt="{{ field.name }}" class="object-cover rounded-2xl shadow-md" />
-        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-        <!-- Información -->
-        <div class="flex-1 w-full md:w-auto text-center md:text-start">
-          <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-3">
-            {{ field.name }}
-          </h2>
-          <span class="inline-block text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm border"
-            [ngClass]="{
-              'bg-green-100 text-green-700 border-green-300': field.status === Status.ACTIVE,
-              'bg-red-200 text-red-700 border-red-300': field.status === Status.INACTIVE
-            }">
-            {{ field.status | statusDescription }}
-          </span>
-        </div>
+        <!-- Card: Información completa de la cancha -->
+        <article class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 space-y-6">
+          <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+            <div class="flex-1 space-y-2 relative">
+              <h2 class="text-2xl font-semibold text-gray-800">{{ field.name }}</h2>
+              <span
+                class="absolute right-0 top-0 text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm border transition-colors duration-300"
+                [ngClass]="{
+                        'bg-green-100 text-green-700 border-green-300': field.status === Status.ACTIVE,
+                        'bg-red-100 text-red-700 border-red-300': field.status === Status.INACTIVE
+                      }">
+                {{ field.status | statusDescription }}
+              </span>
 
-        <!-- Botones -->
-        <div class="flex md:flex-col gap-2">
-          @if (isOwnerField()) {
-          <button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
-            [routerLink]="['/dashboard/field/form', field.id]"></button-action>
-          <!-- <button-action
-            text="Eliminar"
-            icon="fa-solid fa-trash"
-            [hasIcon]="true"
-            color="red"
-            (clicked)="deleteField()"
-          ></button-action> -->
-          } @else {
-          <button-action text="Reservar" color="primary"
-            [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
-          }
-        </div>
-      </article>
+              <div class="space-y-4 pt-4">
+                <div>
+                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                    <i class="fa-solid fa-city text-primary"></i> Ciudad
+                  </p>
+                  <p class="text-base text-gray-700">{{ field.city }}</p>
+                </div>
 
-      <article class="bg-white p-6 rounded-xl shadow-md animate-slide-down space-y-6">
-        <h3 class="text-2xl font-bold text-gray-800 mb-2">
-          Información de la Cancha
-        </h3>
+                <div>
+                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-primary"></i> Dirección
+                  </p>
+                  <p class="text-base text-gray-700">{{ field.address }}</p>
+                </div>
 
-        <div>
-          <p class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2">
-            <i class="fa-solid fa-location-dot text-primary"></i>Ciudad
-          </p>
-          <p class="text-base text-gray-700">{{ field.city }}</p>
-        </div>
+                <div>
+                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                    <i class="fa-solid fa-dollar-sign text-primary"></i> Precio por hora
+                  </p>
+                  <p class="text-base text-gray-700">{{ field.hourlyRate | moneyFormat }}</p>
+                </div>
 
-        <div>
-          <p class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2">
-            <i class="fa-solid fa-location-dot text-primary"></i>Dirección
-          </p>
-          <p class="text-base text-gray-700">{{ field.address }}</p>
-        </div>
-
-        <div>
-          <p class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2">
-            <i class="fa-solid fa-sack-dollar text-primary"></i>Precio por hora
-          </p>
-          <p class="text-base text-gray-700">
-            {{ field.hourlyRate | moneyFormat }}
-          </p>
-        </div>
-
-        <div>
-          <p class="text-sm text-gray-500 mb-1 font-semibold flex items-center gap-2">
-            <i class="fa-solid fa-clock text-primary"></i>Horario
-          </p>
-          <p class="text-base text-gray-700">
-            {{ field.openingHour | timeFormat }} A
-            {{ field.closingHour | timeFormat }}
-          </p>
-        </div>
-      </article>
-
-      <article class="bg-white p-6 rounded-xl shadow-md animate-slide-down">
-        <div class="flex items-center justify-between mb-2">
-          <h3 class="text-2xl font-bold text-gray-800 mb-2">
-            Últimas reservas
-          </h3>
-          @if (reservationList.length > 0 && isOwnerField()) {
-          <div class="w-fit">
-            <a class="text-primary hover:underline" [routerLink]="['/dashboard/reservation/list/field']">Ver todas</a>
+                <div>
+                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-primary"></i> Horario
+                  </p>
+                  <p class="text-base text-gray-700">
+                    {{ field.openingHour | timeFormat }} a {{ field.closingHour | timeFormat }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          }
-        </div>
-        <app-reservation-list [fromDetail]="'field'" [reservations]="reservationList"></app-reservation-list>
-      </article>
-    </div>
+
+          <div class="flex justify-end">
+            @if (isOwnerField()) {
+            <button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
+              [routerLink]="['/dashboard/field/form', field.id]"></button-action>
+            } @else {
+            <button-action text="Reservar cancha" color="primary" class="w-full"
+              [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
+            }
+          </div>
+        </article>
+
+        <!-- Card: Últimas reservas -->
+        <article class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-gray-800">Últimas reservas</h3>
+            @if (reservationList.length > 0 && isOwnerField()) {
+            <a class="text-sm text-primary font-medium hover:underline"
+              [routerLink]="['/dashboard/reservation/list/field']">Ver todas</a>
+            }
+          </div>
+          <app-reservation-list [fromDetail]="'field'" [reservations]="reservationList"></app-reservation-list>
+        </article>
+
+      </div>
 
     } @else {
-    <div class="text-center">
-      <h2 class="text-lg">No tienes una cancha registrada.</h2>
-      <div class="flex justify-center items-center">
-        <a routerLink="/dashboard/field/form"
-          class="p-12 border-dashed border-2 border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors duration-200 mt-12 flex items-center justify-center w-fit">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-          <span class="font-semibold">Registra una cancha</span>
-        </a>
-      </div>
+    <div class="text-center py-12">
+      <h2 class="text-lg font-medium text-gray-700">No tienes una cancha registrada.</h2>
+      <a routerLink="/dashboard/field/form"
+        class="mt-6 inline-flex items-center px-5 py-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 hover:bg-gray-100 transition-all">
+        <i class="fa-solid fa-plus mr-2"></i>
+        <span class="font-semibold">Registra una cancha</span>
+      </a>
     </div>
     } }
   </div>

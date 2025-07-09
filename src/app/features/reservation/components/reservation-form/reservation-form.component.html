@@ -3,29 +3,21 @@
     <header class="bg-white p-6 rounded-xl shadow-md">
       <div class="flex justify-between items-center gap-x-10">
         <div>
-          <h1 class="text-2xl md:text-3xl font-bold text-primary">
+          <h1 class="text-3xl font-bold text-primary tracking-tight">
             Hacer reserva
           </h1>
           <p class="text-gray-500 mt-2 text-sm md:text-base leading-relaxed">
             Llena la siguiente información para programar una nueva reserva.
           </p>
         </div>
-        <button-action
-          text="Volver"
-          icon="fa-solid fa-backward"
-          [hasIcon]="true"
-          color="black"
-          (clicked)="goBack()"
-        >
+        <button-action text="Volver" icon="fa-solid fa-backward" [hasIcon]="true" color="black" (clicked)="goBack()">
         </button-action>
       </div>
     </header>
     <div class="flex flex-col-reverse lg:flex-row gap-6 w-full">
       <!-- Columna 1: Formulario -->
-      <article
-        class="bg-white px-6 py-6 rounded-xl shadow-md space-y-8 w-full lg:max-w-sm"
-        [formGroup]="formReservation"
-      >
+      <article class="bg-white px-6 py-6 rounded-xl shadow-md space-y-8 w-full lg:max-w-sm"
+        [formGroup]="formReservation">
         <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">
           Formulario de reserva
         </h3>
@@ -34,12 +26,8 @@
           <label class="block text-sm font-medium mb-1">
             Fecha de reserva <span class="text-red-500">*</span>
           </label>
-          <input
-            type="date"
-            formControlName="reservationDate"
-            [min]="today"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-          />
+          <input type="date" formControlName="reservationDate" [min]="today"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
           @if (formReservation.get('reservationDate')?.invalid &&
           formReservation.get('reservationDate')?.touched) {
           <div class="text-red-500 text-sm">
@@ -48,15 +36,9 @@
           }
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium mb-1"
-            >Hora de inicio <span class="text-red-500">*</span></label
-          >
-          <input
-            type="time"
-            formControlName="startTime"
-            step="1800"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-          />
+          <label class="block text-sm font-medium mb-1">Hora de inicio <span class="text-red-500">*</span></label>
+          <input type="time" formControlName="startTime" step="1800"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
           @if (formReservation.get('startTime')?.invalid &&
           formReservation.get('startTime')?.touched) {
           <div class="text-red-500 text-sm">
@@ -66,10 +48,8 @@
         </div>
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1">Horas de reserva</label>
-          <select
-            formControlName="hours"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-          >
+          <select formControlName="hours"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
             <option value="" disabled selected>Seleccione una opción</option>
             <option value="1">1 hora</option>
             <option value="2">2 horas</option>
@@ -85,33 +65,19 @@
         </div>
 
         <div class="md:flex md:justify-end">
-          <button-action
-            text="Verificar disponibilidad"
-            color="primary"
-            [loading]="loading"
-            (clicked)="verifyReservation()"
-          ></button-action>
+          <button-action text="Verificar disponibilidad" color="primary" [loading]="loading"
+            (clicked)="verifyReservation()"></button-action>
         </div>
       </article>
       <!-- Columna 2: Calendario -->
-      <button-action
-        [classList]="'block lg:hidden border border-blue-500'"
-        color="blue"
-        text="Ver reservas de la cancha"
-        (clicked)="showCalendar = true"
-      />
-      <article
-        class="bg-white px-6 py-6 rounded-xl shadow-md hidden lg:block flex-1"
-      >
+      <button-action [classList]="'block lg:hidden border border-blue-500'" color="blue"
+        text="Ver reservas de la cancha" (clicked)="showCalendar = true" />
+      <article class="bg-white px-6 py-6 rounded-xl shadow-md hidden lg:block flex-1">
         <h3 class="text-xl mb-3 font-semibold">
           Reservas activas de la cancha: {{ reservations.length }}
         </h3>
         <div>
-          <app-reservation-calendar
-            [reservationList]="reservations"
-            [reservationBy]="'field'"
-            [isMobile]="true"
-          >
+          <app-reservation-calendar [reservationList]="reservations" [reservationBy]="'field'" [isMobile]="true">
           </app-reservation-calendar>
         </div>
       </article>
@@ -119,12 +85,8 @@
   </div>
 </section>
 @if (showModal && confirmedReservation) {
-<div
-  class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur px-3"
->
-  <article
-    class="bg-white rounded-2xl p-6 w-full max-w-md shadow-lg animate-fade-in"
-  >
+<div class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur px-3">
+  <article class="bg-white rounded-2xl p-6 w-full max-w-md shadow-lg animate-fade-in">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-xl font-bold text-primary">Resumen de reserva</h2>
       <button class="text-gray-500 hover:text-red-500" (click)="closeModal()">
@@ -134,67 +96,46 @@
 
     <div class="space-y-4 text-gray-700">
       <div>
-        <i class="fa-solid fa-futbol text-primary w-6"></i
-        ><strong>Cancha:</strong> {{ confirmedReservation.field?.name }}
+        <i class="fa-solid fa-futbol text-primary w-6"></i><strong>Cancha:</strong> {{ confirmedReservation.field?.name
+        }}
       </div>
       <div>
-        <i class="fa-regular fa-calendar text-primary w-6"></i
-        ><strong>Fecha:</strong> {{ confirmedReservation.reservationDate }}
+        <i class="fa-regular fa-calendar text-primary w-6"></i><strong>Fecha:</strong> {{
+        confirmedReservation.reservationDate }}
       </div>
       <div>
-        <i class="fa-regular fa-clock text-primary w-6"></i
-        ><strong>Hora inicio:</strong>
+        <i class="fa-regular fa-clock text-primary w-6"></i><strong>Hora inicio:</strong>
         {{ confirmedReservation.startTime | timeFormat }}
       </div>
       <div>
-        <i class="fa-regular fa-clock text-primary w-6"></i
-        ><strong>Hora fin:</strong>
+        <i class="fa-regular fa-clock text-primary w-6"></i><strong>Hora fin:</strong>
         {{ confirmedReservation.endTime | timeFormat }}
       </div>
       <div>
-        <i class="fa-solid fa-hourglass-half text-primary w-6"></i
-        ><strong>Duración:</strong> {{ confirmedReservation.hours }} hora(s)
+        <i class="fa-solid fa-hourglass-half text-primary w-6"></i><strong>Duración:</strong> {{
+        confirmedReservation.hours }} hora(s)
       </div>
     </div>
 
     <div class="pt-6 flex gap-3">
-      <button-action
-        text="Confirmar reserva"
-        color="blue"
-        (clicked)="confirmReservation()"
-      ></button-action>
-      <button-action
-        text="Cancelar"
-        color="red"
-        (clicked)="cancelReservation()"
-      ></button-action>
+      <button-action text="Confirmar reserva" color="blue" (clicked)="confirmReservation()"></button-action>
+      <button-action text="Cancelar" color="red" (clicked)="cancelReservation()"></button-action>
     </div>
   </article>
 </div>
 } @if (showCalendar) {
-<div
-  class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur px-3"
->
-  <article
-    class="bg-white rounded-2xl p-6 w-full max-w-md shadow-lg animate-fade-in"
-  >
+<div class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center backdrop-blur px-3">
+  <article class="bg-white rounded-2xl p-6 w-full max-w-md shadow-lg animate-fade-in">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-xl font-bold text-primary">
         Reservas activas de la cancha: {{ reservations.length }}
       </h2>
-      <button
-        class="text-gray-500 hover:text-red-500"
-        (click)="closeCalendar()"
-      >
+      <button class="text-gray-500 hover:text-red-500" (click)="closeCalendar()">
         <i class="fa-solid fa-xmark text-xl"></i>
       </button>
     </div>
 
-    <app-reservation-calendar
-      [reservationList]="reservations"
-      [reservationBy]="'field'"
-      [isMobile]="true"
-    >
+    <app-reservation-calendar [reservationList]="reservations" [reservationBy]="'field'" [isMobile]="true">
     </app-reservation-calendar>
   </article>
 </div>

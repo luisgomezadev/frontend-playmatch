@@ -1,8 +1,8 @@
 <section class="p-8 bg-gray-100 min-h-screen">
   <div class="space-y-8">
     <header class="bg-white p-6 rounded-xl shadow-md">
-      <h1 class="text-2xl md:text-3xl font-bold text-primary">Perfil</h1>
-      <p class="text-gray-600 mt-2 md:text-base text-sm">
+      <h1 class="text-3xl font-bold text-primary tracking-tight">Perfil</h1>
+      <p class="text-gray-600 mt-1 text-base">
         Aquí puedes ver tu perfil personal y modificar tu información.
       </p>
     </header>
@@ -34,32 +34,38 @@
       </article>
 
       <!-- Datos del perfil -->
-      <article class="space-y-6 animate-slide-down p-6 bg-white rounded-xl shadow-md">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Información del perfil</h3>
-        <div class="space-y-1">
-          <p class="text-sm text-gray-500 font-semibold">Correo electrónico</p>
-          <p class="text-base text-gray-700 flex items-center gap-2">
-            <i class="fa-regular fa-envelope"></i>
-            {{ user.email }}
-          </p>
-        </div>
-        <div class="space-y-1">
-          <p class="text-sm text-gray-500 font-semibold">Edad</p>
-          <p class="text-base text-gray-700">{{ user.age }} años</p>
-        </div>
-        <div class="space-y-1">
-          <p class="text-sm text-gray-500 font-semibold">Celular</p>
-          <p class="text-primary text-base font-medium flex items-center gap-1">
-            <i class="fa-solid fa-mobile-screen-button"></i>
-            {{ user.cellphone }}
-          </p>
-        </div>
-        <div class="space-y-1">
-          <p class="text-sm text-gray-500 font-semibold">Documento</p>
-          <p class="text-base text-gray-700 flex items-center">
-            <span class="bg-gray-200 text-xs font-semibold px-2 py-0.5 rounded-full mr-1">{{ user.documentType }}</span>
-            {{ user.documentNumber }}
-          </p>
+      <article class="p-6 bg-white rounded-2xl shadow-md border border-gray-200 animate-slide-down space-y-4">
+        <h3 class="text-xl font-semibold text-gray-800">Información del perfil</h3>
+
+        <div class="divide-y divide-gray-100">
+          <div class="py-3">
+            <p class="text-sm text-gray-500 font-semibold">Correo electrónico</p>
+            <p class="text-base text-gray-700 flex items-center gap-2">
+              <i class="fa-regular fa-envelope text-primary"></i>
+              {{ user.email }}
+            </p>
+          </div>
+
+          <div class="py-3">
+            <p class="text-sm text-gray-500 font-semibold">Edad</p>
+            <p class="text-base text-gray-700">{{ user.age }} años</p>
+          </div>
+
+          <div class="py-3">
+            <p class="text-sm text-gray-500 font-semibold">Celular</p>
+            <p class="text-base font-medium text-primary flex items-center gap-2">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+              {{ user.cellphone }}
+            </p>
+          </div>
+
+          <div class="py-3">
+            <p class="text-sm text-gray-500 font-semibold">Documento</p>
+            <p class="text-base text-gray-700 flex items-center gap-2">
+              <span class="bg-gray-200 text-xs font-semibold px-2 py-0.5 rounded-full">{{ user.documentType }}</span>
+              {{ user.documentNumber }}
+            </p>
+          </div>
         </div>
       </article>
     </div>

@@ -1,10 +1,10 @@
 <section class="p-8 bg-gray-100 min-h-screen">
   <div class="space-y-8">
     <header class="bg-white p-6 rounded-xl shadow-md">
-      <h1 class="text-2xl md:text-3xl font-bold text-primary">
+      <h1 class="text-3xl font-bold text-primary tracking-tight">
         Detalles de tu equipo
       </h1>
-      <p class="text-gray-600 mt-2 md:text-base text-sm">
+      <p class="text-gray-600 mt-1 text-base">
         Aquí puedes ver tu equipo o gestionar si eres dueño de uno.
       </p>
     </header>
@@ -14,21 +14,14 @@
     } @else { @if (team && !teamEmpty) {
     <div class="grid grid-cols-1 lg:grid-cols-2 grid-rows-2 gap-6">
       <article
-        class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl px-6 py-10 space-y-6 flex flex-col items-center text-center animate-slide-down col-span-1 lg:col-span-1 row-span-2"
-      >
+        class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-xl px-6 py-10 space-y-6 flex flex-col items-center text-center animate-slide-down col-span-1 lg:col-span-1 row-span-2">
         <!-- Imagen con overlay -->
         <div
           class="relative group cursor-pointer w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shadow-lg ring-2 ring-primary/30"
-          (click)="showImageModal = true"
-        >
-          <img
-            [src]="getImageUrl(team)"
-            alt="{{ team.name }}"
-            class="object-cover w-full h-full"
-          />
+          (click)="showImageModal = true">
+          <img [src]="getImageUrl(team)" alt="{{ team.name }}" class="object-cover w-full h-full" />
           <div
-            class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white"
-          >
+            class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
             <i class="fa-solid fa-camera text-2xl mb-1"></i>
             <span class="text-sm">Cambiar escudo</span>
           </div>
@@ -36,7 +29,7 @@
 
         <!-- Nombre y ubicación -->
         <div class="space-y-2">
-          <h2 class="text-2xl md:text-3xl font-bold text-primary leading-snug">
+          <h2 class="text-3xl font-bold text-primary tracking-tight leading-snug">
             {{ team.name }}
           </h2>
           <div class="flex flex-col gap-1 text-gray-600 text-sm items-center">
@@ -52,19 +45,18 @@
 
         <!-- Stats del equipo -->
         <div
-          class="flex items-center justify-center gap-4 text-sm text-gray-700 bg-gray-100 p-3 rounded-xl w-full max-w-xs"
-        >
+          class="flex items-center justify-center gap-4 text-sm text-gray-700 bg-gray-100 p-3 rounded-xl w-full max-w-xs">
           <div class="flex flex-col items-center">
             <span class="text-lg font-bold text-primary">{{
               team.maxPlayers
-            }}</span>
+              }}</span>
             <span class="text-[13px] text-gray-500">Máx. jugadores</span>
           </div>
           <div class="w-px h-8 bg-gray-300"></div>
           <div class="flex flex-col items-center">
             <span class="text-lg font-bold text-primary">{{
               playerList.length
-            }}</span>
+              }}</span>
             <span class="text-[13px] text-gray-500">Integrantes</span>
           </div>
         </div>
@@ -72,28 +64,17 @@
         <!-- Botones -->
         <div class="flex flex-col md:flex-row gap-3 w-full justify-center">
           @if (isOwnerTeam()) {
-          <button-action
-            text="Editar equipo"
-            icon="fa-solid fa-pen-to-square"
-            [hasIcon]="true"
-            color="yellow"
-            [routerLink]="['/dashboard/team/form', team.id]"
-          ></button-action>
+          <button-action text="Editar equipo" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
+            [routerLink]="['/dashboard/team/form', team.id]"></button-action>
           } @else {
-          <button-action
-            text="Salir del equipo"
-            icon="fa-solid fa-door-open"
-            [hasIcon]="true"
-            color="red"
-            (clicked)="leaveTeam()"
-          ></button-action>
+          <button-action text="Salir del equipo" icon="fa-solid fa-door-open" [hasIcon]="true" color="red"
+            (clicked)="leaveTeam()"></button-action>
           }
         </div>
       </article>
 
       <article
-        class="bg-white p-6 rounded-xl overflow-auto shadow-md animate-slide-down space-y-4 row-span-2 max-h-[30rem]"
-      >
+        class="bg-white p-6 rounded-xl overflow-auto shadow-md animate-slide-down space-y-4 row-span-2 max-h-[30rem]">
         <div class="flex items-center gap-3 mb-4">
           <i class="fa-solid fa-people-group text-primary text-2xl"></i>
           <div>
@@ -140,45 +121,27 @@
 </section>
 <!-- MODAL DE ACTUALIZACIÓN DE IMAGEN -->
 @if (showImageModal) {
-<div
-  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
   <div class="bg-white rounded-xl p-6 shadow-xl w-full max-w-md relative mx-5">
     <h2 class="text-xl font-bold text-gray-700 mb-4">
       Actualizar foto del equipo
     </h2>
 
-    <input
-      type="file"
-      accept="image/*"
-      (change)="onFileSelected($event)"
-      class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-primary-700 hover:file:bg-green-100 cursor-pointer"
-    />
+    <input type="file" accept="image/*" (change)="onFileSelected($event)"
+      class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-primary-700 hover:file:bg-green-100 cursor-pointer" />
 
     @if (imagePreview) {
     <div class="mt-4 text-center">
       <p class="text-sm text-gray-500 mb-2">Previsualización:</p>
-      <img
-        [src]="imagePreview"
-        alt="Preview"
-        class="w-32 h-32 object-cover rounded-full mx-auto border border-gray-300"
-      />
+      <img [src]="imagePreview" alt="Preview"
+        class="w-32 h-32 object-cover rounded-full mx-auto border border-gray-300" />
     </div>
     }
 
     <div class="flex justify-center mt-6 space-x-2">
-      <button-action
-        (clicked)="onCancelImageUpload()"
-        text="Cancelar"
-        color="black"
-      ></button-action>
-      <button-action
-        (clicked)="onUploadImage()"
-        color="primary"
-        text="Actualizar imagen"
-        [loading]="loadingImage"
-        [disabled]="!selectedFile"
-      ></button-action>
+      <button-action (clicked)="onCancelImageUpload()" text="Cancelar" color="black"></button-action>
+      <button-action (clicked)="onUploadImage()" color="primary" text="Actualizar imagen" [loading]="loadingImage"
+        [disabled]="!selectedFile"></button-action>
     </div>
   </div>
 </div>
