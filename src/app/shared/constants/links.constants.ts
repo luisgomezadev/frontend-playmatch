@@ -29,6 +29,7 @@ export const LINKS_DASHBOARD = [
     name: "Inicio",
     link: "home-player",
     role: "PLAYER",
+    requiredTeam: false,
     iconClass: "fa-solid fa-house",
     viewMovil: true,
     viewDesktop: true
@@ -37,6 +38,7 @@ export const LINKS_DASHBOARD = [
     name: "Mi equipo",
     link: "team",
     role: "PLAYER",
+    requiredTeam: false,
     iconClass: "fa-solid fa-shield-halved",
     viewMovil: true,
     viewDesktop: true
@@ -45,6 +47,7 @@ export const LINKS_DASHBOARD = [
     name: "Reservas",
     link: "reservation/list/team",
     role: "PLAYER",
+    requiredTeam: true,
     iconClass: "fa-solid fa-calendar",
     viewMovil: true,
     viewDesktop: true
@@ -53,6 +56,7 @@ export const LINKS_DASHBOARD = [
     name: "Ver jugadores",
     link: "player/list",
     role: "PLAYER",
+    requiredTeam: true,
     iconClass: "fa-solid fa-user-group",
     viewMovil: false,
     viewDesktop: true
@@ -61,6 +65,7 @@ export const LINKS_DASHBOARD = [
     name: "Agregar jugadores",
     link: "add/player",
     role: "PLAYER",
+    requiredTeam: true,
     iconClass: "fa-solid fa-user-plus",
     viewMovil: false,
     viewDesktop: true
@@ -69,6 +74,7 @@ export const LINKS_DASHBOARD = [
     name: "Solicitudes",
     link: "requests",
     role: "PLAYER",
+    requiredTeam: false,
     iconClass: "fa-solid fa-inbox",
     viewMovil: false,
     viewDesktop: true
