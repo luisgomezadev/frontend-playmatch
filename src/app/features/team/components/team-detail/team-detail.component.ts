@@ -241,7 +241,7 @@ export class TeamDetailComponent {
     Swal.fire({
       icon: 'success',
       title: 'Foto Actualizada',
-      text: 'Tu imagen de perfil ha sido cambiada.',
+      text: 'Tu imagen de equipo ha sido cambiada.',
       confirmButtonText: 'OK',
       customClass: {
         confirmButton: 'swal-confirm-btn',
