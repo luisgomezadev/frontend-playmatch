@@ -24,6 +24,7 @@ export class TeamFormComponent {
   editing = false;
   teamId!: number;
   loadingForm: boolean = false;
+  imageUrl: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -72,6 +73,7 @@ export class TeamFormComponent {
       next: (team) => {
         this.teamForm.patchValue(team);
         this.loadingForm = false;
+        this.imageUrl = team.imageUrl || '';
       },
       error: () => {
         this.loadingForm = false;
@@ -90,6 +92,7 @@ export class TeamFormComponent {
 
     if (this.editing) {
       teamData['id'] = this.teamId; // Añadir el ID si estamos editando
+      teamData['imageUrl'] = this.imageUrl; // Mantener la imagen actual si no se cambia
     }
 
     const request$ = this.editing

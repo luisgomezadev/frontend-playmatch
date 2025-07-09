@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { UserPlayer } from '../../../../../core/interfaces/user';
+import { User, UserPlayer } from '../../../../../core/interfaces/user';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { TeamService } from '../../../../team/services/team.service';
 import Swal from 'sweetalert2';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-player-table',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './player-table.component.html',
   styleUrl: './player-table.component.scss',
 })
@@ -33,6 +34,12 @@ export class PlayerTableComponent {
   isOwner(): boolean {
     return this.user.team?.ownerId == this.user.id;
   }
+
+  getImageUrl(user: User): string {
+      return user.imageUrl?.startsWith('http')
+        ? user.imageUrl
+        : '/assets/profile_icon.webp';
+    }
 
   deletePlayerOfTeam(player: UserPlayer) {
     Swal.fire({
