@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { User, UserPlayer } from '../../../../core/interfaces/user';
+import { UserPlayer } from '../../../../core/interfaces/user';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { TeamService } from '../../services/team.service';
 import { AuthService } from '../../../../core/services/auth.service';

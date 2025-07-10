@@ -89,8 +89,8 @@ export class ReservationListComponent implements OnInit {
     this.authService.currentUser$.subscribe((user) => {
       if (!user) return;
       this.user = user;
-      if (this.isUserAdmin(user)) this.fieldId = user.field?.id!;
-      if (this.isUserPlayer(user)) this.teamId = user.team?.id!;
+      if (this.isUserAdmin(user)) this.fieldId = user.field?.id ?? 0;
+      if (this.isUserPlayer(user)) this.teamId = user.team?.id ?? 0;
     });
   }
 

@@ -10,7 +10,6 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import Swal from 'sweetalert2';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NEIGHBORHOODS } from '../../../shared/constants/neighborhoods.constants';
 
 const passwordPattern =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#()_\-^+=])[A-Za-z\d@$!%*?&#()_\-^+=]{8,}$/;
@@ -26,6 +25,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   loading = false;
   showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -69,6 +69,10 @@ export class RegisterComponent {
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
   }
 
   onSubmit() {

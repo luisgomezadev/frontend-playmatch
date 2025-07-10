@@ -11,7 +11,6 @@ import {
 import {
   ConfirmedReservation,
   Reservation,
-  ReservationFilter,
   StatusReservation,
 } from '../../interfaces/reservation';
 import { UserPlayer } from '../../../../core/interfaces/user';

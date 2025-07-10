@@ -74,18 +74,18 @@ export class ButtonActionComponent {
     let base =
       'font-semibold shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-xl disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
-    if (!this.disabled) base += ' hover:scale-[1.02] active:scale-[0.98]';
+    if (!this.disabled) base += 'hover:shadow-lg hover:-translate-y-0.5';
     if (this.bigButton)
       base += ' text-lg rounded-full border-2 border-gray-500';
     else
       base +=
         ' text-sm w-full';
     const styles = {
-      black: 'bg-black text-white',
-      red: 'bg-red-600 text-white',
-      primary: 'bg-primary text-white',
-      blue: 'bg-blue-600 text-white',
-      yellow: 'bg-yellow-500 text-white',
+      black: 'bg-black text-white hover:shadow-gray-600',
+      red: 'bg-red-600 text-white hover:shadow-red-600',
+      primary: 'bg-primary text-white hover:shadow-green-600',
+      blue: 'bg-blue-600 text-white hover:shadow-blue-600',
+      yellow: 'bg-yellow-500 text-white hover:shadow-yellow-600',
     };
     return `${styles[this.color]} ${base}`;
   }

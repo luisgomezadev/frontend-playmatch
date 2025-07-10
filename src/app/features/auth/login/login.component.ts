@@ -19,6 +19,7 @@ import Swal from 'sweetalert2';
 export class LoginComponent {
   loginForm: FormGroup;
   loading = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,6 +35,10 @@ export class LoginComponent {
 
   ngOnInit(): void {
     this.authService.redirectIfAuthenticated();
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit() {

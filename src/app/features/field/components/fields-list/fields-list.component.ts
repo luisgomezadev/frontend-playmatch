@@ -28,6 +28,8 @@ export class FieldsListComponent {
   fields: Field[] = [];
   user!: UserPlayer;
   loading = false;
+  showModal: boolean = false;
+
 
   @Input() showHeader: boolean = true;
 
@@ -87,4 +89,23 @@ export class FieldsListComponent {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 100);
   }
+
+  openModal(): void {
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+  }
+
+  goToLogin(): void {
+    this.closeModal();
+    this.location.go('/login');
+  }
+
+  goToRegister(): void {
+    this.closeModal();
+    this.location.go('/register');
+  }
+
 }
