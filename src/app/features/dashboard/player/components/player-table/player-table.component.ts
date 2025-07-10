@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 export class PlayerTableComponent {
   @Input() players: UserPlayer[] = [];
   user!: UserPlayer;
+  maxPlayers!: number;
 
   constructor(
     private authService: AuthService,
@@ -23,6 +24,11 @@ export class PlayerTableComponent {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
+        if ('team' in user && user.team) {
+          this.maxPlayers = user.team.maxPlayers || 0;
+        } else {
+          this.maxPlayers = 0;
+        }
       }
     });
   }

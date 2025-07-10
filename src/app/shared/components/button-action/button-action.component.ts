@@ -74,7 +74,7 @@ export class ButtonActionComponent {
     let base =
       'font-semibold shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-xl disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
-    if (!this.disabled) base += 'hover:shadow-lg hover:-translate-y-0.5';
+    if (!this.disabled) base += ' hover:shadow-lg hover:-translate-y-0.5';
     if (this.bigButton)
       base += ' text-lg rounded-full border-2 border-gray-500';
     else
