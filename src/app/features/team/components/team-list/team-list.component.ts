@@ -9,11 +9,12 @@ import { TeamApplicationService } from '../../../team-application/services/team-
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { TeamApplicationRequest } from '../../../team-application/interfaces/team-application';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-team-list',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonActionComponent, RouterModule],
+  imports: [ReactiveFormsModule, ButtonActionComponent, RouterModule, LoadingComponent],
   templateUrl: './team-list.component.html',
   styleUrl: './team-list.component.scss',
 })
@@ -25,6 +26,8 @@ export class TeamListComponent {
   selectedTeam: Team | null = null;
   showModal = false;
   applicationForm!: FormGroup;
+
+  loading = false;
 
   constructor(
     private teamService: TeamService,
@@ -53,14 +56,17 @@ export class TeamListComponent {
   }
 
   getTeams() {
+    this.loading = true;
     this.teamService.getTeams().subscribe({
       next: (data) => {
+        this.loading = false;
         this.teamList = data;
       },
       error: (err) => {
+        this.loading = false;
         Swal.fire({
           title: 'Error',
-          text: 'Error al cargar la lista de equipos',
+          text: err.error.message || 'Error al cargar la lista de equipos',
           timer: 2000,
         });
       },

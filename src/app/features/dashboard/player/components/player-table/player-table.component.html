@@ -2,7 +2,7 @@
   class="flex gap-4 overflow-x-auto md:grid md:grid-cols-1 xl:grid-cols-2 md:overflow-x-visible pb-2 px-1 snap-x snap-mandatory">
   @for (player of players; let i = $index; track player.id) {
   <div
-    class="snap-start bg-gray-100 rounded-2xl shadow-lg p-4 space-y-3 relative min-w-[273px] md:min-w-0 flex-shrink-0">
+    class="snap-start bg-gray-100 border-2 rounded-2xl shadow-lg p-4 space-y-3 relative min-w-[273px] md:min-w-0 flex-shrink-0">
     <!-- Número e insignia -->
     <div class="flex justify-between items-center">
       <span class="text-sm font-semibold text-primary">#{{ i + 1 }}</span>

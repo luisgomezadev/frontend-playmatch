@@ -44,7 +44,6 @@ export class ReservationFormComponent {
   formReservation!: FormGroup;
   confirmedReservation!: ConfirmedReservation | null;
   reservations: Reservation[] = [];
-  filters: ReservationFilter = {};
   showModal: boolean = false;
   showCalendar: boolean = false;
   verifiedReservation = false;
@@ -102,11 +101,7 @@ export class ReservationFormComponent {
 
   getReservations() {
     this.loading = true;
-    this.filters = {
-      fieldId: this.fieldId,
-      status: StatusReservation.ACTIVE,
-    };
-    this.reservationService.getReservationFiltered(this.filters).subscribe({
+    this.reservationService.getReservationsByFieldAndStuts(this.fieldId, StatusReservation.ACTIVE).subscribe({
       next: (data) => {
         this.loading = false;
         this.reservations = data;

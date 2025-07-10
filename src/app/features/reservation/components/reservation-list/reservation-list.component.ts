@@ -1,187 +1,124 @@
-import { Component, Input } from '@angular/core';
-import {
-  Reservation,
-  ReservationFilter,
-  StatusReservation,
-} from '../../interfaces/reservation';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
-import { ReservationService } from '../../services/reservation.service';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
-import { UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
-import Swal from 'sweetalert2';
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe';
-import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
-import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
-import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
+import { Reservation, ReservationFilter, StatusReservation } from '../../interfaces/reservation';
+import { PagedResponse } from '../../../../core/interfaces/paged-response';
+import { UserAdmin, UserPlayer } from '../../../../core/interfaces/user';
+
+import { ReservationService } from '../../services/reservation.service';
+import { AuthService } from '../../../../core/services/auth.service';
+
+import Swal from 'sweetalert2';
+
+// Pipes y componentes
+import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
+import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe';
+import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
+import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
+import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 
 @Component({
   selector: 'app-reservation-list',
   standalone: true,
   imports: [
     CommonModule,
-    TimeFormatPipe,
-    ButtonActionComponent,
-    RouterModule,
-    StatusReservationPipe,
-    LoadingComponent,
-    MoneyFormatPipe,
-    TimeFormatPipe,
     ReactiveFormsModule,
+    RouterModule,
+    TimeFormatPipe,
+    StatusReservationPipe,
+    MoneyFormatPipe,
+    ButtonActionComponent,
+    LoadingComponent,
     ReservationCalendarComponent,
   ],
   templateUrl: './reservation-list.component.html',
   styleUrl: './reservation-list.component.scss',
 })
-export class ReservationListComponent {
+export class ReservationListComponent implements OnInit {
   @Input() reservations!: Reservation[];
   @Input() fromDetail: string = '';
 
-  calendarView: boolean = false;
+  reservationList!: PagedResponse<Reservation>;
+  formFilter!: FormGroup;
 
-  reservationList: Reservation[] = [];
+  user!: UserPlayer | UserAdmin;
+  calendarView = false;
+  showModal = false;
+  listOfDetailsField = false;
+  loading = false;
+  showFilters = false;
+  isSmallScreen = false;
+
+  currentPage = 0;
+  pageSize = 6;
+
   fieldId!: number;
   teamId!: number;
   reservationBy!: string;
-  listOfDetailsField = false;
-  user!: UserPlayer | UserAdmin;
-  loading: boolean = false;
-  isSmallScreen: boolean = false;
-  showFilters: boolean = false;
-
-  // Filters for reservations
   filters: ReservationFilter = {};
-  formFilter!: FormGroup;
-
-  // Variables for modal
   selectedItem: any = null;
   selectedType: 'team' | 'field' | null = null;
-  showModal = false;
 
-  // Enum for reservation status
   StatusReservation = StatusReservation;
 
   constructor(
     private reservationService: ReservationService,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.checkScreenSize();
+    this.initForm();
+    this.initUser();
+    this.initReservationSource();
     window.addEventListener('resize', () => this.checkScreenSize());
+  }
 
-    this.formFilter = this.fb.group({
-      reservationDate: [''],
-      status: [''],
-    });
+  // INIT
+  private initForm(): void {
+    this.formFilter = this.fb.group({ reservationDate: [''], status: [''] });
+  }
 
+  private initUser(): void {
     this.authService.currentUser$.subscribe((user) => {
-      if (user) {
-        this.user = user;
-        if (this.isUserAdmin(user) && user.field) {
-          this.fieldId = user.field.id;
-        }
-        if (this.isUserPlayer(user) && user.team) {
-          this.teamId = user.team.id;
-        }
-      }
+      if (!user) return;
+      this.user = user;
+      if (this.isUserAdmin(user)) this.fieldId = user.field?.id!;
+      if (this.isUserPlayer(user)) this.teamId = user.team?.id!;
     });
+  }
 
+  private initReservationSource(): void {
     if (this.reservations) {
       this.listOfDetailsField = true;
-      this.reservationList = this.reservations;
+      this.reservationBy = 'field';
+      this.reservationList = {
+        content: this.reservations,
+        totalPages: 1,
+        totalElements: this.reservations.length,
+        size: this.reservations.length,
+        number: 0,
+      };
     } else {
       this.reservationBy = this.route.snapshot.paramMap.get('var')!;
       this.setFiltersAndFetchReservations();
     }
   }
 
-  get isFieldView(): boolean {
-    return this.reservationBy === 'field' || this.fromDetail === 'field';
-  }
-
-  private setFiltersAndFetchReservations(): void {
-    if (this.isReservationField()) {
-      this.filters = { fieldId: this.fieldId };
-    } else if (this.isReservationTeam()) {
-      this.filters = { teamId: this.teamId };
-    }
-    this.getReservations();
-  }
-
+  // UI Helpers
   checkScreenSize(): void {
     this.isSmallScreen = window.innerWidth < 768;
     this.showFilters = !this.isSmallScreen;
   }
 
-  public isReservationTeam(): boolean {
-    return (
-      this.reservationBy === 'team' &&
-      this.isUserPlayer(this.user) &&
-      !!this.user.team
-    );
-  }
-
-  public isReservationField(): boolean {
-    return (
-      this.reservationBy === 'field' &&
-      this.isUserAdmin(this.user) &&
-      !!this.user.field
-    );
-  }
-
-  public isUserAdmin(user: any): user is UserAdmin {
-    return 'field' in user;
-  }
-
-  public isUserPlayer(user: any): user is UserPlayer {
-    return 'team' in user;
-  }
-
-  isOwnerTeam(reservation: Reservation): boolean {
-    return (
-      this.isUserPlayer(this.user) && this.user.id == reservation.team?.ownerId
-    );
-  }
-
-  getReservations() {
-    this.loading = true;
-    this.reservationService.getReservationFiltered(this.filters).subscribe({
-      next: (data) => {
-        this.loading = false;
-        this.reservationList = data;
-      },
-      error: (err) => {
-        this.loading = false;
-        Swal.fire(
-          'Error',
-          err.error.message || 'No se pudo cargar las reservas',
-          'error'
-        );
-      },
-    });
-  }
-
-  toggleCalendarView(): void {
-    this.calendarView = !this.calendarView;
-    if (this.calendarView) {
-      if (this.isReservationField()) {
-        this.filters = { fieldId: this.fieldId };
-        this.getReservations();
-      }
-      if (this.isReservationTeam()) {
-        this.filters = { teamId: this.teamId };
-        this.getReservations();
-      }
-    } else {
-      this.cleanFilter();
-    }
+  get isFieldView(): boolean {
+    return this.reservationBy === 'field' || this.fromDetail === 'field';
   }
 
   showButtons(reservation: Reservation): boolean {
@@ -192,34 +129,95 @@ export class ReservationListComponent {
     );
   }
 
+  // Type guards
+  isUserAdmin(user: any): user is UserAdmin {
+    return 'field' in user;
+  }
+
+  isUserPlayer(user: any): user is UserPlayer {
+    return 'team' in user;
+  }
+
+  isReservationTeam(): boolean {
+    return this.reservationBy === 'team' && this.isUserPlayer(this.user);
+  }
+
+  isReservationField(): boolean {
+    return this.reservationBy === 'field' && this.isUserAdmin(this.user);
+  }
+
+  isOwnerTeam(reservation: Reservation): boolean {
+    return this.isUserPlayer(this.user) && this.user.id === reservation.team?.ownerId;
+  }
+
+  // Data fetching
+  private setFiltersAndFetchReservations(): void {
+    this.filters = this.isReservationField() ? { fieldId: this.fieldId } : { teamId: this.teamId };
+    this.getReservations(0);
+  }
+
+  getReservations(page: number): void {
+    this.loading = true;
+    this.reservationService.getReservationFiltered(this.filters, page, this.pageSize).subscribe({
+      next: (data) => {
+        this.reservationList = data;
+        this.loading = false;
+      },
+      error: (err) => this.handleError(err),
+    });
+  }
+
+  getAllReservationsActive(): void {
+    this.loading = true;
+    this.reservationService.getReservationsByFieldAndStuts(this.fieldId, StatusReservation.ACTIVE).subscribe({
+      next: (data) => {
+        this.reservationList = {
+          content: data,
+          totalPages: 1,
+          totalElements: data.length,
+          size: data.length,
+          number: 0,
+        };
+        this.loading = false;
+      },
+      error: (err) => this.handleError(err),
+    });
+  }
+
+  // Actions
+  changePage(newPage: number): void {
+    if (newPage >= 0 && newPage < this.reservationList.totalPages) {
+      this.currentPage = newPage;
+      this.getReservations(this.currentPage);
+    }
+  }
+
+  toggleCalendarView(): void {
+    this.calendarView = !this.calendarView;
+    this.setFiltersAndFetchReservations();
+  }
+
   filter(): void {
     const { reservationDate, status } = this.formFilter.value;
-    if (reservationDate) this.filters.date = reservationDate;
-    else delete this.filters.date;
-
-    if (status) this.filters.status = status;
-    else delete this.filters.status;
-
+    this.filters.date = reservationDate || undefined;
+    this.filters.status = status || undefined;
+    this.getReservations(0);
     this.showFilters = false;
-    this.getReservations();
   }
 
   cleanFilter(): void {
-    this.formFilter.reset({
-      reservationDate: null,
-      status: '',
-    });
+    this.formFilter.reset({ reservationDate: null, status: '' });
     delete this.filters.date;
     delete this.filters.status;
+    this.getReservations(0);
     this.showFilters = false;
-    this.getReservations();
   }
 
   makeReservation(): void {
     if (this.hasActiveReservation()) {
       Swal.fire({
         title: 'Tienes una reserva activa',
-        text: `Si no eres el dueño del equipo y la quieres cancelar comunicate con el dueño o el administrador de la cancha.`,
+        text: 'Comunícate con el dueño o administrador para cancelarla.',
         icon: 'warning',
         customClass: { confirmButton: 'swal-confirm-btn' },
         buttonsStyling: false,
@@ -229,74 +227,58 @@ export class ReservationListComponent {
     }
   }
 
-  finalizeReservation(reservationId: number, teamName?: string): void {
-    this.showConfirmationAlert({
-      title: '¿Estás seguro de finalizar reserva?',
-      text: `La reserva de ${teamName} aún no finaliza`,
-      confirmText: 'Sí, finalizar',
-      onConfirm: () => {
-        this.reservationService
-          .finalizeReservationById(reservationId)
-          .subscribe({
-            next: () =>
-              this.handleSuccess(
-                `Has finalizado la reserva de ${teamName} correctamente.`
-              ),
-            error: (err) => Swal.fire('Error', err.error.message, 'error'),
-          });
-      },
+  finalizeReservation(id: number, teamName?: string): void {
+    this.confirmAction(`¿Estás seguro de finalizar reserva?`, `La reserva de ${teamName} aún no finaliza`, 'Sí, finalizar', () => {
+      this.reservationService.finalizeReservationById(id).subscribe({
+        next: () => this.handleSuccess(`Reserva de ${teamName} finalizada.`),
+        error: (err) => this.handleError(err),
+      });
     });
   }
 
-  cancelReservation(reservationId: number): void {
-    this.showConfirmationAlert({
-      title: '¿Estás seguro de cancelar la reserva?',
-      text: `Esta acción cancelará la reserva permanentemente.`,
-      confirmText: 'Sí, cancelar',
-      onConfirm: () => {
-        this.reservationService
-          .canceledReservationById(reservationId)
-          .subscribe({
-            next: () =>
-              this.handleSuccess(`Has cancelado la reserva correctamente.`),
-            error: (err) => Swal.fire('Error', err.error.message, 'error'),
-          });
-      },
+  cancelReservation(id: number): void {
+    this.confirmAction('¿Estás seguro de cancelar la reserva?', 'Esta acción es permanente.', 'Sí, cancelar', () => {
+      this.reservationService.canceledReservationById(id).subscribe({
+        next: () => this.handleSuccess('Reserva cancelada.'),
+        error: (err) => this.handleError(err),
+      });
     });
   }
 
-  private handleSuccess(message: string): void {
-    this.getReservations();
-    Swal.fire({
-      title: message,
-      icon: 'success',
-      customClass: { confirmButton: 'swal-confirm-btn' },
-      buttonsStyling: false,
-    });
+  // Modals
+  openModal(item: any, type: 'team' | 'field'): void {
+    this.selectedItem = item;
+    this.selectedType = type;
+    this.showModal = true;
   }
 
-  private showConfirmationAlert(options: {
-    title: string;
-    text: string;
-    confirmText: string;
-    onConfirm: () => void;
-  }): void {
-    Swal.fire({
-      title: options.title,
-      text: options.text,
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: options.confirmText,
-      cancelButtonText: 'No',
-      customClass: {
-        confirmButton: 'swal-confirm-btn',
-        cancelButton: 'swal-cancel-btn',
-      },
-      buttonsStyling: false,
-    }).then((result) => {
-      if (result.isConfirmed) options.onConfirm();
-    });
+  openList() {
+    this.calendarView = false;
+    this.getReservations(0);
+  }
+
+  openCalendar() {
+    this.calendarView = true;
+    this.getAllReservationsActive();
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedItem = null;
+    this.selectedType = null;
+  }
+
+  // Status & Helpers
+  getReservationStatus(reservation: Reservation): 'upcoming' | 'inProgress' | 'expired' | 'other' {
+    const now = new Date();
+    const start = new Date(`${reservation.reservationDate}T${reservation.startTime}`);
+    const end = new Date(`${reservation.reservationDate}T${reservation.endTime}`);
+    const inTwoHours = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+
+    if (now < start && start <= inTwoHours) return 'upcoming';
+    if (now >= start && now <= end) return 'inProgress';
+    if (now > end) return 'expired';
+    return 'other';
   }
 
   isReservationExpired(reservation: Reservation): boolean {
@@ -307,67 +289,49 @@ export class ReservationListComponent {
     return now > endDateTime;
   }
 
-  getReservationStatus(
-    reservation: Reservation
-  ): 'upcoming' | 'inProgress' | 'expired' | 'other' {
-    const now = new Date();
-    const start = new Date(
-      `${reservation.reservationDate}T${reservation.startTime}`
-    );
-    const end = new Date(
-      `${reservation.reservationDate}T${reservation.endTime}`
-    );
-
-    const twoHoursLater = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-
-    if (now < start && start <= twoHoursLater) return 'upcoming';
-    if (now >= start && now <= end) return 'inProgress';
-    if (now > end) return 'expired';
-
-    return 'other';
-  }
-
   isReservationToday(reservation: Reservation): string {
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const today = new Date();
+    const [y, m, d] = reservation.reservationDate.split('-').map(Number);
+    const resDate = new Date(y, m - 1, d);
+    const diffDays = (resDate.getTime() - new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()) / (1000 * 3600 * 24);
 
-    const [year, month, day] = reservation.reservationDate
-      .split('-')
-      .map(Number);
-    const reservationDate = new Date(year, month - 1, day);
-
-    const timeDiff = reservationDate.getTime() - today.getTime();
-    const dayDiff = timeDiff / (1000 * 60 * 60 * 24);
-
-    if (dayDiff === 0) return 'HOY';
-    if (dayDiff === 1) return 'MAÑANA';
-    if (dayDiff === -1) return 'AYER';
-
-    return reservationDate.toLocaleDateString();
+    if (diffDays === 0) return 'HOY';
+    if (diffDays === 1) return 'MAÑANA';
+    if (diffDays === -1) return 'AYER';
+    return resDate.toLocaleDateString();
   }
 
-  isInProgressAndActive(reservation: Reservation): boolean {
-    return (
-      this.getReservationStatus(reservation) === 'inProgress' &&
-      reservation.status === StatusReservation.ACTIVE
-    );
+  isInProgressAndActive(res: Reservation): boolean {
+    return this.getReservationStatus(res) === 'inProgress' && res.status === StatusReservation.ACTIVE;
   }
 
   hasActiveReservation(): boolean {
-    return this.reservationList.some(
-      (r) => r.status === StatusReservation.ACTIVE
-    );
+    return this.reservationList?.content?.some(r => r.status === StatusReservation.ACTIVE);
   }
 
-  openModal(item: any, type: 'team' | 'field'): void {
-    this.selectedItem = item;
-    this.selectedType = type;
-    this.showModal = true;
+  // Alerts
+  private handleSuccess(message: string): void {
+    this.getReservations(0);
+    Swal.fire({ title: message, icon: 'success', customClass: { confirmButton: 'swal-confirm-btn' }, buttonsStyling: false });
   }
 
-  closeModal(): void {
-    this.showModal = false;
-    this.selectedItem = null;
-    this.selectedType = null;
+  private handleError(err: any): void {
+    this.loading = false;
+    Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
+  }
+
+  private confirmAction(title: string, text: string, confirmText: string, onConfirm: () => void): void {
+    Swal.fire({
+      title, text,
+      showCancelButton: true,
+      confirmButtonText: confirmText,
+      cancelButtonText: 'No',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
+      buttonsStyling: false,
+    }).then((result) => {
+      if (result.isConfirmed) onConfirm();
+    });
   }
 }

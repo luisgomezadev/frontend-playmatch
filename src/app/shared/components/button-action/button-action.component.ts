@@ -72,7 +72,7 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'font-semibold shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-xl disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-2 py-1';
+      'font-semibold shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-xl disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
     if (!this.disabled) base += ' hover:scale-[1.02] active:scale-[0.98]';
     if (this.bigButton)

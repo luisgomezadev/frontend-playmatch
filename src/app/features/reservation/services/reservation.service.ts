@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ConfirmedReservation, Reservation, StatusReservation } from '../interfaces/reservation';
 import { ReservationFilter } from '../interfaces/reservation';
+import { PagedResponse } from '../../../core/interfaces/paged-response';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,10 @@ export class ReservationService {
 
   getReservationsByTeamId(teamId: number): Observable<any> {
     return this.http.get(`${this.url}/team/${teamId}`);
+  }
+
+  getReservationsByFieldAndStuts(fieldId: number, status: StatusReservation): Observable<any> {
+    return this.http.get(`${this.url}/field/${fieldId}/status/${status}`);
   }
 
   getReservationById(id: number): Observable<Reservation> {
@@ -69,7 +74,7 @@ export class ReservationService {
     return this.http.get(`${this.url}/field/${fieldId}/canceled`);
   }
 
-  getReservationFiltered(filters: ReservationFilter): Observable<Reservation[]> {
+  getReservationFiltered(filters: ReservationFilter, page: number, size: number): Observable<PagedResponse<Reservation>> {
     let params = new HttpParams();
 
     if (filters.date) {
@@ -84,7 +89,9 @@ export class ReservationService {
     if (filters.fieldId != null) {
       params = params.set('fieldId', filters.fieldId.toString());
     }
-    return this.http.get<Reservation[]>(`${this.url}/filter`, { params });
+    params = params.set('page', page.toString());
+    params = params.set('size', size.toString());
+    return this.http.get<PagedResponse<Reservation>>(`${this.url}/filter`, { params });
   }
 
   getReservationAvailability(

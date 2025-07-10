@@ -13,7 +13,7 @@
       @for (team of teamList; track team.id) {
       <article (click)="openModal(team)"
         class="p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all flex flex-col gap-2 items-center text-center cursor-pointer">
-        <img [src]="getImageUrl(team)" alt="{{ team.name }}" class="w-32 h-32 object-cover rounded-2xl" />
+        <img [src]="getImageUrl(team)" alt="{{ team.name }}" class="w-32 h-32 object-contain rounded-2xl" />
         <h2 class="text-xl font-bold">{{ team.name }}</h2>
         <p>{{ team.neighborhood }}</p>
       </article>
@@ -47,4 +47,7 @@
     </form>
   </article>
 </div>
+}
+@if (loading) {
+  <loading-component text="Cargando equipos disponibles" />
 }

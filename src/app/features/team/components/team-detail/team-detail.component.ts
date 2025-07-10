@@ -1,17 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../../../core/services/auth.service';
-import { TeamService } from '../../services/team.service';
 import { UserPlayer } from '../../../../core/interfaces/user';
-import { Team } from '../../interfaces/team';
+import { AuthService } from '../../../../core/services/auth.service';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { ReservationListComponent } from '../../../reservation/components/reservation-list/reservation-list.component';
-import { Reservation } from '../../../reservation/interfaces/reservation';
-import { PlayerTableComponent } from '../../../dashboard/player/components/player-table/player-table.component';
-import { WithoutTeamComponent } from '../without-team/without-team.component';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { PlayerTableComponent } from '../../../dashboard/player/components/player-table/player-table.component';
+import { Team } from '../../interfaces/team';
+import { TeamService } from '../../services/team.service';
+import { WithoutTeamComponent } from '../without-team/without-team.component';
 
 @Component({
   selector: 'app-team-detail',
@@ -20,7 +18,6 @@ import { LoadingComponent } from '../../../../shared/components/loading/loading.
     CommonModule,
     RouterModule,
     ButtonActionComponent,
-    ReservationListComponent,
     PlayerTableComponent,
     WithoutTeamComponent,
     LoadingComponent,
@@ -34,7 +31,6 @@ export class TeamDetailComponent {
   teamId!: number;
   loading = false;
   loadingImage = false;
-  reservationList: Reservation[] = [];
   playerList: UserPlayer[] = [];
   teamEmpty: boolean = false;
 
@@ -43,7 +39,6 @@ export class TeamDetailComponent {
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
-    private route: ActivatedRoute,
     private teamService: TeamService,
     private authService: AuthService
   ) {}
@@ -80,7 +75,7 @@ export class TeamDetailComponent {
         this.loading = false;
         Swal.fire({
           title: 'Error',
-          text: 'No se puedo cargar la información de la cancha',
+          text: err.error.message || 'No se puedo cargar la información de la cancha',
           timer: 3000,
         });
       },
@@ -90,9 +85,7 @@ export class TeamDetailComponent {
   getTeamDetails(team: Team) {
     if (team) {
       this.team = team;
-      this.playerList = this.team.members.reverse();
-      team.reservations.forEach((re) => (re.team = this.team));
-      this.reservationList = team.reservations.slice(-1).reverse();
+      this.playerList = this.team.members;
     }
   }
 

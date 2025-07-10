@@ -46,6 +46,7 @@ export class FieldDetailComponent {
   ) { }
 
   ngOnInit(): void {
+
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
@@ -87,7 +88,7 @@ export class FieldDetailComponent {
         this.loading = false;
         Swal.fire({
           title: 'Error',
-          text: 'No se puedo cargar la información de la cancha',
+          text: err.error.message || 'No se puedo cargar la información de la cancha',
           timer: 3000,
         });
       },
@@ -99,6 +100,7 @@ export class FieldDetailComponent {
       this.field = field;
       field.reservations.forEach((re) => (re.field = this.field!));
       this.reservationList = field.reservations.slice(-2).reverse();
+      console.log(this.reservationList);
     }
   }
 

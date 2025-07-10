@@ -62,7 +62,7 @@
         </div>
 
         <!-- Botones -->
-        <div class="flex flex-col md:flex-row gap-3 w-full justify-center">
+        <div class="flex flex-row gap-3 w-full justify-center">
           @if (isOwnerTeam()) {
           <button-action text="Editar equipo" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
             [routerLink]="['/dashboard/team/form', team.id]"></button-action>
@@ -92,25 +92,6 @@
           <app-player-table [players]="playerList"></app-player-table>
         </div>
       </article>
-
-      <!-- <article class="bg-white p-6 rounded-xl shadow-md animate-slide-down">
-        <div class="flex items-center justify-between mb-2">
-          <h3 class="text-2xl font-bold text-gray-800 mb-2">Última reserva</h3>
-          @if (reservationList.length > 0) {
-          <div class="w-fit">
-            <a
-              class="text-primary hover:underline"
-              [routerLink]="['/dashboard/reservation/list/team']"
-              >Ver todas</a
-            >
-          </div>
-          }
-        </div>
-        <app-reservation-list
-          [fromDetail]="'team'"
-          [reservations]="reservationList"
-        ></app-reservation-list>
-      </article> -->
     </div>
     } @else {
     <div>
