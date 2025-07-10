@@ -3,7 +3,6 @@ import { AuthService } from '../../../core/services/auth.service';
 import { LINKS_DASHBOARD } from '../../constants/links.constants';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
-import { UserAdmin, UserPlayer } from '../../../core/interfaces/user';
 
 @Component({
   selector: 'app-menu',
