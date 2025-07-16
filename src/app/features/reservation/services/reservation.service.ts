@@ -54,8 +54,8 @@ export class ReservationService {
     return this.http.put(`${this.url}/${id}/status/canceled`, null);
   }
 
-  getCountActiveByTeam(teamId: number): Observable<any> {
-    return this.http.get(`${this.url}/team/${teamId}/active`);
+  getCountActiveByTeam(teamId: number): Observable<number> {
+    return this.http.get<number>(`${this.url}/team/${teamId}/active`);
   }
 
   getCountFinishedByTeam(teamId: number): Observable<any> {

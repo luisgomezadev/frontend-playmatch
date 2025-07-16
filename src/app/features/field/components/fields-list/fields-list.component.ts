@@ -2,13 +2,16 @@ import { Component, Input } from '@angular/core';
 import { Field } from '../../interfaces/field';
 import { FieldService } from '../../services/field.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UserPlayer } from '../../../../core/interfaces/user';
 import { WithoutTeamComponent } from '../../../team/components/without-team/without-team.component';
 import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { CommonModule, Location } from '@angular/common';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
+import Swal from 'sweetalert2';
+import { ReservationService } from '../../../reservation/services/reservation.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-fields-list',
@@ -29,6 +32,7 @@ export class FieldsListComponent {
   user!: UserPlayer;
   loading = false;
   showModal: boolean = false;
+  showButtonBack: boolean = false;
 
 
   @Input() showHeader: boolean = true;
@@ -37,8 +41,11 @@ export class FieldsListComponent {
     private fieldService: FieldService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private router: Router,
+    private reservationService: ReservationService
   ) {
+    this.showButtonBack = !this.router.url.includes('home-player');
     this.route.queryParams.subscribe((params) => {
       if (params['showHeader'] !== undefined) {
         this.showHeader = params['showHeader'] !== 'false';
@@ -106,6 +113,33 @@ export class FieldsListComponent {
   goToRegister(): void {
     this.closeModal();
     this.location.go('/register');
+  }
+
+  makeReservation(fieldId: number): void {
+    this.hasActiveReservation().then(hasReservation => {
+      if (hasReservation) {
+        Swal.fire({
+          title: 'Tienes una reserva activa',
+          text: 'Comunícate con el dueño o administrador para cancelarla.',
+          icon: 'warning',
+          customClass: { confirmButton: 'swal-confirm-btn' },
+          buttonsStyling: false,
+        });
+        this.router.navigate(['/dashboard/reservation/list/team']);
+      } else {
+        this.router.navigate(['/dashboard/reservation/form/field', fieldId]);
+      }
+    });
+  }
+
+  async hasActiveReservation(): Promise<boolean> {
+    if (this.user.team?.id) {
+      const count = await firstValueFrom(
+        this.reservationService.getCountActiveByTeam(this.user.team.id)
+      );
+      return count > 0;
+    }
+    return false;
   }
 
 }

@@ -31,7 +31,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'home-admin', component: HomeAdminComponent },
-      { path: 'home-player', component: HomePlayerComponent },
+      { path: 'home-player', component: FieldsListComponent },
 
       // Rutas de cancha
       { path: 'field', component: FieldDetailComponent },

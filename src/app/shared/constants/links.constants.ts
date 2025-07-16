@@ -26,11 +26,11 @@ export const LINKS_DASHBOARD = [
   },
   // LINKS PLAYER
   {
-    name: "Inicio",
+    name: "Canchas",
     link: "home-player",
     role: "PLAYER",
     requiredTeam: false,
-    iconClass: "fa-solid fa-house",
+    iconClass: "fa-solid fa-futbol",
     viewMovil: true,
     viewDesktop: true
   },
