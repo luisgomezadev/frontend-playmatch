@@ -1,13 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'loading-component',
+  selector: 'loading-full-component',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div
-      class="w-full flex flex-col items-center justify-center mt-5"
+      class="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center"
     >
       <h1 class="text-2xl font-bold text-primary mb-4">PlayMatch</h1>
       <div
@@ -20,7 +19,7 @@ import { Component, Input } from '@angular/core';
     </div>
   `,
 })
-export class LoadingComponent {
+export class LoadingFullComponent {
   @Input() text: string = 'Cargando';
   dots: string = '';
   private intervalId: any;

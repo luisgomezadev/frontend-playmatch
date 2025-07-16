@@ -8,12 +8,12 @@ import { Field } from '../field/interfaces/field';
 import { UserAdmin, UserPlayer } from '../../core/interfaces/user';
 import { LINKS_DASHBOARD } from '../../shared/constants/links.constants';
 import { PlayerService } from './player/services/player.service';
-import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { LoadingFullComponent } from '../../shared/components/loading-full/loading-full.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule, CommonModule, LoadingComponent],
+  imports: [RouterModule, CommonModule, LoadingFullComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

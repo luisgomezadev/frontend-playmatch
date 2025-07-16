@@ -19,8 +19,8 @@ import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
 import { Team } from '../../../team/interfaces/team';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
-import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
 import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
+import { LoadingFullComponent } from '../../../../shared/components/loading-full/loading-full.component';
 
 @Component({
   selector: 'app-reservation-form',
@@ -30,7 +30,7 @@ import { ReservationCalendarComponent } from '../reservation-calendar/reservatio
     RouterModule,
     ReactiveFormsModule,
     TimeFormatPipe,
-    LoadingComponent,
+    LoadingFullComponent,
     ReservationCalendarComponent,
   ],
   templateUrl: './reservation-form.component.html',
