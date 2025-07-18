@@ -58,10 +58,6 @@ export class ReservationService {
     return this.http.get<number>(`${this.url}/team/${teamId}/active`);
   }
 
-  getCountFinishedByTeam(teamId: number): Observable<any> {
-    return this.http.get(`${this.url}/team/${teamId}/finished`);
-  }
-
   getCountActiveByField(fieldId: number): Observable<any> {
     return this.http.get(`${this.url}/field/${fieldId}/active`);
   }

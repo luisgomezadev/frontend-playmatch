@@ -8,7 +8,6 @@ import { HomeAdminComponent } from './features/dashboard/admin/components/home-a
 import { FieldDetailComponent } from './features/field/components/field-detail/field-detail.component';
 import { FieldFormComponent } from './features/field/components/field-form/field-form.component';
 import { ProfileComponent } from './features/dashboard/profile/profile.component';
-import { HomePlayerComponent } from './features/dashboard/player/components/home-player/home-player.component';
 import { PlayerListComponent } from './features/dashboard/player/components/player-list/player-list.component';
 import { TeamDetailComponent } from './features/team/components/team-detail/team-detail.component';
 import { TeamFormComponent } from './features/team/components/team-form/team-form.component';
