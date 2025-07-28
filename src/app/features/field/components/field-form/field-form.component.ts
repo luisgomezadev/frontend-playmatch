@@ -41,8 +41,8 @@ export class FieldFormComponent {
     this.fieldForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
-      city: ['Cartagena', Validators.required],
-      hourlyRate: [0, [Validators.required, Validators.min(0)]],
+      city: ['', Validators.required],
+      hourlyRate: [null, [Validators.required, Validators.min(0)]],
       openingHour: ['', Validators.required],
       closingHour: ['', Validators.required],
       status: ['ACTIVE', Validators.required]
@@ -77,8 +77,6 @@ export class FieldFormComponent {
     this.loadingForm = true;
     this.fieldService.getFieldById(this.fieldId).subscribe({
       next: (field) => {
-        console.log('Field loaded:', field);
-
         this.fieldForm.patchValue(field);
         this.loadingForm = false;
       },
@@ -110,7 +108,7 @@ export class FieldFormComponent {
       : this.fieldService.createField(fieldData);
 
     request$.subscribe({
-      next: (data: any) => {
+      next: () => {
         this.loading = false;
         Swal.fire({
           icon: 'success',
@@ -118,11 +116,6 @@ export class FieldFormComponent {
           confirmButtonText: 'Aceptar',
           customClass: { confirmButton: 'swal-confirm-btn' },
           buttonsStyling: false,
-        });
-        const { admin, ...fieldWithoutAdmin } = data;
-        this.authService.setUser({
-          ...this.userActive,
-          field: fieldWithoutAdmin,
         });
         this.router.navigate(['/dashboard/field']);
       },

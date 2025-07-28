@@ -3,8 +3,7 @@ import { Field } from '../../interfaces/field';
 import { FieldService } from '../../services/field.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { UserPlayer } from '../../../../core/interfaces/user';
-import { WithoutTeamComponent } from '../../../team/components/without-team/without-team.component';
+import { User, UserRole } from '../../../../core/interfaces/user';
 import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { CommonModule, Location } from '@angular/common';
@@ -18,7 +17,6 @@ import { firstValueFrom } from 'rxjs';
   standalone: true,
   imports: [
     RouterModule,
-    WithoutTeamComponent,
     MoneyFormatPipe,
     TimeFormatPipe,
     CommonModule,
@@ -29,7 +27,7 @@ import { firstValueFrom } from 'rxjs';
 })
 export class FieldsListComponent {
   fields: Field[] = [];
-  user!: UserPlayer;
+  user!: User;
   loading = false;
   showModal: boolean = false;
   showButtonBack: boolean = false;
@@ -57,6 +55,10 @@ export class FieldsListComponent {
       }
     });
     this.loadFields();
+  }
+
+  isUserPlayer(user: User): boolean {
+    return user.role == UserRole.PLAYER;
   }
 
   loadFields() {
@@ -120,12 +122,12 @@ export class FieldsListComponent {
       if (hasReservation) {
         Swal.fire({
           title: 'Tienes una reserva activa',
-          text: 'Comunícate con el dueño o administrador para cancelarla.',
+          text: 'Debes cancelarla si deseas hacer una nueva reserva.',
           icon: 'warning',
           customClass: { confirmButton: 'swal-confirm-btn' },
           buttonsStyling: false,
         });
-        this.router.navigate(['/dashboard/reservation/list/team']);
+        this.router.navigate(['/dashboard/reservation/list']);
       } else {
         this.router.navigate(['/dashboard/reservation/form/field', fieldId]);
       }
@@ -133,13 +135,10 @@ export class FieldsListComponent {
   }
 
   async hasActiveReservation(): Promise<boolean> {
-    if (this.user.team?.id) {
-      const count = await firstValueFrom(
-        this.reservationService.getCountActiveByTeam(this.user.team.id)
-      );
-      return count > 0;
-    }
-    return false;
+    const count = await firstValueFrom(
+      this.reservationService.getCountActiveByUser(this.user.id)
+    );
+    return count > 0;
   }
 
 }

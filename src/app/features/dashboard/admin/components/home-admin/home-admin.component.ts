@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { User, UserAdmin } from '../../../../../core/interfaces/user';
+import { User } from '../../../../../core/interfaces/user';
 import { AuthService } from '../../../../../core/services/auth.service';
 import { RouterModule } from '@angular/router';
 import { ReservationService } from '../../../../reservation/services/reservation.service';
 import { ButtonActionComponent } from '../../../../../shared/components/button-action/button-action.component';
 import { CommonModule } from '@angular/common';
+import { FieldService } from '../../../../field/services/field.service';
+import { Field } from '../../../../field/interfaces/field';
 
 @Component({
   selector: 'app-home-admin',
@@ -14,7 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './home-admin.component.scss',
 })
 export class HomeAdminComponent {
-  user!: UserAdmin;
+  user!: User;
   fullName: string = '';
   reservationsActive: number = 0;
   reservationsFinished: number = 0;
@@ -24,6 +26,7 @@ export class HomeAdminComponent {
 
   constructor(
     private authService: AuthService,
+    private fieldService: FieldService,
     private reservationService: ReservationService
   ) { }
 
@@ -32,11 +35,23 @@ export class HomeAdminComponent {
       if (user) {
         this.user = user;
         this.fullName = `${this.user.firstName} ${this.user.lastName}`;
-        if (this.user.field?.id) {
-          this.loading = true;
-          this.fieldName = this.user.field?.name;
+        this.getFieldByAdmin(user);
+      }
+    });
+  }
+
+  hasField(): boolean {
+    return this.fieldName != 'No tienes cancha registrada';
+  }
+
+  getFieldByAdmin(user: User) {
+    this.loading = true;
+    this.fieldService.getFieldByAdminId(user.id).subscribe({
+      next: (field: Field) => {
+        if (field) {
+          this.fieldName = field.name;
           this.reservationService
-            .getCountActiveByField(this.user.field.id)
+            .getCountActiveByField(field.id)
             .subscribe({
               next: (value) => {
                 this.loading = false;
@@ -44,7 +59,7 @@ export class HomeAdminComponent {
               },
             });
           this.reservationService
-            .getCountFinishedByField(this.user.field.id)
+            .getCountFinishedByField(field.id)
             .subscribe({
               next: (value) => {
                 this.loading = false;
@@ -52,19 +67,17 @@ export class HomeAdminComponent {
               },
             });
           this.reservationService
-            .getCountCanceledByField(this.user.field.id)
+            .getCountCanceledByField(field.id)
             .subscribe({
               next: (value) => {
                 this.loading = false;
                 this.reservationsCanceled = value;
               },
             });
+        } else {
+          this.loading = false;
         }
       }
-    });
-  }
-
-  hasField(): boolean {
-    return this.fieldName != 'No tienes cancha registrada';
+    })
   }
 }

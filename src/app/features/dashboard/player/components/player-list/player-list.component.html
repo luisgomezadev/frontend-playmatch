@@ -1,82 +1,60 @@
-<section class="p-8 bg-gray-100 min-h-screen">
-  <div class="space-y-8">
-    <header class="bg-white p-6 rounded-xl shadow-md">
-      <h1 class="text-3xl font-bold text-primary tracking-tight">
-        Jugadores disponibles
-      </h1>
+<section class="bg-gray-100">
+  <div class="space-y-6 p-6">
+    <header>
+      <h1 class="text-3xl font-medium text-black tracking-tight">Jugadores disponibles</h1>
       <p class="text-gray-600 mt-1 text-base">
         Aquí puedes ver una lista de jugadores disponibles para contactar.
       </p>
     </header>
 
-    <!-- Loading -->
     @if (loading) {
     <loading-component text="Cargando lista de jugadores" />
     } @else {
-    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm mb-4">
-      <div class="flex flex-wrap gap-3 text-sm">
-        <div class="flex items-center gap-2">
-          <span class="w-4 h-4 rounded-full bg-dashblue inline-block"></span>
-          <span>Tu equipo</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="w-4 h-4 rounded-full bg-primary inline-block"></span>
-          <span>Otro equipo</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="w-4 h-4 rounded-full bg-gray-400 inline-block"></span>
-          <span>Sin equipo</span>
-        </div>
-      </div>
-    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       @for (player of players.content; track player.id) {
       <article
-        class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-center text-center space-y-3 animate-slide-down">
-        <img [src]="getImageUrl(player)" alt="{{ player.firstName }}"
+        class="bg-white rounded-md shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col items-center text-center space-y-3">
+        <img
+          [src]="getImageUrl(player)"
+          alt="{{ player.firstName }}"
           class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20" />
 
         <div>
           <h2 class="text-lg font-bold text-gray-800">
             {{ player.firstName }} {{ player.lastName }}
           </h2>
-          <p class="text-sm text-gray-500">{{ player.age }} años</p>
+          <p class="text-sm text-gray-500">{{ player.city }}</p>
         </div>
 
         <div class="text-sm text-gray-600 flex items-center gap-2">
           <i class="fa-brands fa-whatsapp text-primary"></i>
-          <a [href]="'https://wa.me/57' + player.cellphone" target="_blank"
+          <a
+            [href]="'https://wa.me/57' + player.cellphone"
+            target="_blank"
             class="hover:underline text-primary font-medium">
             {{ player.cellphone }}
           </a>
         </div>
-
-        <div class="text-sm">
-          <span class="px-3 py-1 rounded-full text-white text-xs font-semibold" [ngClass]="
-              player.team?.id === user.team?.id
-                ? 'bg-dashblue'
-                : player.team
-                ? 'bg-primary'
-                : 'bg-gray-400'
-            ">
-            {{ player.team?.name || "Sin equipo" }}
-          </span>
-        </div>
       </article>
       }
     </div>
-    <!-- PAGINADOR -->
+
     <div class="flex justify-center items-center gap-2 mt-6">
-      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm"
-        (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">
+      <button
+        class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm"
+        (click)="changePage(currentPage - 1)"
+        [disabled]="currentPage === 0">
         ← Anterior
       </button>
 
-      <span class="px-3 font-medium md:text-base text-xs">Página {{ currentPage + 1 }} de {{ players.totalPages
-        }}</span>
+      <span class="px-3 font-medium md:text-base text-xs">
+        Página {{ currentPage + 1 }} de {{ players.totalPages }}
+      </span>
 
-      <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm"
-        (click)="changePage(currentPage + 1)" [disabled]="currentPage + 1 >= players.totalPages">
+      <button
+        class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm"
+        (click)="changePage(currentPage + 1)"
+        [disabled]="currentPage + 1 >= players.totalPages">
         Siguiente →
       </button>
     </div>

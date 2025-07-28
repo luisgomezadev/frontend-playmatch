@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -18,18 +11,22 @@ import { CalendarOptions } from '@fullcalendar/core';
   selector: 'app-reservation-calendar',
   standalone: true,
   imports: [CommonModule, FullCalendarModule],
-  template: `<full-calendar [options]="calendarOptions"></full-calendar>`,
-  styles: [`
-    :host ::ng-deep .fc-button {
-      @apply bg-primary text-white rounded-md px-2 py-1 font-semibold shadow-md;
-    }
-    :host ::ng-deep .fc-button:hover {
-      @apply bg-primary cursor-pointer;
-    }
-    :host ::ng-deep .fc-button.fc-button-active {
-      @apply bg-green-700 ring-4 ring-green-300;
-    }
-  `]
+  template: `
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  `,
+  styles: [
+    `
+      :host ::ng-deep .fc-button {
+        @apply bg-primary text-white rounded-md px-2 py-1 font-semibold shadow-md;
+      }
+      :host ::ng-deep .fc-button:hover {
+        @apply bg-primary cursor-pointer;
+      }
+      :host ::ng-deep .fc-button.fc-button-active {
+        @apply bg-green-700 ring-4 ring-green-300;
+      }
+    `
+  ]
 })
 export class ReservationCalendarComponent implements OnInit, OnDestroy, OnChanges {
   @Input() reservationList: any[] = [];
@@ -73,33 +70,33 @@ export class ReservationCalendarComponent implements OnInit, OnDestroy, OnChange
     return {
       initialView: isMobile ? 'timeGridDay' : 'timeGridWeek',
       locale: esLocale,
-      height: 450,
+      height: 480,
       headerToolbar: {
         left: 'prev,next',
         center: 'title',
-        right: isMobile ? '' : 'timeGridWeek,timeGridDay',
+        right: isMobile ? '' : 'timeGridWeek,timeGridDay'
       },
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       slotLabelFormat: {
         hour: 'numeric',
         minute: '2-digit',
-        hour12: true,
+        hour12: true
       },
       eventTimeFormat: {
         hour: 'numeric',
         minute: '2-digit',
-        hour12: true,
+        hour12: true
       },
       events: this.reservationList.map(res => ({
         id: res.id,
         title:
           this.reservationBy === 'field'
-            ? 'Equipo: ' + res.team?.name || 'Sin equipo'
+            ? 'Reservada por: ' + res.user?.firstName + ' ' + res.user?.lastName || 'Sin jugador'
             : 'Cancha: ' + res.field?.name || 'Sin cancha',
         start: `${res.reservationDate}T${res.startTime}`,
         end: `${res.reservationDate}T${res.endTime}`,
-        color: this.getReservationColor(res.status),
-      })),
+        color: this.getReservationColor(res.status)
+      }))
     };
   }
 

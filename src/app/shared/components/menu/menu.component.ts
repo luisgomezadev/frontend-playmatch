@@ -46,10 +46,6 @@ export class MenuComponent {
       (item) =>
         item.role === this.role || (item.role === 'all' && item.viewDesktop)
     );
-
-    if (this.role === 'PLAYER' && (this.userActive?.team == null)) {
-      this.links = this.links.filter((item) => item.requiredTeam !== true);
-    }
   }
 
   logout(): void {

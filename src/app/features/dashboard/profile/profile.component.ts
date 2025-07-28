@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { User, UserAdmin, UserPlayer } from '../../../core/interfaces/user';
+import { User, UserRole } from '../../../core/interfaces/user';
 import { AuthService } from '../../../core/services/auth.service';
-import { PlayerService } from '../player/services/player.service';
 import Swal from 'sweetalert2';
 import { ButtonActionComponent } from '../../../shared/components/button-action/button-action.component';
-import { AdminService } from '../admin/services/admin.service';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +13,7 @@ import { AdminService } from '../admin/services/admin.service';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
-  user!: UserPlayer | UserAdmin;
+  user!: User;
   loading = false;
 
   showImageModal = false;
@@ -23,8 +22,7 @@ export class ProfileComponent {
 
   constructor(
     private authService: AuthService,
-    private playerService: PlayerService,
-    private adminService: AdminService
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -35,12 +33,8 @@ export class ProfileComponent {
     });
   }
 
-  public isUserAdmin(user: any): user is UserAdmin {
-    return 'field' in user;
-  }
-
-  public isUserPlayer(user: any): user is UserPlayer {
-    return 'team' in user;
+  public isUserAdmin(user: User): boolean {
+    return user.role == UserRole.FIELD_ADMIN;
   }
 
   onFileSelected(event: any) {
@@ -80,9 +74,7 @@ export class ProfileComponent {
     }
     this.loading = true;
 
-    const uploadObservable = this.isUserAdmin(this.user)
-      ? this.adminService.uploadUserImage(this.user.id, file)
-      : this.playerService.uploadUserImage(this.user.id, file);
+    const uploadObservable = this.userService.uploadUserImage(this.user.id, file);
 
     uploadObservable.subscribe({
       next: (updatedUser) => this.handleSuccess(updatedUser),
@@ -93,13 +85,9 @@ export class ProfileComponent {
     });
   }
 
-  private handleSuccess(updatedUser: UserPlayer | UserAdmin) {
+  private handleSuccess(updatedUser: User) {
     // Actualizar el observable del usuario actual
-    if (this.isUserAdmin(this.user)) {
-      this.authService.setUser({ ...updatedUser, field: this.user.field });
-    } else {
-      this.authService.setUser({ ...updatedUser, team: this.user.team });
-    }
+    this.authService.setUser(updatedUser);
 
     this.loading = false;
     Swal.fire({

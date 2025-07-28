@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
-import { User, UserAdmin, UserPlayer } from '../interfaces/user';
+import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
+import { User } from '../interfaces/user';
 import { environment } from '../../../environments/environment';
 
 interface LoginResponse {
@@ -20,16 +20,16 @@ export class AuthService {
 
   authStatus$ = this.authStatus.asObservable();
 
-  private currentUser = new BehaviorSubject<UserAdmin | UserPlayer | null>(
+  private currentUser = new BehaviorSubject<User | null>(
     null
   );
   currentUser$ = this.currentUser.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  loginPlayer(email: string, password: string): Observable<LoginResponse> {
+  loginUser(email: string, password: string): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${this.url}/authenticate/player`, {
+      .post<LoginResponse>(`${this.url}/authenticate`, {
         email,
         password,
       })
@@ -42,28 +42,13 @@ export class AuthService {
       );
   }
 
-  loginAdmin(email: string, password: string): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${this.url}/authenticate/admin`, {
-        email,
-        password,
-      })
-      .pipe(
-        tap((response) => {
-          this.setToken(response.token);
-          this.currentUser.next(response.user);
-          this.authStatus.next(true);
-        })
-      );
-  }
-
-  tryRenewToken(role: 'PLAYER' | 'FIELD_ADMIN'): Observable<boolean> {
+  tryRenewToken(): Observable<boolean> {
     const token = this.getToken();
     const email = this.getClaimsFromToken().sub;
 
     if (!token || !email) return of(false);
 
-    const endpoint = role === 'FIELD_ADMIN' ? 'refresh/admin' : 'refresh/player';
+    const endpoint = 'refresh';
 
     return this.http
       .post<LoginResponse>(`${this.url}/${endpoint}`, { email, token })
@@ -90,7 +75,7 @@ export class AuthService {
       return of(true);
     }
 
-    return this.tryRenewToken(role).pipe(
+    return this.tryRenewToken().pipe(
       map((renewed) => {
         if (!renewed) this.logout();
         return renewed;
@@ -106,12 +91,8 @@ export class AuthService {
     this.router.navigate(['/home']);
   }
 
-  registerPlayer(player: User): Observable<any> {
-    return this.http.post(`${this.url}/player/register`, player);
-  }
-
-  registerAdmin(admin: User): Observable<any> {
-    return this.http.post(`${this.url}/admin/register`, admin);
+  registerUser(user: User): Observable<any> {
+    return this.http.post(`${this.url}/register`, user);
   }
 
   private getTokenExpirationDate(token: string): Date | null {
@@ -162,11 +143,11 @@ export class AuthService {
     return !!localStorage.getItem(this.tokenKey);
   }
 
-  setUser(user: UserAdmin | UserPlayer) {
+  setUser(user: User) {
     this.currentUser.next(user);
   }
 
-  getUser(): UserAdmin | UserPlayer | null {
+  getUser(): User | null {
     return this.currentUser.value;
   }
 

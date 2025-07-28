@@ -52,7 +52,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ButtonActionComponent {
   @Input() text: string = 'Botón';
-  @Input() color: 'black' | 'red' | 'primary' | 'blue' | 'yellow' = 'black';
+  @Input() color: 'black' | 'red' | 'primary' | 'blue' | 'yellow' | 'transparent' = 'black';
   @Input() routerLink: string | any[] | null = null;
   @Input() type: 'button' | 'submit' = 'button';
   @Input() loading: boolean = false;
@@ -72,9 +72,9 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'font-semibold shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-xl disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2';
+      'font-medium shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
-    if (!this.disabled) base += ' hover:shadow-lg hover:-translate-y-0.5';
+    if (!this.disabled && this.color != 'transparent') base += ' hover:shadow-lg hover:-translate-y-0.5';
     if (this.bigButton)
       base += ' text-lg rounded-full border-2 border-gray-500';
     else
@@ -86,6 +86,7 @@ export class ButtonActionComponent {
       primary: 'bg-primary text-white hover:shadow-green-600',
       blue: 'bg-blue-600 text-white hover:shadow-blue-600',
       yellow: 'bg-yellow-500 text-white hover:shadow-yellow-600',
+      transparent: 'bg-transparent text-black shadow-none'
     };
     return `${styles[this.color]} ${base}`;
   }

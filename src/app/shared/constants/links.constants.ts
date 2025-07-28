@@ -18,7 +18,7 @@ export const LINKS_DASHBOARD = [
   },
   {
     name: "Reservas",
-    link: "reservation/list/field",
+    link: "reservation/list",
     role: "FIELD_ADMIN",
     iconClass: "fa-solid fa-calendar-check",
     viewMovil: true,
@@ -29,25 +29,14 @@ export const LINKS_DASHBOARD = [
     name: "Canchas",
     link: "home-player",
     role: "PLAYER",
-    requiredTeam: false,
     iconClass: "fa-solid fa-futbol",
     viewMovil: true,
     viewDesktop: true
   },
   {
-    name: "Mi equipo",
-    link: "team",
-    role: "PLAYER",
-    requiredTeam: false,
-    iconClass: "fa-solid fa-shield-halved",
-    viewMovil: true,
-    viewDesktop: true
-  },
-  {
     name: "Reservas",
-    link: "reservation/list/team",
+    link: "reservation/list",
     role: "PLAYER",
-    requiredTeam: true,
     iconClass: "fa-solid fa-calendar",
     viewMovil: true,
     viewDesktop: true
@@ -56,38 +45,11 @@ export const LINKS_DASHBOARD = [
     name: "Ver jugadores",
     link: "player/list",
     role: "PLAYER",
-    requiredTeam: true,
     iconClass: "fa-solid fa-user-group",
-    viewMovil: false,
-    viewDesktop: true
-  },
-  {
-    name: "Agregar jugadores",
-    link: "add/player",
-    role: "PLAYER",
-    requiredTeam: true,
-    iconClass: "fa-solid fa-user-plus",
-    viewMovil: false,
-    viewDesktop: true
-  },
-  {
-    name: "Solicitudes",
-    link: "requests",
-    role: "PLAYER",
-    requiredTeam: false,
-    iconClass: "fa-solid fa-inbox",
-    viewMovil: false,
-    viewDesktop: true
-  },
-  // LINKS PLAYER AND FIELD_ADMIN
-  {
-    name: "Perfil",
-    link: "profile",
-    role: "all",
-    iconClass: "fa-solid fa-user",
     viewMovil: true,
     viewDesktop: true
   },
+  // LINKS PLAYER AND FIELD_ADMIN
   {
     name: "Ver más",
     link: "menu",

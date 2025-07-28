@@ -29,7 +29,6 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      role: ['', Validators.required],
     });
   }
 
@@ -61,31 +60,10 @@ export class LoginComponent {
 
     const handleSuccess = () => {
       this.loading = false;
-      const link = role === 'FIELD_ADMIN' ? 'admin' : 'player';
-      this.router.navigate(['/dashboard/home-' + link]);
+      this.authService.redirectIfAuthenticated();
     };
 
-    let loginObservable;
-
-    switch (role) {
-      case 'FIELD_ADMIN':
-        loginObservable = this.authService.loginAdmin(email, password);
-        break;
-      case 'PLAYER':
-        loginObservable = this.authService.loginPlayer(email, password);
-        break;
-      default:
-        this.loading = false;
-        Swal.fire({
-          icon: 'warning',
-          title: 'Rol no válido',
-          text: 'Selecciona un tipo de usuario válido.',
-          confirmButtonText: 'Aceptar',
-          customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false,
-        });
-        return;
-    }
+    let loginObservable = this.authService.loginUser(email, password);
 
     loginObservable.subscribe({
       next: handleSuccess,

@@ -1,112 +1,116 @@
-<section class="p-6 md:p-8 bg-gray-50 min-h-screen">
-  <div class="space-y-10 max-w-7xl mx-auto">
-
-    <!-- Header -->
-    <header class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-      @if (user) {
-      @if (isOwnerField() || isUserAdmin(user)) {
-      <h1 class="text-3xl font-bold text-primary tracking-tight">Detalles de tu cancha</h1>
-      <p class="text-gray-600 mt-1 text-base">Gestiona tu cancha y revisa tus reservas más recientes.</p>
-      } @else {
-      <div class="flex items-center justify-between flex-wrap gap-4">
-        <h1 class="text-3xl font-bold text-primary tracking-tight">Detalles de la cancha</h1>
-        @if (field) {
-        <button-action text="Volver" icon="fa-solid fa-arrow-left" [hasIcon]="true" color="black"
-          (clicked)="goBack()"></button-action>
-        }
-      </div>
-      <p class="text-gray-600 mt-1 text-base">Consulta la información de la cancha y haz tu reserva.</p>
-      }
-      }
-    </header>
-
-    <!-- Cargando -->
+<section class="bg-gray-100">
+  <div class="space-y-6 p-6">
     @if (loading) {
-    <loading-component text="Cargando detalles de la cancha" />
-    } @else {
-
-    @if (field) {
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-        <!-- Card: Información completa de la cancha -->
-        <article class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 space-y-6">
-          <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
-            <div class="flex-1 space-y-2 w-full">
-              <div class="flex items-center justify-between gap-x-3">
-                <h2 class="text-2xl font-semibold text-gray-800">{{ field.name }}</h2>
-                <span
-                  class="text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm border transition-colors duration-300"
-                  [ngClass]="{
-                          'bg-green-100 text-green-700 border-green-300': field.status === Status.ACTIVE,
-                          'bg-red-100 text-red-700 border-red-300': field.status === Status.INACTIVE
-                        }">
-                  {{ field.status | statusDescription }}
-                </span>
+    <loading-field-component />
+    } @else { @if (field) {
+    <header>
+      <h1 class="text-3xl font-medium text-black tracking-tight">Detalles de tu cancha</h1>
+      <p class="text-gray-600 mt-1 text-base">
+        Gestiona tu cancha y revisa tus reservas más recientes.
+      </p>
+    </header>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <article class="bg-white p-6 rounded-md shadow-md border border-gray-200 space-y-6">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-6">
+          <div class="flex-1 space-y-6 w-full">
+            <div class="flex items-center justify-between gap-x-3">
+              <h2 class="text-2xl font-semibold text-gray-800">{{ field.name }}</h2>
+              <span
+                class="text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm border transition-colors duration-300"
+                [ngClass]="{
+                  'bg-green-100 text-green-700 border-green-300': field.status === Status.ACTIVE,
+                  'bg-red-100 text-red-700 border-red-300': field.status === Status.INACTIVE
+                }">
+                {{ field.status | statusDescription }}
+              </span>
+            </div>
+            <div class="space-y-6 pt-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                  <i class="fa-solid fa-city text-primary"></i>
+                  Ciudad
+                </p>
+                <p class="text-base text-gray-700">{{ field.city }}</p>
               </div>
-              <div class="space-y-4 pt-4">
-                <div>
-                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                    <i class="fa-solid fa-city text-primary"></i> Ciudad
-                  </p>
-                  <p class="text-base text-gray-700">{{ field.city }}</p>
-                </div>
 
-                <div>
-                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                    <i class="fa-solid fa-map-location-dot text-primary"></i> Dirección
-                  </p>
-                  <p class="text-base text-gray-700">{{ field.address }}</p>
-                </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                  <i class="fa-solid fa-map-location-dot text-primary"></i>
+                  Dirección
+                </p>
+                <p class="text-base text-gray-700">{{ field.address }}</p>
+              </div>
 
-                <div>
-                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                    <i class="fa-solid fa-dollar-sign text-primary"></i> Precio por hora
-                  </p>
-                  <p class="text-base text-gray-700">{{ field.hourlyRate | moneyFormat }}</p>
-                </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                  <i class="fa-solid fa-dollar-sign text-primary"></i>
+                  Precio por hora
+                </p>
+                <p class="text-base text-gray-700">{{ field.hourlyRate | moneyFormat }}</p>
+              </div>
 
-                <div>
-                  <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                    <i class="fa-solid fa-clock text-primary"></i> Horario
-                  </p>
-                  <p class="text-base text-gray-700">
-                    {{ field.openingHour | timeFormat }} a {{ field.closingHour | timeFormat }}
-                  </p>
-                </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
+                  <i class="fa-solid fa-clock text-primary"></i>
+                  Horario
+                </p>
+                <p class="text-base text-gray-700">
+                  {{ field.openingHour | timeFormat }} a {{ field.closingHour | timeFormat }}
+                </p>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="flex justify-end">
-            @if (isOwnerField()) {
-            <button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
-              [routerLink]="['/dashboard/field/form', field.id]"></button-action>
-            } @else {
-            <button-action text="Reservar cancha" color="primary" class="w-full"
-              [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
-            }
-          </div>
-        </article>
+        <div class="flex justify-end">
+          @if (isOwnerField()) {
+          <button-action
+            text="Editar"
+            icon="fa-solid fa-pen-to-square"
+            [hasIcon]="true"
+            color="yellow"
+            [routerLink]="['/dashboard/field/form', field.id]"></button-action>
+          } @else {
+          <button-action
+            text="Reservar cancha"
+            color="primary"
+            class="w-full"
+            [routerLink]="['/dashboard/reservation/form/field', field.id]"></button-action>
+          }
+        </div>
+      </article>
 
-        <!-- Card: Últimas reservas -->
-        <article class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="text-xl font-semibold text-gray-800">Últimas reservas</h3>
-            @if (reservationList.length > 0 && isOwnerField()) {
-            <a class="text-sm text-primary font-medium hover:underline"
-              [routerLink]="['/dashboard/reservation/list/field']">Ver todas</a>
-            }
-          </div>
-          <app-reservation-list [fromDetail]="'field'" [reservations]="reservationList"></app-reservation-list>
-        </article>
-
-      </div>
+      <article class="bg-white p-6 rounded-md shadow-md border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-semibold text-gray-800">Últimas reservas</h3>
+          @if (reservationList.length > 0 && isOwnerField()) {
+          <a
+            class="text-sm text-primary font-medium hover:underline"
+            [routerLink]="['/dashboard/reservation/list']">
+            Ver todas
+          </a>
+          }
+        </div>
+        <div class="flex flex-col gap-4">
+          @for (reservation of reservationList; track reservation.id) {
+          <app-reservation-card
+            [viewAsField]="true"
+            [reservation]="reservation"
+            [reservationBy]="'field'"
+            [fromDetail]="'field'"
+            [listOfDetailsField]="true"
+            [isUserAdmin]="isUserAdmin(user)" />
+          }
+        </div>
+      </article>
+    </div>
 
     } @else {
-    <div class="text-center py-12">
+    <div class="text-center flex justify-center items-center flex-col h-full">
       <h2 class="text-lg font-medium text-gray-700">No tienes una cancha registrada.</h2>
-      <a routerLink="/dashboard/field/form"
-        class="mt-6 inline-flex items-center px-5 py-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 hover:bg-gray-100 transition-all">
+      <a
+        routerLink="/dashboard/field/form"
+        class="mt-6 inline-flex items-center px-5 py-8 border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:bg-gray-300 transition-all">
         <i class="fa-solid fa-plus mr-2"></i>
         <span class="font-semibold">Registra una cancha</span>
       </a>

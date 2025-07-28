@@ -37,10 +37,7 @@ export class RegisterComponent {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         city: ['Cartagena', [Validators.required]],
-        age: ['', [Validators.required]],
         cellphone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-        documentType: ['CC', [Validators.required]],
-        documentNumber: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
@@ -113,29 +110,8 @@ export class RegisterComponent {
       this.router.navigate(['/login']);
     };
 
-    let loginObservable;
+    let loginObservable = this.authService.registerUser(formData);
 
-    switch (this.registerForm.value.role) {
-      case 'FIELD_ADMIN':
-        const { role: adminRole, ...adminData } = formData;
-        loginObservable = this.authService.registerAdmin(adminData);
-        break;
-      case 'PLAYER':
-        const { role: playerRole, ...playerData } = formData;
-        loginObservable = this.authService.registerPlayer(playerData);
-        break;
-      default:
-        this.loading = false;
-        Swal.fire({
-          icon: 'warning',
-          title: 'Rol no válido',
-          text: 'Selecciona un tipo de usuario válido.',
-          confirmButtonText: 'Aceptar',
-          customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false,
-        });
-        return;
-    }
     loginObservable.subscribe({
       next: handleSuccess,
       error: handleError,

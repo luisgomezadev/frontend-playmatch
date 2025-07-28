@@ -22,8 +22,8 @@ export class ReservationService {
     return this.http.get(`${this.url}/field/${fieldId}`);
   }
 
-  getReservationsByTeamId(teamId: number): Observable<any> {
-    return this.http.get(`${this.url}/team/${teamId}`);
+  getReservationsByUserId(userId: number): Observable<any> {
+    return this.http.get(`${this.url}/user/${userId}`);
   }
 
   getReservationsByFieldAndStuts(fieldId: number, status: StatusReservation): Observable<any> {
@@ -54,8 +54,8 @@ export class ReservationService {
     return this.http.put(`${this.url}/${id}/status/canceled`, null);
   }
 
-  getCountActiveByTeam(teamId: number): Observable<number> {
-    return this.http.get<number>(`${this.url}/team/${teamId}/active`);
+  getCountActiveByUser(userId: number): Observable<number> {
+    return this.http.get<number>(`${this.url}/user/${userId}/active`);
   }
 
   getCountActiveByField(fieldId: number): Observable<any> {
@@ -79,8 +79,8 @@ export class ReservationService {
     if (filters.status) {
       params = params.set('status', filters.status);
     }
-    if (filters.teamId != null) {
-      params = params.set('teamId', filters.teamId.toString());
+    if (filters.userId != null) {
+      params = params.set('userId', filters.userId.toString());
     }
     if (filters.fieldId != null) {
       params = params.set('fieldId', filters.fieldId.toString());

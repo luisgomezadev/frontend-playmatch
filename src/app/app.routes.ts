@@ -9,15 +9,9 @@ import { FieldDetailComponent } from './features/field/components/field-detail/f
 import { FieldFormComponent } from './features/field/components/field-form/field-form.component';
 import { ProfileComponent } from './features/dashboard/profile/profile.component';
 import { PlayerListComponent } from './features/dashboard/player/components/player-list/player-list.component';
-import { TeamDetailComponent } from './features/team/components/team-detail/team-detail.component';
-import { TeamFormComponent } from './features/team/components/team-form/team-form.component';
-import { TeamListComponent } from './features/team/components/team-list/team-list.component';
 import { FieldsListComponent } from './features/field/components/fields-list/fields-list.component';
 import { ReservationListComponent } from './features/reservation/components/reservation-list/reservation-list.component';
-import { TeamAddPlayerComponent } from './features/team/components/team-add-player/team-add-player.component';
 import { ReservationFormComponent } from './features/reservation/components/reservation-form/reservation-form.component';
-import { ProfileFormComponent } from './features/dashboard/profile/profile-form/profile-form.component';
-import { TeamApplicationListComponent } from './features/team-application/components/team-application-list/team-application-list.component';
 import { MenuComponent } from './shared/components/menu/menu.component';
 
 export const routes: Routes = [
@@ -39,32 +33,18 @@ export const routes: Routes = [
       { path: 'field/form', component: FieldFormComponent },
       { path: 'field/form/:id', component: FieldFormComponent },
 
-      // Rutas de equipo
-      { path: 'team', component: TeamDetailComponent },
-      { path: 'team/form', component: TeamFormComponent },
-      { path: 'team/form/:id', component: TeamFormComponent },
-      { path: 'team/list', component: TeamListComponent },
-      { path: 'add/player', component: TeamAddPlayerComponent },
-
       // Rutas de reserva
-      { path: 'reservation/list/:var', component: ReservationListComponent },
+      { path: 'reservation/list', component: ReservationListComponent },
       {
         path: 'reservation/form/field/:id',
-        component: ReservationFormComponent,
-      },
-
-      // Ruta de solicitud
-      {
-        path: 'requests',
-        component: TeamApplicationListComponent,
+        component: ReservationFormComponent
       },
 
       { path: 'player/list', component: PlayerListComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'profile/:user/:id', component: ProfileFormComponent },
-      { path: 'menu', component: MenuComponent },
-    ],
+      { path: 'menu', component: MenuComponent }
+    ]
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home' }, // opcional para manejar rutas inválidas
+  { path: '**', redirectTo: 'home' }
 ];

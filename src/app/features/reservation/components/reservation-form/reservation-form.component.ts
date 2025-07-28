@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -13,11 +13,10 @@ import {
   Reservation,
   StatusReservation,
 } from '../../interfaces/reservation';
-import { UserPlayer } from '../../../../core/interfaces/user';
+import { User, UserRole } from '../../../../core/interfaces/user';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
-import { Team } from '../../../team/interfaces/team';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 import { LoadingFullComponent } from '../../../../shared/components/loading-full/loading-full.component';
@@ -32,14 +31,14 @@ import { LoadingFullComponent } from '../../../../shared/components/loading-full
     TimeFormatPipe,
     LoadingFullComponent,
     ReservationCalendarComponent,
+    CommonModule
   ],
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss',
 })
 export class ReservationFormComponent {
-  user!: UserPlayer;
+  user!: User;
   fieldId!: number;
-  team!: Team;
   formReservation!: FormGroup;
   confirmedReservation!: ConfirmedReservation | null;
   reservations: Reservation[] = [];
@@ -49,6 +48,8 @@ export class ReservationFormComponent {
   today: string = '';
   loading: boolean = false;
   loadingReservation: boolean = false;
+
+  hours = Array.from({ length: 12 }, (_, i) => i + 1);
 
   constructor(
     private route: ActivatedRoute,
@@ -70,15 +71,13 @@ export class ReservationFormComponent {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
-        if (this.isUserPlayer(user) && user.team) {
-          this.team = user.team;
-        }
       }
     });
 
     this.formReservation = this.fb.group({
       reservationDate: [this.today, Validators.required],
-      startTime: ['', Validators.required],
+      hour: ['', Validators.required],   // nuevo control para hora
+      ampm: ['AM', Validators.required], // nuevo control para AM/PM
       hours: [1, [Validators.required, Validators.min(1), Validators.max(3)]],
     });
 
@@ -87,8 +86,19 @@ export class ReservationFormComponent {
     this.getReservations();
   }
 
-  private isUserPlayer(user: any): user is UserPlayer {
-    return 'team' in user;
+  get startTime(): string {
+    const hour = this.formReservation.get('hour')?.value;
+    const ampm = this.formReservation.get('ampm')?.value;
+    if (!hour || !ampm) return '';
+
+    let h = Number(hour);
+    if (ampm === 'PM' && h < 12) {
+      h += 12;
+    } else if (ampm === 'AM' && h === 12) {
+      h = 0;
+    }
+
+    return `${h.toString().padStart(2, '0')}:00`;
   }
 
   goBack(): void {
@@ -117,8 +127,10 @@ export class ReservationFormComponent {
       this.loading = true;
 
       const reservationData = {
-        ...this.formReservation.value,
-        teamId: this.team.id,
+        reservationDate: this.formReservation.value.reservationDate,
+        startTime: this.startTime,
+        hours: this.formReservation.value.hours,
+        userId: this.user.id,
         fieldId: this.fieldId,
       };
 
@@ -159,7 +171,7 @@ export class ReservationFormComponent {
     if (this.confirmedReservation) {
       this.loadingReservation = true;
       const reservationRequest = {
-        teamId: this.confirmedReservation.team?.id,
+        userId: this.confirmedReservation.user?.id,
         fieldId: this.confirmedReservation.field?.id,
         reservationDate: this.confirmedReservation.reservationDate,
         startTime: this.confirmedReservation.startTime,
@@ -176,7 +188,7 @@ export class ReservationFormComponent {
             customClass: { confirmButton: 'swal-confirm-btn' },
             buttonsStyling: false,
           });
-          this.router.navigate(['/dashboard/reservation/list/team']);
+          this.router.navigate(['/dashboard/reservation/list']);
         },
         error: (err) => {
           this.loadingReservation = false;

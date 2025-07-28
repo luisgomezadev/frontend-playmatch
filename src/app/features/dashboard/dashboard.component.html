@@ -1,77 +1,48 @@
 @if (loading) {
-<loading-full-component text="Cargando dashboard"/>
+<loading-full-component text="Cargando dashboard" />
 } @else {
-<!-- sidebar toggle visible solo en móviles -->
 <div
-  class="md:hidden bg-white border-t-2 shadow-lg flex justify-center items-center fixed bottom-0 left-0 right-0 z-50"
->
+  class="md:hidden bg-white border-t-2 shadow-lg flex justify-center items-center fixed bottom-0 left-0 right-0 z-50">
   @for (link of links; track $index) { @if (link.viewMovil) {
-  <a
-    [routerLink]="link.link"
-    routerLinkActive="text-primary border-t-2 border-primary"
-    class="flex-1 text-xs text-gray-600 flex flex-col justify-center items-center gap-1 py-4 px-2"
-  >
+  <a [routerLink]="link.link" routerLinkActive="text-primary border-t-2 border-primary"
+    class="flex-1 text-xs text-gray-600 flex flex-col justify-center items-center gap-1 py-4 px-2">
     <i [class]="link.iconClass"></i>
-    <span>{{ link.name }}</span></a
-  >
+    <span>{{ link.name }}</span>
+  </a>
   } }
 </div>
 
-<div class="flex min-h-screen bg-gray-100">
-  <!-- Sidebar -->
+<div class="flex h-auto md:h-screen bg-gray-100">
   <aside
-    [ngClass]="{
-      'translate-x-0': sidebarOpen,
-      '-translate-x-full': !sidebarOpen
-    }"
-    class="fixed z-40 top-0 left-0 md:w-64 w-full bg-white text-black shadow-md transform transition-transform duration-300 md:translate-x-0 md:fixed md:block h-screen"
-  >
+    class="z-40 top-0 left-0 md:w-64 w-full bg-white text-black transform transition-transform duration-300 h-full fixed shadow-md hidden md:block">
     <div class="p-6 text-center hidden md:block shadow-sm">
       <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" />
     </div>
     <nav class="mt-6 relative">
-      <div
-        class="flex justify-between mx-6 py-4 items-center md:hidden border-b-2"
-      >
-        <h2 class="text-2xl font-bold">
-          <span class="text-primary">Play</span>Match | Menu
-        </h2>
-        <button (click)="closeSidebar()">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="text-black w-7 h-7 font-bold"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M18 6l-12 12" />
-            <path d="M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
       <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0">
+        <p class="pl-1">Menu</p>
         @for (link of links; track $index) { @if (link.viewDesktop) {
         <li>
-          <a
-            (click)="closeSidebar()"
-            [routerLink]="link.link"
-            routerLinkActive="text-white bg-primary"
-            class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition"
-          >
+          <a (click)="closeSidebar()" [routerLink]="link.link" routerLinkActive="text-white bg-primary"
+            class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition">
             <i class="w-6" [class]="link.iconClass"></i>
             <span>{{ link.name }}</span>
           </a>
         </li>
         } }
+      </ul>
+      <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0 mt-8">
+        <p class="pl-1">General</p>
         <li>
-          <a
-            (click)="closeSidebar()"
-            (click)="logout()"
-            class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-700 hover:bg-red-500 hover:text-white transition cursor-pointer"
-          >
+          <a (click)="closeSidebar()" routerLink="profile" routerLinkActive="text-white bg-primary"
+            class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition">
+            <i class="w-6" class="fa-solid fa-user w-6"></i>
+            <span>Perfil</span>
+          </a>
+        </li>
+        <li>
+          <a (click)="closeSidebar()" (click)="logout()"
+            class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-700 hover:bg-red-500 hover:text-white transition cursor-pointer">
             <i class="fa-solid fa-right-from-bracket w-6"></i>
             <span>Cerrar sesión</span>
           </a>
@@ -80,11 +51,27 @@
     </nav>
   </aside>
 
-  <!-- Main content -->
-  <div class="flex-1 md:ml-64 pb-16 md:pb-0">
-    <section>
-      <router-outlet></router-outlet>
-    </section>
+  <header class="fixed w-full md:w-[calc(100%-16rem)] md:ml-64 bg-primary z-50 shadow-md">
+    <div class="flex justify-between items-center gap-x-3 p-3">
+      <div>
+        <p class="font-medium text-white md:hidden block">Bienvenido</p>
+        <p class="font-medium text-white md:block hidden">Bienvenido al panel de {{ getNameRole() }}</p>
+      </div>
+      <div class="flex gap-x-4 items-center">
+        <div>
+          <img [src]="getImageUrl(userActive)" class="w-10 h-10 rounded-full object-cover"
+            [alt]="'Foto de perfil de ' + userActive.firstName" />
+        </div>
+        <div class="flex flex-col text-white">
+          <span>{{ userActive.firstName + ' ' + userActive.lastName }}</span>
+          <span class="text-sm opacity-80">{{ userActive.email }}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-1 ml-0 md:ml-64 mt-[68px] mb-16 md:mb-0">
+    <router-outlet></router-outlet>
   </div>
 </div>
 }

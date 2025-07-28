@@ -1,9 +1,9 @@
+import { User } from "../../../core/interfaces/user";
 import { Field } from "../../field/interfaces/field";
-import { Team } from "../../team/interfaces/team";
 
 export interface Reservation {
   id: number;
-  team?: Team;
+  user?: User;
   field?: Field;
   hours: number;
   startTime: string;
@@ -13,7 +13,7 @@ export interface Reservation {
 }
 
 export interface ConfirmedReservation {
-  team?: Team;
+  user?: User;
   field?: Field;
   hours: number;
   startTime: string;
@@ -23,7 +23,7 @@ export interface ConfirmedReservation {
 
 export interface ReservationFilter {
   fieldId?: number;
-  teamId?: number;
+  userId?: number;
   status?: StatusReservation;
   date?: string;
 }

@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { Field } from '../interfaces/field';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class FieldService {
   private url = environment.apiUrl + '/field';
@@ -24,7 +24,7 @@ export class FieldService {
     return this.http.get<Field>(`${this.url}/${id}`);
   }
 
-  getFieldsByAdminId(adminId: number): Observable<any> {
+  getFieldByAdminId(adminId: number): Observable<any> {
     return this.http.get(`${this.url}/admin/${adminId}`);
   }
 
