@@ -3,7 +3,7 @@
 Este es el frontend de **Play Match**, una aplicación para la gestión de reservas deportivas. Está desarrollado con [Angular](https://angular.io/), [TypeScript](https://www.typescriptlang.org/) y estilizado con [Tailwind CSS](https://tailwindcss.com/). Se conecta a una API backend protegida con autenticación JWT.
 
 🔗 **Repositorio del backend**:  
-[https://github.com/tuusuario/play-match-backend](https://github.com/tuusuario/play-match-backend)
+[https://github.com/tuusuario/play-match-backend](https://github.com/luisgomezadev/backend-playmatch)
 
 ---
 
