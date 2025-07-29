@@ -1,27 +1,72 @@
-# PlayMatchFront
+# 🏐 Play Match - Frontend Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+Este es el frontend de **Play Match**, una aplicación para la gestión de reservas deportivas. Está desarrollado con [Angular](https://angular.io/), [TypeScript](https://www.typescriptlang.org/) y estilizado con [Tailwind CSS](https://tailwindcss.com/). Se conecta a una API backend protegida con autenticación JWT.
 
-## Development server
+🔗 **Repositorio del backend**:  
+[https://github.com/tuusuario/play-match-backend](https://github.com/tuusuario/play-match-backend)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## 🎯 Características
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Inicio de sesión y registro de usuarios
+- Gestión de reservas de canchas deportivas
+- Autenticación con JWT
+- Interfaz moderna y responsiva
+- Diferentes vistas según el rol del usuario (jugador/admin)
+- Consumo de API REST (Play Match Backend)
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🚀 Tecnologías utilizadas
 
-## Running unit tests
+- 🅰️ [Angular 17+](https://angular.io/)
+- 🔐 JWT (manejo en frontend)
+- 🎨 [Tailwind CSS](https://tailwindcss.com/)
+- ⚙️ RxJS y servicios para consumo de API
+- 🧩 FormBuilder, Guards, Interceptors, Lazy Loading
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## 📦 Instalación
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. Clona el repositorio:
 
-## Further help
+```bash
+git clone https://github.com/luisgomezadev/frontend-playmatch.git
+cd frontend-playmatch
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+2. Instala las dependencias:
+
+```bash
+npm install
+```
+
+3. Levanta el proyecto:
+
+```bash
+ng serve
+```
+
+---
+
+## 🌐 Demo en producción
+
+Puedes ver la aplicación desplegada aquí: [PlayMatch](https://playmatch-lgsoftworks.vercel.app)
+
+---
+
+## 🧪 Usuarios de prueba
+
+Para propósitos de demo, puedes ingresar con las siguientes credenciales:
+
+#### 👨‍💼 Administrador
+- **Correo:** `luis@gmail.com`
+- **Contraseña:** `Contra-12345`
+
+#### 👤 Jugadores
+- **Jugador 1:** `daniel@gmail.com` / `Contra-12345`
+- **Jugador 2:** `angelo@gmail.com` / `Contra-12345`
+
+🔒 Estos usuarios tienen acceso limitado según su rol.
