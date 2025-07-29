@@ -12,7 +12,7 @@ import { User, UserRole } from '../../../../core/interfaces/user';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { ReservationListComponent } from '../../../reservation/components/reservation-list/reservation-list.component';
 import { Reservation } from '../../../reservation/interfaces/reservation';
-import { LoadingFieldComponent } from '../../../../shared/components/loading-field/loading-field.component';
+import { LoadingFieldComponent } from '../../../../shared/components/loading/loading-field/loading-field.component';
 import { ReservationCardComponent } from '../../../reservation/components/reservation-card/reservation-card.component';
 
 @Component({

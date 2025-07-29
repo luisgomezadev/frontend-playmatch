@@ -1,22 +1,24 @@
-<section class="bg-white" [ngClass]="{ 'bg-gray-100': user }">
+<section [ngClass]="user ? 'bg-gray-100' : 'bg-white'">
   <div class="space-y-6 p-6" [ngClass]="{ 'max-w-7xl mx-auto': !user }">
     <header>
-      <h1 class="text-3xl font-medium text-black tracking-tight">Canchas disponibles</h1>
       @if (showHeader) {
+      <h1 class="text-3xl font-medium text-black tracking-tight">Canchas disponibles</h1>
       <p class="text-gray-600 mt-1 text-base">
         Explora las canchas disponibles y selecciona la que quieras para reservarla fácilmente.
       </p>
+      } @else {
+        <div class="w-full text-center border py-4 rounded-md shadow">
+          <h1 class="text-3xl font-medium text-black tracking-tight">Canchas disponibles</h1>
+        </div>
       }
     </header>
     @if (loading) {
-    <div class="flex flex-col gap-3 justify-center items-center">
-      <h2 class="text-lg text-gray-600">Cargando canchas...</h2>
-      <div
-        class="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"></div>
+    <div>
+      <loading-field-list-component />
     </div>
     } @else { @if (fields.length === 0) {
-    <div class="text-center">
-      <h2 class="text-lg">No hay canchas disponibles.</h2>
+    <div class="text-start">
+      <span class="text-lg">No hay canchas disponibles.</span>
     </div>
     } @else { @if (!user ||isUserPlayer(user)) {
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -11,6 +11,7 @@ import { ButtonActionComponent } from '../../../../shared/components/button-acti
 import Swal from 'sweetalert2';
 import { ReservationService } from '../../../reservation/services/reservation.service';
 import { firstValueFrom } from 'rxjs';
+import { LoadingFieldListComponent } from '../../../../shared/components/loading/loading-field-list/loading-field-list.component';
 
 @Component({
   selector: 'app-fields-list',
@@ -20,7 +21,8 @@ import { firstValueFrom } from 'rxjs';
     MoneyFormatPipe,
     TimeFormatPipe,
     CommonModule,
-    ButtonActionComponent
+    ButtonActionComponent,
+    LoadingFieldListComponent
   ],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss',

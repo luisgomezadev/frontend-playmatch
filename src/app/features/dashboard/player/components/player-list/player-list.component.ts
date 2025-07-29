@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../../../../shared/components/loading/loading.component';
 import { PagedResponse } from '../../../../../core/interfaces/paged-response';
 import { UserService } from '../../../../../core/services/user.service';
+import { LoadingPlayersComponent } from '../../../../../shared/components/loading/loading-players/loading-players.component';
 
 @Component({
   selector: 'app-player-list',
   standalone: true,
-  imports: [CommonModule, LoadingComponent],
+  imports: [CommonModule, LoadingComponent, LoadingPlayersComponent],
   templateUrl: './player-list.component.html',
   styleUrl: './player-list.component.scss'
 })

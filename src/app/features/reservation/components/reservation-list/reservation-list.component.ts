@@ -18,7 +18,7 @@ import { ReservationCalendarComponent } from '../reservation-calendar/reservatio
 import { Field } from '../../../field/interfaces/field';
 import { FieldService } from '../../../field/services/field.service';
 import { ReservationCardComponent } from '../reservation-card/reservation-card.component';
-import { LoadingReservationCardComponent } from '../../../../shared/components/loading-reservation-card/loading-reservation-card.component';
+import { LoadingReservationCardComponent } from '../../../../shared/components/loading/loading-reservation-card/loading-reservation-card.component';
 
 @Component({
   selector: 'app-reservation-list',

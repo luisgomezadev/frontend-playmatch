@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { Field } from '../field/interfaces/field';
 import { User, UserRole } from '../../core/interfaces/user';
 import { LINKS_DASHBOARD } from '../../shared/constants/links.constants';
-import { LoadingFullComponent } from '../../shared/components/loading-full/loading-full.component';
+import { LoadingFullComponent } from '../../shared/components/loading/loading-full/loading-full.component';
 import { UserService } from '../../core/services/user.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class DashboardComponent {
   loading = true;
   links: any[] = [];
 
-  constructor(private authService: AuthService, private userService: UserService) {}
+  constructor(private authService: AuthService, private userService: UserService) { }
 
   ngOnInit(): void {
     const claims = this.authService.getClaimsFromToken();

@@ -19,7 +19,7 @@ import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
 import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
 import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
-import { LoadingFullComponent } from '../../../../shared/components/loading-full/loading-full.component';
+import { LoadingFullComponent } from '../../../../shared/components/loading/loading-full/loading-full.component';
 
 @Component({
   selector: 'app-reservation-form',
@@ -58,7 +58,7 @@ export class ReservationFormComponent {
     private authService: AuthService,
     private reservationService: ReservationService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const today = new Date();
