@@ -45,7 +45,7 @@ export class LoginComponent {
     if (this.loginForm.invalid) return;
 
     this.loading = true;
-    const { email, password, role } = this.loginForm.value;
+    const { email, password } = this.loginForm.value;
 
     const handleError = (err: any) => {
       this.loading = false;
