@@ -10,7 +10,7 @@
         <div class="w-full text-center border py-4 rounded-md shadow bg-gray-100 relative overflow-hidden">
           <h1 class="text-3xl font-medium text-gray-900 tracking-tight">Canchas disponibles</h1>
           <img src="/assets/ball.webp" class="absolute z-0 w-48 -bottom-32 -right-16 opacity-10 pointer-events-none"
-            alt="Balon de" />
+            alt="Balon de futbol" />
         </div>
       }
     </header>
@@ -19,7 +19,7 @@
       <loading-field-list-component />
     </div>
     } @else { @if (fields.length === 0) {
-    <div class="text-start">
+    <div [ngClass]="user ? 'text-start' : 'text-center'">
       <span class="text-lg">No hay canchas disponibles.</span>
     </div>
     } @else { @if (!user ||isUserPlayer(user)) {

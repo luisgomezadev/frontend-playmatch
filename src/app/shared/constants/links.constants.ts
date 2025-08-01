@@ -27,7 +27,7 @@ export const LINKS_DASHBOARD = [
   // LINKS PLAYER
   {
     name: "Canchas",
-    link: "home-player",
+    link: "field/list",
     role: "PLAYER",
     iconClass: "fa-solid fa-futbol",
     viewMovil: true,

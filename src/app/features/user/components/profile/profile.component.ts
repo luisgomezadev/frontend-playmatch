@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { User, UserRole } from '../../../core/interfaces/user';
-import { AuthService } from '../../../core/services/auth.service';
 import Swal from 'sweetalert2';
-import { ButtonActionComponent } from '../../../shared/components/button-action/button-action.component';
-import { UserService } from '../../../core/services/user.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
+import { User, UserRole } from '../../interfaces/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,7 +23,7 @@ export class ProfileComponent {
   constructor(
     private authService: AuthService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {

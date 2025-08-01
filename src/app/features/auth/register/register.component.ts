@@ -4,22 +4,21 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import Swal from 'sweetalert2';
 import { NgSelectModule } from '@ng-select/ng-select';
-
-const passwordPattern =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#()_\-^+=])[A-Za-z\d@$!%*?&#()_\-^+=]{8,}$/;
+import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-auth.component';
+import { REGEX_PATTERNS } from '../../../shared/utils/regex-utils';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NgSelectModule],
+  imports: [ReactiveFormsModule, RouterModule, NgSelectModule, AsideAuthComponent],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
   registerForm: FormGroup;
@@ -27,28 +26,24 @@ export class RegisterComponent {
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private authService: AuthService
-  ) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.registerForm = this.fb.group(
       {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
         city: ['Cartagena', [Validators.required]],
-        cellphone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+        cellphone: ['', [Validators.required, Validators.pattern(REGEX_PATTERNS.cellphone)]],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
           [
             Validators.required,
             Validators.minLength(8),
-            Validators.pattern(passwordPattern),
-          ],
+            Validators.pattern(REGEX_PATTERNS.password)
+          ]
         ],
         role: ['', Validators.required],
-        confirmPassword: ['', Validators.required],
+        confirmPassword: ['', Validators.required]
       },
       { validators: this.passwordMatchValidator }
     );
@@ -73,11 +68,7 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    if (
-      this.registerForm.invalid ||
-      this.registerForm.hasError('passwordMismatch')
-    )
-      return;
+    if (this.registerForm.invalid || this.registerForm.hasError('passwordMismatch')) return;
 
     const { confirmPassword, ...formData } = this.registerForm.value;
 
@@ -91,7 +82,7 @@ export class RegisterComponent {
         text: err?.error?.message || 'Falló el registro',
         confirmButtonText: 'Aceptar',
         customClass: { confirmButton: 'swal-confirm-btn' },
-        buttonsStyling: false,
+        buttonsStyling: false
       });
     };
 
@@ -103,9 +94,9 @@ export class RegisterComponent {
         text: 'Ahora puedes iniciar sesión',
         confirmButtonText: 'Aceptar',
         customClass: {
-          confirmButton: 'swal-confirm-btn',
+          confirmButton: 'swal-confirm-btn'
         },
-        buttonsStyling: false,
+        buttonsStyling: false
       });
       this.router.navigate(['/login']);
     };
@@ -114,7 +105,7 @@ export class RegisterComponent {
 
     loginObservable.subscribe({
       next: handleSuccess,
-      error: handleError,
+      error: handleError
     });
   }
 }

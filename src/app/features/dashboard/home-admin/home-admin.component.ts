@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { User } from '../../../../../core/interfaces/user';
-import { AuthService } from '../../../../../core/services/auth.service';
-import { RouterModule } from '@angular/router';
-import { ReservationService } from '../../../../reservation/services/reservation.service';
-import { ButtonActionComponent } from '../../../../../shared/components/button-action/button-action.component';
 import { CommonModule } from '@angular/common';
-import { FieldService } from '../../../../field/services/field.service';
-import { Field } from '../../../../field/interfaces/field';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { ButtonActionComponent } from '../../../shared/components/button-action/button-action.component';
+import { Field } from '../../field/interfaces/field';
+import { FieldService } from '../../field/services/field.service';
+import { ReservationService } from '../../reservation/services/reservation.service';
+import { User } from '../../user/interfaces/user';
 
 @Component({
   selector: 'app-home-admin',

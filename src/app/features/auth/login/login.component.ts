@@ -5,14 +5,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../core/services/auth.service';
+import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-auth.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

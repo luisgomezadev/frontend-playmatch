@@ -9,7 +9,7 @@ import { FieldService } from '../../services/field.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/services/auth.service';
-import { User } from '../../../../core/interfaces/user';
+import { User } from '../../../user/interfaces/user';
 import { Location } from '@angular/common';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FieldsListComponent } from '../field/components/fields-list/fields-list.component';
+import { FieldsListComponent } from '../../features/field/components/fields-list/fields-list.component';
 
 @Component({
   selector: 'app-home',

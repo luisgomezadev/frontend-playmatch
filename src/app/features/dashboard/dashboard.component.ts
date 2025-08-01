@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../core/services/auth.service';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Field } from '../field/interfaces/field';
-import { User, UserRole } from '../../core/interfaces/user';
-import { LINKS_DASHBOARD } from '../../shared/constants/links.constants';
+import { AuthService } from '../../core/services/auth.service';
 import { LoadingFullComponent } from '../../shared/components/loading/loading-full/loading-full.component';
-import { UserService } from '../../core/services/user.service';
+import { LINKS_DASHBOARD } from '../../shared/constants/links.constants';
+import { Field } from '../field/interfaces/field';
+import { User, UserRole } from '../user/interfaces/user';
+import { UserService } from '../user/services/user.service';
 
 @Component({
   selector: 'app-dashboard',

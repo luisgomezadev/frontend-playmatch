@@ -1,5 +1,5 @@
 import { Reservation } from "../../reservation/interfaces/reservation";
-import { User } from "../../../core/interfaces/user";
+import { User } from "../../user/interfaces/user";
 
 export interface Field {
   id: number;

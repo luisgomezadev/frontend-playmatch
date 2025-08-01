@@ -13,11 +13,11 @@ import {
   Reservation,
   StatusReservation,
 } from '../../interfaces/reservation';
-import { User, UserRole } from '../../../../core/interfaces/user';
+import { User } from '../../../user/interfaces/user';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
-import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
+import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
 import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 import { LoadingFullComponent } from '../../../../shared/components/loading/loading-full/loading-full.component';
 

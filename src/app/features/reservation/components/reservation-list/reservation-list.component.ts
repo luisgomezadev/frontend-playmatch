@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 
 import { Reservation, ReservationFilter, StatusReservation } from '../../interfaces/reservation';
 import { PagedResponse } from '../../../../core/interfaces/paged-response';
-import { User, UserRole } from '../../../../core/interfaces/user';
+import { User, UserRole } from '../../../user/interfaces/user';
 
 import { ReservationService } from '../../services/reservation.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -68,7 +68,7 @@ export class ReservationListComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.checkScreenSize();

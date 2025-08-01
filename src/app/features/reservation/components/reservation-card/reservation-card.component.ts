@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Reservation, StatusReservation } from '../../interfaces/reservation';
 import { CommonModule } from '@angular/common';
-import { StatusReservationPipe } from '../../../../pipes/status-reservation.pipe';
-import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
+import { StatusReservationPipe } from '../../../../shared/pipes/status-reservation.pipe';
+import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
-import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
+import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
 
 @Component({
   selector: 'app-reservation-card',
@@ -39,7 +39,7 @@ export class ReservationCardComponent {
 
   StatusReservation = StatusReservation;
 
-  constructor(private reservationService: ReservationService) {}
+  constructor(private reservationService: ReservationService) { }
 
   openModal(item: any, type: 'user' | 'field'): void {
     this.selectedItem = item;

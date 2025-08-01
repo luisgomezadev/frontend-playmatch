@@ -1,4 +1,4 @@
-import { User } from "../../../core/interfaces/user";
+import { User } from "../../user/interfaces/user";
 import { Field } from "../../field/interfaces/field";
 
 export interface Reservation {

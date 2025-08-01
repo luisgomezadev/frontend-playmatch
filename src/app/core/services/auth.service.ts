@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
-import { User } from '../interfaces/user';
+import { User, UserRole } from '../../features/user/interfaces/user';
 import { environment } from '../../../environments/environment';
 
 interface LoginResponse {
@@ -113,6 +113,7 @@ export class AuthService {
       date.setUTCSeconds(payload.exp);
       return date;
     } catch (e) {
+      console.error(e);
       return null;
     }
   }
@@ -164,6 +165,7 @@ export class AuthService {
       );
       return JSON.parse(payloadJson);
     } catch (e) {
+      console.error(e);
       return null;
     }
   }
@@ -173,8 +175,11 @@ export class AuthService {
     if (token && !this.isTokenExpired(token)) {
       const role = this.getClaimsFromToken().role;
       if (role) {
-        const link = role === 'FIELD_ADMIN' ? 'admin' : 'player';
-        this.router.navigate(['/dashboard/home-' + link]);
+        if (role === UserRole.FIELD_ADMIN) {
+          this.router.navigate(['/dashboard/home-admin']);
+        } else {
+          this.router.navigate(['/dashboard/field/list']);
+        }
       }
     }
   }

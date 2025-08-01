@@ -4,13 +4,12 @@ import { FieldService } from '../../services/field.service';
 import { Field, Status } from '../../interfaces/field';
 import Swal from 'sweetalert2';
 import { CommonModule, Location } from '@angular/common';
-import { StatusDescriptionPipe } from '../../../../pipes/status-description.pipe';
+import { StatusDescriptionPipe } from '../../../../shared/pipes/status-description.pipe';
 import { AuthService } from '../../../../core/services/auth.service';
-import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
-import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
-import { User, UserRole } from '../../../../core/interfaces/user';
+import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
+import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
+import { User, UserRole } from '../../../user/interfaces/user';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { ReservationListComponent } from '../../../reservation/components/reservation-list/reservation-list.component';
 import { Reservation } from '../../../reservation/interfaces/reservation';
 import { LoadingFieldComponent } from '../../../../shared/components/loading/loading-field/loading-field.component';
 import { ReservationCardComponent } from '../../../reservation/components/reservation-card/reservation-card.component';
@@ -44,7 +43,7 @@ export class FieldDetailComponent {
     private fieldService: FieldService,
     private authService: AuthService,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {

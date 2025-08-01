@@ -1,17 +1,16 @@
-import { Component } from '@angular/core';
-import { User, UserRole } from '../../../../../core/interfaces/user';
-import { AuthService } from '../../../../../core/services/auth.service';
-import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-import { LoadingComponent } from '../../../../../shared/components/loading/loading.component';
-import { PagedResponse } from '../../../../../core/interfaces/paged-response';
-import { UserService } from '../../../../../core/services/user.service';
-import { LoadingPlayersComponent } from '../../../../../shared/components/loading/loading-players/loading-players.component';
+import { Component } from '@angular/core';
+import Swal from 'sweetalert2';
+import { PagedResponse } from '../../../../core/interfaces/paged-response';
+import { AuthService } from '../../../../core/services/auth.service';
+import { LoadingPlayersComponent } from '../../../../shared/components/loading/loading-players/loading-players.component';
+import { User, UserRole } from '../../interfaces/user';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-player-list',
   standalone: true,
-  imports: [CommonModule, LoadingComponent, LoadingPlayersComponent],
+  imports: [CommonModule, LoadingPlayersComponent],
   templateUrl: './player-list.component.html',
   styleUrl: './player-list.component.scss'
 })

@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { PagedResponse } from '../interfaces/paged-response';
+import { environment } from '../../../../environments/environment';
 import { User, UserRole } from '../interfaces/user';
+import { PagedResponse } from '../../../core/interfaces/paged-response';
 
 @Injectable({
   providedIn: 'root',

@@ -3,9 +3,9 @@ import { Field } from '../../interfaces/field';
 import { FieldService } from '../../services/field.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { User, UserRole } from '../../../../core/interfaces/user';
-import { MoneyFormatPipe } from '../../../../pipes/money-format.pipe';
-import { TimeFormatPipe } from '../../../../pipes/time-format.pipe';
+import { User, UserRole } from '../../../user/interfaces/user';
+import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
+import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
 import { CommonModule, Location } from '@angular/common';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import Swal from 'sweetalert2';
@@ -32,7 +32,6 @@ export class FieldsListComponent {
   user!: User;
   loading = false;
   showModal: boolean = false;
-  showButtonBack: boolean = false;
 
 
   @Input() showHeader: boolean = true;
@@ -45,7 +44,6 @@ export class FieldsListComponent {
     private router: Router,
     private reservationService: ReservationService
   ) {
-    this.showButtonBack = !this.router.url.includes('home-player');
     this.route.queryParams.subscribe((params) => {
       if (params['showHeader'] !== undefined) {
         this.showHeader = params['showHeader'] !== 'false';
