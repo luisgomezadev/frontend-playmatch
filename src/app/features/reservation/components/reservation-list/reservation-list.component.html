@@ -13,90 +13,41 @@
           Aquí puedes ver todas tus reservas ordenadas a más recientes.
         </p>
       </div>
-      @if (isUserAdmin(user)) {
-      <div class="flex items-center gap-3">
-        <span class="text-sm font-semibold text-gray-700 md:block hidden">Ver calendario</span>
-        <span class="text-sm font-semibold text-gray-700 md:hidden block">
-          <i class="fa-regular fa-calendar text-xl"></i>
-        </span>
+      <div class="flex items-center gap-2">
+        <div class="bg-white rounded-full shadow-md">
+          <button-action
+            text="Filtros"
+            icon="fa-solid fa-filter"
+            [hasIcon]="true"
+            color="transparent"
+            [disabled]="!reservationList || reservationList.content.length === 0 || calendarView"
+            (clicked)="openModalFilters()"></button-action>
+        </div>
 
-        <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" class="sr-only peer" [(ngModel)]="calendarView" />
-          <div
-            class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-green-500 rounded-full peer peer-checked:bg-green-600 transition-all"></div>
-          <span
-            class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-all peer-checked:translate-x-7 z-10"></span>
-        </label>
+        @if (isUserAdmin(user)) {
+        <div class="md:flex items-center gap-1 bg-white rounded-full shadow-md hidden">
+          <button-action
+            [className]="!calendarView ? 'bg-gray-200 rounded-full' : ''"
+            text="Lista"
+            icon="fa-solid fa-list"
+            [hasIcon]="true"
+            color="transparent"
+            (clicked)="showView('list')"></button-action>
+          <button-action
+            [className]="calendarView ? 'bg-gray-200 rounded-full' : ''"
+            text="Calendario"
+            icon="fa-solid fa-calendar"
+            [hasIcon]="true"
+            color="transparent"
+            (clicked)="showView('calendar')"></button-action>
+        </div>
+        }
       </div>
-
-      }
     </header>
     } @if (!calendarView) {
     <div class="flex flex-col gap-6 w-full">
-      <div
-        class="flex flex-col space-y-6 md:space-y-0 rounded-md shadow-md bg-white py-6 px-6 md:w-96 w-full h-fit">
-        <span
-          class="font-medium justify-between md:justify-start flex items-center gap-2 cursor-pointer select-none md:mb-4"
-          (click)="isSmallScreen && (showFilters = !showFilters)">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-filter"></i>
-            Filtros de reserva
-          </div>
-          <i
-            class="fa-solid transition-transform duration-200"
-            [ngClass]="{
-                  'fa-chevron-up': isSmallScreen && showFilters,
-                  'fa-chevron-down': isSmallScreen && !showFilters,
-                }"></i>
-        </span>
-        <form
-          [formGroup]="formFilter"
-          (submit)="filter()"
-          [ngClass]="{
-            hidden: isSmallScreen && !showFilters,
-            flex: true
-          }"
-          class="flex-col w-full gap-y-4">
-          <div>
-            <label class="text-sm">Fecha de reserva</label>
-            <input
-              type="date"
-              formControlName="reservationDate"
-              placeholder="Fecha de reserva"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          </div>
-          <div>
-            <label class="text-sm">Estado</label>
-            <select
-              formControlName="status"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
-              <option value="">Todas</option>
-              <option value="ACTIVE">Activa</option>
-              <option value="CANCELED">Cancelada</option>
-              <option value="FINISHED">Finalizada</option>
-            </select>
-          </div>
-          <div class="flex items-center justify-end flex-row gap-2 mt-3">
-            <button-action
-              text="Limpiar"
-              icon="fa-solid fa-eraser"
-              [hasIcon]="true"
-              color="red"
-              (clicked)="cleanFilter()"
-              title="Limpiar filtros"></button-action>
-
-            <button-action
-              text="Buscar"
-              type="submit"
-              icon="fa-solid fa-search"
-              [hasIcon]="true"
-              color="primary"
-              title="Buscar reservas"></button-action>
-          </div>
-        </form>
-      </div>
       <div class="flex-1">
-        <h2 class="text-2xl font-medium mb-3">Lista de reservas</h2>
+        <!-- <h2 class="text-2xl font-medium mb-3">Lista de reservas</h2> -->
         @if (loading) {
         <loading-reservation-card-component />
         } @else { @if (reservationList && reservationList.content.length > 0) {
@@ -111,7 +62,6 @@
             [viewAsField]="isFieldView"
             [reservation]="reservation"
             [reservationBy]="reservationBy"
-            [fromDetail]="fromDetail"
             [listOfDetailsField]="listOfDetailsField"
             [isUserAdmin]="isUserAdmin(user)"
             (loadReservations)="getReservations($event)" />
@@ -164,3 +114,60 @@
     }
   </div>
 </section>
+@if (showModalFilters) {
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all px-3">
+  <div class="bg-white w-full max-w-md mx-auto rounded-md p-6 relative shadow-2xl animate-fade-in">
+    <button
+      (click)="closeModalFilters()"
+      class="absolute top-2 right-4 text-gray-400 hover:text-red-500 text-xl">
+      &times;
+    </button>
+    <span class="font-medium justify-start flex items-center gap-2 cursor-pointer select-none mb-4">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-filter"></i>
+        Filtros de reserva
+      </div>
+      <i class="fa-solid transition-transform duration-200"></i>
+    </span>
+    <form [formGroup]="formFilter" (submit)="filter()" class="flex flex-col w-full gap-y-2">
+      <div>
+        <label class="text-sm">Fecha de reserva</label>
+        <input
+          type="date"
+          formControlName="reservationDate"
+          placeholder="Fecha de reserva"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+      </div>
+      <div>
+        <label class="text-sm">Estado</label>
+        <select
+          formControlName="status"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
+          <option value="">Todas</option>
+          <option value="ACTIVE">Activa</option>
+          <option value="CANCELED">Cancelada</option>
+          <option value="FINISHED">Finalizada</option>
+        </select>
+      </div>
+      <div class="flex items-center justify-end flex-row gap-2 mt-3">
+        <button-action
+          text="Limpiar"
+          icon="fa-solid fa-eraser"
+          [hasIcon]="true"
+          color="red"
+          (clicked)="cleanFilter()"
+          title="Limpiar filtros"></button-action>
+
+        <button-action
+          text="Buscar"
+          type="submit"
+          icon="fa-solid fa-search"
+          [hasIcon]="true"
+          color="primary"
+          title="Buscar reservas"></button-action>
+      </div>
+    </form>
+  </div>
+</div>
+}

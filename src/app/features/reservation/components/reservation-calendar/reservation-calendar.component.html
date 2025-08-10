@@ -1,0 +1,131 @@
+<section>
+  <!-- Header -->
+  <header class="flex items-center justify-between mb-4">
+    <button (click)="prevMonth()" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+      &#8592;
+    </button>
+    <span class="text-lg font-bold">{{ mounths[currentMonth] }} - {{ currentYear }}</span>
+    <button (click)="nextMonth()" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+      &#8594;
+    </button>
+  </header>
+
+  <!-- Desktop calendar -->
+  <div class="hidden lg:block">
+    <!-- Day names -->
+    <div class="grid grid-cols-7 text-center font-semibold bg-transparent rounded-t-lg">
+      @for (dayName of ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb']; track $index) {
+      <div class="py-2">{{ dayName }}</div>
+      }
+    </div>
+
+    <!-- Days grid -->
+    <div class="grid grid-cols-7 gap-3">
+      @for (day of calendarDays; track $index) {
+      <div
+        class="border border-gray-200 p-2 h-28 flex flex-col overflow-hidden rounded-xl"
+        [class.bg-gray-50]="day.date.getMonth() !== currentMonth">
+        <div class="text-sm font-bold">{{ day.date.getDate() }}</div>
+
+        <!-- Reservations -->
+        <div class="mt-1 space-y-1 overflow-y-auto">
+          @for (res of day.reservations; track $index) {
+          <div
+            class="text-xs px-1 py-0.5 rounded truncate cursor-pointer"
+            [ngClass]="{
+              'bg-green-200 text-green-800': res.status === StatusReservation.ACTIVE,
+              'bg-yellow-200 text-yellow-800': res.status === StatusReservation.FINISHED,
+              'bg-red-200 text-red-800': res.status === StatusReservation.CANCELED
+            }"
+            (click)="openModal(res)">
+            {{ res.user?.firstName + ' ' + res.user?.lastName }}
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Mobile list view -->
+  <div class="lg:hidden space-y-3">
+    @for (day of calendarDays; track $index) {
+    <div class="border rounded-lg p-3" [class.bg-gray-50]="day.date.getMonth() !== currentMonth">
+      <div class="flex justify-between items-center mb-2">
+        <span class="font-bold text-sm">
+          {{ day.date | date : 'EEEE d MMMM' }}
+        </span>
+        <span class="text-xs text-gray-500">{{ day.reservations.length }} reservas</span>
+      </div>
+
+      @if (day.reservations.length) {
+      <div class="space-y-1">
+        @for (res of day.reservations; track res.id) {
+        <div
+          class="text-xs px-2 py-1 rounded cursor-pointer"
+          [ngClass]="{
+            'bg-green-200 text-green-800': res.status === StatusReservation.ACTIVE,
+            'bg-yellow-200 text-yellow-800': res.status === StatusReservation.FINISHED,
+            'bg-red-200 text-red-800': res.status === StatusReservation.CANCELED
+          }"
+          (click)="openModal(res)">
+          {{ res.user?.firstName + ' ' + res.user?.lastName }}
+        </div>
+        }
+      </div>
+      } @else {
+      <p class="text-xs text-gray-400">Sin reservas</p>
+      }
+    </div>
+    }
+  </div>
+</section>
+
+@if (showModal) {
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all px-3">
+  <div class="bg-white w-full max-w-md mx-auto rounded-md p-6 relative shadow-2xl animate-fade-in">
+    <button
+      (click)="closeModal()"
+      class="absolute top-2 right-4 text-gray-400 hover:text-red-500 text-xl">
+      &times;
+    </button>
+
+    @if (selectedReservation) {
+    <h1 class="text-xl font-medium text-primary tracking-tight mb-3">Información del usuario</h1>
+
+    <div class="space-y-1 text-gray-700">
+      <p>
+        <span class="font-medium">Nombre:</span>
+        {{ selectedReservation.user?.firstName }} {{ selectedReservation.user?.lastName }}
+      </p>
+      <p>
+        <span class="font-medium">Correo:</span>
+        {{ selectedReservation.user?.email }}
+      </p>
+      <p>
+        <span class="font-medium">Celular:</span>
+        {{ selectedReservation.user?.cellphone }}
+      </p>
+    </div>
+
+    <div class="space-y-1 text-gray-700 mt-6">
+      <h1 class="text-xl font-medium text-primary tracking-tight mb-3">Detalles de la reserva</h1>
+      <p>
+        <span class="font-medium">Fecha:</span>
+        {{ selectedReservation.reservationDate | date : 'dd/MM/yyyy' }}
+      </p>
+      <p>
+        <span class="font-medium">Hora:</span>
+        {{ selectedReservation.startTime | timeFormat }} -
+        {{ selectedReservation.endTime | timeFormat }}
+      </p>
+      <p>
+        <span class="font-medium">Duración:</span>
+        {{ selectedReservation.hours }} hora(s)
+      </p>
+    </div>
+    }
+  </div>
+</div>
+}

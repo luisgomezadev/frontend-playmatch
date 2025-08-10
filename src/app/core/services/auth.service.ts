@@ -48,10 +48,8 @@ export class AuthService {
 
     if (!token || !email) return of(false);
 
-    const endpoint = 'refresh';
-
     return this.http
-      .post<LoginResponse>(`${this.url}/${endpoint}`, { email, token })
+      .post<LoginResponse>(`${this.url}/refresh`, { email, token })
       .pipe(
         map((res) => {
           this.setToken(res.token);

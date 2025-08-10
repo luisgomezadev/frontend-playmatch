@@ -25,7 +25,6 @@ export class ReservationCardComponent {
   @Input() reservation!: Reservation;
   @Input() viewAsField: boolean = false;
   @Input() reservationBy: string = '';
-  @Input() fromDetail: string = '';
   @Input() listOfDetailsField: boolean = false;
   @Input() isUserAdmin: boolean = false;
 
@@ -65,7 +64,7 @@ export class ReservationCardComponent {
 
   getReservations(page: number): void {
     this.loading = true;
-    this.loadReservations.emit(page); // Emitimos al padre
+    this.loadReservations.emit(page);
   }
 
   cancelReservation(id: number): void {
@@ -88,7 +87,7 @@ export class ReservationCardComponent {
       : 'Tu reserva aun no finaliza';
     const message: string = this.isUserAdmin
       ? `Reserva de ${userName} finalizada.`
-      : 'Tu ha finalizado';
+      : 'Tu reserva ha finalizado';
     this.confirmAction(
       `¿Estás seguro de finalizar reserva?`,
       messageConfirm,

@@ -12,13 +12,13 @@ import { RouterModule } from '@angular/router';
       [disabled]="disabled || loading"
       [class]="classes"
       [class.opacity-50]="loading"
-      [class.cursor-not-allowed]="loading"
-    >
+      [class.cursor-not-allowed]="loading">
       @if(!loading) { @if (hasIcon) {
       <div class="flex items-center gap-3">
         <i [class]="icon"></i>
-        @if(!onlyIcon) {<span>{{ text }}</span
-        >}
+        @if(!onlyIcon) {
+        <span>{{ text }}</span>
+        }
       </div>
       } @else {
       <span>{{ text }}</span>
@@ -29,26 +29,23 @@ import { RouterModule } from '@angular/router';
           class="animate-spin h-5 w-5 inline-block"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
-          viewBox="0 0 24 24"
-        >
+          viewBox="0 0 24 24">
           <circle
             class="opacity-25"
             cx="12"
             cy="12"
             r="10"
             stroke="currentColor"
-            stroke-width="4"
-          ></circle>
+            stroke-width="4"></circle>
           <path
             class="opacity-75"
             fill="currentColor"
-            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-          ></path>
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
         </svg>
       </span>
       }
     </button>
-  `,
+  `
 })
 export class ButtonActionComponent {
   @Input() text: string = 'Botón';
@@ -72,14 +69,12 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'font-medium shadow-md transition-all duration-200 ease-in-out rounded-md md:rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2';
+      'font-medium shadow-md transition-all duration-200 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2 z-10 relative';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
-    if (!this.disabled && this.color != 'transparent') base += ' hover:shadow-lg hover:-translate-y-0.5';
-    if (this.bigButton)
-      base += ' text-lg rounded-full border-2 border-gray-500';
-    else
-      base +=
-        ' text-sm w-full';
+    if (!this.disabled && this.color != 'transparent')
+      base += ' hover:shadow-lg hover:-translate-y-0.5';
+    if (this.bigButton) base += ' text-lg rounded-full border-2 border-gray-500';
+    else base += ' text-sm w-full';
     const styles = {
       black: 'bg-black text-white hover:shadow-gray-600',
       red: 'bg-red-600 text-white hover:shadow-red-600',

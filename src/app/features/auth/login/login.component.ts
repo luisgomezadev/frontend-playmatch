@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../core/services/auth.service';
 import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-auth.component';
@@ -24,7 +24,6 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router,
     private authService: AuthService
   ) {
     this.loginForm = this.fb.group({

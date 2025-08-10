@@ -14,11 +14,11 @@ import Swal from 'sweetalert2';
 
 // Pipes y componentes
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 import { Field } from '../../../field/interfaces/field';
 import { FieldService } from '../../../field/services/field.service';
 import { ReservationCardComponent } from '../reservation-card/reservation-card.component';
 import { LoadingReservationCardComponent } from '../../../../shared/components/loading/loading-reservation-card/loading-reservation-card.component';
+import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 
 @Component({
   selector: 'app-reservation-list',
@@ -31,14 +31,13 @@ import { LoadingReservationCardComponent } from '../../../../shared/components/l
     LoadingReservationCardComponent,
     ReservationCalendarComponent,
     FormsModule,
-    ReservationCardComponent
+    ReservationCardComponent,
   ],
   templateUrl: './reservation-list.component.html',
   styleUrl: './reservation-list.component.scss'
 })
 export class ReservationListComponent implements OnInit {
   @Input() reservations!: Reservation[];
-  @Input() fromDetail: string = '';
 
   reservationList!: PagedResponse<Reservation>;
   formFilter!: FormGroup;
@@ -46,13 +45,14 @@ export class ReservationListComponent implements OnInit {
   user!: User;
   calendarView: boolean = false;
   showModal = false;
+  showModalFilters = false;
   listOfDetailsField = false;
   loading = false;
   showFilters = false;
   isSmallScreen = false;
 
   currentPage = 0;
-  pageSize = 6;
+  pageSize = 9;
 
   field!: Field;
   reservationBy!: string;
@@ -114,11 +114,7 @@ export class ReservationListComponent implements OnInit {
   }
 
   get isFieldView(): boolean {
-    return this.reservationBy === 'field' || this.fromDetail === 'field';
-  }
-
-  showButtons(reservation: Reservation): boolean {
-    return !this.listOfDetailsField && reservation.status === StatusReservation.ACTIVE;
+    return this.reservationBy === 'field';
   }
 
   isUserAdmin(user: User): boolean {
@@ -167,11 +163,11 @@ export class ReservationListComponent implements OnInit {
   }
 
   getAllReservationsActive(): void {
-    this.loading = true;
     this.reservationService
       .getReservationsByFieldAndStuts(this.field.id, StatusReservation.ACTIVE)
       .subscribe({
         next: data => {
+          this.calendarView = true;
           this.reservationList = {
             content: data,
             totalPages: 1,
@@ -181,7 +177,10 @@ export class ReservationListComponent implements OnInit {
           };
           this.loading = false;
         },
-        error: err => this.handleError(err)
+        error: err => {
+          this.calendarView = false;
+          this.handleError(err);
+        }
       });
   }
 
@@ -192,9 +191,22 @@ export class ReservationListComponent implements OnInit {
     }
   }
 
-  toggleCalendarView(): void {
-    this.calendarView = !this.calendarView;
-    this.setFiltersAndFetchReservations();
+  showView(view: string): void {
+    if (view === 'list') {
+      this.calendarView = false;
+      this.getReservations(0);
+    }
+    else if (view === 'calendar') {
+      this.getAllReservationsActive();
+    }
+  }
+
+  openModalFilters(): void {
+    this.showModalFilters = true;
+  }
+
+  closeModalFilters(): void {
+    this.showModalFilters = false;
   }
 
   filter(): void {
@@ -203,6 +215,7 @@ export class ReservationListComponent implements OnInit {
     this.filters.status = status || undefined;
     this.getReservations(0);
     this.showFilters = false;
+    this.showModalFilters = false;
   }
 
   cleanFilter(): void {
@@ -211,6 +224,7 @@ export class ReservationListComponent implements OnInit {
     delete this.filters.status;
     this.getReservations(0);
     this.showFilters = false;
+    this.showModalFilters = false;
   }
 
   makeReservation(): void {
@@ -227,46 +241,6 @@ export class ReservationListComponent implements OnInit {
     }
   }
 
-  finalizeReservation(id: number, userName?: string): void {
-    const messageConfirm: string = this.isUserAdmin(this.user)
-      ? `La reserva de ${userName} aún no finaliza`
-      : 'Tu reserva aun no finaliza';
-    const message: string = this.isUserAdmin(this.user)
-      ? `Reserva de ${userName} finalizada.`
-      : 'Tu ha finalizado';
-    this.confirmAction(
-      `¿Estás seguro de finalizar reserva?`,
-      messageConfirm,
-      'Sí, finalizar',
-      () => {
-        this.reservationService.finalizeReservationById(id).subscribe({
-          next: () => this.handleSuccess(message),
-          error: err => this.handleError(err)
-        });
-      }
-    );
-  }
-
-  cancelReservation(id: number): void {
-    this.confirmAction(
-      '¿Estás seguro de cancelar la reserva?',
-      'Esta acción es permanente.',
-      'Sí, cancelar',
-      () => {
-        this.reservationService.canceledReservationById(id).subscribe({
-          next: () => this.handleSuccess('Reserva cancelada.'),
-          error: err => this.handleError(err)
-        });
-      }
-    );
-  }
-
-  openModal(item: any, type: 'user' | 'field'): void {
-    this.selectedItem = item;
-    this.selectedType = type;
-    this.showModal = true;
-  }
-
   openList() {
     this.calendarView = false;
     this.getReservations(0);
@@ -277,88 +251,14 @@ export class ReservationListComponent implements OnInit {
     this.getAllReservationsActive();
   }
 
-  closeModal(): void {
-    this.showModal = false;
-    this.selectedItem = null;
-    this.selectedType = null;
-  }
-
-  getReservationStatus(reservation: Reservation): 'upcoming' | 'inProgress' | 'expired' | 'other' {
-    const now = new Date();
-    const start = new Date(`${reservation.reservationDate}T${reservation.startTime}`);
-    const end = new Date(`${reservation.reservationDate}T${reservation.endTime}`);
-    const inTwoHours = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-
-    if (now < start && start <= inTwoHours) return 'upcoming';
-    if (now >= start && now <= end) return 'inProgress';
-    if (now > end) return 'expired';
-    return 'other';
-  }
-
-  isReservationExpired(reservation: Reservation): boolean {
-    const now = new Date();
-    const endDateTime = new Date(`${reservation.reservationDate}T${reservation.endTime}`);
-    return now > endDateTime;
-  }
-
-  isReservationToday(reservation: Reservation): string {
-    const today = new Date();
-    const [y, m, d] = reservation.reservationDate.split('-').map(Number);
-    const resDate = new Date(y, m - 1, d);
-    const diffDays =
-      (resDate.getTime() -
-        new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime()) /
-      (1000 * 3600 * 24);
-
-    if (diffDays === 0) return 'HOY';
-    if (diffDays === 1) return 'MAÑANA';
-    if (diffDays === -1) return 'AYER';
-    return resDate.toLocaleDateString();
-  }
-
-  isInProgressAndActive(res: Reservation): boolean {
-    return (
-      this.getReservationStatus(res) === 'inProgress' && res.status === StatusReservation.ACTIVE
-    );
-  }
-
   hasActiveReservation(): boolean {
     return this.reservationList?.content?.some(r => r.status === StatusReservation.ACTIVE);
   }
 
-  private handleSuccess(message: string): void {
-    this.getReservations(0);
-    Swal.fire({
-      title: message,
-      icon: 'success',
-      customClass: { confirmButton: 'swal-confirm-btn' },
-      buttonsStyling: false
-    });
-  }
 
   private handleError(err: any): void {
     this.loading = false;
     Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
   }
 
-  private confirmAction(
-    title: string,
-    text: string,
-    confirmText: string,
-    onConfirm: () => void
-  ): void {
-    Swal.fire({
-      title,
-      text,
-      showCancelButton: true,
-      confirmButtonText: confirmText,
-      cancelButtonText: 'No',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-      buttonsStyling: false
-    }).then(result => {
-      if (result.isConfirmed) onConfirm();
-    });
-  }
 }

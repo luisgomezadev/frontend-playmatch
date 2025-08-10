@@ -18,8 +18,8 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
 import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
-import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 import { LoadingFullComponent } from '../../../../shared/components/loading/loading-full/loading-full.component';
+import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
 
 @Component({
   selector: 'app-reservation-form',

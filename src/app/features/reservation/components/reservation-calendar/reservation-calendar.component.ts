@@ -1,115 +1,108 @@
-import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import esLocale from '@fullcalendar/core/locales/es';
-import { CalendarOptions } from '@fullcalendar/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Reservation, StatusReservation } from '../../interfaces/reservation';
+import { DatePipe, NgClass } from '@angular/common';
+import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
 
 @Component({
   selector: 'app-reservation-calendar',
   standalone: true,
-  imports: [CommonModule, FullCalendarModule],
-  template: `
-    <full-calendar [options]="calendarOptions"></full-calendar>
-  `,
-  styles: [
-    `
-      :host ::ng-deep .fc-button {
-        @apply bg-primary text-white rounded-md px-2 py-1 font-semibold shadow-md;
-      }
-      :host ::ng-deep .fc-button:hover {
-        @apply bg-primary cursor-pointer;
-      }
-      :host ::ng-deep .fc-button.fc-button-active {
-        @apply bg-green-700 ring-4 ring-green-300;
-      }
-    `
-  ]
+  imports: [NgClass, DatePipe, TimeFormatPipe],
+  templateUrl: './reservation-calendar.component.html',
+  styleUrl: './reservation-calendar.component.scss'
 })
-export class ReservationCalendarComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() reservationList: any[] = [];
-  @Input() reservationBy: string = '';
-  @Input() isMobile: boolean = false;
+export class ReservationCalendarComponent implements OnInit {
 
-  calendarOptions: CalendarOptions = this.buildCalendarOptions(window.innerWidth);
+  @Input() reservationList: Reservation[] = [];
+  @Input() reservationBy!: string;
+
+  currentMonth: number = new Date().getMonth();
+  currentYear: number = new Date().getFullYear();
+  calendarDays: { date: Date; reservations: Reservation[] }[] = [];
+  mounths: string[] = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+
+  StatusReservation = StatusReservation;
+
+  selectedReservation: Reservation | null = null;
+  showModal: boolean = false;
 
   ngOnInit(): void {
-    this.updateCalendarOptions(window.innerWidth);
-    window.addEventListener('resize', this.handleResize);
+    this.generateCalendar();
   }
 
-  ngOnDestroy(): void {
-    window.removeEventListener('resize', this.handleResize);
+  ngOnChanges(): void {
+    this.generateCalendar();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['reservationList']) {
-      this.updateCalendarOptions(window.innerWidth);
+  openModal(reservation: Reservation): void {
+    this.selectedReservation = reservation;
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedReservation = null;
+  }
+
+  private normalizeDate(date: Date | string): Date {
+    const d = new Date(date);
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  private parseDateLocal(dateStr: string): Date {
+    const parts = dateStr.split('-').map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  generateCalendar(): void {
+    this.calendarDays = [];
+    const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+    const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+
+    const startDate = new Date(firstDay);
+    startDate.setDate(firstDay.getDate() - firstDay.getDay());
+
+    const endDate = new Date(lastDay);
+    endDate.setDate(lastDay.getDate() + (6 - lastDay.getDay()));
+
+    let date = new Date(startDate);
+
+    while (date <= endDate) {
+      const dayReservations = this.reservationList?.filter(r =>
+        this.normalizeDate(this.parseDateLocal(r.reservationDate)).getTime() === this.normalizeDate(date).getTime()
+      ) || [];
+
+
+      this.calendarDays.push({
+        date: new Date(date),
+        reservations: dayReservations
+      });
+
+      date.setDate(date.getDate() + 1);
     }
   }
 
-  handleResize = (): void => {
-    const width = window.innerWidth;
-    this.updateCalendarOptions(width);
-  };
 
-  updateCalendarOptions(width: number): void {
-    this.calendarOptions = this.buildCalendarOptions(width);
-  }
-
-  buildCalendarOptions(width: number): CalendarOptions {
-    let isMobile: boolean = false;
-    if (this.isMobile) {
-      isMobile = this.isMobile;
+  prevMonth(): void {
+    if (this.currentMonth === 0) {
+      this.currentMonth = 11;
+      this.currentYear--;
     } else {
-      isMobile = width <= 1000;
+      this.currentMonth--;
     }
-
-    return {
-      initialView: isMobile ? 'timeGridDay' : 'timeGridWeek',
-      locale: esLocale,
-      height: 480,
-      headerToolbar: {
-        left: 'prev,next',
-        center: 'title',
-        right: isMobile ? '' : 'timeGridWeek,timeGridDay'
-      },
-      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-      slotLabelFormat: {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      },
-      eventTimeFormat: {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      },
-      events: this.reservationList.map(res => ({
-        id: res.id,
-        title:
-          this.reservationBy === 'field'
-            ? 'Reservada por: ' + res.user?.firstName + ' ' + res.user?.lastName || 'Sin jugador'
-            : 'Cancha: ' + res.field?.name || 'Sin cancha',
-        start: `${res.reservationDate}T${res.startTime}`,
-        end: `${res.reservationDate}T${res.endTime}`,
-        color: this.getReservationColor(res.status)
-      }))
-    };
+    this.generateCalendar();
   }
 
-  getReservationColor(status: string): string {
-    switch (status) {
-      case 'ACTIVE':
-        return '#22c55e';
-      case 'FINISHED':
-        return '#6b7280';
-      case 'CANCELED':
-        return '#ef4444';
-      default:
-        return '#3b82f6';
+  nextMonth(): void {
+    if (this.currentMonth === 11) {
+      this.currentMonth = 0;
+      this.currentYear++;
+    } else {
+      this.currentMonth++;
     }
+    this.generateCalendar();
   }
+
 }

@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../core/services/auth.service';
 import { LoadingFullComponent } from '../../shared/components/loading/loading-full/loading-full.component';
 import { LINKS_DASHBOARD } from '../../shared/constants/links.constants';
-import { Field } from '../field/interfaces/field';
 import { User, UserRole } from '../user/interfaces/user';
 import { UserService } from '../user/services/user.service';
 
@@ -19,8 +18,6 @@ import { UserService } from '../user/services/user.service';
 export class DashboardComponent {
   userActive!: User;
   sidebarOpen = false;
-  userRole: string | undefined = '';
-  field: Field | null = null;
   loading = true;
   links: any[] = [];
 

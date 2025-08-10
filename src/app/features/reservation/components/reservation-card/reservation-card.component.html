@@ -8,7 +8,7 @@
       <h2
         class="text-base font-bold text-gray-800 truncate cursor-pointer hover:underline"
         (click)="
-          reservationBy == 'field' || fromDetail == 'field'
+          reservationBy == 'field'
             ? openModal(reservation.user, 'user')
             : openModal(reservation.field, 'field')
         ">
@@ -112,11 +112,6 @@
     </p>
   </div>
   }
-
-  <img
-    src="/assets/ball.webp"
-    class="absolute z-0 w-48 -bottom-32 -right-16 opacity-10 pointer-events-none"
-    alt="Balon de" />
 </article>
 
 @if (showModal && selectedItem) {
