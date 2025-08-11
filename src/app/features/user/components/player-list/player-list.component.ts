@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import Swal from 'sweetalert2';
 import { PagedResponse } from '../../../../core/interfaces/paged-response';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -15,6 +15,10 @@ import { UserService } from '../../services/user.service';
   styleUrl: './player-list.component.scss'
 })
 export class PlayerListComponent {
+
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+
   user!: User;
   players!: PagedResponse<User>;
   loading: boolean = false;
@@ -23,15 +27,14 @@ export class PlayerListComponent {
   pageSize: number = 8;
   role: UserRole = UserRole.PLAYER;
 
-  constructor(private userService: UserService, private authService: AuthService) {
+  constructor() {}
+
+  ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
       }
     });
-  }
-
-  ngOnInit(): void {
     this.getPlayers(this.currentPage);
   }
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,12 +31,18 @@ import { ReservationCalendarComponent } from '../reservation-calendar/reservatio
     LoadingReservationCardComponent,
     ReservationCalendarComponent,
     FormsModule,
-    ReservationCardComponent,
+    ReservationCardComponent
   ],
   templateUrl: './reservation-list.component.html',
   styleUrl: './reservation-list.component.scss'
 })
 export class ReservationListComponent implements OnInit {
+  private reservationService = inject(ReservationService);
+  private fieldService = inject(FieldService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+
   @Input() reservations!: Reservation[];
 
   reservationList!: PagedResponse<Reservation>;
@@ -62,13 +68,7 @@ export class ReservationListComponent implements OnInit {
 
   StatusReservation = StatusReservation;
 
-  constructor(
-    private reservationService: ReservationService,
-    private fieldService: FieldService,
-    private authService: AuthService,
-    private router: Router,
-    private fb: FormBuilder
-  ) { }
+  constructor() {}
 
   ngOnInit(): void {
     this.checkScreenSize();
@@ -195,8 +195,7 @@ export class ReservationListComponent implements OnInit {
     if (view === 'list') {
       this.calendarView = false;
       this.getReservations(0);
-    }
-    else if (view === 'calendar') {
+    } else if (view === 'calendar') {
       this.getAllReservationsActive();
     }
   }
@@ -255,10 +254,8 @@ export class ReservationListComponent implements OnInit {
     return this.reservationList?.content?.some(r => r.status === StatusReservation.ACTIVE);
   }
 
-
   private handleError(err: any): void {
     this.loading = false;
     Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
   }
-
 }

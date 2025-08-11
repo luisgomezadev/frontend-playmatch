@@ -19,26 +19,32 @@
       }
     </div>
 
-    <!-- Days grid -->
     <div class="grid grid-cols-7 gap-3">
       @for (day of calendarDays; track $index) {
       <div
-        class="border border-gray-200 p-2 h-28 flex flex-col overflow-hidden rounded-xl"
-        [class.bg-gray-50]="day.date.getMonth() !== currentMonth">
+        class="border border-gray-200 p-2 h-36 flex flex-col overflow-hidden rounded-xl cursor-pointer hover:bg-gray-100"
+        [class.bg-white]="day.date.getMonth() == currentMonth"
+        (click)="openDayModal(day)">
         <div class="text-sm font-bold">{{ day.date.getDate() }}</div>
 
-        <!-- Reservations -->
+        <!-- Reservations preview -->
+        <!-- Reservations preview -->
         <div class="mt-1 space-y-1 overflow-y-auto">
-          @for (res of day.reservations; track $index) {
-          <div
-            class="text-xs px-1 py-0.5 rounded truncate cursor-pointer"
-            [ngClass]="{
-              'bg-green-200 text-green-800': res.status === StatusReservation.ACTIVE,
-              'bg-yellow-200 text-yellow-800': res.status === StatusReservation.FINISHED,
-              'bg-red-200 text-red-800': res.status === StatusReservation.CANCELED
-            }"
-            (click)="openModal(res)">
-            {{ res.user?.firstName + ' ' + res.user?.lastName }}
+          @for (res of day.reservations.slice(0, 2); track $index) {
+          <div class="text-xs px-1 py-0.5 rounded truncate flex flex-col" [ngClass]="{
+                'bg-green-200 text-green-800': res.status === StatusReservation.ACTIVE,
+                'bg-yellow-200 text-yellow-800': res.status === StatusReservation.FINISHED,
+                'bg-red-200 text-red-800': res.status === StatusReservation.CANCELED
+              }">
+            <span>{{ res.user?.firstName }} {{ res.user?.lastName }}</span>
+            <span>{{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}</span>
+          </div>
+          }
+
+          <!-- Mensaje de "x más" -->
+          @if (day.reservations.length > 2) {
+          <div class="text-xs text-gray-500 italic">
+            {{ day.reservations.length - 2 }} más...
           </div>
           }
         </div>
@@ -48,7 +54,7 @@
   </div>
 
   <!-- Mobile list view -->
-  <div class="lg:hidden space-y-3">
+  <!-- <div class="lg:hidden space-y-3">
     @for (day of calendarDays; track $index) {
     <div class="border rounded-lg p-3" [class.bg-gray-50]="day.date.getMonth() !== currentMonth">
       <div class="flex justify-between items-center mb-2">
@@ -78,53 +84,41 @@
       }
     </div>
     }
-  </div>
+  </div> -->
 </section>
 
-@if (showModal) {
-<div
-  class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all px-3">
-  <div class="bg-white w-full max-w-md mx-auto rounded-md p-6 relative shadow-2xl animate-fade-in">
+@if (showDayModal) {
+<div class="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm transition-all">
+  <div
+    class="bg-white w-full sm:w-96 h-full shadow-2xl transform translate-x-0 transition-transform duration-300 animate-slide-in-right overflow-y-auto p-6 relative">
     <button
-      (click)="closeModal()"
-      class="absolute top-2 right-4 text-gray-400 hover:text-red-500 text-xl">
+      (click)="closeDayModal()"
+      class="absolute top-3 right-4 text-gray-400 hover:text-red-500 text-2xl">
       &times;
     </button>
 
-    @if (selectedReservation) {
-    <h1 class="text-xl font-medium text-primary tracking-tight mb-3">Información del usuario</h1>
+    <h2 class="text-xl font-medium text-primary mb-4">Reservas activas del día {{ selectedDate | date : 'shortDate' }}</h2>
 
-    <div class="space-y-1 text-gray-700">
-      <p>
-        <span class="font-medium">Nombre:</span>
-        {{ selectedReservation.user?.firstName }} {{ selectedReservation.user?.lastName }}
-      </p>
-      <p>
-        <span class="font-medium">Correo:</span>
-        {{ selectedReservation.user?.email }}
-      </p>
-      <p>
-        <span class="font-medium">Celular:</span>
-        {{ selectedReservation.user?.cellphone }}
-      </p>
+    @if (selectedDayReservations.length) {
+    <div class="space-y-4">
+      @for (res of selectedDayReservations; track res.id) {
+      <div class="border p-3 rounded-lg">
+        <p class="font-medium">{{ res.user?.firstName }} {{ res.user?.lastName }}</p>
+        <p class="text-sm text-gray-500">{{ res.user?.email }}</p>
+        <p class="text-sm text-gray-500">{{ res.user?.cellphone }}</p>
+        <p class="mt-2">
+          <span class="font-medium">Hora:</span>
+          {{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}
+        </p>
+        <p>
+          <span class="font-medium">Duración:</span>
+          {{ res.hours }} hora(s)
+        </p>
+      </div>
+      }
     </div>
-
-    <div class="space-y-1 text-gray-700 mt-6">
-      <h1 class="text-xl font-medium text-primary tracking-tight mb-3">Detalles de la reserva</h1>
-      <p>
-        <span class="font-medium">Fecha:</span>
-        {{ selectedReservation.reservationDate | date : 'dd/MM/yyyy' }}
-      </p>
-      <p>
-        <span class="font-medium">Hora:</span>
-        {{ selectedReservation.startTime | timeFormat }} -
-        {{ selectedReservation.endTime | timeFormat }}
-      </p>
-      <p>
-        <span class="font-medium">Duración:</span>
-        {{ selectedReservation.hours }} hora(s)
-      </p>
-    </div>
+    } @else {
+    <p class="text-gray-500">No hay reservas para este día.</p>
     }
   </div>
 </div>

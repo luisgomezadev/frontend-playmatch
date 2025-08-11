@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../core/services/auth.service';
@@ -15,20 +10,21 @@ import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-
   standalone: true,
   imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  
   loginForm: FormGroup;
   loading = false;
   showPassword: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService
-  ) {
+  constructor() {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
@@ -54,7 +50,7 @@ export class LoginComponent {
         text: err?.error?.message || 'Falló la autenticación',
         confirmButtonText: 'Aceptar',
         customClass: { confirmButton: 'swal-confirm-btn' },
-        buttonsStyling: false,
+        buttonsStyling: false
       });
     };
 
@@ -67,7 +63,7 @@ export class LoginComponent {
 
     loginObservable.subscribe({
       next: handleSuccess,
-      error: handleError,
+      error: handleError
     });
   }
 }

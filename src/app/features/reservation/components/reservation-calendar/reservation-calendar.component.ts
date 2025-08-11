@@ -25,8 +25,9 @@ export class ReservationCalendarComponent implements OnInit {
 
   StatusReservation = StatusReservation;
 
-  selectedReservation: Reservation | null = null;
-  showModal: boolean = false;
+  selectedDayReservations: Reservation[] = [];
+  selectedDate: Date | null = null;
+  showDayModal: boolean = false;
 
   ngOnInit(): void {
     this.generateCalendar();
@@ -36,14 +37,18 @@ export class ReservationCalendarComponent implements OnInit {
     this.generateCalendar();
   }
 
-  openModal(reservation: Reservation): void {
-    this.selectedReservation = reservation;
-    this.showModal = true;
+  openDayModal(day: { date: Date; reservations: Reservation[] }): void {
+    this.selectedDate = day.date;
+    this.selectedDayReservations = day.reservations;
+    this.showDayModal = true;
+    document.body.style.overflow = 'hidden';
   }
 
-  closeModal(): void {
-    this.showModal = false;
-    this.selectedReservation = null;
+  closeDayModal(): void {
+    this.showDayModal = false;
+    this.selectedDayReservations = [];
+    this.selectedDate = null;
+    document.body.style.overflow = '';
   }
 
   private normalizeDate(date: Date | string): Date {

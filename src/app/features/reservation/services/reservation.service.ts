@@ -5,14 +5,13 @@ import { environment } from '../../../../environments/environment';
 import { ConfirmedReservation, Reservation, StatusReservation } from '../interfaces/reservation';
 import { ReservationFilter } from '../interfaces/reservation';
 import { PagedResponse } from '../../../core/interfaces/paged-response';
+import { BaseHttpService } from '../../../shared/data-access/base-http.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ReservationService {
-  private url = environment.apiUrl + '/reservation';
-
-  constructor(private http: HttpClient) {}
+export class ReservationService extends BaseHttpService {
+  private url = this.apiUrl + '/reservation';
 
   getReservations(): Observable<any> {
     return this.http.get(`${this.url}`);

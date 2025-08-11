@@ -1,16 +1,13 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { Field } from '../interfaces/field';
+import { BaseHttpService } from '../../../shared/data-access/base-http.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FieldService {
-  private url = environment.apiUrl + '/field';
-
-  constructor(private http: HttpClient) {}
+export class FieldService extends BaseHttpService {
+  private url = this.apiUrl + '/field';
 
   getFields(): Observable<any> {
     return this.http.get(`${this.url}`);

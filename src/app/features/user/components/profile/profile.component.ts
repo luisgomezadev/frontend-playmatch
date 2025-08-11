@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
@@ -13,6 +13,10 @@ import { UserService } from '../../services/user.service';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
+
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+
   user!: User;
   loading = false;
 
@@ -20,10 +24,7 @@ export class ProfileComponent {
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
-  constructor(
-    private authService: AuthService,
-    private userService: UserService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {

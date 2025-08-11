@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -21,12 +21,22 @@ import { REGEX_PATTERNS } from '../../../shared/utils/regex-utils';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+
   registerForm: FormGroup;
   loading = false;
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
+  roles: { value: string; label: string }[] = [
+    { value: 'PLAYER', label: 'Jugador' },
+    { value: 'FIELD_ADMIN', label: 'Administrador de cancha' }
+  ];
+
+  constructor() {
     this.registerForm = this.fb.group(
       {
         firstName: ['', [Validators.required]],

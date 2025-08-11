@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ButtonActionComponent } from '../../../shared/components/button-action/button-action.component';
@@ -16,6 +16,11 @@ import { User } from '../../user/interfaces/user';
   styleUrl: './home-admin.component.scss',
 })
 export class HomeAdminComponent {
+
+  private authService = inject(AuthService);
+  private fieldService = inject(FieldService)
+  private reservationService = inject(ReservationService);
+
   user!: User;
   fullName: string = '';
   reservationsActive: number = 0;
@@ -24,11 +29,7 @@ export class HomeAdminComponent {
   fieldName: string = 'No tienes cancha registrada';
   loading: boolean = false;
 
-  constructor(
-    private authService: AuthService,
-    private fieldService: FieldService,
-    private reservationService: ReservationService
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {

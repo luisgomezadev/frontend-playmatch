@@ -1,18 +1,9 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import {
-  ConfirmedReservation,
-  Reservation,
-  StatusReservation,
-} from '../../interfaces/reservation';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ConfirmedReservation, Reservation, StatusReservation } from '../../interfaces/reservation';
 import { User } from '../../../user/interfaces/user';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ReservationService } from '../../services/reservation.service';
@@ -34,9 +25,17 @@ import { ReservationCalendarComponent } from '../reservation-calendar/reservatio
     CommonModule
   ],
   templateUrl: './reservation-form.component.html',
-  styleUrl: './reservation-form.component.scss',
+  styleUrl: './reservation-form.component.scss'
 })
 export class ReservationFormComponent {
+
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private reservationService = inject(ReservationService);
+  private router = inject(Router);
+
   user!: User;
   fieldId!: number;
   formReservation!: FormGroup;
@@ -51,14 +50,7 @@ export class ReservationFormComponent {
 
   hours = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  constructor(
-    private route: ActivatedRoute,
-    private location: Location,
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private reservationService: ReservationService,
-    private router: Router
-  ) { }
+  constructor() {}
 
   ngOnInit(): void {
     const today = new Date();
@@ -68,7 +60,7 @@ export class ReservationFormComponent {
 
     this.today = today.toISOString().split('T')[0];
 
-    this.authService.currentUser$.subscribe((user) => {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
       }
@@ -76,9 +68,9 @@ export class ReservationFormComponent {
 
     this.formReservation = this.fb.group({
       reservationDate: [this.today, Validators.required],
-      hour: ['', Validators.required],   // nuevo control para hora
+      hour: ['', Validators.required], // nuevo control para hora
       ampm: ['AM', Validators.required], // nuevo control para AM/PM
-      hours: [1, [Validators.required, Validators.min(1), Validators.max(3)]],
+      hours: [1, [Validators.required, Validators.min(1), Validators.max(3)]]
     });
 
     this.fieldId = +this.route.snapshot.paramMap.get('id')!;
@@ -110,16 +102,18 @@ export class ReservationFormComponent {
 
   getReservations() {
     this.loading = true;
-    this.reservationService.getReservationsByFieldAndStuts(this.fieldId, StatusReservation.ACTIVE).subscribe({
-      next: (data) => {
-        this.loading = false;
-        this.reservations = data;
-      },
-      error: (err) => {
-        this.loading = false;
-        Swal.fire('Error', err.error.message, 'error');
-      },
-    });
+    this.reservationService
+      .getReservationsByFieldAndStuts(this.fieldId, StatusReservation.ACTIVE)
+      .subscribe({
+        next: data => {
+          this.loading = false;
+          this.reservations = data;
+        },
+        error: err => {
+          this.loading = false;
+          Swal.fire('Error', err.error.message, 'error');
+        }
+      });
   }
 
   verifyReservation() {
@@ -131,22 +125,20 @@ export class ReservationFormComponent {
         startTime: this.startTime,
         hours: this.formReservation.value.hours,
         userId: this.user.id,
-        fieldId: this.fieldId,
+        fieldId: this.fieldId
       };
 
-      this.reservationService
-        .getReservationAvailability(reservationData)
-        .subscribe({
-          next: (data: ConfirmedReservation) => {
-            this.loading = false;
-            this.confirmedReservation = data;
-            this.showModal = true;
-          },
-          error: (err) => {
-            this.loading = false;
-            Swal.fire('Error', err.error.message, 'error');
-          },
-        });
+      this.reservationService.getReservationAvailability(reservationData).subscribe({
+        next: (data: ConfirmedReservation) => {
+          this.loading = false;
+          this.confirmedReservation = data;
+          this.showModal = true;
+        },
+        error: err => {
+          this.loading = false;
+          Swal.fire('Error', err.error.message, 'error');
+        }
+      });
 
       this.verifiedReservation = true;
     } else {
@@ -176,7 +168,7 @@ export class ReservationFormComponent {
         reservationDate: this.confirmedReservation.reservationDate,
         startTime: this.confirmedReservation.startTime,
         endTime: this.confirmedReservation.endTime,
-        hours: this.confirmedReservation.hours,
+        hours: this.confirmedReservation.hours
       };
       this.reservationService.createReservation(reservationRequest).subscribe({
         next: () => {
@@ -186,14 +178,14 @@ export class ReservationFormComponent {
             text: `Has creado una reserva para el día ${reservationRequest.reservationDate}.`,
             icon: 'success',
             customClass: { confirmButton: 'swal-confirm-btn' },
-            buttonsStyling: false,
+            buttonsStyling: false
           });
           this.router.navigate(['/dashboard/reservation/list']);
         },
-        error: (err) => {
+        error: err => {
           this.loadingReservation = false;
           Swal.fire('Error', err.error.message, 'error');
-        },
+        }
       });
     }
   }

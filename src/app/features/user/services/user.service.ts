@@ -1,17 +1,15 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { User, UserRole } from '../interfaces/user';
 import { PagedResponse } from '../../../core/interfaces/paged-response';
+import { BaseHttpService } from '../../../shared/data-access/base-http.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService {
-  private url = environment.apiUrl + '/user';
-
-  constructor(private http: HttpClient) {}
+export class UserService extends BaseHttpService {
+  private url = this.apiUrl + '/user';
 
   getUsers(page: number, size: number, role: UserRole): Observable<PagedResponse<User>> {
     const params = new HttpParams().set('page', page).set('size', size).set('role', role);

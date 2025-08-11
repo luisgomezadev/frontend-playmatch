@@ -1,43 +1,42 @@
-import { Component } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { FieldService } from '../../services/field.service';
+import { Location } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/services/auth.service';
-import { User } from '../../../user/interfaces/user';
-import { Location } from '@angular/common';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
+import { User } from '../../../user/interfaces/user';
+import { FieldService } from '../../services/field.service';
 
 @Component({
   selector: 'app-field-form',
   standalone: true,
   imports: [ReactiveFormsModule, ButtonActionComponent, LoadingComponent],
   templateUrl: './field-form.component.html',
-  styleUrl: './field-form.component.scss',
+  styleUrl: './field-form.component.scss'
 })
 export class FieldFormComponent {
+  private fb = inject(FormBuilder);
+  private fieldService = inject(FieldService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+  private location = inject(Location);
+
   fieldForm: FormGroup;
   loading = false;
-  adminId!: number;
   userActive!: User;
   editing = false;
   fieldId!: number;
   loadingForm: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private fieldService: FieldService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private authService: AuthService,
-    private location: Location
-  ) {
+  statusOptions = [
+    { value: 'ACTIVE', label: 'Activo' },
+    { value: 'INACTIVE', label: 'Inactivo' }
+  ];
+
+  constructor() {
     this.fieldForm = this.fb.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
@@ -50,15 +49,12 @@ export class FieldFormComponent {
   }
 
   ngOnInit(): void {
-    // Obtener el usuario
-    this.authService.currentUser$.subscribe((user) => {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
-        this.adminId = user.id;
         this.userActive = user;
       }
     });
 
-    // Verificar si hay id en la URL => modo edición
     this.fieldId = +this.route.snapshot.paramMap.get('id')!;
     if (this.fieldId) {
       this.editing = true;
@@ -76,7 +72,7 @@ export class FieldFormComponent {
   loadField() {
     this.loadingForm = true;
     this.fieldService.getFieldById(this.fieldId).subscribe({
-      next: (field) => {
+      next: field => {
         this.fieldForm.patchValue(field);
         this.loadingForm = false;
       },
@@ -84,7 +80,7 @@ export class FieldFormComponent {
         this.loadingForm = false;
         Swal.fire('Error', 'No se pudo cargar la información de la cancha', 'error');
         this.router.navigate(['/dashboard/home-admin']);
-      },
+      }
     });
   }
 
@@ -96,11 +92,11 @@ export class FieldFormComponent {
     const fieldData = {
       ...this.fieldForm.value,
       status: this.editing ? this.fieldForm.value.status : 'ACTIVE',
-      adminId: this.adminId
+      adminId: this.userActive.id
     };
 
     if (this.editing) {
-      fieldData['id'] = this.fieldId; // Añadir el ID si estamos editando
+      fieldData['id'] = this.fieldId;
     }
 
     const request$ = this.editing
@@ -115,18 +111,18 @@ export class FieldFormComponent {
           title: this.editing ? 'Cancha actualizada' : 'Cancha registrada',
           confirmButtonText: 'Aceptar',
           customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false,
+          buttonsStyling: false
         });
         this.router.navigate(['/dashboard/field']);
       },
-      error: (err) => {
+      error: err => {
         this.loading = false;
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: err.error?.message || 'Algo salió mal',
+          text: err.error?.message || 'Algo salió mal'
         });
-      },
+      }
     });
   }
 }

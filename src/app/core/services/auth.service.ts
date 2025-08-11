@@ -1,40 +1,32 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { User, UserRole } from '../../features/user/interfaces/user';
-import { environment } from '../../../environments/environment';
-
-interface LoginResponse {
-  token: string;
-  user: User;
-}
+import { LoginResponse } from '../interfaces/login-response';
+import { BaseHttpService } from '../../shared/data-access/base-http.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class AuthService {
-  private tokenKey = 'token';
-  private authStatus = new BehaviorSubject<boolean>(this.hasToken());
-  private url = environment.authUrl;
+export class AuthService extends BaseHttpService {
+  private router = inject(Router);
 
+  private tokenKey = 'token';
+
+  private authStatus = new BehaviorSubject<boolean>(this.hasToken());
   authStatus$ = this.authStatus.asObservable();
 
-  private currentUser = new BehaviorSubject<User | null>(
-    null
-  );
+  private currentUser = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUser.asObservable();
-
-  constructor(private http: HttpClient, private router: Router) { }
 
   loginUser(email: string, password: string): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>(`${this.url}/authenticate`, {
+      .post<LoginResponse>(`${this.authUrl}/authenticate`, {
         email,
-        password,
+        password
       })
       .pipe(
-        tap((response) => {
+        tap(response => {
           this.setToken(response.token);
           this.currentUser.next(response.user);
           this.authStatus.next(true);
@@ -48,17 +40,15 @@ export class AuthService {
 
     if (!token || !email) return of(false);
 
-    return this.http
-      .post<LoginResponse>(`${this.url}/refresh`, { email, token })
-      .pipe(
-        map((res) => {
-          this.setToken(res.token);
-          this.currentUser.next(res.user);
-          this.authStatus.next(true);
-          return true;
-        }),
-        catchError(() => of(false))
-      );
+    return this.http.post<LoginResponse>(`${this.authUrl}/refresh`, { email, token }).pipe(
+      map(res => {
+        this.setToken(res.token);
+        this.currentUser.next(res.user);
+        this.authStatus.next(true);
+        return true;
+      }),
+      catchError(() => of(false))
+    );
   }
 
   checkAuth(): Observable<boolean> {
@@ -74,13 +64,12 @@ export class AuthService {
     }
 
     return this.tryRenewToken().pipe(
-      map((renewed) => {
+      map(renewed => {
         if (!renewed) this.logout();
         return renewed;
       })
     );
   }
-
 
   logout(): void {
     this.clearToken();
@@ -90,7 +79,7 @@ export class AuthService {
   }
 
   registerUser(user: User): Observable<any> {
-    return this.http.post(`${this.url}/register`, user);
+    return this.http.post(`${this.authUrl}/register`, user);
   }
 
   private getTokenExpirationDate(token: string): Date | null {
@@ -100,9 +89,7 @@ export class AuthService {
     if (!payloadBase64) return null;
 
     try {
-      const payloadJson = atob(
-        payloadBase64.replace(/-/g, '+').replace(/_/g, '/')
-      );
+      const payloadJson = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
       const payload = JSON.parse(payloadJson);
 
       if (!payload.exp) return null;
@@ -158,9 +145,7 @@ export class AuthService {
     if (!payloadBase64) return null;
 
     try {
-      const payloadJson = atob(
-        payloadBase64.replace(/-/g, '+').replace(/_/g, '/')
-      );
+      const payloadJson = atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/'));
       return JSON.parse(payloadJson);
     } catch (e) {
       console.error(e);

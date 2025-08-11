@@ -58,8 +58,9 @@
         <select formControlName="status"
           class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
           required>
-          <option value="ACTIVE">Activo</option>
-          <option value="INACTIVE">Inactivo</option>
+          @for (status of statusOptions; track $index) {
+          <option [value]="status.value">{{ status.label }}</option>
+          }
         </select>
       </div>
       }

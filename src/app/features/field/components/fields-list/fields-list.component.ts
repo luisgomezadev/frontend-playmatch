@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Field } from '../../interfaces/field';
 import { FieldService } from '../../services/field.service';
 import { AuthService } from '../../../../core/services/auth.service';
@@ -25,31 +25,31 @@ import { LoadingFieldListComponent } from '../../../../shared/components/loading
     LoadingFieldListComponent
   ],
   templateUrl: './fields-list.component.html',
-  styleUrl: './fields-list.component.scss',
+  styleUrl: './fields-list.component.scss'
 })
-export class FieldsListComponent {
+export class FieldsListComponent implements OnInit {
+  private fieldService = inject(FieldService);
+  private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
+  private router = inject(Router);
+  private reservationService = inject(ReservationService);
+
+  @Input() showHeader: boolean = true;
   fields: Field[] = [];
   user!: User;
   loading = false;
   showModal: boolean = false;
 
+  constructor() {}
 
-  @Input() showHeader: boolean = true;
-
-  constructor(
-    private fieldService: FieldService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private location: Location,
-    private router: Router,
-    private reservationService: ReservationService
-  ) {
-    this.route.queryParams.subscribe((params) => {
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
       if (params['showHeader'] !== undefined) {
         this.showHeader = params['showHeader'] !== 'false';
       }
     });
-    this.authService.currentUser$.subscribe((user) => {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
       }
@@ -65,17 +65,14 @@ export class FieldsListComponent {
     this.loading = true;
     this.fields = [];
     this.fieldService.getFieldsActive().subscribe({
-      next: (data) => {
+      next: data => {
         this.loading = false;
         this.fields = data;
       },
-      error: (err) => {
+      error: err => {
         this.loading = false;
-        console.error(
-          'Error cargando canchas',
-          err.error.message || 'Error desconocido'
-        );
-      },
+        console.error('Error cargando canchas', err.error.message || 'Error desconocido');
+      }
     });
   }
 
@@ -125,7 +122,7 @@ export class FieldsListComponent {
           text: 'Debes cancelarla si deseas hacer una nueva reserva.',
           icon: 'warning',
           customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false,
+          buttonsStyling: false
         });
         this.router.navigate(['/dashboard/reservation/list']);
       } else {
@@ -135,10 +132,7 @@ export class FieldsListComponent {
   }
 
   async hasActiveReservation(): Promise<boolean> {
-    const count = await firstValueFrom(
-      this.reservationService.getCountActiveByUser(this.user.id)
-    );
+    const count = await firstValueFrom(this.reservationService.getCountActiveByUser(this.user.id));
     return count > 0;
   }
-
 }

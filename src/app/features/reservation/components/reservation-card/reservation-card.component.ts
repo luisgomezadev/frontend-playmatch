@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Reservation, StatusReservation } from '../../interfaces/reservation';
 import { CommonModule } from '@angular/common';
 import { StatusReservationPipe } from '../../../../shared/pipes/status-reservation.pipe';
@@ -22,6 +22,9 @@ import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
   styleUrl: './reservation-card.component.scss'
 })
 export class ReservationCardComponent {
+
+  private reservationService = inject(ReservationService);
+
   @Input() reservation!: Reservation;
   @Input() viewAsField: boolean = false;
   @Input() reservationBy: string = '';
@@ -38,7 +41,7 @@ export class ReservationCardComponent {
 
   StatusReservation = StatusReservation;
 
-  constructor(private reservationService: ReservationService) { }
+  constructor() { }
 
   openModal(item: any, type: 'user' | 'field'): void {
     this.selectedItem = item;

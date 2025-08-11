@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../core/services/auth.service';
@@ -16,12 +16,16 @@ import { UserService } from '../user/services/user.service';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+
   userActive!: User;
   sidebarOpen = false;
   loading = true;
   links: any[] = [];
 
-  constructor(private authService: AuthService, private userService: UserService) { }
+  constructor() { }
 
   ngOnInit(): void {
     const claims = this.authService.getClaimsFromToken();

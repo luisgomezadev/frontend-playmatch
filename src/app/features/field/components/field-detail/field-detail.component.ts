@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FieldService } from '../../services/field.service';
 import { Field, Status } from '../../interfaces/field';
@@ -31,6 +31,12 @@ import { ReservationCardComponent } from '../../../reservation/components/reserv
   styleUrl: './field-detail.component.scss'
 })
 export class FieldDetailComponent {
+
+  private route = inject(ActivatedRoute);
+  private fieldService = inject(FieldService)
+  private authService = inject(AuthService);
+  private location = inject(Location);
+
   user!: User;
   field: Field | null = null;
   fieldId!: number;
@@ -38,12 +44,7 @@ export class FieldDetailComponent {
   Status = Status;
   reservationList: Reservation[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private fieldService: FieldService,
-    private authService: AuthService,
-    private location: Location
-  ) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
