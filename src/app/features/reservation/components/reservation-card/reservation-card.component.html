@@ -88,8 +88,8 @@
     </div>
   </div>
 
-  @if (showInfo(reservation)) {
   <div class="mt-2 space-y-1">
+    @if (showInfo(reservation)) {
     <p
       *ngIf="isReservationExpired(reservation)"
       class="text-xs font-semibold text-red-600 flex items-center gap-1">
@@ -110,26 +110,38 @@
       <i class="fa-solid fa-futbol"></i>
       En curso.
     </p>
+    } @else {
+    <p class="text-xs text-gray-500">
+      @if (reservationBy == 'field') { Esta reserva fue realizada por el jugador. } @else { Esta
+      reserva fue realizada por la cancha. }
+    </p>
+    }
   </div>
-  }
 </article>
 
 @if (showModal && selectedItem) {
 <div
   class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all px-3">
-  <div class="bg-white w-full max-w-md mx-auto rounded-md p-6 relative shadow-2xl animate-fade-in">
+  <div class="bg-white w-full max-w-[22rem] mx-auto rounded-md p-6 relative shadow-2xl animate-fade-in">
     <button
       (click)="closeModal()"
       class="absolute top-2 right-4 text-gray-400 hover:text-red-500 text-xl">
       &times;
     </button>
 
-    <h2 class="text-2xl font-bold text-primary mb-4">
-      {{ selectedItem.name || selectedItem.firstName + ' ' + selectedItem.lastName }}
-    </h2>
-
     @switch (selectedType) { @case ('user') {
-    <div class="space-y-2 text-sm text-gray-700">
+    <h2 class="text-2xl font-medium text-primary mb-4 text-center">
+      Información del usuario
+    </h2>
+    <div class="space-y-3 text-sm text-gray-700">
+      <picture class="flex justify-center mb-8">
+        <img [src]="getImageUrl(selectedItem)" alt="{{ selectedItem.firstName }}"
+          class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20" />
+      </picture>
+      <p>
+        <span class="font-medium">Nombre:</span>
+        {{ selectedItem.firstName + ' ' + selectedItem.lastName || 'No definido' }}
+      </p>
       <p>
         <span class="font-medium">Correo:</span>
         {{ selectedItem.email || 'No definido' }}
@@ -138,9 +150,18 @@
         <span class="font-medium">Celular:</span>
         {{ selectedItem.cellphone || 'No definido' }}
       </p>
+      <p>
+        <span class="font-medium">Ciudad:</span>
+        {{ selectedItem.city || 'No definida' }}
+      </p>
     </div>
     } @case ('field') {
+    <h2 class="text-2xl font-medium text-primary mb-4">Información de la cancha</h2>
     <div class="space-y-2 text-sm text-gray-700">
+      <p>
+        <span class="font-medium">Cancha:</span>
+        {{ selectedItem.name }}
+      </p>
       <p>
         <span class="font-medium">Dirección:</span>
         {{ selectedItem.address || 'No definida' }}

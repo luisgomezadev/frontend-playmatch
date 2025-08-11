@@ -7,6 +7,7 @@ import { ButtonActionComponent } from '../../../../shared/components/button-acti
 import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
 import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
+import { User } from '../../../user/interfaces/user';
 
 @Component({
   selector: 'app-reservation-card',
@@ -47,12 +48,14 @@ export class ReservationCardComponent {
     this.selectedItem = item;
     this.selectedType = type;
     this.showModal = true;
+    document.body.style.overflow = 'hidden';
   }
 
   closeModal(): void {
     this.showModal = false;
     this.selectedItem = null;
     this.selectedType = null;
+    document.body.style.overflow = '';
   }
 
   showInfo(reservation: Reservation): boolean {
@@ -181,5 +184,10 @@ export class ReservationCardComponent {
     const now = new Date();
     const endDateTime = new Date(`${reservation.reservationDate}T${reservation.endTime}`);
     return now > endDateTime;
+  }
+
+
+  getImageUrl(user: User): string {
+    return user.imageUrl?.startsWith('http') ? user.imageUrl : '/assets/profile_icon.webp';
   }
 }

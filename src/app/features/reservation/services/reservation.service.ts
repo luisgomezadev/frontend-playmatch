@@ -1,7 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { ConfirmedReservation, Reservation, StatusReservation } from '../interfaces/reservation';
 import { ReservationFilter } from '../interfaces/reservation';
 import { PagedResponse } from '../../../core/interfaces/paged-response';

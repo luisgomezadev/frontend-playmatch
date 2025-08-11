@@ -98,10 +98,12 @@ export class FieldsListComponent implements OnInit {
 
   openModal(): void {
     this.showModal = true;
+    document.body.style.overflow = 'hidden';
   }
 
   closeModal(): void {
     this.showModal = false;
+    document.body.style.overflow = '';
   }
 
   goToLogin(): void {

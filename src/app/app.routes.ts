@@ -57,14 +57,14 @@ export const routes: Routes = [
         path: 'reservation/list',
         loadComponent: () =>
           import(
-            './features/reservation/components/reservation-list/reservation-list.component'
+            './features/reservation/pages/reservation-list/reservation-list.component'
           ).then(m => m.ReservationListComponent)
       },
       {
         path: 'reservation/form/field/:id',
         loadComponent: () =>
           import(
-            './features/reservation/components/reservation-form/reservation-form.component'
+            './features/reservation/pages/reservation-form/reservation-form.component'
           ).then(m => m.ReservationFormComponent)
       },
 

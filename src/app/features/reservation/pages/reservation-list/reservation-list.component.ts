@@ -16,9 +16,10 @@ import Swal from 'sweetalert2';
 import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
 import { Field } from '../../../field/interfaces/field';
 import { FieldService } from '../../../field/services/field.service';
-import { ReservationCardComponent } from '../reservation-card/reservation-card.component';
+import { ReservationCardComponent } from '../../components/reservation-card/reservation-card.component';
 import { LoadingReservationCardComponent } from '../../../../shared/components/loading/loading-reservation-card/loading-reservation-card.component';
-import { ReservationCalendarComponent } from '../reservation-calendar/reservation-calendar.component';
+import { ReservationCalendarComponent } from '../../components/reservation-calendar/reservation-calendar.component';
+import { ReservationFilterComponent } from '../../components/reservation-filter/reservation-filter.component';
 
 @Component({
   selector: 'app-reservation-list',
@@ -31,7 +32,8 @@ import { ReservationCalendarComponent } from '../reservation-calendar/reservatio
     LoadingReservationCardComponent,
     ReservationCalendarComponent,
     FormsModule,
-    ReservationCardComponent
+    ReservationCardComponent,
+    ReservationFilterComponent
   ],
   templateUrl: './reservation-list.component.html',
   styleUrl: './reservation-list.component.scss'
@@ -50,25 +52,24 @@ export class ReservationListComponent implements OnInit {
 
   user!: User;
   calendarView: boolean = false;
-  showModal = false;
   showModalFilters = false;
   listOfDetailsField = false;
   loading = false;
-  showFilters = false;
   isSmallScreen = false;
 
   currentPage = 0;
-  pageSize = 9;
+  pageSize = 6;
 
   field!: Field;
   reservationBy!: string;
   filters: ReservationFilter = {};
   selectedItem: any = null;
   selectedType: 'user' | 'field' | null = null;
+  infoTitle = 'Aquí puedes ver todas tus reservas ordenadas a más recientes. Puedes filtrar por fecha y estado de la reserva.';
 
   StatusReservation = StatusReservation;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.checkScreenSize();
@@ -110,7 +111,6 @@ export class ReservationListComponent implements OnInit {
 
   checkScreenSize(): void {
     this.isSmallScreen = window.innerWidth < 768;
-    this.showFilters = !this.isSmallScreen;
   }
 
   get isFieldView(): boolean {
@@ -194,36 +194,38 @@ export class ReservationListComponent implements OnInit {
   showView(view: string): void {
     if (view === 'list') {
       this.calendarView = false;
+      this.infoTitle = 'Aquí puedes ver todas tus reservas ordenadas a más recientes. Puedes filtrar por fecha y estado de la reserva.';
       this.getReservations(0);
     } else if (view === 'calendar') {
+      this.infoTitle = 'Aquí puedes ver todas las reservas activas en formato calendario.';
       this.getAllReservationsActive();
     }
   }
 
   openModalFilters(): void {
     this.showModalFilters = true;
+    document.body.style.overflow = 'hidden';
   }
 
   closeModalFilters(): void {
     this.showModalFilters = false;
+    document.body.style.overflow = '';
   }
 
-  filter(): void {
-    const { reservationDate, status } = this.formFilter.value;
+  filter(formFilter: any): void {
+    const { reservationDate, status } = formFilter;
     this.filters.date = reservationDate || undefined;
     this.filters.status = status || undefined;
+    this.currentPage = 0;
     this.getReservations(0);
-    this.showFilters = false;
-    this.showModalFilters = false;
   }
 
   cleanFilter(): void {
     this.formFilter.reset({ reservationDate: null, status: '' });
     delete this.filters.date;
     delete this.filters.status;
+    this.currentPage = 0;
     this.getReservations(0);
-    this.showFilters = false;
-    this.showModalFilters = false;
   }
 
   makeReservation(): void {
@@ -258,4 +260,5 @@ export class ReservationListComponent implements OnInit {
     this.loading = false;
     Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
   }
+
 }
