@@ -14,83 +14,69 @@
         <div class="flex flex-col md:flex-row items-start md:items-center gap-6 flex-1">
           <div class="space-y-6 w-full">
             <div class="flex items-center justify-between gap-x-3">
-              <h2 class="text-3xl font-semibold text-gray-800">{{ field.name }}</h2>
-              <span
+              <!-- <h2 class="text-3xl font-semibold text-gray-800">{{ field.name }}</h2> -->
+              <h2 class="text-xl font-semibold text-gray-800">Información de la cancha</h2>
+              <!-- <span
                 class="text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm border transition-colors duration-300"
                 [ngClass]="{
                   'bg-green-100 text-green-700 border-green-300': field.status === Status.ACTIVE,
                   'bg-red-100 text-red-700 border-red-300': field.status === Status.INACTIVE
                 }">
                 {{ field.status | statusDescription }}
-              </span>
+              </span> -->
             </div>
-            <div class="space-y-6 pt-4">
-              <div>
-                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                  <i class="fa-solid fa-city text-primary"></i>
-                  Ciudad
-                </p>
-                <p class="text-base text-gray-700">{{ field.city }}</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-gray-100 py-2 px-3 rounded-md md:col-span-2">
+                <h3 class="text-gray-700 italic text-sm">Nombre</h3>
+                <p class="text-base">{{ field.name }}</p>
               </div>
-
-              <div>
-                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                  <i class="fa-solid fa-map-location-dot text-primary"></i>
-                  Dirección
-                </p>
-                <p class="text-base text-gray-700">{{ field.address }}</p>
+              <div class="bg-gray-100 py-2 px-3 rounded-md">
+                <h3 class="text-gray-700 italic text-sm">Ciudad</h3>
+                <p class="text-base">{{ field.city }}</p>
               </div>
-
-              <div>
-                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                  <i class="fa-solid fa-dollar-sign text-primary"></i>
-                  Precio por hora
-                </p>
-                <p class="text-base text-gray-700">{{ field.hourlyRate | moneyFormat }}</p>
+              <div class="bg-gray-100 py-2 px-3 rounded-md">
+                <h3 class="text-gray-700 italic text-sm">Dirección</h3>
+                <p class="text-base">{{ field.address }}</p>
               </div>
-
-              <div>
-                <p class="text-sm font-medium text-gray-500 flex items-center gap-2">
-                  <i class="fa-solid fa-clock text-primary"></i>
-                  Horario
-                </p>
-                <p class="text-base text-gray-700">
-                  {{ field.openingHour | timeFormat }} a {{ field.closingHour | timeFormat }}
-                </p>
+              <div class="bg-gray-100 py-2 px-3 rounded-md">
+                <h3 class="text-gray-700 italic text-sm">Precio por hora</h3>
+                <p class="text-base">{{ field.hourlyRate | moneyFormat }}</p>
+              </div>
+              <div class="bg-gray-100 py-2 px-3 rounded-md">
+                <h3 class="text-gray-700 italic text-sm">Hora de apertura</h3>
+                <p class="text-base">{{ field.openingHour | timeFormat }}</p>
+              </div>
+              <div class="bg-gray-100 py-2 px-3 rounded-md">
+                <h3 class="text-gray-700 italic text-sm">Hora de cierre</h3>
+                <p class="text-base">{{ field.closingHour | timeFormat }}</p>
+              </div>
+              <div class="bg-gray-100 py-2 px-3 rounded-md">
+                <h3 class="text-gray-700 italic text-sm">Estado</h3>
+                <p class="text-base">{{ field.status | statusDescription }}</p>
               </div>
             </div>
           </div>
         </div>
 
         <div class="flex justify-end">
-          <button-action
-            text="Editar"
-            icon="fa-solid fa-pen-to-square"
-            [hasIcon]="true"
-            color="yellow"
-            [routerLink]="['/dashboard/field/form', field.id]"></button-action>
+          <app-button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
+            [routerLink]="['/dashboard/field/form/' + field.id]"></app-button-action>
         </div>
       </article>
 
       <article class="bg-white p-6 rounded-md shadow-md border border-gray-200">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-semibold text-gray-800">Últimas reservas</h3>
+          <h2 class="text-xl font-semibold text-gray-800">Últimas reservas</h2>
           @if (reservationList.length > 0 && isOwnerField()) {
-          <a
-            class="text-sm text-primary font-medium hover:underline"
-            [routerLink]="['/dashboard/reservation/list']">
+          <a class="text-sm text-primary font-medium hover:underline" [routerLink]="['/dashboard/reservation/list']">
             Ver todas
           </a>
           }
         </div>
         <div class="flex flex-col gap-4">
           @for (reservation of reservationList; track reservation.id) {
-          <app-reservation-card
-            [viewAsField]="true"
-            [reservation]="reservation"
-            [reservationBy]="'field'"
-            [listOfDetailsField]="true"
-            [isUserAdmin]="isUserAdmin(user)" />
+          <app-reservation-card [viewAsField]="true" [reservation]="reservation" [reservationBy]="'field'"
+            [listOfDetailsField]="true" [isUserAdmin]="isUserAdmin(user)" />
           }
         </div>
       </article>
@@ -99,8 +85,7 @@
     } @else {
     <div class="text-center flex justify-center items-center flex-col h-full">
       <h2 class="text-lg font-medium text-gray-700">No tienes una cancha registrada.</h2>
-      <a
-        routerLink="/dashboard/field/form"
+      <a routerLink="/dashboard/field/form"
         class="mt-6 inline-flex items-center px-5 py-8 border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:bg-gray-300 transition-all">
         <i class="fa-solid fa-plus mr-2"></i>
         <span class="font-semibold">Registra una cancha</span>

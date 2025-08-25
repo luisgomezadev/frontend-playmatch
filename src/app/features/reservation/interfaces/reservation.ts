@@ -3,8 +3,8 @@ import { Field } from "../../field/interfaces/field";
 
 export interface Reservation {
   id: number;
-  user?: User;
-  field?: Field;
+  user: User;
+  field: Field;
   hours: number;
   startTime: string;
   endTime: string;

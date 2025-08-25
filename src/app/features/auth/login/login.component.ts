@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../core/services/auth.service';
 import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-auth.component';
+import { ErrorResponse } from '../../../core/interfaces/error-response';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +13,14 @@ import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  
+
   loginForm: FormGroup;
   loading = false;
-  showPassword: boolean = false;
+  showPassword = false;
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -42,7 +43,7 @@ export class LoginComponent {
     this.loading = true;
     const { email, password } = this.loginForm.value;
 
-    const handleError = (err: any) => {
+    const handleError = (err: ErrorResponse) => {
       this.loading = false;
       Swal.fire({
         icon: 'error',
@@ -59,7 +60,7 @@ export class LoginComponent {
       this.authService.redirectIfAuthenticated();
     };
 
-    let loginObservable = this.authService.loginUser(email, password);
+    const loginObservable = this.authService.loginUser(email, password);
 
     loginObservable.subscribe({
       next: handleSuccess,

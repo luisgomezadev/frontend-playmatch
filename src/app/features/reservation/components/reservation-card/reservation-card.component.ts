@@ -8,6 +8,8 @@ import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
 import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
 import { User } from '../../../user/interfaces/user';
+import { Field } from '../../../field/interfaces/field';
+import { ErrorResponse } from '../../../../core/interfaces/error-response';
 
 @Component({
   selector: 'app-reservation-card',
@@ -27,25 +29,28 @@ export class ReservationCardComponent {
   private reservationService = inject(ReservationService);
 
   @Input() reservation!: Reservation;
-  @Input() viewAsField: boolean = false;
-  @Input() reservationBy: string = '';
-  @Input() listOfDetailsField: boolean = false;
-  @Input() isUserAdmin: boolean = false;
+  @Input() viewAsField = false;
+  @Input() reservationBy = '';
+  @Input() listOfDetailsField = false;
+  @Input() isUserAdmin = false;
 
   @Output() loadReservations = new EventEmitter<number>();
 
   showModal = false;
-  selectedItem: any = null;
+  user!: User;
+  field!: Field;
   selectedType: 'user' | 'field' | null = null;
 
-  loading: boolean = false;
+  loading = false;
 
   StatusReservation = StatusReservation;
 
-  constructor() { }
-
-  openModal(item: any, type: 'user' | 'field'): void {
-    this.selectedItem = item;
+  openModal(item: Reservation, type: 'user' | 'field'): void {
+    if (type === 'user') {
+      this.user = item.user;
+    } else if (type === 'field') {
+      this.field = item.field;
+    }
     this.selectedType = type;
     this.showModal = true;
     document.body.style.overflow = 'hidden';
@@ -53,7 +58,6 @@ export class ReservationCardComponent {
 
   closeModal(): void {
     this.showModal = false;
-    this.selectedItem = null;
     this.selectedType = null;
     document.body.style.overflow = '';
   }
@@ -117,7 +121,7 @@ export class ReservationCardComponent {
     });
   }
 
-  private handleError(err: any): void {
+  private handleError(err: ErrorResponse): void {
     this.loading = false;
     Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
   }
@@ -187,7 +191,7 @@ export class ReservationCardComponent {
   }
 
 
-  getImageUrl(user: User): string {
-    return user.imageUrl?.startsWith('http') ? user.imageUrl : '/assets/profile_icon.webp';
+  getImageUrl(imageUrl: string): string {
+    return imageUrl?.startsWith('http') ? imageUrl : '/assets/profile_icon.webp';
   }
 }

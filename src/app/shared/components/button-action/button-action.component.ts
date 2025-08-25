@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'button-action',
+  selector: 'app-button-action',
   standalone: true,
   imports: [RouterModule],
   template: `
@@ -48,16 +48,16 @@ import { RouterModule } from '@angular/router';
   `
 })
 export class ButtonActionComponent {
-  @Input() text: string = 'Botón';
+  @Input() text = 'Botón';
   @Input() color: 'black' | 'red' | 'primary' | 'blue' | 'yellow' | 'transparent' = 'black';
-  @Input() routerLink: string | any[] | null = null;
+  @Input() routerLink: string[] | null = null;
   @Input() type: 'button' | 'submit' = 'button';
-  @Input() loading: boolean = false;
-  @Input() disabled: boolean = false;
-  @Input() hasIcon: boolean = false;
-  @Input() icon: string = '';
-  @Input() onlyIcon: boolean = false;
-  @Input() bigButton: boolean = false;
+  @Input() loading = false;
+  @Input() disabled = false;
+  @Input() hasIcon = false;
+  @Input() icon = '';
+  @Input() onlyIcon = false;
+  @Input() bigButton = false;
 
   @Output() clicked = new EventEmitter<void>();
 
@@ -69,18 +69,18 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'font-medium shadow-md transition-all duration-200 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2 z-10 relative';
+      'font-medium shadow transition-shadow duration-300 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2 z-10 relative';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
     if (!this.disabled && this.color != 'transparent')
-      base += ' hover:shadow-lg hover:-translate-y-0.5';
+      base += ' hover:shadow';
     if (this.bigButton) base += ' text-lg rounded-full border-2 border-gray-500';
     else base += ' text-sm w-full';
     const styles = {
-      black: 'bg-black text-white hover:shadow-gray-600',
-      red: 'bg-red-600 text-white hover:shadow-red-600',
-      primary: 'bg-primary text-white hover:shadow-green-600',
-      blue: 'bg-blue-600 text-white hover:shadow-blue-600',
-      yellow: 'bg-yellow-500 text-white hover:shadow-yellow-600',
+      black: 'bg-gray-200 text-black hover:shadow-gray-600',
+      red: 'bg-gray-200 text-red-600 hover:shadow-red-600',
+      primary: 'bg-gray-200 text-primary hover:shadow-green-600',
+      blue: 'bg-gray-200 text-blue-600 hover:shadow-blue-600',
+      yellow: 'bg-gray-200 text-yellow-500 hover:shadow-yellow-600',
       transparent: 'bg-transparent text-black shadow-none'
     };
     return `${styles[this.color]} ${base}`;

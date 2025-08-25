@@ -4,8 +4,9 @@
       <h2 class="text-xl md:text-2xl font-bold text-primary">
         Información de tu cancha
       </h2>
-      <button-action text="Volver" color="transparent" icon="fa-solid fa-backward" [hasIcon]="true" (clicked)="goBack()">
-      </button-action>
+      <app-button-action text="Volver" color="transparent" icon="fa-solid fa-backward" [hasIcon]="true"
+        (clicked)="goBack()">
+      </app-button-action>
     </div>
     @if (loadingForm) {
     <loading-component text="Cargando información de la cancha" />
@@ -34,8 +35,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label class="block text-gray-700 font-semibold mb-1">Precio por hora</label>
-          <input formControlName="hourlyRate" type="number" step="1" min="0"
-            placeholder="Ingrese el precio por hora"
+          <input formControlName="hourlyRate" type="number" step="1" min="0" placeholder="Ingrese el precio por hora"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
             required />
         </div>
@@ -66,9 +66,9 @@
       }
 
       <div class="flex justify-end w-full">
-        <button-action [text]="editing ? 'Actualizar cancha' : 'Registrar cancha'" color="primary" [loading]="loading"
-          type="submit">
-        </button-action>
+        <app-button-action [text]="editing ? 'Actualizar cancha' : 'Registrar cancha'" color="primary"
+          [loading]="loading" type="submit">
+        </app-button-action>
       </div>
     </form>
     }

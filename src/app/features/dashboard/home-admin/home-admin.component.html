@@ -12,22 +12,10 @@
         class="px-6 py-6 bg-white rounded-md shadow transition-all flex justify-between items-center text-center border-t-4 border border-primary min-h-36">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
-          <svg
-            class="animate-spin h-7 w-7 text-primary"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+          <svg class="animate-spin h-7 w-7 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24">
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
           </svg>
           } @else {
           <p class="text-4xl font-bold text-primary">
@@ -45,22 +33,10 @@
         class="px-6 py-6 bg-white rounded-md shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashblue min-h-36">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
-          <svg
-            class="animate-spin h-7 w-7 text-dashblue"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+          <svg class="animate-spin h-7 w-7 text-dashblue" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24">
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
           </svg>
           } @else {
           <p class="text-4xl font-bold text-dashblue">
@@ -78,22 +54,10 @@
         class="px-6 py-6 bg-white rounded-md shadow transition-all flex justify-between items-center text-center border-t-4 border border-dashyellow min-h-36">
         <div class="text-start flex flex-col gap-2">
           @if (loading) {
-          <svg
-            class="animate-spin h-7 w-7 text-dashyellow"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
+          <svg class="animate-spin h-7 w-7 text-dashyellow" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24">
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              stroke-width="4"></circle>
-            <path
-              class="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
           </svg>
           } @else {
           <p class="text-4xl font-bold text-dashyellow">
@@ -119,14 +83,8 @@
           <h2 class="font-semibold">Acciones Rápidas</h2>
         </header>
         <div class="flex flex-wrap gap-3">
-          <button-action
-            text="Detalles de tu cancha"
-            color="primary"
-            [routerLink]="['/dashboard/field']" />
-          <button-action
-            text="Reservas"
-            color="primary"
-            [routerLink]="['/dashboard/reservation/list']" />
+          <app-button-action text="Detalles de tu cancha" color="primary" [routerLink]="['/dashboard/field']" />
+          <app-button-action text="Reservas" color="primary" [routerLink]="['/dashboard/reservation/list']" />
         </div>
       </div>
     </footer>

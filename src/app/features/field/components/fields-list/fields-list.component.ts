@@ -35,13 +35,11 @@ export class FieldsListComponent implements OnInit {
   private router = inject(Router);
   private reservationService = inject(ReservationService);
 
-  @Input() showHeader: boolean = true;
+  @Input() showHeader = true;
   fields: Field[] = [];
   user!: User;
   loading = false;
-  showModal: boolean = false;
-
-  constructor() {}
+  showModal = false;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -108,12 +106,12 @@ export class FieldsListComponent implements OnInit {
 
   goToLogin(): void {
     this.closeModal();
-    this.location.go('/login');
+    this.router.navigate(['/login']);
   }
 
   goToRegister(): void {
     this.closeModal();
-    this.location.go('/register');
+    this.router.navigate(['/register']);
   }
 
   makeReservation(fieldId: number): void {

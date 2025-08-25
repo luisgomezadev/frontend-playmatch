@@ -21,9 +21,9 @@
 
     <div class="grid grid-cols-7 gap-3">
       @for (day of calendarDays; track $index) {
-      <div
+      <button
         class="border border-gray-200 p-2 h-36 flex flex-col overflow-hidden rounded-xl cursor-pointer hover:bg-gray-100"
-        [class.bg-white]="day.date.getMonth() == currentMonth"
+        [class.bg-white]="day.date.getMonth() === currentMonth"
         (click)="openDayModal(day)">
         <div class="text-sm font-bold">{{ day.date.getDate() }}</div>
 
@@ -36,7 +36,7 @@
                 'bg-yellow-200 text-yellow-800': res.status === StatusReservation.FINISHED,
                 'bg-red-200 text-red-800': res.status === StatusReservation.CANCELED
               }">
-            <span>{{ res.user?.firstName }} {{ res.user?.lastName }}</span>
+            <span>{{ res.user.firstName }} {{ res.user.lastName }}</span>
             <span>{{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}</span>
           </div>
           }
@@ -48,7 +48,7 @@
           </div>
           }
         </div>
-      </div>
+      </button>
       }
     </div>
   </div>
@@ -103,9 +103,9 @@
     <div class="space-y-4">
       @for (res of selectedDayReservations; track res.id) {
       <div class="border p-3 rounded-lg">
-        <p class="font-medium">{{ res.user?.firstName }} {{ res.user?.lastName }}</p>
-        <p class="text-sm text-gray-500">{{ res.user?.email }}</p>
-        <p class="text-sm text-gray-500">{{ res.user?.cellphone }}</p>
+        <p class="font-medium">{{ res.user.firstName }} {{ res.user.lastName }}</p>
+        <p class="text-sm text-gray-500">{{ res.user.email }}</p>
+        <p class="text-sm text-gray-500">{{ res.user.cellphone }}</p>
         <p class="mt-2">
           <span class="font-medium">Hora:</span>
           {{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}
