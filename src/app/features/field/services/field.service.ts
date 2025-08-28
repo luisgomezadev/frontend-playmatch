@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Field, FieldRequest } from '@field/interfaces/field';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { Observable } from 'rxjs';
-import { Field } from '../interfaces/field';
-import { BaseHttpService } from '../../../shared/data-access/base-http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,31 +9,31 @@ import { BaseHttpService } from '../../../shared/data-access/base-http.service';
 export class FieldService extends BaseHttpService {
   private url = this.apiUrl + '/field';
 
-  getFields(): Observable<any> {
-    return this.http.get(`${this.url}`);
+  getFields(): Observable<Field[]> {
+    return this.http.get<Field[]>(`${this.url}`);
   }
 
-  getFieldsActive(): Observable<any> {
-    return this.http.get(`${this.url}/active`);
+  getFieldsActive(): Observable<Field[]> {
+    return this.http.get<Field[]>(`${this.url}/active`);
   }
 
   getFieldById(id: number): Observable<Field> {
     return this.http.get<Field>(`${this.url}/${id}`);
   }
 
-  getFieldByAdminId(adminId: number): Observable<any> {
-    return this.http.get(`${this.url}/admin/${adminId}`);
+  getFieldByAdminId(adminId: number): Observable<Field> {
+    return this.http.get<Field>(`${this.url}/admin/${adminId}`);
   }
 
-  createField(field: any): Observable<any> {
-    return this.http.post(`${this.url}`, field);
+  createField(field: FieldRequest): Observable<Field> {
+    return this.http.post<Field>(`${this.url}`, field);
   }
 
-  updateField(field: any): Observable<any> {
-    return this.http.put(`${this.url}`, field);
+  updateField(field: FieldRequest): Observable<Field> {
+    return this.http.put<Field>(`${this.url}`, field);
   }
 
-  deleteField(id: number): Observable<any> {
-    return this.http.delete(`${this.url}/${id}`);
+  deleteField(id: number): Observable<string> {
+    return this.http.delete<string>(`${this.url}/${id}`);
   }
 }

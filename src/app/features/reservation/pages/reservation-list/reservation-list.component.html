@@ -1,94 +1,128 @@
 <section class="bg-gray-100">
-  <div class="space-y-6" [ngClass]="{
-      'p-6': !listOfDetailsField,
-      'pb-12': !isFieldView
-    }">
+  <div class="space-y-6 px-3 py-4 md:p-6">
     @if (!listOfDetailsField) {
-    <header class="flex items-center justify-between gap-x-8">
-      <div>
-        <h1 class="text-3xl font-medium text-black tracking-tight">Tus reservas</h1>
-        <p class="text-gray-600 mt-1 text-base">
-          {{ infoTitle }}
-        </p>
-      </div>
-      <div class="flex items-center gap-2">
-        <div class="bg-white rounded-full shadow-md">
-          <app-button-action text="Filtros" icon="fa-solid fa-filter" [hasIcon]="true" color="transparent"
-            [disabled]="calendarView" (clicked)="openModalFilters()"></app-button-action>
+      <header class="flex items-center justify-between gap-x-8">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">Reservas</h1>
+          <p class="text-gray-600 mt-1 text-base hidden md:block">
+            {{ infoTitle }}
+          </p>
         </div>
+        <div class="flex items-center gap-2">
+          @if (isReservationUser()) {
+            <app-button-action
+              [hasIcon]="true"
+              icon="fa-solid fa-plus"
+              text="Nueva reserva"
+              color="primary"
+              (clicked)="makeReservation()" />
+          }
 
-        @if (isUserAdmin(user)) {
-        <div class="md:flex items-center gap-1 bg-white rounded-full shadow-md hidden">
-          <app-button-action [className]="!calendarView ? 'bg-gray-200 rounded-full' : ''" text="Lista"
-            icon="fa-solid fa-list" [hasIcon]="true" color="transparent"
-            (clicked)="showView('list')"></app-button-action>
-          <app-button-action [className]="calendarView ? 'bg-gray-200 rounded-full' : ''" text="Calendario"
-            icon="fa-solid fa-calendar" [hasIcon]="true" color="transparent"
-            (clicked)="showView('calendar')"></app-button-action>
+          @if (isUserAdmin(user)) {
+            <div class="bg-white rounded-full shadow-md">
+              <app-button-action
+                text="Filtros"
+                icon="fa-solid fa-filter"
+                [hasIcon]="true"
+                color="transparent"
+                [disabled]="calendarView"
+                (clicked)="openModalFilters()"></app-button-action>
+            </div>
+            <div class="md:flex items-center gap-1 bg-white rounded-full shadow-md hidden">
+              <app-button-action
+                [className]="!calendarView ? 'bg-gray-200 rounded-full' : ''"
+                text="Lista"
+                icon="fa-solid fa-list"
+                [hasIcon]="true"
+                color="transparent"
+                (clicked)="showView('list')"></app-button-action>
+              <app-button-action
+                [className]="calendarView ? 'bg-gray-200 rounded-full' : ''"
+                text="Calendario"
+                icon="fa-solid fa-calendar"
+                [hasIcon]="true"
+                color="transparent"
+                (clicked)="showView('calendar')"></app-button-action>
+            </div>
+          }
         </div>
-        }
-      </div>
-    </header>
+      </header>
     }
     @if (!calendarView) {
-    <div class="flex flex-col gap-6 w-full">
-      <div class="flex-1">
-        @if (loading) {
-        <loading-reservation-card-component />
-        } @else {
-        @if (reservationList && reservationList.content.length > 0) {
-        <div class="grid gap-3" [ngClass]="
+      <div class="flex flex-col gap-6 w-full">
+        <div class="flex-1">
+          @if (loading) {
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              @for (placeholder of placeholders; track $index) {
+                <app-loading-reservation-card-component />
+              }
+            </div>
+          } @else {
+            @if (reservationList && reservationList.content.length > 0) {
+              <div
+                class="grid gap-6"
+                [ngClass]="
                   listOfDetailsField ? 'grid-cols-1' : 'xl:grid-cols-3 lg:grid-cols-2 grid-cols-1'
                 ">
-          @if (reservations || isUserAdmin(user) || !isUserAdmin(user)) {
-          @for (reservation of reservationList.content; track reservation.id) {
-          <app-reservation-card [viewAsField]="isFieldView" [reservation]="reservation" [reservationBy]="reservationBy"
-            [listOfDetailsField]="listOfDetailsField" [isUserAdmin]="isUserAdmin(user)"
-            (loadReservations)="getReservations($event)" />
-          }
+                @if (reservations || isUserAdmin(user) || !isUserAdmin(user)) {
+                  @for (reservation of reservationList.content; track reservation.id) {
+                    <app-reservation-card
+                      [viewAsField]="isFieldView"
+                      [reservation]="reservation"
+                      [reservationBy]="reservationBy"
+                      [listOfDetailsField]="listOfDetailsField"
+                      [isUserAdmin]="isUserAdmin(user)"
+                      (loadReservations)="getReservations($event)" />
+                  }
+                }
+              </div>
+              @if (!listOfDetailsField) {
+                <div class="flex justify-center items-center gap-2 mt-6 w-full">
+                  <button
+                    class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200"
+                    (click)="changePage(currentPage - 1)"
+                    [disabled]="currentPage === 0">
+                    <i class="fa-solid fa-angle-left"></i>
+                    Anterior
+                  </button>
+
+                  <span class="px-3 font-medium md:text-base text-xs">
+                    Página {{ currentPage + 1 }} de {{ reservationList.totalPages }}
+                  </span>
+
+                  <button
+                    class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200"
+                    (click)="changePage(currentPage + 1)"
+                    [disabled]="currentPage + 1 >= reservationList.totalPages">
+                    Siguiente
+                    <i class="fa-solid fa-angle-right"></i>
+                  </button>
+                </div>
+              }
+            } @else {
+              @if (calendarView) {
+                <p class="text-gray-600">No se encontró ninguna reserva activa.</p>
+              } @else {
+                <p class="text-gray-600">No se encontró ninguna reserva.</p>
+              }
+            }
           }
         </div>
-        @if (!listOfDetailsField) {
-        <div class="flex justify-center items-center gap-2 mt-6 w-full">
-          <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm"
-            (click)="changePage(currentPage - 1)" [disabled]="currentPage === 0">
-            ← Anterior
-          </button>
-
-          <span class="px-3 font-medium md:text-base text-xs">
-            Página {{ currentPage + 1 }} de {{ reservationList.totalPages }}
-          </span>
-
-          <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm"
-            (click)="changePage(currentPage + 1)" [disabled]="currentPage + 1 >= reservationList.totalPages">
-            Siguiente →
-          </button>
-        </div>
-        }
-        } @else {
-        @if (calendarView) {
-        <p class="text-gray-600">No se encontró ninguna reserva activa.</p>
-        } @else {
-        <p class="text-gray-600">No se encontró ninguna reserva.</p>
-        }
-        }
-        }
       </div>
-    </div>
     } @else {
-    <div>
-      <app-reservation-calendar [reservationList]="reservationList.content"
-        [reservationBy]="reservationBy"></app-reservation-calendar>
-    </div>
-    }
-    @if (isReservationUser()) {
-    <app-button-action [className]="'fixed bottom-20 md:bottom-8 right-8 z-20'" [hasIcon]="true" icon="fa-solid fa-plus"
-      [text]="'Hacer nueva reserva'" title="Hacer nueva reserva" color="primary" [bigButton]="isSmallScreen"
-      (clicked)="makeReservation()" />
+      <div>
+        <app-reservation-calendar
+          [reservationList]="reservationList.content"
+          [reservationBy]="reservationBy"></app-reservation-calendar>
+      </div>
     }
   </div>
 </section>
 @if (showModalFilters) {
-<app-reservation-filter [showModalFilters]="showModalFilters" [formFilter]="formFilter" (cleanFilter)="cleanFilter()"
-  (filter)="filter($event)" (close)="closeModalFilters()"></app-reservation-filter>
+  <app-reservation-filter
+    [showModalFilters]="showModalFilters"
+    [formFilter]="formFilter"
+    (cleanFilter)="cleanFilter()"
+    (filter)="filter($event)"
+    (closed)="closeModalFilters()"></app-reservation-filter>
 }

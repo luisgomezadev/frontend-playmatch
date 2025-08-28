@@ -1,28 +1,26 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { Field } from '../../interfaces/field';
-import { FieldService } from '../../services/field.service';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { User, UserRole } from '../../../user/interfaces/user';
-import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
-import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
 import { CommonModule, Location } from '@angular/common';
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import Swal from 'sweetalert2';
-import { ReservationService } from '../../../reservation/services/reservation.service';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { FieldCardComponent } from '@field/components/field-card/field-card.component';
+import { Field } from '@field/interfaces/field';
+import { FieldService } from '@field/services/field.service';
+import { ReservationService } from '@reservation/services/reservation.service';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { LoadingFieldListComponent } from '@shared/components/loading/loading-field-list/loading-field-list.component';
+import { User, UserRole } from '@user/interfaces/user';
 import { firstValueFrom } from 'rxjs';
-import { LoadingFieldListComponent } from '../../../../shared/components/loading/loading-field-list/loading-field-list.component';
 
 @Component({
   selector: 'app-fields-list',
   standalone: true,
   imports: [
     RouterModule,
-    MoneyFormatPipe,
-    TimeFormatPipe,
     CommonModule,
     ButtonActionComponent,
-    LoadingFieldListComponent
+    LoadingFieldListComponent,
+    FieldCardComponent
   ],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss'
@@ -34,6 +32,7 @@ export class FieldsListComponent implements OnInit {
   private location = inject(Location);
   private router = inject(Router);
   private reservationService = inject(ReservationService);
+  private alertService = inject(AlertService);
 
   @Input() showHeader = true;
   fields: Field[] = [];
@@ -89,9 +88,6 @@ export class FieldsListComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
   }
 
   openModal(): void {
@@ -117,13 +113,11 @@ export class FieldsListComponent implements OnInit {
   makeReservation(fieldId: number): void {
     this.hasActiveReservation().then(hasReservation => {
       if (hasReservation) {
-        Swal.fire({
-          title: 'Tienes una reserva activa',
-          text: 'Debes cancelarla si deseas hacer una nueva reserva.',
-          icon: 'warning',
-          customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false
-        });
+        this.alertService.notify(
+          'Tienes una reserva activa',
+          'Debes cancelarla si deseas hacer una nueva reserva.',
+          'warning'
+        );
         this.router.navigate(['/dashboard/reservation/list']);
       } else {
         this.router.navigate(['/dashboard/reservation/form/field', fieldId]);

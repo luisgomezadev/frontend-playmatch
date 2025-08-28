@@ -1,25 +1,25 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { Reservation, ReservationFilter, StatusReservation } from '../../interfaces/reservation';
-import { PagedResponse } from '../../../../core/interfaces/paged-response';
-import { User, UserRole } from '../../../user/interfaces/user';
-
-import { ReservationService } from '../../services/reservation.service';
-import { AuthService } from '../../../../core/services/auth.service';
-
-import Swal from 'sweetalert2';
-
-// Pipes y componentes
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { Field } from '../../../field/interfaces/field';
-import { FieldService } from '../../../field/services/field.service';
-import { ReservationCardComponent } from '../../components/reservation-card/reservation-card.component';
-import { LoadingReservationCardComponent } from '../../../../shared/components/loading/loading-reservation-card/loading-reservation-card.component';
-import { ReservationCalendarComponent } from '../../components/reservation-calendar/reservation-calendar.component';
-import { ReservationFilterComponent } from '../../components/reservation-filter/reservation-filter.component';
+import { Router, RouterModule } from '@angular/router';
+import { ErrorResponse } from '@core/interfaces/error-response';
+import { PagedResponse } from '@core/interfaces/paged-response';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { Field } from '@field/interfaces/field';
+import { FieldService } from '@field/services/field.service';
+import { ReservationCalendarComponent } from '@reservation/components/reservation-calendar/reservation-calendar.component';
+import { ReservationCardComponent } from '@reservation/components/reservation-card/reservation-card.component';
+import { ReservationFilterComponent } from '@reservation/components/reservation-filter/reservation-filter.component';
+import {
+  Reservation,
+  ReservationFilter,
+  StatusReservation
+} from '@reservation/interfaces/reservation';
+import { ReservationService } from '@reservation/services/reservation.service';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
+import { User, UserRole } from '@user/interfaces/user';
 
 @Component({
   selector: 'app-reservation-list',
@@ -44,6 +44,7 @@ export class ReservationListComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private alertService = inject(AlertService);
 
   @Input() reservations!: Reservation[];
 
@@ -51,11 +52,12 @@ export class ReservationListComponent implements OnInit {
   formFilter!: FormGroup;
 
   user!: User;
-  calendarView: boolean = false;
+  calendarView = false;
   showModalFilters = false;
   listOfDetailsField = false;
   loading = false;
   isSmallScreen = false;
+  placeholders = Array(6);
 
   currentPage = 0;
   pageSize = 6;
@@ -63,13 +65,11 @@ export class ReservationListComponent implements OnInit {
   field!: Field;
   reservationBy!: string;
   filters: ReservationFilter = {};
-  selectedItem: any = null;
   selectedType: 'user' | 'field' | null = null;
-  infoTitle = 'Aquí puedes ver todas tus reservas ordenadas a más recientes. Puedes filtrar por fecha y estado de la reserva.';
+  infoTitle =
+    'Aquí puedes ver todas tus reservas, puedes filtrar por fecha y estado de la reserva.';
 
   StatusReservation = StatusReservation;
-
-  constructor() { }
 
   ngOnInit(): void {
     this.checkScreenSize();
@@ -194,7 +194,8 @@ export class ReservationListComponent implements OnInit {
   showView(view: string): void {
     if (view === 'list') {
       this.calendarView = false;
-      this.infoTitle = 'Aquí puedes ver todas tus reservas ordenadas a más recientes. Puedes filtrar por fecha y estado de la reserva.';
+      this.infoTitle =
+        'Aquí puedes ver todas tus reservas ordenadas a más recientes. Puedes filtrar por fecha y estado de la reserva.';
       this.getReservations(0);
     } else if (view === 'calendar') {
       this.infoTitle = 'Aquí puedes ver todas las reservas activas en formato calendario.';
@@ -212,9 +213,9 @@ export class ReservationListComponent implements OnInit {
     document.body.style.overflow = '';
   }
 
-  filter(formFilter: any): void {
-    const { reservationDate, status } = formFilter;
-    this.filters.date = reservationDate || undefined;
+  filter(formFilter: ReservationFilter): void {
+    const { date, status } = formFilter;
+    this.filters.date = date || undefined;
     this.filters.status = status || undefined;
     this.currentPage = 0;
     this.getReservations(0);
@@ -230,13 +231,11 @@ export class ReservationListComponent implements OnInit {
 
   makeReservation(): void {
     if (this.hasActiveReservation()) {
-      Swal.fire({
-        title: 'Tienes una reserva activa',
-        text: 'Debes cancelarla si deseas hacer una nueva reserva.',
-        icon: 'warning',
-        customClass: { confirmButton: 'swal-confirm-btn' },
-        buttonsStyling: false
-      });
+      this.alertService.notify(
+        'Tienes una reserva activa',
+        'Debes cancelarla si deseas hacer una nueva reserva.',
+        'warning'
+      );
     } else {
       this.router.navigate(['/dashboard/field/list']);
     }
@@ -256,9 +255,8 @@ export class ReservationListComponent implements OnInit {
     return this.reservationList?.content?.some(r => r.status === StatusReservation.ACTIVE);
   }
 
-  private handleError(err: any): void {
+  private handleError(err: ErrorResponse): void {
     this.loading = false;
-    Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
+    this.alertService.error('Error', err.error?.message || 'Algo salió mal');
   }
-
 }

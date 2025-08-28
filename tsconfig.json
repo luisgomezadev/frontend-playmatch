@@ -2,6 +2,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@core/*": [
+        "app/core/*"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@features/*": [
+        "app/features/*"
+      ],
+      "@user/*": [
+        "app/features/user/*"
+      ],
+      "@reservation/*": [
+        "app/features/reservation/*"
+      ],
+      "@field/*": [
+        "app/features/field/*"
+      ],
+      "@auth/*": [
+        "app/features/auth/*"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,

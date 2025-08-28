@@ -1,16 +1,21 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ConfirmedReservation, Reservation, StatusReservation } from '../../interfaces/reservation';
-import { User } from '../../../user/interfaces/user';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ReservationService } from '../../services/reservation.service';
-import Swal from 'sweetalert2';
-import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
-import { LoadingFullComponent } from '../../../../shared/components/loading/loading-full/loading-full.component';
-import { ReservationCalendarComponent } from '../../components/reservation-calendar/reservation-calendar.component';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { ReservationCalendarComponent } from '@reservation/components/reservation-calendar/reservation-calendar.component';
+import {
+  ConfirmedReservation,
+  Reservation,
+  ReservationRequest,
+  StatusReservation
+} from '@reservation/interfaces/reservation';
+import { ReservationService } from '@reservation/services/reservation.service';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { LoadingFullComponent } from '@shared/components/loading/loading-full/loading-full.component';
+import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
+import { User } from '@user/interfaces/user';
 
 @Component({
   selector: 'app-reservation-form',
@@ -27,30 +32,28 @@ import { ReservationCalendarComponent } from '../../components/reservation-calen
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss'
 })
-export class ReservationFormComponent {
-
+export class ReservationFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private location = inject(Location);
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private reservationService = inject(ReservationService);
   private router = inject(Router);
+  private alertService = inject(AlertService);
 
   user!: User;
   fieldId!: number;
   formReservation!: FormGroup;
   confirmedReservation!: ConfirmedReservation | null;
   reservations: Reservation[] = [];
-  showModal: boolean = false;
-  showCalendar: boolean = false;
+  showModal = false;
+  showCalendar = false;
   verifiedReservation = false;
-  today: string = '';
-  loading: boolean = false;
-  loadingReservation: boolean = false;
+  today = '';
+  loading = false;
+  loadingReservation = false;
 
   hours = Array.from({ length: 12 }, (_, i) => i + 1);
-
-  constructor() { }
 
   ngOnInit(): void {
     const today = new Date();
@@ -95,9 +98,6 @@ export class ReservationFormComponent {
 
   goBack(): void {
     this.location.back();
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
   }
 
   getReservations() {
@@ -111,7 +111,8 @@ export class ReservationFormComponent {
         },
         error: err => {
           this.loading = false;
-          Swal.fire('Error', err.error.message, 'error');
+          this.reservations = [];
+          this.alertService.error('Error', err.error?.message || 'Algo salió mal');
         }
       });
   }
@@ -120,7 +121,7 @@ export class ReservationFormComponent {
     if (this.formReservation.valid) {
       this.loading = true;
 
-      const reservationData = {
+      const reservationData: ReservationRequest = {
         reservationDate: this.formReservation.value.reservationDate,
         startTime: this.startTime,
         hours: this.formReservation.value.hours,
@@ -136,7 +137,8 @@ export class ReservationFormComponent {
         },
         error: err => {
           this.loading = false;
-          Swal.fire('Error', err.error.message, 'error');
+          this.confirmedReservation = null;
+          this.alertService.error('Error', err.error?.message || 'Algo salió mal');
         }
       });
 
@@ -162,29 +164,25 @@ export class ReservationFormComponent {
   confirmReservation() {
     if (this.confirmedReservation) {
       this.loadingReservation = true;
-      const reservationRequest = {
+      const reservationRequest: ReservationRequest = {
         userId: this.confirmedReservation.user?.id,
         fieldId: this.confirmedReservation.field?.id,
         reservationDate: this.confirmedReservation.reservationDate,
         startTime: this.confirmedReservation.startTime,
-        endTime: this.confirmedReservation.endTime,
         hours: this.confirmedReservation.hours
       };
       this.reservationService.createReservation(reservationRequest).subscribe({
         next: () => {
           this.loadingReservation = false;
-          Swal.fire({
-            title: 'Reserva creada',
-            text: `Has creado una reserva para el día ${reservationRequest.reservationDate}.`,
-            icon: 'success',
-            customClass: { confirmButton: 'swal-confirm-btn' },
-            buttonsStyling: false
-          });
+          this.alertService.success(
+            'Reserva creada',
+            `Has creado una reserva para el día ${reservationRequest.reservationDate}.`
+          );
           this.router.navigate(['/dashboard/reservation/list']);
         },
         error: err => {
           this.loadingReservation = false;
-          Swal.fire('Error', err.error.message, 'error');
+          this.alertService.error('Error', err.error?.message || 'Algo salió mal');
         }
       });
     }

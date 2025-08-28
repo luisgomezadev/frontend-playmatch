@@ -1,13 +1,13 @@
 import { Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { LoadingComponent } from '../../../../shared/components/loading/loading.component';
-import { User } from '../../../user/interfaces/user';
-import { FieldService } from '../../services/field.service';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { FieldService } from '@field/services/field.service';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
+import { User } from '@user/interfaces/user';
 
 @Component({
   selector: 'app-field-form',
@@ -16,20 +16,21 @@ import { FieldService } from '../../services/field.service';
   templateUrl: './field-form.component.html',
   styleUrl: './field-form.component.scss'
 })
-export class FieldFormComponent {
+export class FieldFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private fieldService = inject(FieldService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
   private location = inject(Location);
+  private alertService = inject(AlertService);
 
   fieldForm: FormGroup;
   loading = false;
   userActive!: User;
   editing = false;
   fieldId!: number;
-  loadingForm: boolean = false;
+  loadingForm = false;
 
   statusOptions = [
     { value: 'ACTIVE', label: 'Activo' },
@@ -64,9 +65,6 @@ export class FieldFormComponent {
 
   goBack(): void {
     this.location.back();
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 100);
   }
 
   loadField() {
@@ -78,7 +76,7 @@ export class FieldFormComponent {
       },
       error: () => {
         this.loadingForm = false;
-        Swal.fire('Error', 'No se pudo cargar la información de la cancha', 'error');
+        this.alertService.error('Error', 'No se pudo cargar la información de la cancha');
         this.router.navigate(['/dashboard/home-admin']);
       }
     });
@@ -106,22 +104,17 @@ export class FieldFormComponent {
     request$.subscribe({
       next: () => {
         this.loading = false;
-        Swal.fire({
-          icon: 'success',
-          title: this.editing ? 'Cancha actualizada' : 'Cancha registrada',
-          confirmButtonText: 'Aceptar',
-          customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false
-        });
+        this.alertService.success(
+          this.editing ? 'Cancha actualizada' : 'Cancha registrada',
+          this.editing
+            ? 'La cancha ha sido actualizada exitosamente.'
+            : 'La cancha ha sido registrada exitosamente.'
+        );
         this.router.navigate(['/dashboard/field']);
       },
       error: err => {
         this.loading = false;
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.error?.message || 'Algo salió mal'
-        });
+        this.alertService.error('Error', err.error?.message || 'Algo salió mal');
       }
     });
   }

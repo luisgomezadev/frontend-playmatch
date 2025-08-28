@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'loading-full-component',
+  selector: 'app-loading-full-component',
   standalone: true,
   imports: [],
   template: `
@@ -19,10 +19,10 @@ import { Component, Input } from '@angular/core';
     </div>
   `,
 })
-export class LoadingFullComponent {
-  @Input() text: string = 'Cargando';
-  dots: string = '';
-  private intervalId: any;
+export class LoadingFullComponent implements OnInit, OnDestroy {
+  @Input() text = 'Cargando';
+  dots = '';
+  intervalId!: ReturnType<typeof setInterval>;
 
   ngOnInit(): void {
     let count = 0;

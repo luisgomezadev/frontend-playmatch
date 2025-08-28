@@ -1,14 +1,14 @@
 <section class="bg-gray-100">
-  <div class="space-y-6 p-6">
+  <div class="space-y-6 px-3 py-4 md:p-6">
     <header>
       <div class="flex justify-between items-center gap-x-10">
         <div>
-          <h1 class="text-3xl font-medium text-black tracking-tight">Hacer reserva</h1>
+          <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">Hacer reserva</h1>
           <p class="text-gray-500 mt-2 text-sm md:text-base leading-relaxed">
             Llena la siguiente información para programar una nueva reserva.
           </p>
         </div>
-        <app-button-action text="Volver" icon="fa-solid fa-backward" [hasIcon]="true" color="transparent"
+        <app-button-action text="Volver" icon="fa-solid fa-arrow-left" [hasIcon]="true" color="transparent"
           (clicked)="goBack()"></app-button-action>
       </div>
     </header>
@@ -19,30 +19,30 @@
         <h3 class="text-xl md:text-2xl font-semibold text-primary mb-4">Formulario de reserva</h3>
 
         <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">
+          <label class="block text-sm font-medium mb-1" for="reservationDate">
             Fecha de reserva
             <span class="text-red-500">*</span>
           </label>
-          <input type="date" formControlName="reservationDate" [min]="today"
+          <input id="reservationDate" type="date" formControlName="reservationDate" [min]="today"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          @if (formReservation.get('reservationDate')?.invalid &&
-          formReservation.get('reservationDate')?.touched) {
+          @if (
+          formReservation.get('reservationDate')?.invalid &&
+          formReservation.get('reservationDate')?.touched
+          ) {
           <div class="text-red-500 text-sm">La fecha es requerida y debe ser hoy o futura.</div>
           }
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">
+          <label class="block text-sm font-medium mb-1" for="hour">
             Hora de inicio
             <span class="text-red-500">*</span>
           </label>
           <div class="flex gap-2">
-            <!-- Select de hora -->
-            <select formControlName="hour"
+            <select id="hour" formControlName="hour"
               class="flex-1 px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
               <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
             </select>
 
-            <!-- Select AM/PM -->
             <select formControlName="ampm"
               class="w-20 px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
               <option value="AM">AM</option>
@@ -57,8 +57,8 @@
           </div>
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Horas de reserva</label>
-          <select formControlName="hours"
+          <label class="block text-sm font-medium mb-1" for="hours">Horas de reserva</label>
+          <select id="hours" formControlName="hours"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
             <option value="" disabled selected>Seleccione una opción</option>
             <option value="1">1 hora</option>
@@ -133,6 +133,7 @@
     </div>
   </article>
 </div>
-}@if (loadingReservation) {
-<loading-full-component text="Creando reserva, espere un momento..." />
+}
+@if (loadingReservation) {
+<app-loading-full-component text="Creando reserva, espere un momento..." />
 }

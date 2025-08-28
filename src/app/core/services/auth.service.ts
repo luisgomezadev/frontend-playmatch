@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
+import { User, UserRole } from '@user/interfaces/user';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
-import { User, UserRole } from '../../features/user/interfaces/user';
 import { LoginResponse } from '../interfaces/login-response';
-import { BaseHttpService } from '../../shared/data-access/base-http.service';
+import { JwtClaims } from '@core/interfaces/jwt-claims';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class AuthService extends BaseHttpService {
 
   tryRenewToken(): Observable<boolean> {
     const token = this.getToken();
-    const email = this.getClaimsFromToken().sub;
+    const email = this.getClaimsFromToken()?.sub;
 
     if (!token || !email) return of(false);
 
@@ -52,7 +53,7 @@ export class AuthService extends BaseHttpService {
   }
 
   checkAuth(): Observable<boolean> {
-    const role = this.getClaimsFromToken().role;
+    const role = this.getClaimsFromToken()?.role;
     if (!role) {
       this.logout();
       return of(false);
@@ -78,8 +79,8 @@ export class AuthService extends BaseHttpService {
     this.router.navigate(['/home']);
   }
 
-  registerUser(user: User): Observable<any> {
-    return this.http.post(`${this.authUrl}/register`, user);
+  registerUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.authUrl}/register`, user);
   }
 
   private getTokenExpirationDate(token: string): Date | null {
@@ -137,7 +138,7 @@ export class AuthService extends BaseHttpService {
     return this.currentUser.value;
   }
 
-  getClaimsFromToken(): any | null {
+  getClaimsFromToken(): JwtClaims | null {
     const token = this.getToken();
     if (!token) return null;
 
@@ -156,7 +157,7 @@ export class AuthService extends BaseHttpService {
   redirectIfAuthenticated(): void {
     const token = this.getToken();
     if (token && !this.isTokenExpired(token)) {
-      const role = this.getClaimsFromToken().role;
+      const role = this.getClaimsFromToken()?.role;
       if (role) {
         if (role === UserRole.FIELD_ADMIN) {
           this.router.navigate(['/dashboard/home-admin']);

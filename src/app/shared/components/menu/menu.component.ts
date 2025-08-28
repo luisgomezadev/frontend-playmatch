@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { LINKS_DASHBOARD } from '../../constants/links.constants';
 import { Router, RouterModule } from '@angular/router';
-import Swal from 'sweetalert2';
+import { User } from '../../../features/user/interfaces/user';
+import { Link } from '../../../core/interfaces/link.interface';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-menu',
@@ -11,15 +13,20 @@ import Swal from 'sweetalert2';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
 })
-export class MenuComponent {
-  role: string = '';
-  links: any[] = [];
-  userActive: any;
+export class MenuComponent implements OnInit {
 
-  constructor(private authService: AuthService, private router: Router) {
+  private authService = inject(AuthService);
+  private alertService = inject(AlertService);
+  private router = inject(Router);
+
+  role = '';
+  links: Link[] = [];
+  userActive: User | null = null;
+
+  constructor() {
     const claims = this.authService.getClaimsFromToken();
     if (claims) {
-      this.role = claims.role;
+      this.role = claims.role ?? '';
     }
 
     this.authService.currentUser$.subscribe((user) => {
@@ -36,9 +43,13 @@ export class MenuComponent {
   }
 
   checkScreenSize(): void {
-    const link = this.role === 'FIELD_ADMIN' ? 'admin' : 'player';
-    if (window.innerWidth > 768)
-      this.router.navigate(['/dashboard/home-' + link]);
+    if (window.innerWidth > 768){
+      if (this.role === 'FIELD_ADMIN') {
+        this.router.navigate(['/dashboard/home-admin']);
+      } else {
+        this.router.navigate(['/dashboard/field/list']);
+      }
+    }
   }
 
   loadLinks() {
@@ -49,30 +60,13 @@ export class MenuComponent {
   }
 
   logout(): void {
-    Swal.fire({
-      title: '¿Cerrar sesión?',
-      text: '¿Estás seguro de que deseas cerrar sesión?',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, salir',
-      cancelButtonText: 'Cancelar',
-      customClass: {
-        confirmButton: 'swal-confirm-btn',
-        cancelButton: 'swal-cancel-btn',
-      },
-      buttonsStyling: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.authService.logout();
-        Swal.fire({
-          title: 'Sesión cerrada',
-          text: 'Has cerrado sesión correctamente.',
-          icon: 'success',
-          customClass: { confirmButton: 'swal-confirm-btn' },
-          buttonsStyling: false,
-        });
-      }
-    });
+    this.alertService
+      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Sí, salir')
+      .then(confirmed => {
+        if (confirmed) {
+          this.authService.logout();
+          this.alertService.success('Sesión cerrada', 'Has cerrado sesión correctamente.');
+        }
+      });
   }
 }

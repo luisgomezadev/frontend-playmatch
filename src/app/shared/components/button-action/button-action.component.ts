@@ -12,37 +12,40 @@ import { RouterModule } from '@angular/router';
       [disabled]="disabled || loading"
       [class]="classes"
       [class.opacity-50]="loading"
-      [class.cursor-not-allowed]="loading">
-      @if(!loading) { @if (hasIcon) {
-      <div class="flex items-center gap-3">
-        <i [class]="icon"></i>
-        @if(!onlyIcon) {
-        <span>{{ text }}</span>
+      [class.cursor-not-allowed]="loading"
+      [title]="text">
+      @if (!loading) {
+        @if (hasIcon) {
+          <div class="flex items-center justify-center gap-3">
+            <i [class]="icon"></i>
+            @if (!onlyIcon) {
+              <span>{{ text }}</span>
+            }
+          </div>
+        } @else {
+          <span>{{ text }}</span>
         }
-      </div>
       } @else {
-      <span>{{ text }}</span>
-      } } @else {
-      <span class="flex items-center gap-2 justify-center">
-        {{ text }}
-        <svg
-          class="animate-spin h-5 w-5 inline-block"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24">
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"></circle>
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-        </svg>
-      </span>
+        <span class="flex items-center gap-2 justify-center">
+          {{ text }}
+          <svg
+            class="animate-spin h-5 w-5 inline-block"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+        </span>
       }
     </button>
   `
@@ -57,7 +60,6 @@ export class ButtonActionComponent {
   @Input() hasIcon = false;
   @Input() icon = '';
   @Input() onlyIcon = false;
-  @Input() bigButton = false;
 
   @Output() clicked = new EventEmitter<void>();
 
@@ -69,11 +71,9 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'font-medium shadow transition-shadow duration-300 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-3 py-2 z-10 relative';
+      'font-medium shadow transition-shadow duration-300 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-2 py-1 z-10 relative';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
-    if (!this.disabled && this.color != 'transparent')
-      base += ' hover:shadow';
-    if (this.bigButton) base += ' text-lg rounded-full border-2 border-gray-500';
+    if (!this.disabled && this.color != 'transparent') base += ' hover:shadow';
     else base += ' text-sm w-full';
     const styles = {
       black: 'bg-gray-200 text-black hover:shadow-gray-600',

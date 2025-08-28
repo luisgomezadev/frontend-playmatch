@@ -1,29 +1,21 @@
 <section class="bg-gray-100">
-  <div class="space-y-6 p-6">
+  <div class="space-y-6 px-3 py-4 md:p-6">
     @if (loading) {
     <loading-field-component />
-    } @else { @if (field) {
+    } @else {
+    @if (field) {
     <header>
-      <h1 class="text-3xl font-medium text-black tracking-tight">Detalles de tu cancha</h1>
+      <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">Mi cancha</h1>
       <p class="text-gray-600 mt-1 text-base">
-        Gestiona tu cancha y revisa tus reservas más recientes.
+        Aquí puedes ver los detalles de la cancha que has registrado.
       </p>
     </header>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 gap-4">
       <article class="bg-white p-6 rounded-md shadow-md border border-gray-200 space-y-6">
         <div class="flex flex-col md:flex-row items-start md:items-center gap-6 flex-1">
           <div class="space-y-6 w-full">
             <div class="flex items-center justify-between gap-x-3">
-              <!-- <h2 class="text-3xl font-semibold text-gray-800">{{ field.name }}</h2> -->
-              <h2 class="text-xl font-semibold text-gray-800">Información de la cancha</h2>
-              <!-- <span
-                class="text-xs font-medium uppercase tracking-wide py-1 px-3 rounded-full shadow-sm border transition-colors duration-300"
-                [ngClass]="{
-                  'bg-green-100 text-green-700 border-green-300': field.status === Status.ACTIVE,
-                  'bg-red-100 text-red-700 border-red-300': field.status === Status.INACTIVE
-                }">
-                {{ field.status | statusDescription }}
-              </span> -->
+              <h2 class="text-xl font-medium text-gray-800">Información de la cancha</h2>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="bg-gray-100 py-2 px-3 rounded-md md:col-span-2">
@@ -63,25 +55,7 @@
             [routerLink]="['/dashboard/field/form/' + field.id]"></app-button-action>
         </div>
       </article>
-
-      <article class="bg-white p-6 rounded-md shadow-md border border-gray-200">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-semibold text-gray-800">Últimas reservas</h2>
-          @if (reservationList.length > 0 && isOwnerField()) {
-          <a class="text-sm text-primary font-medium hover:underline" [routerLink]="['/dashboard/reservation/list']">
-            Ver todas
-          </a>
-          }
-        </div>
-        <div class="flex flex-col gap-4">
-          @for (reservation of reservationList; track reservation.id) {
-          <app-reservation-card [viewAsField]="true" [reservation]="reservation" [reservationBy]="'field'"
-            [listOfDetailsField]="true" [isUserAdmin]="isUserAdmin(user)" />
-          }
-        </div>
-      </article>
     </div>
-
     } @else {
     <div class="text-center flex justify-center items-center flex-col h-full">
       <h2 class="text-lg font-medium text-gray-700">No tienes una cancha registrada.</h2>
@@ -91,6 +65,7 @@
         <span class="font-semibold">Registra una cancha</span>
       </a>
     </div>
-    } }
+    }
+    }
   </div>
 </section>

@@ -1,4 +1,4 @@
-import { User } from "../../features/user/interfaces/user";
+import { User } from "@user/interfaces/user";
 
 export interface LoginResponse {
   token: string;

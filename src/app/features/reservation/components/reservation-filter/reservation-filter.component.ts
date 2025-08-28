@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ReservationFilter } from '@reservation/interfaces/reservation';
 
 @Component({
   selector: 'app-reservation-filter',
@@ -13,13 +14,13 @@ import { ButtonActionComponent } from '../../../../shared/components/button-acti
 export class ReservationFilterComponent {
   @Input() formFilter!: FormGroup;
   @Input() showModalFilters = false;
-  @Output() close = new EventEmitter<void>();
-  @Output() filter = new EventEmitter<any>();
+  @Output() closed = new EventEmitter<void>();
+  @Output() filter = new EventEmitter<ReservationFilter>();
   @Output() cleanFilter = new EventEmitter<void>();
 
   submitFilter(): void {
     this.filter.emit(this.formFilter.value);
-    this.close.emit();
+    this.closed.emit();
   }
 
   openModalFilters(): void {
@@ -28,7 +29,7 @@ export class ReservationFilterComponent {
   }
 
   closeModalFilters(): void {
-    this.close.emit();
+    this.closed.emit();
   }
 
   clean(): void {

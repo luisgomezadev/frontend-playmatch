@@ -1,9 +1,9 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User, UserRole } from '../interfaces/user';
-import { PagedResponse } from '../../../core/interfaces/paged-response';
-import { BaseHttpService } from '../../../shared/data-access/base-http.service';
+import { User, UserRole } from '@user/interfaces/user';
+import { PagedResponse } from '@core/interfaces/paged-response';
+import { BaseHttpService } from '@shared/data-access/base-http.service';
 
 @Injectable({
   providedIn: 'root',

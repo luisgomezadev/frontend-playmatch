@@ -1,44 +1,58 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
-import { ButtonActionComponent } from '../../../shared/components/button-action/button-action.component';
-import { Field } from '../../field/interfaces/field';
-import { FieldService } from '../../field/services/field.service';
-import { ReservationService } from '../../reservation/services/reservation.service';
-import { User } from '../../user/interfaces/user';
+import { AuthService } from '@core/services/auth.service';
+import { Field } from '@field/interfaces/field';
+import { FieldService } from '@field/services/field.service';
+import { ReservationCardComponent } from '@reservation/components/reservation-card/reservation-card.component';
+import { Reservation } from '@reservation/interfaces/reservation';
+import { ReservationService } from '@reservation/services/reservation.service';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
+import { User, UserRole } from '@user/interfaces/user';
 
 @Component({
   selector: 'app-home-admin',
   standalone: true,
-  imports: [RouterModule, ButtonActionComponent, CommonModule],
+  imports: [
+    RouterModule,
+    ReservationCardComponent,
+    CommonModule,
+    ButtonActionComponent,
+    LoadingReservationCardComponent
+  ],
   templateUrl: './home-admin.component.html',
-  styleUrl: './home-admin.component.scss',
+  styleUrl: './home-admin.component.scss'
 })
-export class HomeAdminComponent {
-
+export class HomeAdminComponent implements OnInit {
   private authService = inject(AuthService);
-  private fieldService = inject(FieldService)
+  private fieldService = inject(FieldService);
   private reservationService = inject(ReservationService);
 
   user!: User;
-  fullName: string = '';
-  reservationsActive: number = 0;
-  reservationsFinished: number = 0;
-  reservationsCanceled: number = 0;
-  fieldName: string = 'No tienes cancha registrada';
-  loading: boolean = false;
-
-  constructor() { }
+  fullName = '';
+  reservationsActive = 0;
+  reservationsFinished = 0;
+  reservationsCanceled = 0;
+  fieldName = 'No tienes cancha registrada';
+  fieldId = 0;
+  loading = false;
+  loadingReservations = false;
+  lastThreeReservations: Reservation[] = [];
+  placeholders = Array(3);
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user) => {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
         this.fullName = `${this.user.firstName} ${this.user.lastName}`;
         this.getFieldByAdmin(user);
       }
     });
+  }
+
+  public isUserAdmin(user: User): boolean {
+    return user.role == UserRole.FIELD_ADMIN;
   }
 
   hasField(): boolean {
@@ -51,34 +65,44 @@ export class HomeAdminComponent {
       next: (field: Field) => {
         if (field) {
           this.fieldName = field.name;
-          this.reservationService
-            .getCountActiveByField(field.id)
-            .subscribe({
-              next: (value) => {
-                this.loading = false;
-                this.reservationsActive = value;
-              },
-            });
-          this.reservationService
-            .getCountFinishedByField(field.id)
-            .subscribe({
-              next: (value) => {
-                this.loading = false;
-                this.reservationsFinished = value;
-              },
-            });
-          this.reservationService
-            .getCountCanceledByField(field.id)
-            .subscribe({
-              next: (value) => {
-                this.loading = false;
-                this.reservationsCanceled = value;
-              },
-            });
+          this.fieldId = field.id;
+          this.loadingReservations = true;
+          this.reservationService.getCountActiveByField(field.id).subscribe({
+            next: value => {
+              this.loading = false;
+              this.reservationsActive = value;
+            }
+          });
+          this.reservationService.getCountFinishedByField(field.id).subscribe({
+            next: value => {
+              this.loading = false;
+              this.reservationsFinished = value;
+            }
+          });
+          this.reservationService.getCountCanceledByField(field.id).subscribe({
+            next: value => {
+              this.loading = false;
+              this.reservationsCanceled = value;
+            }
+          });
+          this.getLastThreeReservations();
         } else {
           this.loading = false;
         }
       }
-    })
+    });
+  }
+
+  getLastThreeReservations() {
+    this.reservationService.getLastThreeReservationsByField(this.fieldId).subscribe({
+      next: reservations => {
+        this.loadingReservations = false;
+        this.lastThreeReservations = reservations;
+      },
+      error: err => {
+        this.loadingReservations = false;
+        console.error(err);
+      }
+    });
   }
 }

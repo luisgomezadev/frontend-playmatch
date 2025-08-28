@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import Swal from 'sweetalert2';
-import { AuthService } from '../../../core/services/auth.service';
-import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-auth.component';
-import { ErrorResponse } from '../../../core/interfaces/error-response';
+import { ErrorResponse } from '@core/interfaces/error-response';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { AsideAuthComponent } from '@shared/components/aside-auth/aside-auth.component';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +14,9 @@ import { ErrorResponse } from '../../../core/interfaces/error-response';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private alertService = inject(AlertService);
 
   loginForm: FormGroup;
   loading = false;
@@ -45,14 +45,10 @@ export class LoginComponent implements OnInit {
 
     const handleError = (err: ErrorResponse) => {
       this.loading = false;
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al iniciar sesión',
-        text: err?.error?.message || 'Falló la autenticación',
-        confirmButtonText: 'Aceptar',
-        customClass: { confirmButton: 'swal-confirm-btn' },
-        buttonsStyling: false
-      });
+      this.alertService.error(
+        'Error al iniciar sesión',
+        err?.error?.message || 'Falló la autenticación'
+      );
     };
 
     const handleSuccess = () => {

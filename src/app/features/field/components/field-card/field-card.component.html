@@ -1,0 +1,26 @@
+<article class="relative w-full h-48 rounded-lg overflow-hidden shadow-lg">
+  <img
+    src="/assets/cancha.webp"
+    alt="{{ field.name }}"
+    class="w-full h-full object-cover absolute inset-0" />
+
+  <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-end p-4">
+    <div class="flex justify-between">
+      <div>
+        <h2 class="text-2xl font-medium text-white mb-1">{{ field.name }}</h2>
+        <p class="text-gray-200 mb-1">
+          <i class="fa-solid fa-location-dot"></i>
+          {{ field.city }}
+        </p>
+      </div>
+      <div class="flex flex-col items-end justify-end">
+        <app-button-action
+          text="Ver detalles de la cancha"
+          [hasIcon]="true"
+          [onlyIcon]="true"
+          icon="fa-regular fa-eye"
+          color="black"></app-button-action>
+      </div>
+    </div>
+  </div>
+</article>

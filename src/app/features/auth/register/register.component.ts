@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -7,29 +7,29 @@ import {
   Validators
 } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
-import Swal from 'sweetalert2';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { AsideAuthComponent } from '../../../shared/components/aside-auth/aside-auth.component';
-import { REGEX_PATTERNS } from '../../../shared/utils/regex-utils';
+import { ErrorResponse } from '@core/interfaces/error-response';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { AsideAuthComponent } from '@shared/components/aside-auth/aside-auth.component';
+import { REGEX_PATTERNS } from '@shared/utils/regex-utils';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NgSelectModule, AsideAuthComponent],
+  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
-
+export class RegisterComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  private alertService = inject(AlertService);
 
   registerForm: FormGroup;
   loading = false;
-  showPassword: boolean = false;
-  showConfirmPassword: boolean = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   roles: { value: string; label: string }[] = [
     { value: 'PLAYER', label: 'Jugador' },
@@ -80,38 +80,24 @@ export class RegisterComponent {
   onSubmit() {
     if (this.registerForm.invalid || this.registerForm.hasError('passwordMismatch')) return;
 
-    const { confirmPassword, ...formData } = this.registerForm.value;
+    this.registerForm.removeControl('confirmPassword'); // Eliminar confirmPassword antes de enviar
+
+    const formData = this.registerForm.value;
 
     this.loading = true;
 
-    const handleError = (err: any) => {
+    const handleError = (err: ErrorResponse) => {
       this.loading = false;
-      Swal.fire({
-        icon: 'error',
-        title: 'Error al registrar',
-        text: err?.error?.message || 'Falló el registro',
-        confirmButtonText: 'Aceptar',
-        customClass: { confirmButton: 'swal-confirm-btn' },
-        buttonsStyling: false
-      });
+      this.alertService.error('Error al registrar', err?.error?.message || 'Falló el registro');
     };
 
     const handleSuccess = () => {
       this.loading = false;
-      Swal.fire({
-        icon: 'success',
-        title: 'Registro exitoso',
-        text: 'Ahora puedes iniciar sesión',
-        confirmButtonText: 'Aceptar',
-        customClass: {
-          confirmButton: 'swal-confirm-btn'
-        },
-        buttonsStyling: false
-      });
+      this.alertService.success('Registro exitoso', 'Ahora puedes iniciar sesión');
       this.router.navigate(['/login']);
     };
 
-    let loginObservable = this.authService.registerUser(formData);
+    const loginObservable = this.authService.registerUser(formData);
 
     loginObservable.subscribe({
       next: handleSuccess,

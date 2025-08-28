@@ -1,15 +1,15 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { Reservation, StatusReservation } from '../../interfaces/reservation';
 import { CommonModule } from '@angular/common';
-import { StatusReservationPipe } from '../../../../shared/pipes/status-reservation.pipe';
-import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { ReservationService } from '../../services/reservation.service';
-import Swal from 'sweetalert2';
-import { MoneyFormatPipe } from '../../../../shared/pipes/money-format.pipe';
-import { User } from '../../../user/interfaces/user';
-import { Field } from '../../../field/interfaces/field';
-import { ErrorResponse } from '../../../../core/interfaces/error-response';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { ErrorResponse } from '@core/interfaces/error-response';
+import { AlertService } from '@core/services/alert.service';
+import { Field } from '@field/interfaces/field';
+import { Reservation, StatusReservation } from '@reservation/interfaces/reservation';
+import { ReservationService } from '@reservation/services/reservation.service';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
+import { StatusReservationPipe } from '@shared/pipes/status-reservation.pipe';
+import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
+import { User } from '@user/interfaces/user';
 
 @Component({
   selector: 'app-reservation-card',
@@ -25,8 +25,8 @@ import { ErrorResponse } from '../../../../core/interfaces/error-response';
   styleUrl: './reservation-card.component.scss'
 })
 export class ReservationCardComponent {
-
   private reservationService = inject(ReservationService);
+  private alertService = inject(AlertService);
 
   @Input() reservation!: Reservation;
   @Input() viewAsField = false;
@@ -78,73 +78,51 @@ export class ReservationCardComponent {
   }
 
   cancelReservation(id: number): void {
-    this.confirmAction(
-      '¿Estás seguro de cancelar la reserva?',
-      'Esta acción es permanente.',
-      'Sí, cancelar',
-      () => {
-        this.reservationService.canceledReservationById(id).subscribe({
-          next: () => this.handleSuccess('Reserva cancelada.'),
-          error: err => this.handleError(err)
-        });
-      }
-    );
+    this.alertService
+      .confirm(
+        '¿Estás seguro de cancelar la reserva?',
+        'Esta acción es permanente.',
+        'Sí, cancelar'
+      )
+      .then(result => {
+        if (result) {
+          this.reservationService.canceledReservationById(id).subscribe({
+            next: () => this.handleSuccess('Reserva cancelada.'),
+            error: err => this.handleError(err)
+          });
+        }
+      });
   }
 
   finalizeReservation(id: number, userName?: string): void {
     const messageConfirm: string = this.isUserAdmin
       ? `La reserva de ${userName} aún no finaliza`
       : 'Tu reserva aun no finaliza';
+
     const message: string = this.isUserAdmin
       ? `Reserva de ${userName} finalizada.`
       : 'Tu reserva ha finalizado';
-    this.confirmAction(
-      `¿Estás seguro de finalizar reserva?`,
-      messageConfirm,
-      'Sí, finalizar',
-      () => {
-        this.reservationService.finalizeReservationById(id).subscribe({
-          next: () => this.handleSuccess(message),
-          error: err => this.handleError(err)
-        });
-      }
-    );
+
+    this.alertService
+      .confirm('¿Estás seguro de finalizar reserva?', messageConfirm, 'Sí, finalizar')
+      .then(result => {
+        if (result) {
+          this.reservationService.finalizeReservationById(id).subscribe({
+            next: () => this.handleSuccess(message),
+            error: err => this.handleError(err)
+          });
+        }
+      });
   }
 
   private handleSuccess(message: string): void {
     this.loadReservations.emit(0);
-    Swal.fire({
-      title: message,
-      icon: 'success',
-      customClass: { confirmButton: 'swal-confirm-btn' },
-      buttonsStyling: false
-    });
+    this.alertService.success('Éxito', message);
   }
 
   private handleError(err: ErrorResponse): void {
     this.loading = false;
-    Swal.fire('Error', err.error.message || 'No se pudo cargar las reservas', 'error');
-  }
-
-  private confirmAction(
-    title: string,
-    text: string,
-    confirmText: string,
-    onConfirm: () => void
-  ): void {
-    Swal.fire({
-      title,
-      text,
-      showCancelButton: true,
-      confirmButtonText: confirmText,
-      cancelButtonText: 'No',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      customClass: { confirmButton: 'swal-confirm-btn', cancelButton: 'swal-cancel-btn' },
-      buttonsStyling: false
-    }).then(result => {
-      if (result.isConfirmed) onConfirm();
-    });
+    this.alertService.error('Error', err.error?.message || 'Algo salió mal');
   }
 
   showButtons(reservation: Reservation): boolean {
@@ -189,7 +167,6 @@ export class ReservationCardComponent {
     const endDateTime = new Date(`${reservation.reservationDate}T${reservation.endTime}`);
     return now > endDateTime;
   }
-
 
   getImageUrl(imageUrl: string): string {
     return imageUrl?.startsWith('http') ? imageUrl : '/assets/profile_icon.webp';

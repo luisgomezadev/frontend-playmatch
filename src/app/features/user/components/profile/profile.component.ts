@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
-import Swal from 'sweetalert2';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ButtonActionComponent } from '../../../../shared/components/button-action/button-action.component';
-import { User, UserRole } from '../../interfaces/user';
-import { UserService } from '../../services/user.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { User, UserRole } from '@user/interfaces/user';
+import { UserService } from '@user/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -12,10 +12,11 @@ import { UserService } from '../../services/user.service';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
 
   private authService = inject(AuthService);
   private userService = inject(UserService);
+  private alertService = inject(AlertService);
 
   user!: User;
   loading = false;
@@ -23,8 +24,6 @@ export class ProfileComponent {
   showImageModal = false;
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
-
-  constructor() { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
@@ -38,11 +37,12 @@ export class ProfileComponent {
     return user.role == UserRole.FIELD_ADMIN;
   }
 
-  onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => (this.imagePreview = reader.result);
-    if (this.selectedFile) {
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => (this.imagePreview = reader.result);
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -59,18 +59,12 @@ export class ProfileComponent {
     const file = this.selectedFile;
 
     if (!file.type.startsWith('image/')) {
-      this.showErrorAlert(
-        'Formato no válido',
-        'Por favor, selecciona un archivo de imagen.'
-      );
+      this.alertService.error('Error', 'Por favor, selecciona un archivo de imagen.');
       return;
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      this.showErrorAlert(
-        'Tamaño de archivo demasiado grande',
-        'El archivo debe ser menor a 2MB.'
-      );
+      this.alertService.error('Error', 'El archivo debe ser menor a 2MB.');
       return;
     }
     this.loading = true;
@@ -80,48 +74,27 @@ export class ProfileComponent {
     uploadObservable.subscribe({
       next: (updatedUser) => this.handleSuccess(updatedUser),
       error: (err) => {
-        this.showErrorAlert('Error al subir la imagen', err.message);
+        this.alertService.error('Error', err.error?.message || 'Error al subir la imagen');
         this.loading = false;
       },
     });
   }
 
   private handleSuccess(updatedUser: User) {
+
     // Actualizar el observable del usuario actual
     this.authService.setUser(updatedUser);
 
     this.loading = false;
-    Swal.fire({
-      icon: 'success',
-      title: 'Foto Actualizada',
-      text: 'Tu imagen de perfil ha sido cambiada.',
-      confirmButtonText: 'OK',
-      customClass: {
-        confirmButton: 'swal-confirm-btn',
-      },
-      buttonsStyling: false,
-    });
+    this.alertService.success('Foto Actualizada', 'Tu imagen de perfil ha sido cambiada.');
 
-    // Reset modal
+    // Resetear modal
     this.showImageModal = false;
     this.selectedFile = null;
     this.imagePreview = null;
 
     // Asignar nuevo usuario localmente
     this.user = updatedUser;
-  }
-
-  private showErrorAlert(title: string, text: string) {
-    Swal.fire({
-      icon: 'error',
-      title,
-      text,
-      confirmButtonText: 'OK',
-      customClass: {
-        confirmButton: 'swal-confirm-btn',
-      },
-      buttonsStyling: false,
-    });
   }
 
   getImageUrl(user: User): string {

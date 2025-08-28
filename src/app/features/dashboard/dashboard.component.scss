@@ -1,0 +1,8 @@
+.active {
+  @apply text-primary bg-primary/15;
+}
+
+/* Anula el hover cuando está activo */
+.active:hover {
+  @apply text-primary bg-primary/15; /* igual que activo */
+}

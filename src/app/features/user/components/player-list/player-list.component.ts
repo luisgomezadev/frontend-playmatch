@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import Swal from 'sweetalert2';
-import { PagedResponse } from '../../../../core/interfaces/paged-response';
-import { AuthService } from '../../../../core/services/auth.service';
-import { LoadingPlayersComponent } from '../../../../shared/components/loading/loading-players/loading-players.component';
-import { User, UserRole } from '../../interfaces/user';
-import { UserService } from '../../services/user.service';
+import { PagedResponse } from '@core/interfaces/paged-response';
+import { AlertService } from '@core/services/alert.service';
+import { AuthService } from '@core/services/auth.service';
+import { LoadingPlayersComponent } from '@shared/components/loading/loading-players/loading-players.component';
+import { User, UserRole } from '@user/interfaces/user';
+import { UserService } from '@user/services/user.service';
 
 @Component({
   selector: 'app-player-list',
@@ -15,9 +15,9 @@ import { UserService } from '../../services/user.service';
   styleUrl: './player-list.component.scss'
 })
 export class PlayerListComponent implements OnInit {
-
   private userService = inject(UserService);
   private authService = inject(AuthService);
+  private alertService = inject(AlertService);
 
   user = signal<User | null>(null);
   players!: PagedResponse<User>;
@@ -47,11 +47,10 @@ export class PlayerListComponent implements OnInit {
       },
       error: err => {
         this.loading = false;
-        Swal.fire({
-          title: 'Error',
-          text: err.error.message || 'Error al cargar la lista de jugadores',
-          timer: 2000
-        });
+        this.alertService.error(
+          'Error',
+          err.error?.message || 'Error al cargar la lista de jugadores'
+        );
       }
     });
   }

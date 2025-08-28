@@ -1,5 +1,5 @@
-import { User } from "../../user/interfaces/user";
-import { Field } from "../../field/interfaces/field";
+import { User } from "@user/interfaces/user";
+import { Field } from "@field/interfaces/field";
 
 export interface Reservation {
   id: number;
@@ -19,6 +19,14 @@ export interface ConfirmedReservation {
   startTime: string;
   endTime: string;
   reservationDate: string;
+}
+
+export interface ReservationRequest {
+  reservationDate: string;
+  startTime: string;
+  hours: number;
+  userId?: number;
+  fieldId?: number;
 }
 
 export interface ReservationFilter {

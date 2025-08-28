@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Reservation, StatusReservation } from '../../interfaces/reservation';
 import { DatePipe, NgClass } from '@angular/common';
-import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Reservation, StatusReservation } from '@reservation/interfaces/reservation';
+import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 
 @Component({
   selector: 'app-reservation-calendar',
@@ -10,8 +10,7 @@ import { TimeFormatPipe } from '../../../../shared/pipes/time-format.pipe';
   templateUrl: './reservation-calendar.component.html',
   styleUrl: './reservation-calendar.component.scss'
 })
-export class ReservationCalendarComponent implements OnInit {
-
+export class ReservationCalendarComponent implements OnInit, OnChanges {
   @Input() reservationList: Reservation[] = [];
   @Input() reservationBy!: string;
 
@@ -19,15 +18,25 @@ export class ReservationCalendarComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
   calendarDays: { date: Date; reservations: Reservation[] }[] = [];
   mounths: string[] = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
   ];
 
   StatusReservation = StatusReservation;
 
   selectedDayReservations: Reservation[] = [];
   selectedDate: Date | null = null;
-  showDayModal: boolean = false;
+  showModal = false;
 
   ngOnInit(): void {
     this.generateCalendar();
@@ -40,12 +49,12 @@ export class ReservationCalendarComponent implements OnInit {
   openDayModal(day: { date: Date; reservations: Reservation[] }): void {
     this.selectedDate = day.date;
     this.selectedDayReservations = day.reservations;
-    this.showDayModal = true;
+    this.showModal = true;
     document.body.style.overflow = 'hidden';
   }
 
   closeDayModal(): void {
-    this.showDayModal = false;
+    this.showModal = false;
     this.selectedDayReservations = [];
     this.selectedDate = null;
     document.body.style.overflow = '';
@@ -72,13 +81,15 @@ export class ReservationCalendarComponent implements OnInit {
     const endDate = new Date(lastDay);
     endDate.setDate(lastDay.getDate() + (6 - lastDay.getDay()));
 
-    let date = new Date(startDate);
+    const date = new Date(startDate);
 
     while (date <= endDate) {
-      const dayReservations = this.reservationList?.filter(r =>
-        this.normalizeDate(this.parseDateLocal(r.reservationDate)).getTime() === this.normalizeDate(date).getTime()
-      ) || [];
-
+      const dayReservations =
+        this.reservationList?.filter(
+          r =>
+            this.normalizeDate(this.parseDateLocal(r.reservationDate)).getTime() ===
+            this.normalizeDate(date).getTime()
+        ) || [];
 
       this.calendarDays.push({
         date: new Date(date),
@@ -88,7 +99,6 @@ export class ReservationCalendarComponent implements OnInit {
       date.setDate(date.getDate() + 1);
     }
   }
-
 
   prevMonth(): void {
     if (this.currentMonth === 0) {
@@ -109,5 +119,4 @@ export class ReservationCalendarComponent implements OnInit {
     }
     this.generateCalendar();
   }
-
 }
