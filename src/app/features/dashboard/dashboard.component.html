@@ -1,81 +1,97 @@
 @if (loading) {
-<app-loading-full-component text="Cargando dashboard" />
+  <app-loading-full-component text="Cargando dashboard" />
 } @else {
-<div
-  class="md:hidden bg-white border-t-2 shadow-lg flex justify-center items-center fixed bottom-0 left-0 right-0 z-50">
-  @for (link of links; track $index) {
-  @if (link.viewMovil) {
-  <a [routerLink]="link.link" routerLinkActive="text-primary border-t-2 border-primary"
-    class="flex-1 text-xs text-gray-600 flex flex-col justify-center items-center gap-1 py-4 px-2">
-    <i [class]="link.iconClass"></i>
-    <span>{{ link.name }}</span>
-  </a>
-  }
-  }
-</div>
-
-<div class="flex h-auto md:h-screen bg-gray-100">
-  <aside
-    class="z-40 top-0 left-0 md:w-56 w-full bg-white text-black transform transition-transform duration-300 h-full fixed shadow-md hidden md:block">
-    <div class="p-6 text-center hidden md:block shadow-sm">
-      <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" />
-    </div>
-    <nav class="mt-6 relative">
-      <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0">
-        <p class="pl-1">Menu</p>
-        @for (link of links; track $index) {
-        @if (link.viewDesktop) {
-        <li>
-          <a (click)="closeSidebar()" [routerLink]="link.link" routerLinkActive="active"
-            class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-primary transition">
-            <i class="w-6" [class]="link.iconClass"></i>
-            <span>{{ link.name }}</span>
-          </a>
-        </li>
-        }
-        }
-      </ul>
-      <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0 mt-8">
-        <p class="pl-1">General</p>
-        <li>
-          <a (click)="closeSidebar()" routerLink="profile" routerLinkActive="active"
-            class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-primary transition">
-            <i class="w-6" class="fa-solid fa-user w-6"></i>
-            <span>Perfil</span>
-          </a>
-        </li>
-        <li>
-          <button (click)="closeSidebar()" (click)="logout()"
-            class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-red-600 transition cursor-pointer w-full">
-            <i class="fa-solid fa-right-from-bracket w-6"></i>
-            <span>Cerrar sesión</span>
-          </button>
-        </li>
-      </ul>
-    </nav>
-  </aside>
-
-  <header class="fixed w-full md:w-[calc(100%-14rem)] md:ml-56 bg-white md:bg-primary z-50 shadow-md">
-    <div class="flex justify-between items-center gap-x-3 py-3 px-3 md:px-6">
-      <div>
-        <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" class="w-32 md:hidden block" />
-        <p class="text-white md:block hidden">Bienvenido al panel de {{ getNameRole() }}</p>
-      </div>
-      <div class="flex gap-x-4 items-center">
-        <div>
-          <img [src]="getImageUrl(userActive)" class="w-10 h-10 rounded-full object-cover"
-            [alt]="'Foto de perfil de ' + userActive.firstName" />
-        </div>
-        <div class="flex flex-col text-black md:text-white">
-          <span>{{ userActive.firstName + ' ' + userActive.lastName }}</span>
-          <span class="text-sm opacity-80">{{ userActive.email }}</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="flex-1 ml-0 md:ml-56 mt-[68px] mb-16 md:mb-0">
-    <router-outlet></router-outlet>
+  <div
+    class="md:hidden bg-white border-t-2 shadow-lg flex justify-center items-center fixed bottom-0 left-0 right-0 z-50">
+    @for (link of links; track $index) {
+      @if (link.viewMovil) {
+        <a
+          [routerLink]="link.link"
+          routerLinkActive="text-primary border-t-2 border-primary"
+          class="flex-1 text-xs text-gray-600 flex flex-col justify-center items-center gap-1 py-4 px-2">
+          <i [class]="link.iconClass"></i>
+          <span>{{ link.name }}</span>
+        </a>
+      }
+    }
   </div>
-</div>
+
+  <div class="flex h-auto md:h-screen bg-gray-100">
+    <aside
+      class="z-40 top-0 left-0 md:w-56 w-full bg-white text-black transform transition-transform duration-300 h-full fixed shadow-md hidden md:block">
+      <div class="p-6 text-center hidden md:block shadow-sm">
+        <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" />
+      </div>
+      <nav class="mt-6 relative">
+        <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0">
+          <p class="pl-1">Menu</p>
+          @for (link of links; track $index) {
+            @if (link.viewDesktop) {
+              <li>
+                <a
+                  (click)="closeSidebar()"
+                  [routerLink]="link.link"
+                  routerLinkActive="active"
+                  class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-primary transition">
+                  <i class="w-6" [class]="link.iconClass"></i>
+                  <span>{{ link.name }}</span>
+                </a>
+              </li>
+            }
+          }
+        </ul>
+        <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0 mt-8">
+          <p class="pl-1">General</p>
+          <li>
+            <a
+              (click)="closeSidebar()"
+              routerLink="profile"
+              routerLinkActive="active"
+              class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-primary transition">
+              <i class="w-6" class="fa-solid fa-user w-6"></i>
+              <span>Perfil</span>
+            </a>
+          </li>
+          <li>
+            <button
+              (click)="closeSidebar()"
+              (click)="logout()"
+              class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-red-600 transition cursor-pointer w-full">
+              <i class="fa-solid fa-right-from-bracket w-6"></i>
+              <span>Cerrar sesión</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <header
+      class="fixed w-full md:w-[calc(100%-14rem)] md:ml-56 bg-white md:bg-primary z-50 shadow-md">
+      <div class="flex justify-between items-center gap-x-3 py-3 px-3 md:px-6">
+        <div>
+          <img
+            src="/assets/logo_sin_fondo.webp"
+            alt="Logo PlayMatch"
+            class="w-32 md:hidden block" />
+          <p class="text-white md:block hidden">Bienvenido al panel de {{ getNameRole() }}</p>
+        </div>
+        <div class="flex gap-x-4 items-center">
+          <div>
+            <img
+              [src]="getImageUrl(userActive)"
+              class="w-10 h-10 rounded-full object-cover"
+              [alt]="'Foto de perfil de ' + userActive.firstName" />
+          </div>
+          <div class="flex flex-col text-black md:text-white">
+            <span>{{ userActive.firstName + ' ' + userActive.lastName }}</span>
+            <span class="text-sm opacity-80">{{ userActive.email }}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex-1 ml-0 md:ml-56 mt-[68px] mb-16 md:mb-0">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 }

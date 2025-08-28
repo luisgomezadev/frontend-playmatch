@@ -106,64 +106,54 @@
   </div>
 </article>
 
-@if (showModal) {
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all px-3">
-  <div class="bg-white w-full max-w-[22rem] mx-auto rounded-md p-6 relative shadow-2xl animate-fade-in">
-    <button (click)="closeModal()" class="absolute top-2 right-4 text-gray-400 hover:text-red-500 text-xl">
-      &times;
-    </button>
-
-    @if (selectedType === 'user') {
-    <h2 class="text-2xl font-medium text-primary mb-4 text-center">Información del usuario</h2>
-    <div class="space-y-3 text-sm text-gray-700">
-      <picture class="flex justify-center mb-8">
-        <img [src]="getImageUrl(user.imageUrl)" alt="{{ user.firstName }}"
-          class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20" />
-      </picture>
-      <p>
-        <span class="font-medium">Nombre:</span>
-        {{ user.firstName + ' ' + user.lastName || 'No definido' }}
-      </p>
-      <p>
-        <span class="font-medium">Correo:</span>
-        {{ user.email || 'No definido' }}
-      </p>
-      <p>
-        <span class="font-medium">Celular:</span>
-        {{ user.cellphone || 'No definido' }}
-      </p>
-      <p>
-        <span class="font-medium">Ciudad:</span>
-        {{ user.city || 'No definida' }}
-      </p>
-    </div>
-    }
-    @if (selectedType === 'field') {
-    <h2 class="text-2xl font-medium text-primary mb-4">Información de la cancha</h2>
-    <div class="space-y-2 text-sm text-gray-700">
-      <p>
-        <span class="font-medium">Cancha:</span>
-        {{ field.name }}
-      </p>
-      <p>
-        <span class="font-medium">Dirección:</span>
-        {{ field.address || 'No definida' }}
-      </p>
-      <p>
-        <span class="font-medium">Ciudad:</span>
-        {{ field.city || 'No definida' }}
-      </p>
-      <p>
-        <span class="font-medium">Precio por hora:</span>
-        {{ field.hourlyRate | moneyFormat }}
-      </p>
-      <p>
-        <span class="font-medium">Horario:</span>
-        {{ field.openingHour | timeFormat }} -
-        {{ field.closingHour | timeFormat }}
-      </p>
-    </div>
-    }
+<app-modal [open]="isOpen()" (closed)="onClosed()" [title]="selectedType === 'user' ? 'Información del usuario' : 'Información de la cancha'">
+  @if (selectedType === 'user') {
+  <div class="space-y-3 text-sm text-gray-700">
+    <picture class="flex justify-center mb-8">
+      <img [src]="getImageUrl(user.imageUrl)" alt="{{ user.firstName }}"
+        class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20" />
+    </picture>
+    <p>
+      <span class="font-medium">Nombre:</span>
+      {{ user.firstName + ' ' + user.lastName || 'No definido' }}
+    </p>
+    <p>
+      <span class="font-medium">Correo:</span>
+      {{ user.email || 'No definido' }}
+    </p>
+    <p>
+      <span class="font-medium">Celular:</span>
+      {{ user.cellphone || 'No definido' }}
+    </p>
+    <p>
+      <span class="font-medium">Ciudad:</span>
+      {{ user.city || 'No definida' }}
+    </p>
   </div>
-</div>
-}
+  }
+  @if (selectedType === 'field') {
+  <div class="space-y-2 text-sm text-gray-700">
+    <p>
+      <span class="font-medium">Cancha:</span>
+      {{ field.name }}
+    </p>
+    <p>
+      <span class="font-medium">Dirección:</span>
+      {{ field.address || 'No definida' }}
+    </p>
+    <p>
+      <span class="font-medium">Ciudad:</span>
+      {{ field.city || 'No definida' }}
+    </p>
+    <p>
+      <span class="font-medium">Precio por hora:</span>
+      {{ field.hourlyRate | moneyFormat }}
+    </p>
+    <p>
+      <span class="font-medium">Horario:</span>
+      {{ field.openingHour | timeFormat }} -
+      {{ field.closingHour | timeFormat }}
+    </p>
+  </div>
+  }
+</app-modal>

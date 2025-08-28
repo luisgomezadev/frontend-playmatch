@@ -1,14 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ModalComponent } from '@shared/components/modal/modal.component';
 import { User, UserRole } from '@user/interfaces/user';
 import { UserService } from '@user/services/user.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ButtonActionComponent],
+  imports: [ButtonActionComponent, ModalComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -25,12 +26,26 @@ export class ProfileComponent implements OnInit {
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
+  isOpen = signal(false);
+
   ngOnInit(): void {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
         this.user = user;
       }
     });
+  }
+
+  openModal() {
+    this.isOpen.set(true);
+    document.body.style.overflow = 'hidden';
+  }
+
+  onClosed() {
+    this.isOpen.set(false);
+    this.selectedFile = null;
+    this.imagePreview = null;
+    document.body.style.overflow = '';
   }
 
   public isUserAdmin(user: User): boolean {
@@ -47,11 +62,11 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onCancelImageUpload() {
-    this.selectedFile = null;
-    this.imagePreview = null;
-    this.showImageModal = false;
-  }
+  // onCancelImageUpload() {
+  //   this.selectedFile = null;
+  //   this.imagePreview = null;
+  //   this.showImageModal = false;
+  // }
 
   onUploadImage() {
     if (!this.selectedFile) return;

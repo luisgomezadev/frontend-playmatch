@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
@@ -14,21 +14,19 @@ import { FooterComponent } from "./shared/components/footer/footer.component";
 })
 export class AppComponent {
 
+  private router = inject(Router);
+
   showNavbar = true;
   showFooter = true;
 
-  constructor(private router: Router) {
+  constructor() {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event) => {
       const navEndEvent = event as NavigationEnd;
-      this.showNavbar = !navEndEvent.urlAfterRedirects.startsWith('/dashboard');
-      this.showFooter = !(
-        navEndEvent.urlAfterRedirects.startsWith('/login') ||
-        navEndEvent.urlAfterRedirects.startsWith('/register') ||
-        navEndEvent.urlAfterRedirects.startsWith('/dashboard')
-      );
+      this.showNavbar = navEndEvent.urlAfterRedirects.startsWith('/home');
+      this.showFooter = navEndEvent.urlAfterRedirects.startsWith('/home');
     });
   }
-  
+
 }

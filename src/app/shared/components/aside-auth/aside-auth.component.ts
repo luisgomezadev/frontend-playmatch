@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'aside-auth-component',
+  selector: 'app-aside-auth-component',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -63,4 +63,4 @@ import { Component } from '@angular/core';
     </div>
   `
 })
-export class AsideAuthComponent {}
+export class AsideAuthComponent { }

@@ -1,39 +1,21 @@
-<section class="h-auto md:h-screen w-full bg-gray-100 px-5 py-32 relative">
-  <div class="flex items-center gap-10 h-full justify-center max-w-6xl mx-auto">
+<section class="relative h-auto md:h-screen w-full px-5 py-32 overflow-hidden bg-gray-200">
+
+  <div class="flex items-center gap-10 h-full justify-center max-w-6xl mx-auto relative z-20">
     <div class="flex flex-col justify-center items-center text-center">
-      <img src="assets/logo_sin_fondo.webp" alt="Logo PlayMatch" class="md:w-[35rem] w-72 h-auto" />
-      <h1 class="text-3xl md:text-6xl font-bold text-gray-800 mb-4">Bienvenido</h1>
-      <p class="text-base md:text-lg text-gray-600 mb-2 max-w-lg">
-        ¿Buscas dónde jugar o tienes una cancha? Reserva, reúne jugadores o publica tu cancha en un
-        solo lugar.
-      </p>
-      <p class="text-base text-primary max-w-lg">
+      <h1 class="text-4xl md:text-[5rem] font-semibold text-primary mb-4 leading-[1.1]">Encuentra, reserva y juega en canchas sintéticas fácilmente.</h1>
+      <h2 class="text-xl md:text-[2.5rem] text-black/60 mb-5 md:mb-10 leading-[1.1]">
+        Sencilla, ágil y pensada para ti, la forma más fácil de reunir jugadores y encontrar dónde jugar.
+      </h2>
+      <!-- <h3 class="text-sm md:text-xl text-black/90 max-w-xl">
         Importante: aplicación en desarrollo. Las primeras peticiones pueden tardar un poco más de
         lo normal ya que está alojado en un servidor gratuito.
-      </p>
+      </h3> -->
     </div>
   </div>
-  <img
-    src="/assets/ball.webp"
-    class="absolute z-0 w-12 md:w-32 top-32 left-6 md:left-36 opacity-10 pointer-events-none"
-    alt="Balon de futbol" />
-  <img
-    src="/assets/ball.webp"
-    class="absolute z-0 w-20 md:w-48 bottom-10 md:bottom-32 right-32 opacity-10 pointer-events-none"
-    alt="Balon de futbol" />
 </section>
-<!-- <div class="relative">
-  <svg
-    class="absolute bottom-0 md:-bottom-14 left-0 w-full rotate-180"
-    viewBox="0 0 1440 150"
-    preserveAspectRatio="none">
-    <path
-      fill="#00bf63"
-      d="M0,64L60,69.3C120,75,240,85,360,90.7C480,96,600,96,720,106.7C840,117,960,139,1080,138.7C1200,139,1320,117,1380,106.7L1440,96L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"></path>
-  </svg>
-</div> -->
-<!-- <section class="z-20 relative">
-  <div class="min-h-fit w-full bg-primary text-white pb-12">
+<app-fields-list [showHeader]="false"></app-fields-list>
+<!-- <section class="z-20 relative bg-primary text-white py-12">
+  <div class="min-h-fit w-full">
     <div class="flex items-center justify-around">
       <div class="hidden justify-center items-center md:flex">
         <img src="assets/icon_white.webp" alt="Logo" class="w-56 h-auto" />
@@ -59,4 +41,3 @@
     </div>
   </div>
 </section> -->
-<app-fields-list [showHeader]="false"></app-fields-list>

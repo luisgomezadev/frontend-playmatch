@@ -10,9 +10,13 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <article class="p-6 bg-white rounded-md shadow-md">
         <div class="flex flex-col items-center justify-center gap-6 h-full">
-          <button class="group cursor-pointer relative overflow-hidden rounded-full ring-2 ring-primary/30"
-            (click)="showImageModal = true">
-            <img [src]="getImageUrl(user)" alt="{{ user.firstName }}" class="size-20 md:size-28 object-cover" />
+          <button
+            class="group cursor-pointer relative overflow-hidden rounded-full ring-2 ring-primary/30"
+            (click)="openModal()">
+            <img
+              [src]="getImageUrl(user)"
+              alt="{{ user.firstName }}"
+              class="size-20 md:size-28 object-cover" />
             <div
               class="w-full h-full rounded-full bg-black/30 absolute inset-0 flex items-center justify-center flex-col gap-1 text-white text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <i class="fa-solid fa-camera text-white text-3xl"></i>
@@ -57,27 +61,30 @@
   </div>
 </section>
 
-@if (showImageModal) {
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-  <div class="bg-white rounded-md p-6 shadow-xl w-full max-w-md relative mx-5">
-    <h2 class="text-xl font-bold text-gray-700 mb-4">Actualizar foto de perfil</h2>
+<app-modal [open]="isOpen()" (closed)="onClosed()" [title]="'Actualizar foto de perfil'">
+  <input
+    type="file"
+    accept="image/*"
+    (change)="onFileSelected($event)"
+    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-green-100 file:text-primary-700 hover:file:bg-green-200 file:cursor-pointer file:transition-colors" />
 
-    <input type="file" accept="image/*" (change)="onFileSelected($event)"
-      class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-primary-700 hover:file:bg-green-100 cursor-pointer" />
-
-    @if (imagePreview) {
+  @if (imagePreview) {
     <div class="mt-4 text-center">
       <p class="text-sm text-gray-500 mb-2">Previsualización:</p>
-      <img [src]="imagePreview" alt="Preview"
+      <img
+        [src]="imagePreview"
+        alt="Preview"
         class="w-32 h-32 object-cover rounded-full mx-auto border border-gray-300" />
     </div>
-    }
+  }
 
-    <div class="flex justify-center mt-6 space-x-2">
-      <app-button-action (clicked)="onCancelImageUpload()" text="Cancelar" color="black"></app-button-action>
-      <app-button-action (clicked)="onUploadImage()" color="primary" text="Actualizar imagen" [loading]="loading"
-        [disabled]="!selectedFile"></app-button-action>
-    </div>
+  <div class="flex justify-center mt-6 space-x-2">
+    <app-button-action (clicked)="onClosed()" text="Cancelar" color="black"></app-button-action>
+    <app-button-action
+      (clicked)="onUploadImage()"
+      color="primary"
+      text="Actualizar imagen"
+      [loading]="loading"
+      [disabled]="!selectedFile"></app-button-action>
   </div>
-</div>
-}
+</app-modal>

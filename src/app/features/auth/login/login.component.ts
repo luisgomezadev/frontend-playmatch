@@ -1,15 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { AsideAuthComponent } from '@shared/components/aside-auth/aside-auth.component';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent],
+  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent, ButtonActionComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
+  private router = inject(Router);
 
   loginForm: FormGroup;
   loading = false;
@@ -31,6 +33,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.redirectIfAuthenticated();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/home']);
   }
 
   togglePasswordVisibility(): void {

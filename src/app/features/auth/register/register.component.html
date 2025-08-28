@@ -1,112 +1,120 @@
-<div
-  class="relative min-h-screen flex items-center flex-col justify-center bg-green-100 px-4 md:px-56 py-20 md:pt-12 md:pb-0">
-  <div
-    class="bg-white rounded-md shadow-2xl w-full z-30 h-full md:h-[calc(100vh-150px)] flex overflow-hidden">
-    <div class="h-full md:block hidden">
-      <aside-auth-component />
+<div class="bg-white w-full z-30 h-screen grid grid-cols-1 md:grid-cols-2">
+  <div class="h-full md:block hidden">
+    <app-aside-auth-component />
+  </div>
+  <div class="px-8 py-12 overflow-y-auto w-full relative">
+    <div class="absolute top-5 right-5">
+      <app-button-action text="Inicio" color="transparent" icon="fa-regular fa-house" [hasIcon]="true"
+        (clicked)="goBack()"></app-button-action>
     </div>
-    <div class="px-8 py-12 overflow-y-auto w-full md:w-1/2">
-      <h1 class="text-2xl font-bold text-center mb-7 text-primary">Registrate</h1>
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Tipo de usuario</label>
-          <select
-            formControlName="role"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
-            <option value="" disabled selected>Seleccione un tipo de usuario</option>
-            @for (rol of roles; track $index) {
+    <h1 class="text-2xl font-medium text-center mb-7 text-primary">Registrate</h1>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 md:px-16">
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="role">Tipo de usuario</label>
+        <select
+          id="role"
+          formControlName="role"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
+          <option value="" disabled selected>Seleccione un tipo de usuario</option>
+          @for (rol of roles; track $index) {
             <option [value]="rol.value">{{ rol.label }}</option>
-            }
-          </select>
-          @if (registerForm.get('role')?.touched && registerForm.get('role')?.invalid) {
+          }
+        </select>
+        @if (registerForm.get('role')?.touched && registerForm.get('role')?.invalid) {
           <div class="text-red-500 text-sm mt-1">
             <span>El tipo de usuario es obligatorio.</span>
           </div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Nombre</label>
-          <input
-            type="text"
-            formControlName="firstName"
-            placeholder="Ingrese su nombre"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          @if (registerForm.get('firstName')?.touched && registerForm.get('firstName')?.invalid) {
+        }
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="firstName">Nombre</label>
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          placeholder="Ingrese su nombre"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+        @if (registerForm.get('firstName')?.touched && registerForm.get('firstName')?.invalid) {
           <div class="text-red-500 text-sm mt-1">
             <span>El nombre es obligatorio.</span>
           </div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Apellido</label>
-          <input
-            type="text"
-            formControlName="lastName"
-            placeholder="Ingrese su apellido"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          @if (registerForm.get('lastName')?.touched && registerForm.get('lastName')?.invalid) {
+        }
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="lastName">Apellido</label>
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          placeholder="Ingrese su apellido"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+        @if (registerForm.get('lastName')?.touched && registerForm.get('lastName')?.invalid) {
           <div class="text-red-500 text-sm mt-1">
             <span>La apellido es obligatorio.</span>
           </div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Ciudad</label>
-          <input
-            type="text"
-            formControlName="city"
-            placeholder="Ingrese su ciudad donde reside"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          @if (registerForm.get('city')?.touched && registerForm.get('city')?.invalid) {
+        }
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="city">Ciudad</label>
+        <input
+          id="city"
+          type="text"
+          formControlName="city"
+          placeholder="Ingrese su ciudad donde reside"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+        @if (registerForm.get('city')?.touched && registerForm.get('city')?.invalid) {
           <div class="text-red-500 text-sm mt-1">
             <span>La ciudad es obligatoria.</span>
           </div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Celular</label>
-          <input
-            type="text"
-            formControlName="cellphone"
-            placeholder="Ingrese su número celular"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          @if (registerForm.get('cellphone')?.touched && registerForm.get('cellphone')?.invalid) {
+        }
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="cellphone">Celular</label>
+        <input
+          id="cellphone"
+          type="text"
+          formControlName="cellphone"
+          placeholder="Ingrese su número celular"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+        @if (registerForm.get('cellphone')?.touched && registerForm.get('cellphone')?.invalid) {
           <div class="text-red-500 text-sm mt-1">
             <span>El número celular es invalido.</span>
           </div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Correo electrónico</label>
-          <input
-            type="email"
-            formControlName="email"
-            placeholder="Ingrese su correo electrónico"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-          @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
+        }
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Ingrese su correo electrónico"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+        @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
           <div class="text-red-500 text-sm mt-1">
             @if (registerForm.get('email')?.errors?.['required']) {
-            <span>El correo es obligatorio.</span>
+              <span>El correo es obligatorio.</span>
             } @else if (registerForm.get('email')?.errors?.['email']) {
-            <span>El correo no es valido.</span>
+              <span>El correo no es valido.</span>
             }
           </div>
-          }
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Contraseña</label>
-          <div class="relative">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              formControlName="password"
-              placeholder="Ingrese su contraseña"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-            <button
-              type="button"
-              (click)="togglePasswordVisibility()"
-              class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
-              tabindex="-1">
-              @if (showPassword) {
+        }
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="password">Contraseña</label>
+        <div class="relative">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Ingrese su contraseña"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+            tabindex="-1">
+            @if (showPassword) {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5"
@@ -119,7 +127,7 @@
                   stroke-width="2"
                   d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.038 10.038 0 013.642-5.042M6.18 6.18l11.64 11.64M9.88 9.88a3 3 0 004.24 4.24" />
               </svg>
-              } @else {
+            } @else {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5"
@@ -137,27 +145,28 @@
                   stroke-width="2"
                   d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
               </svg>
-              }
-            </button>
-          </div>
-          <p class="text-xs text-gray-500 mt-1">
-            Mínimo 8 caracteres, con mayúsculas, minúsculas, número y símbolo.
-          </p>
+            }
+          </button>
         </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium mb-1">Confirmar contraseña</label>
-          <div class="relative">
-            <input
-              [type]="showConfirmPassword ? 'text' : 'password'"
-              formControlName="confirmPassword"
-              placeholder="Ingrese nuevamente su contraseña"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-            <button
-              type="button"
-              (click)="toggleConfirmPasswordVisibility()"
-              class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
-              tabindex="-1">
-              @if (showConfirmPassword) {
+        <p class="text-xs text-gray-500 mt-1">
+          Mínimo 8 caracteres, con mayúsculas, minúsculas, número y símbolo.
+        </p>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1" for="confirmPassword">Confirmar contraseña</label>
+        <div class="relative">
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Ingrese nuevamente su contraseña"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+          <button
+            type="button"
+            (click)="toggleConfirmPasswordVisibility()"
+            class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+            tabindex="-1">
+            @if (showConfirmPassword) {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5"
@@ -170,7 +179,7 @@
                   stroke-width="2"
                   d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.038 10.038 0 013.642-5.042M6.18 6.18l11.64 11.64M9.88 9.88a3 3 0 004.24 4.24" />
               </svg>
-              } @else {
+            } @else {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5"
@@ -188,22 +197,23 @@
                   stroke-width="2"
                   d="M2.458 12C3.732 7.943 7.522 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z" />
               </svg>
-              }
-            </button>
-          </div>
-          @if (registerForm.get('confirmPassword')?.touched &&
-          registerForm.hasError('passwordMismatch')) {
+            }
+          </button>
+        </div>
+        @if (
+          registerForm.get('confirmPassword')?.touched && registerForm.hasError('passwordMismatch')
+        ) {
           <div class="text-red-500 text-sm mt-1">
             <span>Las contraseñas no coinciden.</span>
           </div>
-          }
-        </div>
-        <div class="w-full col-span-1 md:col-span-2 lg:col-span-4 flex justify-center items-center">
-          <button
-            type="submit"
-            [disabled]="loading || !registerForm.valid"
-            class="w-80 bg-primary hover:opacity-80 cursor-pointer text-white py-2 px-4 rounded-lg transition h-10 duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-            @if (loading) {
+        }
+      </div>
+      <div class="w-full col-span-1 md:col-span-2 lg:col-span-4 flex justify-center items-center">
+        <button
+          type="submit"
+          [disabled]="loading || !registerForm.valid"
+          class="w-80 bg-primary hover:opacity-80 cursor-pointer text-white py-2 px-4 rounded-lg transition h-10 duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+          @if (loading) {
             <div class="flex justify-center items-center">
               <svg
                 class="animate-spin h-5 w-5 text-white"
@@ -223,28 +233,19 @@
                   d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
               </svg>
             </div>
-            } @else {
+          } @else {
             <span>Registrar</span>
-            }
-          </button>
-        </div>
-      </form>
-      <div class="mt-4 text-center">
-        <p class="text-sm text-gray-600">
-          ¿Ya tienes cuenta?
-          <a routerLink="/login" class="text-blue-500 hover:underline cursor-pointer">
-            Inicia sesión
-          </a>
-        </p>
+          }
+        </button>
       </div>
+    </form>
+    <div class="mt-4 text-center">
+      <p class="text-sm text-gray-600">
+        ¿Ya tienes cuenta?
+        <a routerLink="/login" class="text-blue-500 hover:underline cursor-pointer">
+          Inicia sesión
+        </a>
+      </p>
     </div>
-  </div>
-  <div class="absolute bottom-0 w-full">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <path
-        fill="#00BF63"
-        fill-opacity="1"
-        d="M0,128L26.7,154.7C53.3,181,107,235,160,250.7C213.3,267,267,245,320,213.3C373.3,181,427,139,480,133.3C533.3,128,587,160,640,149.3C693.3,139,747,85,800,96C853.3,107,907,181,960,181.3C1013.3,181,1067,107,1120,112C1173.3,117,1227,203,1280,229.3C1333.3,256,1387,224,1413,208L1440,192L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"></path>
-    </svg>
   </div>
 </div>

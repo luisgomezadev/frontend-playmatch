@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { Field } from '@field/interfaces/field';
 import { Reservation, StatusReservation } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
 import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ModalComponent } from '@shared/components/modal/modal.component';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { StatusReservationPipe } from '@shared/pipes/status-reservation.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
@@ -19,7 +20,8 @@ import { User } from '@user/interfaces/user';
     StatusReservationPipe,
     TimeFormatPipe,
     ButtonActionComponent,
-    MoneyFormatPipe
+    MoneyFormatPipe,
+    ModalComponent
   ],
   templateUrl: './reservation-card.component.html',
   styleUrl: './reservation-card.component.scss'
@@ -45,6 +47,8 @@ export class ReservationCardComponent {
 
   StatusReservation = StatusReservation;
 
+  isOpen = signal(false);
+
   openModal(item: Reservation, type: 'user' | 'field'): void {
     if (type === 'user') {
       this.user = item.user;
@@ -52,12 +56,12 @@ export class ReservationCardComponent {
       this.field = item.field;
     }
     this.selectedType = type;
-    this.showModal = true;
+    this.isOpen.set(true);
     document.body.style.overflow = 'hidden';
   }
 
-  closeModal(): void {
-    this.showModal = false;
+  onClosed() {
+    this.isOpen.set(false);
     this.selectedType = null;
     document.body.style.overflow = '';
   }

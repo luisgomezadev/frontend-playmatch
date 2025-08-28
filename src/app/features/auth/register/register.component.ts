@@ -11,12 +11,13 @@ import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { AsideAuthComponent } from '@shared/components/aside-auth/aside-auth.component';
+import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
 import { REGEX_PATTERNS } from '@shared/utils/regex-utils';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent],
+  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent, ButtonActionComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -61,6 +62,10 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.redirectIfAuthenticated();
+  }
+
+  goBack(): void {
+    this.router.navigate(['/home']);
   }
 
   passwordMatchValidator(formGroup: AbstractControl) {

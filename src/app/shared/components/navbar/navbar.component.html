@@ -1,23 +1,27 @@
-<nav class="bg-white shadow-md w-full fixed top-0 left-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+<nav
+  [ngClass]="{
+    'bg-transparent shadow-none': !isScrolled,
+    'bg-gray-300/80 backdrop-blur-md shadow-md': isScrolled
+  }"
+  class="w-full fixed top-0 left-0 z-50 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
     <a
       routerLink="/home"
       class="text-xl font-bold text-primary cursor-pointer hover:scale-110 transition-transform">
-      <span>P</span>
-      <span class="text-black">M</span>
+      <img src="assets/logo_sin_fondo.webp" alt="Logo PlayMatch" class="w-28 md:w-36 h-auto" />
     </a>
 
-    <div class="space-x-6 items-center">
+    <div class="space-x-2 md:space-x-6 items-center">
       <a
         routerLink="/login"
         routerLinkActive="text-primary"
-        class="text-gray-700 hover:text-primary">
+        class="text-gray-900 hover:text-primary px-3 py-1 md:py-2 md:px-3 md:text-xl transition-colors duration-500">
         Iniciar sesión
       </a>
       <a
         routerLink="/register"
         routerLinkActive="text-primary"
-        class="text-gray-700 hover:text-primary">
+        class="text-gray-900 hover:bg-primary/30 bg-primary/10 px-3 py-1 md:py-2 md:px-4 rounded-full md:text-xl transition-colors duration-500">
         Registrarse
       </a>
     </div>
