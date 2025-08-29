@@ -1,19 +1,21 @@
 import { CommonModule, Location } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { ReservationCalendarComponent } from '@reservation/components/reservation-calendar/reservation-calendar.component';
+import { FieldDetailCardComponent } from '@features/field/components/field-detail-card/field-detail-card.component';
+import { Field } from '@features/field/interfaces/field';
+import { FieldService } from '@features/field/services/field.service';
 import {
   ConfirmedReservation,
   Reservation,
   ReservationRequest,
-  StatusReservation
 } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
 import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
 import { LoadingFullComponent } from '@shared/components/loading/loading-full/loading-full.component';
+import { ModalComponent } from '@shared/components/modal/modal.component';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { User } from '@user/interfaces/user';
 
@@ -26,8 +28,9 @@ import { User } from '@user/interfaces/user';
     ReactiveFormsModule,
     TimeFormatPipe,
     LoadingFullComponent,
-    ReservationCalendarComponent,
-    CommonModule
+    FieldDetailCardComponent,
+    CommonModule,
+    ModalComponent
   ],
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss'
@@ -40,12 +43,14 @@ export class ReservationFormComponent implements OnInit {
   private reservationService = inject(ReservationService);
   private router = inject(Router);
   private alertService = inject(AlertService);
+  private fieldService = inject(FieldService);
 
   user!: User;
   fieldId!: number;
   formReservation!: FormGroup;
   confirmedReservation!: ConfirmedReservation | null;
   reservations: Reservation[] = [];
+  field!: Field;
   showModal = false;
   showCalendar = false;
   verifiedReservation = false;
@@ -54,6 +59,8 @@ export class ReservationFormComponent implements OnInit {
   loadingReservation = false;
 
   hours = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  isOpen = signal(false);
 
   ngOnInit(): void {
     const today = new Date();
@@ -78,7 +85,7 @@ export class ReservationFormComponent implements OnInit {
 
     this.fieldId = +this.route.snapshot.paramMap.get('id')!;
 
-    this.getReservations();
+    this.getField();
   }
 
   get startTime(): string {
@@ -100,21 +107,12 @@ export class ReservationFormComponent implements OnInit {
     this.location.back();
   }
 
-  getReservations() {
-    this.loading = true;
-    this.reservationService
-      .getReservationsByFieldAndStuts(this.fieldId, StatusReservation.ACTIVE)
-      .subscribe({
-        next: data => {
-          this.loading = false;
-          this.reservations = data;
-        },
-        error: err => {
-          this.loading = false;
-          this.reservations = [];
-          this.alertService.error('Error', err.error?.message || 'Algo salió mal');
-        }
-      });
+  getField(): void {
+    this.fieldService.getFieldById(this.fieldId).subscribe({
+      next: field => {
+        this.field = field;
+      }
+    });
   }
 
   verifyReservation() {
@@ -133,12 +131,12 @@ export class ReservationFormComponent implements OnInit {
         next: (data: ConfirmedReservation) => {
           this.loading = false;
           this.confirmedReservation = data;
-          this.showModal = true;
+          this.isOpen.set(true);
         },
         error: err => {
           this.loading = false;
           this.confirmedReservation = null;
-          this.alertService.error('Error', err.error?.message || 'Algo salió mal');
+          this.alertService.error('Error al hacer reserva', err.error?.message || 'Algo salió mal');
         }
       });
 
@@ -148,8 +146,9 @@ export class ReservationFormComponent implements OnInit {
     }
   }
 
-  closeModal() {
-    this.showModal = false;
+  onClosed() {
+    this.isOpen.set(false);
+    document.body.style.overflow = '';
   }
 
   closeCalendar() {

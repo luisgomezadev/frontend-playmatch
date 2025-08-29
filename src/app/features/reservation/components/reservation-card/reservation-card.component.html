@@ -5,21 +5,24 @@
       <p class="text-[11px] text-gray-400 uppercase font-semibold tracking-wide">
         {{ viewAsField ? 'Reservada por' : 'Cancha' }}
       </p>
-      <button class="text-base font-bold text-gray-800 truncate cursor-pointer hover:underline" (click)="
+      <button
+        class="text-base font-bold text-gray-800 truncate cursor-pointer hover:underline"
+        (click)="
           reservationBy === 'field'
             ? openModal(reservation, 'user')
             : openModal(reservation, 'field')
         ">
         {{
-        viewAsField
-        ? reservation.user.firstName + ' ' + reservation.user.lastName ||
-        'Sin jugador asignado'
-        : reservation.field.name || 'Sin cancha asignada'
+          viewAsField
+            ? reservation.user.firstName + ' ' + reservation.user.lastName || 'Sin jugador asignado'
+            : reservation.field.name || 'Sin cancha asignada'
         }}
       </button>
     </div>
 
-    <span class="text-xs font-semibold px-3 py-1 rounded-full border text-nowrap shadow-sm" [ngClass]="{
+    <span
+      class="text-xs font-medium px-3 py-1 rounded-full border text-nowrap shadow-sm"
+      [ngClass]="{
         'bg-green-100 text-green-800 border-green-300':
           reservation.status === StatusReservation.ACTIVE,
         'bg-gray-100 text-gray-700 border-gray-300':
@@ -46,32 +49,46 @@
       </div>
       <div *ngIf="showButtons(reservation)" class="space-y-6">
         @switch (getReservationStatus(reservation)) {
-        @case ('upcoming') {
-        <app-button-action text="Cancelar" color="red" title="Cancelar esta reserva"
-          (clicked)="cancelReservation(reservation.id)" />
-        }
-        @case ('expired') {
-        <app-button-action text="Finalizar" color="black" title="Finalizar esta reserva" (clicked)="
+          @case ('upcoming') {
+            <app-button-action
+              text="Cancelar"
+              color="red"
+              title="Cancelar esta reserva"
+              (clicked)="cancelReservation(reservation.id)" />
+          }
+          @case ('expired') {
+            <app-button-action
+              text="Finalizar"
+              color="black"
+              title="Finalizar esta reserva"
+              (clicked)="
                 finalizeReservation(
                   reservation.id,
                   reservation.user.firstName + ' ' + reservation.user.lastName
                 )
               " />
-        }
-        @case ('inProgress') {
-        @if (reservationBy === 'field') {
-        <app-button-action text="Finalizar" color="black" title="Finalizar esta reserva" (clicked)="
+          }
+          @case ('inProgress') {
+            @if (reservationBy === 'field') {
+              <app-button-action
+                text="Finalizar"
+                color="black"
+                title="Finalizar esta reserva"
+                (clicked)="
                   finalizeReservation(
                     reservation.id,
                     reservation.user.firstName + ' ' + reservation.user.lastName
                   )
                 " />
-        }
-        }
-        @case ('other') {
-        <app-button-action text="Cancelar" color="red" title="Cancelar esta reserva"
-          (clicked)="cancelReservation(reservation.id)" />
-        }
+            }
+          }
+          @case ('other') {
+            <app-button-action
+              text="Cancelar"
+              color="red"
+              title="Cancelar esta reserva"
+              (clicked)="cancelReservation(reservation.id)" />
+          }
         }
       </div>
     </div>
@@ -79,81 +96,87 @@
 
   <div class="mt-2 space-y-1">
     @if (showInfo(reservation)) {
-    <p *ngIf="isReservationExpired(reservation)" class="text-xs font-semibold text-red-600 flex items-center gap-1">
-      <i class="fa-solid fa-triangle-exclamation"></i>
-      Esta reserva ya finalizó. Debe cerrarse.
-    </p>
+      <p
+        *ngIf="isReservationExpired(reservation)"
+        class="text-xs font-semibold text-red-600 flex items-center gap-1">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        Esta reserva ya finalizó. Debe cerrarse.
+      </p>
 
-    <p *ngIf="getReservationStatus(reservation) === 'upcoming'"
-      class="text-xs font-semibold text-yellow-600 flex items-center gap-1">
-      <i class="fa-solid fa-clock"></i>
-      Próxima a iniciar.
-    </p>
+      <p
+        *ngIf="getReservationStatus(reservation) === 'upcoming'"
+        class="text-xs font-semibold text-yellow-600 flex items-center gap-1">
+        <i class="fa-solid fa-clock"></i>
+        Próxima a iniciar.
+      </p>
 
-    <p *ngIf="isInProgressAndActive(reservation)" class="text-xs font-semibold text-green-600 flex items-center gap-1">
-      <i class="fa-solid fa-futbol"></i>
-      En curso.
-    </p>
+      <p
+        *ngIf="isInProgressAndActive(reservation)"
+        class="text-xs font-semibold text-green-600 flex items-center gap-1">
+        <i class="fa-solid fa-futbol"></i>
+        En curso.
+      </p>
     } @else {
-    <p class="text-xs text-gray-500">
-      @if (reservationBy === 'field') {
-      Esta reserva fue realizada por el jugador.
-      } @else {
-      Esta reserva fue realizada por la cancha.
-      }
-    </p>
+      <p class="text-xs text-gray-500">Esta reserva fue realizada por el jugador.</p>
     }
   </div>
 </article>
 
-<app-modal [open]="isOpen()" (closed)="onClosed()" [title]="selectedType === 'user' ? 'Información del usuario' : 'Información de la cancha'">
+<app-modal
+  [open]="isOpen()"
+  (closed)="onClosed()"
+  [title]="selectedType === 'user' ? 'Información del usuario' : 'Información de la cancha'">
   @if (selectedType === 'user') {
-  <div class="space-y-3 text-sm text-gray-700">
-    <picture class="flex justify-center mb-8">
-      <img [src]="getImageUrl(user.imageUrl)" alt="{{ user.firstName }}"
-        class="w-28 h-28 rounded-full object-cover ring-4 ring-primary/20" />
-    </picture>
-    <p>
-      <span class="font-medium">Nombre:</span>
-      {{ user.firstName + ' ' + user.lastName || 'No definido' }}
-    </p>
-    <p>
-      <span class="font-medium">Correo:</span>
-      {{ user.email || 'No definido' }}
-    </p>
-    <p>
-      <span class="font-medium">Celular:</span>
-      {{ user.cellphone || 'No definido' }}
-    </p>
-    <p>
-      <span class="font-medium">Ciudad:</span>
-      {{ user.city || 'No definida' }}
-    </p>
-  </div>
+    <div class="flex items-center text-base text-gray-700 gap-4">
+      <picture class="flex justify-center">
+        <img
+          [src]="getImageUrl(user.imageUrl)"
+          alt="{{ user.firstName }}"
+          class="w-[140px] h-[140px] rounded-md object-cover ring-4 ring-primary/20" />
+      </picture>
+      <div class="space-y-3">
+        <p>
+          <span class="font-medium">Nombre:</span>
+          {{ user.firstName + ' ' + user.lastName || 'No definido' }}
+        </p>
+        <p>
+          <span class="font-medium">Correo:</span>
+          {{ user.email || 'No definido' }}
+        </p>
+        <p>
+          <span class="font-medium">Celular:</span>
+          {{ user.cellphone || 'No definido' }}
+        </p>
+        <p>
+          <span class="font-medium">Ciudad:</span>
+          {{ user.city || 'No definida' }}
+        </p>
+      </div>
+    </div>
   }
   @if (selectedType === 'field') {
-  <div class="space-y-2 text-sm text-gray-700">
-    <p>
-      <span class="font-medium">Cancha:</span>
-      {{ field.name }}
-    </p>
-    <p>
-      <span class="font-medium">Dirección:</span>
-      {{ field.address || 'No definida' }}
-    </p>
-    <p>
-      <span class="font-medium">Ciudad:</span>
-      {{ field.city || 'No definida' }}
-    </p>
-    <p>
-      <span class="font-medium">Precio por hora:</span>
-      {{ field.hourlyRate | moneyFormat }}
-    </p>
-    <p>
-      <span class="font-medium">Horario:</span>
-      {{ field.openingHour | timeFormat }} -
-      {{ field.closingHour | timeFormat }}
-    </p>
-  </div>
+    <div class="space-y-2 text-sm text-gray-700">
+      <p>
+        <span class="font-medium">Cancha:</span>
+        {{ field.name }}
+      </p>
+      <p>
+        <span class="font-medium">Dirección:</span>
+        {{ field.address || 'No definida' }}
+      </p>
+      <p>
+        <span class="font-medium">Ciudad:</span>
+        {{ field.city || 'No definida' }}
+      </p>
+      <p>
+        <span class="font-medium">Precio por hora:</span>
+        {{ field.hourlyRate | moneyFormat }}
+      </p>
+      <p>
+        <span class="font-medium">Horario:</span>
+        {{ field.openingHour | timeFormat }} -
+        {{ field.closingHour | timeFormat }}
+      </p>
+    </div>
   }
 </app-modal>

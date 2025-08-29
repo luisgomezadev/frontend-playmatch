@@ -1,71 +1,37 @@
 <section class="bg-gray-100">
   <div class="space-y-6 px-3 py-4 md:p-6">
     @if (loading) {
-    <loading-field-component />
+      <loading-field-component />
     } @else {
-    @if (field) {
-    <header>
-      <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">Mi cancha</h1>
-      <p class="text-gray-600 mt-1 text-base">
-        Aquí puedes ver los detalles de la cancha que has registrado.
-      </p>
-    </header>
-    <div class="grid grid-cols-1 gap-4">
-      <article class="bg-white p-6 rounded-md shadow-md border border-gray-200 space-y-6">
-        <div class="flex flex-col md:flex-row items-start md:items-center gap-6 flex-1">
-          <div class="space-y-6 w-full">
-            <div class="flex items-center justify-between gap-x-3">
-              <h2 class="text-xl font-medium text-gray-800">Información de la cancha</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-gray-100 py-2 px-3 rounded-md md:col-span-2">
-                <h3 class="text-gray-700 italic text-sm">Nombre</h3>
-                <p class="text-base">{{ field.name }}</p>
-              </div>
-              <div class="bg-gray-100 py-2 px-3 rounded-md">
-                <h3 class="text-gray-700 italic text-sm">Ciudad</h3>
-                <p class="text-base">{{ field.city }}</p>
-              </div>
-              <div class="bg-gray-100 py-2 px-3 rounded-md">
-                <h3 class="text-gray-700 italic text-sm">Dirección</h3>
-                <p class="text-base">{{ field.address }}</p>
-              </div>
-              <div class="bg-gray-100 py-2 px-3 rounded-md">
-                <h3 class="text-gray-700 italic text-sm">Precio por hora</h3>
-                <p class="text-base">{{ field.hourlyRate | moneyFormat }}</p>
-              </div>
-              <div class="bg-gray-100 py-2 px-3 rounded-md">
-                <h3 class="text-gray-700 italic text-sm">Hora de apertura</h3>
-                <p class="text-base">{{ field.openingHour | timeFormat }}</p>
-              </div>
-              <div class="bg-gray-100 py-2 px-3 rounded-md">
-                <h3 class="text-gray-700 italic text-sm">Hora de cierre</h3>
-                <p class="text-base">{{ field.closingHour | timeFormat }}</p>
-              </div>
-              <div class="bg-gray-100 py-2 px-3 rounded-md">
-                <h3 class="text-gray-700 italic text-sm">Estado</h3>
-                <p class="text-base">{{ field.status | statusDescription }}</p>
-              </div>
-            </div>
+      @if (field) {
+        <header>
+          <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">Mi cancha</h1>
+          <p class="text-gray-600 mt-1 text-base">
+            Aquí puedes ver los detalles de la cancha que has registrado.
+          </p>
+        </header>
+        <article class="bg-white p-6 rounded-md shadow-md border border-gray-200 space-y-6">
+          <app-field-detail-card [field]="field" />
+          <div class="flex justify-end">
+            <app-button-action
+              text="Editar"
+              icon="fa-solid fa-pen-to-square"
+              [hasIcon]="true"
+              color="yellow"
+              [routerLink]="['/dashboard/field/form/' + field.id]"></app-button-action>
           </div>
+        </article>
+      } @else {
+        <div class="text-center flex justify-center items-center flex-col mt-8">
+          <h2 class="text-lg font-medium text-gray-700">No tienes una cancha registrada.</h2>
+          <a
+            routerLink="/dashboard/field/form"
+            class="mt-6 inline-flex items-center px-5 py-8 border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:bg-gray-300 transition-all">
+            <i class="fa-solid fa-plus mr-2"></i>
+            <span class="font-semibold">Registra una cancha</span>
+          </a>
         </div>
-
-        <div class="flex justify-end">
-          <app-button-action text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
-            [routerLink]="['/dashboard/field/form/' + field.id]"></app-button-action>
-        </div>
-      </article>
-    </div>
-    } @else {
-    <div class="text-center flex justify-center items-center flex-col mt-8">
-      <h2 class="text-lg font-medium text-gray-700">No tienes una cancha registrada.</h2>
-      <a routerLink="/dashboard/field/form"
-        class="mt-6 inline-flex items-center px-5 py-8 border-2 border-dashed border-gray-300 rounded-md text-gray-600 hover:bg-gray-300 transition-all">
-        <i class="fa-solid fa-plus mr-2"></i>
-        <span class="font-semibold">Registra una cancha</span>
-      </a>
-    </div>
-    }
+      }
     }
   </div>
 </section>

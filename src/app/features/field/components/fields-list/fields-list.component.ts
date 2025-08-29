@@ -1,16 +1,12 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AlertService } from '@core/services/alert.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { FieldCardComponent } from '@field/components/field-card/field-card.component';
 import { Field } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
-import { ReservationService } from '@reservation/services/reservation.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
 import { LoadingFieldListComponent } from '@shared/components/loading/loading-field-list/loading-field-list.component';
 import { User, UserRole } from '@user/interfaces/user';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-fields-list',
@@ -18,9 +14,8 @@ import { firstValueFrom } from 'rxjs';
   imports: [
     RouterModule,
     CommonModule,
-    ButtonActionComponent,
     LoadingFieldListComponent,
-    FieldCardComponent
+    FieldCardComponent,
   ],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss'
@@ -30,9 +25,6 @@ export class FieldsListComponent implements OnInit {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
-  private router = inject(Router);
-  private reservationService = inject(ReservationService);
-  private alertService = inject(AlertService);
 
   @Input() showHeader = true;
   fields: Field[] = [];
@@ -90,43 +82,4 @@ export class FieldsListComponent implements OnInit {
     this.location.back();
   }
 
-  openModal(): void {
-    this.showModal = true;
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeModal(): void {
-    this.showModal = false;
-    document.body.style.overflow = '';
-  }
-
-  goToLogin(): void {
-    this.closeModal();
-    this.router.navigate(['/login']);
-  }
-
-  goToRegister(): void {
-    this.closeModal();
-    this.router.navigate(['/register']);
-  }
-
-  makeReservation(fieldId: number): void {
-    this.hasActiveReservation().then(hasReservation => {
-      if (hasReservation) {
-        this.alertService.notify(
-          'Tienes una reserva activa',
-          'Debes cancelarla si deseas hacer una nueva reserva.',
-          'warning'
-        );
-        this.router.navigate(['/dashboard/reservation/list']);
-      } else {
-        this.router.navigate(['/dashboard/reservation/form/field', fieldId]);
-      }
-    });
-  }
-
-  async hasActiveReservation(): Promise<boolean> {
-    const count = await firstValueFrom(this.reservationService.getCountActiveByUser(this.user.id));
-    return count > 0;
-  }
 }

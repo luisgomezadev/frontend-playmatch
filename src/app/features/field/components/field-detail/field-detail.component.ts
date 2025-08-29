@@ -7,10 +7,8 @@ import { Field, Status } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
 import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
 import { LoadingFieldComponent } from '@shared/components/loading/loading-field/loading-field.component';
-import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
-import { StatusDescriptionPipe } from '@shared/pipes/status-description.pipe';
-import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { User, UserRole } from '@user/interfaces/user';
+import { FieldDetailCardComponent } from '../field-detail-card/field-detail-card.component';
 
 @Component({
   selector: 'app-field-detail',
@@ -18,9 +16,7 @@ import { User, UserRole } from '@user/interfaces/user';
   imports: [
     CommonModule,
     RouterModule,
-    StatusDescriptionPipe,
-    TimeFormatPipe,
-    MoneyFormatPipe,
+    FieldDetailCardComponent,
     ButtonActionComponent,
     LoadingFieldComponent
   ],

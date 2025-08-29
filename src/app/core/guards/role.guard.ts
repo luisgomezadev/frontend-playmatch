@@ -14,10 +14,6 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot): Observa
 
   return authService.checkAuth().pipe(
     map((isAuth) => {
-      console.log(isAuth);
-      console.log(tokenRole);
-      console.log(allowedRoles);
-
       if (!isAuth || !tokenRole || !allowedRoles.includes(tokenRole)) {
         authService.logout();
         alertService.error('Error', 'No estas autenticado o no tienes permisos para estar en esta vista');
