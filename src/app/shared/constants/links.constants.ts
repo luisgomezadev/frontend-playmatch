@@ -20,8 +20,16 @@ export const LINKS_DASHBOARD = [
     name: "Reservas",
     link: "reservation/list",
     role: "FIELD_ADMIN",
-    iconClass: "fa-solid fa-calendar-check",
+    iconClass: "fa-solid fa-list",
     viewMovil: true,
+    viewDesktop: true
+  },
+  {
+    name: "Calendario",
+    link: "reservation/calendar",
+    role: "FIELD_ADMIN",
+    iconClass: "fa-solid fa-calendar",
+    viewMovil: false,
     viewDesktop: true
   },
   // LINKS PLAYER

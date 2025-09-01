@@ -6,7 +6,7 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   {
@@ -59,6 +59,13 @@ export const routes: Routes = [
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       },
       {
+        path: 'reservation/calendar',
+        loadComponent: () =>
+          import('./features/reservation/pages/calendar/calendar.component')
+            .then(m => m.CalendarComponent),
+        data: { roles: ['FIELD_ADMIN'] }
+      },
+      {
         path: 'reservation/form/field/:id',
         loadComponent: () =>
           import('./features/reservation/pages/reservation-form/reservation-form.component')
@@ -88,7 +95,7 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home' }
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '' }
 ];
 

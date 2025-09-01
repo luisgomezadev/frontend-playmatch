@@ -11,6 +11,10 @@
         <ng-content select="[actions]"></ng-content>
       </div>
     </header>
-    <ng-content></ng-content>
+    @if (loading) {
+      <ng-content select="[loading]"></ng-content>
+    } @else {
+      <ng-content></ng-content>
+    }
   </div>
 </section>

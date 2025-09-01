@@ -10,6 +10,5 @@ import { Component, Input } from '@angular/core';
 export class LayoutComponent {
   @Input() title = '';
   @Input() subtitle = '';
-  @Input() viewReservations = false;
-  @Input() showReservationButton = false;
+  @Input() loading = false;
 }

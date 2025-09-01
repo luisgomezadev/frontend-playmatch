@@ -1,0 +1,23 @@
+<app-layout [title]="months[currentMonth] + ' de ' + currentYear">
+  <div actions>
+    <div class="flex gap-x-4 items-center">
+      <button
+        (click)="prevMonth()"
+        class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <button
+        (click)="nextMonth()"
+        class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-10">
+    <app-reservation-calendar
+      [reservationList]="reservations"
+      [currentMonth]="currentMonth"
+      [currentYear]="currentYear" />
+  </div>
+</app-layout>

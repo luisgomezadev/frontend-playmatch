@@ -1,16 +1,6 @@
-<section>
-  <header class="flex items-center justify-between mb-4">
-    <button (click)="prevMonth()" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
-      &#8592;
-    </button>
-    <span class="text-lg font-bold">{{ mounths[currentMonth] }} - {{ currentYear }}</span>
-    <button (click)="nextMonth()" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
-      &#8594;
-    </button>
-  </header>
-
+<article>
   <div class="hidden lg:block">
-    <div class="grid grid-cols-7 text-center font-semibold bg-transparent rounded-t-lg">
+    <div class="grid grid-cols-7 text-center font-medium bg-transparent rounded-t-lg">
       @for (dayName of ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']; track $index) {
         <div class="py-2">{{ dayName }}</div>
       }
@@ -20,18 +10,17 @@
       @for (day of calendarDays; track $index) {
         <button
           class="border border-gray-200 p-2 h-36 flex flex-col overflow-hidden rounded-xl cursor-pointer hover:bg-gray-100"
-          [class.bg-white]="day.date.getMonth() === currentMonth"
+          [ngClass]="{
+            'bg-white': day.date.getMonth() === currentMonth,
+            'grayscale opacity-30': day.date.getMonth() !== currentMonth
+          }"
+          [disabled]="day.date.getMonth() !== currentMonth"
           (click)="openDayModal(day)">
           <div class="text-sm font-bold">{{ day.date.getDate() }}</div>
           <div class="mt-1 space-y-1 overflow-y-auto">
             @for (res of day.reservations.slice(0, 2); track $index) {
               <div
-                class="text-xs px-1 py-0.5 rounded truncate flex flex-col"
-                [ngClass]="{
-                  'bg-green-200 text-green-800': res.status === StatusReservation.ACTIVE,
-                  'bg-yellow-200 text-yellow-800': res.status === StatusReservation.FINISHED,
-                  'bg-red-200 text-red-800': res.status === StatusReservation.CANCELED
-                }">
+                class="text-xs px-1 py-0.5 rounded truncate flex flex-col bg-green-200 text-green-800">
                 <span>{{ res.user.firstName }} {{ res.user.lastName }}</span>
                 <span>{{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}</span>
               </div>
@@ -46,7 +35,7 @@
       }
     </div>
   </div>
-</section>
+</article>
 
 @if (showModal) {
   <div class="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm transition-all">

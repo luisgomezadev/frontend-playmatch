@@ -1,63 +1,27 @@
+import { Component, Input, OnChanges } from '@angular/core';
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { Reservation, StatusReservation } from '@reservation/interfaces/reservation';
+import { Reservation } from '@reservation/interfaces/reservation';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 
 @Component({
   selector: 'app-reservation-calendar',
   standalone: true,
-  imports: [NgClass, DatePipe, TimeFormatPipe],
+  imports: [DatePipe, TimeFormatPipe, NgClass],
   templateUrl: './reservation-calendar.component.html',
-  styleUrl: './reservation-calendar.component.scss'
+  styleUrls: ['./reservation-calendar.component.scss']
 })
-export class ReservationCalendarComponent implements OnInit, OnChanges {
+export class ReservationCalendarComponent implements OnChanges {
   @Input() reservationList: Reservation[] = [];
-  @Input() reservationBy!: string;
+  @Input() currentMonth!: number;
+  @Input() currentYear!: number;
 
-  currentMonth: number = new Date().getMonth();
-  currentYear: number = new Date().getFullYear();
   calendarDays: { date: Date; reservations: Reservation[] }[] = [];
-  mounths: string[] = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre'
-  ];
-
-  StatusReservation = StatusReservation;
-
   selectedDayReservations: Reservation[] = [];
   selectedDate: Date | null = null;
   showModal = false;
 
-  ngOnInit(): void {
-    this.generateCalendar();
-  }
-
   ngOnChanges(): void {
     this.generateCalendar();
-  }
-
-  openDayModal(day: { date: Date; reservations: Reservation[] }): void {
-    this.selectedDate = day.date;
-    this.selectedDayReservations = day.reservations;
-    this.showModal = true;
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeDayModal(): void {
-    this.showModal = false;
-    this.selectedDayReservations = [];
-    this.selectedDate = null;
-    document.body.style.overflow = '';
   }
 
   private normalizeDate(date: Date | string): Date {
@@ -66,8 +30,8 @@ export class ReservationCalendarComponent implements OnInit, OnChanges {
   }
 
   private parseDateLocal(dateStr: string): Date {
-    const parts = dateStr.split('-').map(Number);
-    return new Date(parts[0], parts[1] - 1, parts[2]);
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d);
   }
 
   generateCalendar(): void {
@@ -82,41 +46,30 @@ export class ReservationCalendarComponent implements OnInit, OnChanges {
     endDate.setDate(lastDay.getDate() + (6 - lastDay.getDay()));
 
     const date = new Date(startDate);
-
     while (date <= endDate) {
       const dayReservations =
-        this.reservationList?.filter(
+        this.reservationList.filter(
           r =>
             this.normalizeDate(this.parseDateLocal(r.reservationDate)).getTime() ===
             this.normalizeDate(date).getTime()
         ) || [];
 
-      this.calendarDays.push({
-        date: new Date(date),
-        reservations: dayReservations
-      });
-
+      this.calendarDays.push({ date: new Date(date), reservations: dayReservations });
       date.setDate(date.getDate() + 1);
     }
   }
 
-  prevMonth(): void {
-    if (this.currentMonth === 0) {
-      this.currentMonth = 11;
-      this.currentYear--;
-    } else {
-      this.currentMonth--;
-    }
-    this.generateCalendar();
+  openDayModal(day: { date: Date; reservations: Reservation[] }): void {
+    this.selectedDate = day.date;
+    this.selectedDayReservations = day.reservations;
+    this.showModal = true;
+    document.body.style.overflow = 'hidden';
   }
 
-  nextMonth(): void {
-    if (this.currentMonth === 11) {
-      this.currentMonth = 0;
-      this.currentYear++;
-    } else {
-      this.currentMonth++;
-    }
-    this.generateCalendar();
+  closeDayModal(): void {
+    this.showModal = false;
+    this.selectedDayReservations = [];
+    this.selectedDate = null;
+    document.body.style.overflow = '';
   }
 }

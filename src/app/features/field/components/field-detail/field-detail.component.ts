@@ -9,6 +9,7 @@ import { ButtonActionComponent } from '@shared/components/button-action/button-a
 import { LoadingFieldComponent } from '@shared/components/loading/loading-field/loading-field.component';
 import { User, UserRole } from '@user/interfaces/user';
 import { FieldDetailCardComponent } from '../field-detail-card/field-detail-card.component';
+import { LayoutComponent } from '@shared/components/layout/layout.component';
 
 @Component({
   selector: 'app-field-detail',
@@ -18,7 +19,8 @@ import { FieldDetailCardComponent } from '../field-detail-card/field-detail-card
     RouterModule,
     FieldDetailCardComponent,
     ButtonActionComponent,
-    LoadingFieldComponent
+    LoadingFieldComponent,
+    LayoutComponent
   ],
   templateUrl: './field-detail.component.html',
   styleUrl: './field-detail.component.scss'
