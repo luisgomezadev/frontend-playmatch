@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/auth/login/login.component';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { roleGuard } from './core/guards/role.guard';
-import { RegisterComponent } from './features/auth/register/register.component';
+import { LoginComponent } from './pages/auth/login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { roleChildGuard, roleGuard } from './core/guards/role.guard';
+import { RegisterComponent } from './pages/auth/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
@@ -12,15 +12,15 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [roleGuard],
-    data: { roles: ['PLAYER', 'FIELD_ADMIN'] }, // acceso base para dashboard
+    canActivate: [roleGuard], // valida el acceso base al dashboard
+    canActivateChild: [roleChildGuard], // valida todos los hijos
+    data: { roles: ['PLAYER', 'FIELD_ADMIN'] },
     children: [
       {
         path: 'home-admin',
         loadComponent: () =>
-          import('./features/user/components/home-admin/home-admin.component')
+          import('./features/user/pages/home-admin/home-admin.component')
             .then(m => m.HomeAdminComponent),
-        canActivate: [roleGuard],
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
@@ -28,7 +28,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/field/components/field-detail/field-detail.component')
             .then(m => m.FieldDetailComponent),
-        canActivate: [roleGuard],
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
@@ -36,7 +35,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/field/components/fields-list/fields-list.component')
             .then(m => m.FieldsListComponent),
-        canActivate: [roleGuard],
         data: { roles: ['FIELD_ADMIN', 'PLAYER'] }
       },
       {
@@ -44,7 +42,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/field/components/field-form/field-form.component')
             .then(m => m.FieldFormComponent),
-        canActivate: [roleGuard],
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
@@ -52,7 +49,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/field/components/field-form/field-form.component')
             .then(m => m.FieldFormComponent),
-        canActivate: [roleGuard],
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
@@ -60,7 +56,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/reservation/pages/reservation-list/reservation-list.component')
             .then(m => m.ReservationListComponent),
-        canActivate: [roleGuard],
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       },
       {
@@ -68,7 +63,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/reservation/pages/reservation-form/reservation-form.component')
             .then(m => m.ReservationFormComponent),
-        canActivate: [roleGuard],
         data: { roles: ['PLAYER'] }
       },
       {
@@ -76,7 +70,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/user/components/player-list/player-list.component')
             .then(m => m.PlayerListComponent),
-        canActivate: [roleGuard],
         data: { roles: ['PLAYER'] }
       },
       {
@@ -84,7 +77,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/user/components/profile/profile.component')
             .then(m => m.ProfileComponent),
-        canActivate: [roleGuard],
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       },
       {
@@ -92,7 +84,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./shared/components/menu/menu.component')
             .then(m => m.MenuComponent),
-        canActivate: [roleGuard],
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       }
     ]

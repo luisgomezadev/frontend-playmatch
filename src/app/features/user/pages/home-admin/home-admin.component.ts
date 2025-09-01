@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { CountReservationCardComponent } from '@features/user/components/count-reservation-card/count-reservation-card.component';
 import { Field } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
 import { ReservationCardComponent } from '@reservation/components/reservation-card/reservation-card.component';
 import { Reservation } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
 import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
 import { User, UserRole } from '@user/interfaces/user';
 
@@ -19,7 +21,9 @@ import { User, UserRole } from '@user/interfaces/user';
     ReservationCardComponent,
     CommonModule,
     ButtonActionComponent,
-    LoadingReservationCardComponent
+    LoadingReservationCardComponent,
+    LayoutComponent,
+    CountReservationCardComponent
   ],
   templateUrl: './home-admin.component.html',
   styleUrl: './home-admin.component.scss'

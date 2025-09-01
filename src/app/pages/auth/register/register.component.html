@@ -4,7 +4,11 @@
   </div>
   <div class="px-8 py-12 overflow-y-auto w-full relative">
     <div class="absolute top-5 right-5">
-      <app-button-action text="Inicio" color="transparent" icon="fa-regular fa-house" [hasIcon]="true"
+      <app-button-action
+        text="Inicio"
+        color="transparent"
+        icon="fa-regular fa-house"
+        [hasIcon]="true"
         (clicked)="goBack()"></app-button-action>
     </div>
     <h1 class="text-2xl font-medium text-center mb-7 text-primary">Registrate</h1>
@@ -153,7 +157,9 @@
         </p>
       </div>
       <div class="mb-4">
-        <label class="block text-sm font-medium mb-1" for="confirmPassword">Confirmar contraseña</label>
+        <label class="block text-sm font-medium mb-1" for="confirmPassword">
+          Confirmar contraseña
+        </label>
         <div class="relative">
           <input
             id="confirmPassword"

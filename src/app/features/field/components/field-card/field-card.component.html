@@ -1,7 +1,7 @@
 <button
   class="relative w-full h-48 rounded-lg overflow-hidden shadow-lg group"
   (click)="makeReservation(field.id)"
-  aria-label="Hacer reserva">
+  aria-label="Reservar">
   <img
     src="/assets/cancha.webp"
     alt="{{ field.name }}"
@@ -17,8 +17,8 @@
         </p>
       </div>
       <span
-        class="text-lg font-medium text-white bg-white/30 p-1 rounded-md absolute group-hover:bottom-0 -bottom-3 right-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-        Hacer reserva
+        class="text-base font-medium text-primary bg-black/60 p-1 rounded-md absolute group-hover:bottom-0 -bottom-3 right-0 opacity-0 md:group-hover:opacity-100 transition-all duration-500">
+        Reservar
         <i class="fa-solid fa-arrow-up-right-from-square"></i>
       </span>
     </div>

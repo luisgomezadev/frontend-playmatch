@@ -78,7 +78,7 @@ export class ButtonActionComponent {
     const styles = {
       black: 'bg-gray-200 text-black hover:shadow-gray-600',
       red: 'bg-gray-200 text-red-600 hover:shadow-red-600',
-      primary: 'bg-gray-200 text-primary hover:shadow-green-600',
+      primary: 'bg-gray-200 text-green-800 hover:shadow-green-600',
       blue: 'bg-gray-200 text-blue-600 hover:shadow-blue-600',
       yellow: 'bg-gray-200 text-yellow-500 hover:shadow-yellow-600',
       transparent: 'bg-transparent text-black shadow-none'

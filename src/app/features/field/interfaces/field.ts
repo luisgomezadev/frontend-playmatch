@@ -28,6 +28,12 @@ export interface FieldRequest {
   imageUrl: string;
 }
 
+export interface FieldFilter {
+  city?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}
+
 export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE'

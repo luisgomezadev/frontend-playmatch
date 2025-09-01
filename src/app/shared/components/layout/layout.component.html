@@ -1,0 +1,16 @@
+<section class="bg-gray-100">
+  <div class="space-y-6 px-3 py-4 md:p-6">
+    <header class="flex justify-between items-center gap-4">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">{{ title }}</h1>
+        <h2 class="text-gray-600 mt-1 text-base">
+          {{ subtitle }}
+        </h2>
+      </div>
+      <div>
+        <ng-content select="[actions]"></ng-content>
+      </div>
+    </header>
+    <ng-content></ng-content>
+  </div>
+</section>

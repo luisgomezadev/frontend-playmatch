@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PagedResponse } from '@core/interfaces/paged-response';
 import { Field, FieldRequest } from '@field/interfaces/field';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { Observable } from 'rxjs';
@@ -9,8 +10,8 @@ import { Observable } from 'rxjs';
 export class FieldService extends BaseHttpService {
   private url = this.apiUrl + '/field';
 
-  getFields(): Observable<Field[]> {
-    return this.http.get<Field[]>(`${this.url}`);
+  getFields(): Observable<PagedResponse<Field>> {
+    return this.http.get<PagedResponse<Field>>(`${this.url}`);
   }
 
   getFieldsActive(): Observable<Field[]> {

@@ -1,9 +1,11 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { PagedResponse } from '@core/interfaces/paged-response';
 import { AuthService } from '@core/services/auth.service';
 import { FieldCardComponent } from '@field/components/field-card/field-card.component';
-import { Field } from '@field/interfaces/field';
+import { Field, FieldFilter } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
 import { LoadingFieldListComponent } from '@shared/components/loading/loading-field-list/loading-field-list.component';
 import { User, UserRole } from '@user/interfaces/user';
@@ -16,6 +18,7 @@ import { User, UserRole } from '@user/interfaces/user';
     CommonModule,
     LoadingFieldListComponent,
     FieldCardComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss'
@@ -25,9 +28,12 @@ export class FieldsListComponent implements OnInit {
   private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
+  private fb = inject(FormBuilder);
 
   @Input() showHeader = true;
-  fields: Field[] = [];
+  formFilter!: FormGroup;
+  fields!: PagedResponse<Field>;
+  filters: FieldFilter = {};
   user!: User;
   loading = false;
   showModal = false;
@@ -43,7 +49,12 @@ export class FieldsListComponent implements OnInit {
         this.user = user;
       }
     });
+    this.initForm();
     this.loadFields();
+  }
+
+  private initForm(): void {
+    this.formFilter = this.fb.group({ city: [''], minPrice: [''], maxPrice: [''] });
   }
 
   isUserPlayer(user: User): boolean {
@@ -52,8 +63,7 @@ export class FieldsListComponent implements OnInit {
 
   loadFields() {
     this.loading = true;
-    this.fields = [];
-    this.fieldService.getFieldsActive().subscribe({
+    this.fieldService.getFields().subscribe({
       next: data => {
         this.loading = false;
         this.fields = data;

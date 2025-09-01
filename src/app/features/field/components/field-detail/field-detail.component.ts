@@ -56,12 +56,6 @@ export class FieldDetailComponent implements OnInit {
     return user.role == UserRole.FIELD_ADMIN;
   }
 
-  isOwnerField(): boolean {
-    return (
-      !!this.user && !!this.field && !!this.field.admin && this.user.id === this.field.admin.id
-    );
-  }
-
   getField() {
     this.loading = true;
     this.fieldService.getFieldByAdminId(this.user.id).subscribe({
@@ -85,31 +79,4 @@ export class FieldDetailComponent implements OnInit {
     }
   }
 
-  deleteField() {
-    this.alertService
-      .confirm('¿Estás seguro?', 'Esta acción eliminará el campo permanentemente.', 'Sí, eliminar')
-      .then(result => {
-        if (result && this.field) {
-          this.fieldService.deleteField(this.field.id).subscribe({
-            next: () => {
-              this.alertService.success(
-                'Campo eliminado',
-                'El campo ha sido eliminado correctamente.'
-              );
-              this.field = null;
-            },
-            error: err => {
-              this.alertService.error(
-                'Error al eliminar el campo',
-                err?.error?.message || 'No se pudo eliminar el campo.'
-              );
-            }
-          });
-        }
-      });
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
 }
