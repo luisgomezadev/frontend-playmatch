@@ -4,13 +4,13 @@ import { Reservation } from '@reservation/interfaces/reservation';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 
 @Component({
-  selector: 'app-reservation-calendar',
+  selector: 'app-calendar',
   standalone: true,
   imports: [DatePipe, TimeFormatPipe, NgClass],
-  templateUrl: './reservation-calendar.component.html',
-  styleUrls: ['./reservation-calendar.component.scss']
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.scss']
 })
-export class ReservationCalendarComponent implements OnChanges {
+export class CalendarComponent implements OnChanges {
   @Input() reservationList: Reservation[] = [];
   @Input() currentMonth!: number;
   @Input() currentYear!: number;

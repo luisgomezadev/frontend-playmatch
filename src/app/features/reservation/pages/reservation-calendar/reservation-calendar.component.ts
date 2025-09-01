@@ -4,19 +4,19 @@ import { FieldService } from '@features/field/services/field.service';
 import { ReservationService } from '@features/reservation/services/reservation.service';
 import { Reservation, StatusReservation } from '@features/reservation/interfaces/reservation';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { ReservationCalendarComponent } from '@features/reservation/components/reservation-calendar/reservation-calendar.component';
 import { MONTHS } from '@shared/constants/months.constants';
 import { Field } from '@features/field/interfaces/field';
 import { User } from '@features/user/interfaces/user';
+import { CalendarComponent } from '@features/reservation/components/calendar/calendar.component';
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'app-reservation-calendar',
   standalone: true,
-  imports: [LayoutComponent, ReservationCalendarComponent],
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  imports: [LayoutComponent, CalendarComponent],
+  templateUrl: './reservation-calendar.component.html',
+  styleUrls: ['./reservation-calendar.component.scss']
 })
-export class CalendarComponent implements OnInit {
+export class ReservationCalendarComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly fieldService = inject(FieldService);
   private readonly reservationService = inject(ReservationService);

@@ -19,78 +19,87 @@ export const routes: Routes = [
       {
         path: 'home-admin',
         loadComponent: () =>
-          import('./features/user/pages/home-admin/home-admin.component')
-            .then(m => m.HomeAdminComponent),
+          import('./features/user/pages/home-admin/home-admin.component').then(
+            m => m.HomeAdminComponent
+          ),
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
         path: 'field',
         loadComponent: () =>
-          import('./features/field/components/field-detail/field-detail.component')
-            .then(m => m.FieldDetailComponent),
+          import('./features/field/components/field-detail/field-detail.component').then(
+            m => m.FieldDetailComponent
+          ),
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
         path: 'field/list',
         loadComponent: () =>
-          import('./features/field/components/fields-list/fields-list.component')
-            .then(m => m.FieldsListComponent),
+          import('./features/field/components/fields-list/fields-list.component').then(
+            m => m.FieldsListComponent
+          ),
         data: { roles: ['FIELD_ADMIN', 'PLAYER'] }
       },
       {
         path: 'field/form',
         loadComponent: () =>
-          import('./features/field/components/field-form/field-form.component')
-            .then(m => m.FieldFormComponent),
+          import('./features/field/components/field-form/field-form.component').then(
+            m => m.FieldFormComponent
+          ),
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
         path: 'field/form/:id',
         loadComponent: () =>
-          import('./features/field/components/field-form/field-form.component')
-            .then(m => m.FieldFormComponent),
+          import('./features/field/components/field-form/field-form.component').then(
+            m => m.FieldFormComponent
+          ),
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
         path: 'reservation/list',
         loadComponent: () =>
-          import('./features/reservation/pages/reservation-list/reservation-list.component')
-            .then(m => m.ReservationListComponent),
+          import('./features/reservation/pages/reservation-list/reservation-list.component').then(
+            m => m.ReservationListComponent
+          ),
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       },
       {
         path: 'reservation/calendar',
         loadComponent: () =>
-          import('./features/reservation/pages/calendar/calendar.component')
-            .then(m => m.CalendarComponent),
+          import(
+            './features/reservation/pages/reservation-calendar/reservation-calendar.component'
+          ).then(m => m.ReservationCalendarComponent),
         data: { roles: ['FIELD_ADMIN'] }
       },
       {
         path: 'reservation/form/field/:id',
         loadComponent: () =>
-          import('./features/reservation/pages/reservation-form/reservation-form.component')
-            .then(m => m.ReservationFormComponent),
+          import('./features/reservation/pages/reservation-form/reservation-form.component').then(
+            m => m.ReservationFormComponent
+          ),
         data: { roles: ['PLAYER'] }
       },
       {
         path: 'player/list',
         loadComponent: () =>
-          import('./features/user/components/player-list/player-list.component')
-            .then(m => m.PlayerListComponent),
+          import('./features/user/components/player-list/player-list.component').then(
+            m => m.PlayerListComponent
+          ),
         data: { roles: ['PLAYER'] }
       },
       {
         path: 'profile',
         loadComponent: () =>
-          import('./features/user/components/profile/profile.component')
-            .then(m => m.ProfileComponent),
+          import('./features/user/components/profile/profile.component').then(
+            m => m.ProfileComponent
+          ),
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       },
       {
         path: 'menu',
         loadComponent: () =>
-          import('./shared/components/menu/menu.component')
-            .then(m => m.MenuComponent),
+          import('./shared/components/menu/menu.component').then(m => m.MenuComponent),
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       }
     ]
@@ -98,4 +107,3 @@ export const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
   { path: '**', redirectTo: '' }
 ];
-
