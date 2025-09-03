@@ -5,21 +5,22 @@ import { AuthService } from '@core/services/auth.service';
 import { ReservationService } from '@features/reservation/services/reservation.service';
 import { User } from '@features/user/interfaces/user';
 import { Field } from '@field/interfaces/field';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-field-card',
   standalone: true,
-  imports: [ButtonActionComponent, RouterModule],
+  imports: [ButtonComponent, RouterModule, MoneyFormatPipe],
   templateUrl: './field-card.component.html',
   styleUrl: './field-card.component.scss'
 })
 export class FieldCardComponent implements OnInit {
-  private router = inject(Router);
-  private reservationService = inject(ReservationService);
-  private alertService = inject(AlertService);
-  private authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly reservationService = inject(ReservationService);
+  private readonly alertService = inject(AlertService);
+  private readonly authService = inject(AuthService);
 
   @Input() field!: Field;
 
@@ -48,12 +49,12 @@ export class FieldCardComponent implements OnInit {
 
   goToLogin(): void {
     this.closeModal();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   goToRegister(): void {
     this.closeModal();
-    this.router.navigate(['/register']);
+    this.router.navigate(['/auth/register']);
   }
 
   makeReservation(fieldId: number): void {

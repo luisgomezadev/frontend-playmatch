@@ -1,11 +1,11 @@
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { Field, Status } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { LoadingFieldComponent } from '@shared/components/loading/loading-field/loading-field.component';
 import { User, UserRole } from '@user/interfaces/user';
 import { FieldDetailCardComponent } from '../field-detail-card/field-detail-card.component';
@@ -18,7 +18,7 @@ import { LayoutComponent } from '@shared/components/layout/layout.component';
     CommonModule,
     RouterModule,
     FieldDetailCardComponent,
-    ButtonActionComponent,
+    ButtonComponent,
     LoadingFieldComponent,
     LayoutComponent
   ],
@@ -26,11 +26,10 @@ import { LayoutComponent } from '@shared/components/layout/layout.component';
   styleUrl: './field-detail.component.scss'
 })
 export class FieldDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private fieldService = inject(FieldService);
-  private authService = inject(AuthService);
-  private location = inject(Location);
-  private alertService = inject(AlertService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly fieldService = inject(FieldService);
+  private readonly authService = inject(AuthService);
+  private readonly alertService = inject(AlertService);
 
   user!: User;
   field: Field | null = null;

@@ -45,13 +45,13 @@ export const LINKS_DASHBOARD = [
     name: "Reservas",
     link: "reservation/list",
     role: "PLAYER",
-    iconClass: "fa-solid fa-calendar",
+    iconClass: "fa-solid fa-list",
     viewMovil: true,
     viewDesktop: true
   },
   {
     name: "Ver jugadores",
-    link: "player/list",
+    link: "players",
     role: "PLAYER",
     iconClass: "fa-solid fa-user-group",
     viewMovil: true,

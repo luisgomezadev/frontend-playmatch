@@ -16,8 +16,11 @@ import {
   StatusReservation
 } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { PAGE_SIZE_RESERVATIONS } from '@shared/constants/app.constants';
 import { User, UserRole } from '@user/interfaces/user';
 
 @Component({
@@ -27,17 +30,18 @@ import { User, UserRole } from '@user/interfaces/user';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    ButtonActionComponent,
+    ButtonComponent,
     LoadingReservationCardComponent,
     FormsModule,
     ReservationCardComponent,
-    ReservationFilterComponent
+    ReservationFilterComponent,
+    LayoutComponent,
+    PaginationComponent
   ],
   templateUrl: './reservation-list.component.html',
   styleUrls: ['./reservation-list.component.scss']
 })
 export class ReservationListComponent implements OnInit {
-
   // --- Public properties ---
   reservationList!: PagedResponse<Reservation>;
   formFilter!: FormGroup;
@@ -46,7 +50,7 @@ export class ReservationListComponent implements OnInit {
   loading = false;
   placeholders = Array(6);
   currentPage = 0;
-  pageSize = 9;
+  pageSize = PAGE_SIZE_RESERVATIONS;
   field!: Field;
   reservationBy!: 'user' | 'field';
   filters: ReservationFilter = {};
@@ -55,12 +59,12 @@ export class ReservationListComponent implements OnInit {
   StatusReservation = StatusReservation;
 
   // --- Inyecciones ---
-  private reservationService = inject(ReservationService);
-  private fieldService = inject(FieldService);
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private fb = inject(FormBuilder);
-  private alertService = inject(AlertService);
+  private readonly reservationService = inject(ReservationService);
+  private readonly fieldService = inject(FieldService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+  private readonly alertService = inject(AlertService);
 
   // --- Ciclo de vida ---
   ngOnInit(): void {

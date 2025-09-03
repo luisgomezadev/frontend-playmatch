@@ -8,7 +8,7 @@ import { FieldService } from '@field/services/field.service';
 import { ReservationCardComponent } from '@reservation/components/reservation-card/reservation-card.component';
 import { Reservation } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
 import { User, UserRole } from '@user/interfaces/user';
@@ -20,7 +20,7 @@ import { User, UserRole } from '@user/interfaces/user';
     RouterModule,
     ReservationCardComponent,
     CommonModule,
-    ButtonActionComponent,
+    ButtonComponent,
     LoadingReservationCardComponent,
     LayoutComponent,
     CountReservationCardComponent
@@ -29,9 +29,9 @@ import { User, UserRole } from '@user/interfaces/user';
   styleUrl: './home-admin.component.scss'
 })
 export class HomeAdminComponent implements OnInit {
-  private authService = inject(AuthService);
-  private fieldService = inject(FieldService);
-  private reservationService = inject(ReservationService);
+  private readonly authService = inject(AuthService);
+  private readonly fieldService = inject(FieldService);
+  private readonly reservationService = inject(ReservationService);
 
   user!: User;
   fullName = '';

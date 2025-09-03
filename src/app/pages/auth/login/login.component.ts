@@ -4,21 +4,20 @@ import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { AsideAuthComponent } from '@shared/components/aside-auth/aside-auth.component';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent, ButtonActionComponent],
+  imports: [ReactiveFormsModule, RouterModule, ButtonComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private alertService = inject(AlertService);
-  private router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly alertService = inject(AlertService);
+  private readonly router = inject(Router);
 
   loginForm: FormGroup;
   loading = false;

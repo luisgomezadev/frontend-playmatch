@@ -8,19 +8,13 @@
             Llena la siguiente información para programar una nueva reserva.
           </p>
         </div>
-        <app-button-action
-          text="Volver"
-          icon="fa-solid fa-arrow-left"
-          [hasIcon]="true"
-          color="transparent"
-          (clicked)="goBack()"></app-button-action>
+        <app-button text="Volver" icon="fa-solid fa-arrow-left" [hasIcon]="true" color="transparent"
+          (clicked)="goBack()"></app-button>
       </div>
     </header>
     <div class="grid grid-cols-1 md:grid-cols-5 gap-6 w-full">
       <!-- Columna 1: Formulario -->
-      <article
-        class="bg-white p-6 rounded-md shadow-md space-y-6 w-full col-span-2"
-        [formGroup]="formReservation">
+      <article class="bg-white p-6 rounded-md shadow-md space-y-6 w-full col-span-2" [formGroup]="formReservation">
         <h2 class="text-xl font-medium text-gray-800">Formulario de reserva</h2>
 
         <div class="mb-4">
@@ -28,17 +22,13 @@
             Fecha de reserva
             <span class="text-red-500">*</span>
           </label>
-          <input
-            id="reservationDate"
-            type="date"
-            formControlName="reservationDate"
-            [min]="today"
+          <input id="reservationDate" type="date" formControlName="reservationDate" [min]="today"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
           @if (
-            formReservation.get('reservationDate')?.invalid &&
-            formReservation.get('reservationDate')?.touched
+          formReservation.get('reservationDate')?.invalid &&
+          formReservation.get('reservationDate')?.touched
           ) {
-            <div class="text-red-500 text-sm">La fecha es requerida y debe ser hoy o futura.</div>
+          <div class="text-red-500 text-sm">La fecha es requerida y debe ser hoy o futura.</div>
           }
         </div>
         <div class="mb-4">
@@ -47,34 +37,27 @@
             <span class="text-red-500">*</span>
           </label>
           <div class="flex gap-2">
-            <select
-              id="hour"
-              formControlName="hour"
+            <select id="hour" formControlName="hour"
               class="flex-1 px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
               <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
             </select>
 
-            <select
-              formControlName="ampm"
+            <select formControlName="ampm"
               class="w-20 px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
               <option value="AM">AM</option>
               <option value="PM">PM</option>
             </select>
           </div>
-          <div
-            *ngIf="
+          <div *ngIf="
               (formReservation.get('hour')?.invalid && formReservation.get('hour')?.touched) ||
               (formReservation.get('ampm')?.invalid && formReservation.get('ampm')?.touched)
-            "
-            class="text-red-500 text-sm mt-1">
+            " class="text-red-500 text-sm mt-1">
             La hora es requerida.
           </div>
         </div>
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1" for="hours">Horas de reserva</label>
-          <select
-            id="hours"
-            formControlName="hours"
+          <select id="hours" formControlName="hours"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
             <option value="" disabled selected>Seleccione una opción</option>
             <option value="1">1 hora</option>
@@ -83,16 +66,13 @@
           </select>
 
           @if (formReservation.get('hours')?.invalid && formReservation.get('hours')?.touched) {
-            <div class="text-red-500 text-sm">Seleccione una opción válida (1-3).</div>
+          <div class="text-red-500 text-sm">Seleccione una opción válida (1-3).</div>
           }
         </div>
 
         <div class="md:flex md:justify-end">
-          <app-button-action
-            text="Verificar disponibilidad"
-            color="primary"
-            [loading]="loading"
-            (clicked)="verifyReservation()"></app-button-action>
+          <app-button text="Verificar disponibilidad" color="primary" [loading]="loading"
+            (clicked)="verifyReservation()"></app-button>
         </div>
       </article>
 
@@ -102,52 +82,43 @@
     </div>
   </div>
 </section>
-<app-modal
-  [open]="isOpen()"
-  (closed)="onClosed()"
-  [title]="'Resumen de reserva'">
+<app-modal [open]="isOpen()" (closed)="onClosed()" [title]="'Resumen de reserva'">
   @if (confirmedReservation) {
-    <div class="space-y-6 text-gray-700">
-      <div>
-        <i class="fa-solid fa-futbol text-primary"></i>
-        <span class="font-medium">Cancha:</span>
-        {{ confirmedReservation.field?.name }}
-      </div>
-      <div>
-        <i class="fa-regular fa-calendar text-primary"></i>
-        <span class="font-medium">Fecha:</span>
-        {{ confirmedReservation.reservationDate }}
-      </div>
-      <div>
-        <i class="fa-regular fa-clock text-primary"></i>
-        <span class="font-medium">Hora inicio:</span>
-        {{ confirmedReservation.startTime | timeFormat }}
-      </div>
-      <div>
-        <i class="fa-regular fa-clock text-primary"></i>
-        <span class="font-medium">Hora fin:</span>
-        {{ confirmedReservation.endTime | timeFormat }}
-      </div>
-      <div>
-        <i class="fa-solid fa-hourglass-half text-primary"></i>
-        <span class="font-medium">Duración:</span>
-        {{ confirmedReservation.hours }} hora(s)
-      </div>
+  <div class="space-y-6 text-gray-700">
+    <div>
+      <i class="fa-solid fa-futbol text-primary"></i>
+      <span class="font-medium">Cancha:</span>
+      {{ confirmedReservation.field?.name }}
     </div>
+    <div>
+      <i class="fa-regular fa-calendar text-primary"></i>
+      <span class="font-medium">Fecha:</span>
+      {{ confirmedReservation.reservationDate }}
+    </div>
+    <div>
+      <i class="fa-regular fa-clock text-primary"></i>
+      <span class="font-medium">Hora inicio:</span>
+      {{ confirmedReservation.startTime | timeFormat }}
+    </div>
+    <div>
+      <i class="fa-regular fa-clock text-primary"></i>
+      <span class="font-medium">Hora fin:</span>
+      {{ confirmedReservation.endTime | timeFormat }}
+    </div>
+    <div>
+      <i class="fa-solid fa-hourglass-half text-primary"></i>
+      <span class="font-medium">Duración:</span>
+      {{ confirmedReservation.hours }} hora(s)
+    </div>
+  </div>
   }
 
   <div class="pt-6 flex gap-3">
-    <app-button-action
-      text="Confirmar reserva"
-      color="blue"
-      (clicked)="confirmReservation()"></app-button-action>
-    <app-button-action
-      text="Cancelar"
-      color="red"
-      (clicked)="cancelReservation()"></app-button-action>
+    <app-button text="Confirmar reserva" color="blue" (clicked)="confirmReservation()"></app-button>
+    <app-button text="Cancelar" color="red" (clicked)="cancelReservation()"></app-button>
   </div>
 </app-modal>
 
 @if (loadingReservation) {
-  <app-loading-full-component text="Creando reserva, espere un momento..." />
+<app-loading-full-component text="Creando reserva, espere un momento..." />
 }

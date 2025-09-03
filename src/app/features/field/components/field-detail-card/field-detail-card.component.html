@@ -1,37 +1,49 @@
-@if (field) {
-  <div class="space-y-6 w-full">
-    <div class="flex items-center justify-between gap-x-3">
-      <h2 class="text-xl font-medium text-gray-800">Información de la cancha</h2>
+@if (field)
+{
+<section class="space-y-6 w-full">
+  <header class="flex items-center justify-between gap-x-3">
+    <h2 class="text-xl font-medium text-gray-800">
+      Información de la cancha
+    </h2>
+  </header>
+
+  <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <div class="bg-gray-100 py-2 px-3 rounded-md md:col-span-2">
+      <dt class="text-gray-700 italic text-sm">Nombre</dt>
+      <dd class="text-base">{{ field.name }}</dd>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="bg-gray-100 py-2 px-3 rounded-md md:col-span-2">
-        <h3 class="text-gray-700 italic text-sm">Nombre</h3>
-        <p class="text-base">{{ field.name }}</p>
-      </div>
-      <div class="bg-gray-100 py-2 px-3 rounded-md">
-        <h3 class="text-gray-700 italic text-sm">Ciudad</h3>
-        <p class="text-base">{{ field.city }}</p>
-      </div>
-      <div class="bg-gray-100 py-2 px-3 rounded-md">
-        <h3 class="text-gray-700 italic text-sm">Dirección</h3>
-        <p class="text-base">{{ field.address }}</p>
-      </div>
-      <div class="bg-gray-100 py-2 px-3 rounded-md">
-        <h3 class="text-gray-700 italic text-sm">Precio por hora</h3>
-        <p class="text-base">{{ field.hourlyRate | moneyFormat }}</p>
-      </div>
-      <div class="bg-gray-100 py-2 px-3 rounded-md">
-        <h3 class="text-gray-700 italic text-sm">Hora de apertura</h3>
-        <p class="text-base">{{ field.openingHour | timeFormat }}</p>
-      </div>
-      <div class="bg-gray-100 py-2 px-3 rounded-md">
-        <h3 class="text-gray-700 italic text-sm">Hora de cierre</h3>
-        <p class="text-base">{{ field.closingHour | timeFormat }}</p>
-      </div>
-      <div class="bg-gray-100 py-2 px-3 rounded-md">
-        <h3 class="text-gray-700 italic text-sm">Estado</h3>
-        <p class="text-base">{{ field.status | statusDescription }}</p>
-      </div>
+
+    <div class="bg-gray-100 py-2 px-3 rounded-md">
+      <dt class="text-gray-700 italic text-sm">Ciudad</dt>
+      <dd class="text-base">{{ field.city }}</dd>
     </div>
-  </div>
+
+    <div class="bg-gray-100 py-2 px-3 rounded-md">
+      <dt class="text-gray-700 italic text-sm">Dirección</dt>
+      <dd class="text-base">{{ field.address }}</dd>
+    </div>
+
+    <div class="bg-gray-100 py-2 px-3 rounded-md">
+      <dt class="text-gray-700 italic text-sm">Precio por hora</dt>
+      <dd class="text-base">{{ field.hourlyRate | moneyFormat }}</dd>
+    </div>
+
+    <div class="bg-gray-100 py-2 px-3 rounded-md">
+      <dt class="text-gray-700 italic text-sm">Hora de apertura</dt>
+      <dd class="text-base">{{ field.openingHour | timeFormat }}</dd>
+    </div>
+
+    <div class="bg-gray-100 py-2 px-3 rounded-md">
+      <dt class="text-gray-700 italic text-sm">Hora de cierre</dt>
+      <dd class="text-base">{{ field.closingHour | timeFormat }}</dd>
+    </div>
+
+    <div class="bg-gray-100 py-2 px-3 rounded-md">
+      <dt class="text-gray-700 italic text-sm">Estado</dt>
+      <dd class="text-base">{{ field.status | statusDescription }}</dd>
+    </div>
+
+  </dl>
+</section>
 }

@@ -1,8 +1,7 @@
 <div class="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm transition-all">
   <div
-    class="bg-white w-full sm:w-96 h-full shadow-2xl transform translate-x-0 transition-transform duration-300 animate-slide-in-right overflow-y-auto p-6 relative">
-    <button
-      (click)="closeModalFilters()"
+    class="bg-white w-full sm:w-96 h-full shadow-2xl transform transition-transform duration-300 animate-slide-in-right overflow-y-auto p-6 relative">
+    <button (click)="closeModalFilters()"
       class="absolute top-6 right-6 h-8 w-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-100 cursor-pointer transition-colors"
       aria-label="Cerrar modal">
       <i class="fa-solid fa-xmark"></i>
@@ -13,72 +12,71 @@
       Filtros
     </h2>
     <hr class="mb-4 bg-gray-300" />
-    <form [formGroup]="formFilter" (submit)="submitFilter()" class="flex flex-col w-full gap-y-6">
+
+    <form [formGroup]="formFilter" (ngSubmit)="submitFilter()" class="flex flex-col w-full gap-y-6">
+
+      <!-- Fecha de reserva -->
       <div>
-        <label for="reservationDate" class="text-base mb-1">Fecha de reserva</label>
-        <input
-          type="date"
-          formControlName="reservationDate"
-          placeholder="Fecha de reserva"
+        <label for="reservationDate" class="text-base mb-1 block">Fecha de reserva</label>
+        <input id="reservationDate" type="date" formControlName="reservationDate" placeholder="Fecha de reserva"
           class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
       </div>
+
+      <!-- Estado -->
       <div>
-        <label for="status" class="text-base block mb-1">Estado</label>
+        <span class="text-base block mb-1">Estado</span>
         <div class="grid grid-cols-2 gap-2">
-          <label
-            class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
-            [class.bg-transparent]="formFilter.get('status')?.value === ''"
-            [class.text-primary]="formFilter.get('status')?.value === ''"
-            [class.border-primary]="formFilter.get('status')?.value === ''">
-            <input type="radio" formControlName="status" value="" class="hidden" />
+
+          <!-- Opción: Todas -->
+          <input id="statusAll" type="radio" formControlName="status" value="" class="hidden" />
+          <label for="statusAll" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center" [ngClass]="{
+              'bg-transparent text-primary border-primary': formFilter.get('status')?.value === '',
+              'bg-white text-gray-600 border-gray-300': formFilter.get('status')?.value !== ''
+            }">
             Todas
           </label>
 
-          <label
-            class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
-            [class.bg-transparent]="formFilter.get('status')?.value === 'ACTIVE'"
-            [class.text-primary]="formFilter.get('status')?.value === 'ACTIVE'"
-            [class.border-primary]="formFilter.get('status')?.value === 'ACTIVE'">
-            <input type="radio" formControlName="status" value="ACTIVE" class="hidden" />
+          <!-- Opción: Activa -->
+          <input id="statusActive" type="radio" formControlName="status" value="ACTIVE" class="hidden" />
+          <label for="statusActive" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center" [ngClass]="{
+              'bg-transparent text-primary border-primary': formFilter.get('status')?.value === 'ACTIVE',
+              'bg-white text-gray-600 border-gray-300': formFilter.get('status')?.value !== 'ACTIVE'
+            }">
             Activa
           </label>
 
-          <label
-            class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
-            [class.bg-transparent]="formFilter.get('status')?.value === 'CANCELED'"
-            [class.text-primary]="formFilter.get('status')?.value === 'CANCELED'"
-            [class.border-primary]="formFilter.get('status')?.value === 'CANCELED'">
-            <input type="radio" formControlName="status" value="CANCELED" class="hidden" />
+          <!-- Opción: Cancelada -->
+          <input id="statusCanceled" type="radio" formControlName="status" value="CANCELED" class="hidden" />
+          <label for="statusCanceled" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
+            [ngClass]="{
+              'bg-transparent text-primary border-primary': formFilter.get('status')?.value === 'CANCELED',
+              'bg-white text-gray-600 border-gray-300': formFilter.get('status')?.value !== 'CANCELED'
+            }">
             Cancelada
           </label>
 
-          <label
-            class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
-            [class.bg-transparent]="formFilter.get('status')?.value === 'FINISHED'"
-            [class.text-primary]="formFilter.get('status')?.value === 'FINISHED'"
-            [class.border-primary]="formFilter.get('status')?.value === 'FINISHED'">
-            <input type="radio" formControlName="status" value="FINISHED" class="hidden" />
+          <!-- Opción: Finalizada -->
+          <input id="statusFinished" type="radio" formControlName="status" value="FINISHED" class="hidden" />
+          <label for="statusFinished" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
+            [ngClass]="{
+              'bg-transparent text-primary border-primary': formFilter.get('status')?.value === 'FINISHED',
+              'bg-white text-gray-600 border-gray-300': formFilter.get('status')?.value !== 'FINISHED'
+            }">
             Finalizada
           </label>
+
         </div>
       </div>
 
+      <!-- Botones -->
       <div class="flex justify-end items-center gap-2 pt-3 border-t-2 border-gray-200">
-        <app-button-action
-          text="Limpiar"
-          icon="fa-solid fa-eraser"
-          [hasIcon]="true"
-          color="red"
-          (clicked)="clean()"
-          title="Limpiar filtros"></app-button-action>
+        <app-button text="Limpiar" icon="fa-solid fa-eraser" [hasIcon]="true" color="red" (clicked)="clean()"
+          title="Limpiar filtros">
+        </app-button>
 
-        <app-button-action
-          text="Buscar"
-          type="submit"
-          icon="fa-solid fa-search"
-          [hasIcon]="true"
-          color="primary"
-          title="Buscar reservas"></app-button-action>
+        <app-button text="Buscar" type="submit" icon="fa-solid fa-search" [hasIcon]="true" color="primary"
+          title="Buscar reservas">
+        </app-button>
       </div>
     </form>
   </div>

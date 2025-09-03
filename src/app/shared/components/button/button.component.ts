@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-button-action',
+  selector: 'app-button',
   standalone: true,
   imports: [RouterModule],
   template: `
@@ -50,7 +50,7 @@ import { RouterModule } from '@angular/router';
     </button>
   `
 })
-export class ButtonActionComponent {
+export class ButtonComponent {
   @Input() text = 'Botón';
   @Input() color: 'black' | 'red' | 'primary' | 'blue' | 'yellow' | 'transparent' = 'black';
   @Input() routerLink: string[] | null = null;
@@ -71,7 +71,7 @@ export class ButtonActionComponent {
 
   get classes(): string {
     let base =
-      'font-medium shadow transition-shadow duration-300 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 md:px-4 md:py-2 px-2 py-1 z-10 relative';
+      'shadow transition-shadow duration-300 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 px-4 py-2 z-10 relative';
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
     if (!this.disabled && this.color != 'transparent') base += ' hover:shadow';
     else base += ' text-sm w-full';
@@ -81,7 +81,7 @@ export class ButtonActionComponent {
       primary: 'bg-gray-200 text-green-800 hover:shadow-green-600',
       blue: 'bg-gray-200 text-blue-600 hover:shadow-blue-600',
       yellow: 'bg-gray-200 text-yellow-500 hover:shadow-yellow-600',
-      transparent: 'bg-transparent text-black shadow-none'
+      transparent: 'bg-transparent text-black shadow-none hover:bg-gray-100'
     };
     return `${styles[this.color]} ${base}`;
   }

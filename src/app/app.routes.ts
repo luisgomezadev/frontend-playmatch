@@ -7,8 +7,20 @@ import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  {
+    path: 'auth',
+    loadComponent: () => import('./pages/auth/auth.component').then(m => m.AuthComponent),
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'register',
+        component: RegisterComponent
+      }
+    ]
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -81,19 +93,15 @@ export const routes: Routes = [
         data: { roles: ['PLAYER'] }
       },
       {
-        path: 'player/list',
+        path: 'players',
         loadComponent: () =>
-          import('./features/user/components/player-list/player-list.component').then(
-            m => m.PlayerListComponent
-          ),
+          import('./features/user/pages/players/players.component').then(m => m.PlayersComponent),
         data: { roles: ['PLAYER'] }
       },
       {
         path: 'profile',
         loadComponent: () =>
-          import('./features/user/components/profile/profile.component').then(
-            m => m.ProfileComponent
-          ),
+          import('./features/user/pages/profile/profile.component').then(m => m.ProfileComponent),
         data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
       },
       {

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FieldService extends BaseHttpService {
-  private url = this.apiUrl + '/field';
+  private readonly url = this.apiUrl + '/field';
 
   getFields(): Observable<PagedResponse<Field>> {
     return this.http.get<PagedResponse<Field>>(`${this.url}`);

@@ -15,9 +15,9 @@ import { AlertService } from '../../../core/services/alert.service';
 })
 export class MenuComponent implements OnInit {
 
-  private authService = inject(AuthService);
-  private alertService = inject(AlertService);
-  private router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly alertService = inject(AlertService);
+  private readonly router = inject(Router);
 
   role = '';
   links: Link[] = [];

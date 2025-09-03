@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ReservationService extends BaseHttpService {
-  private url = this.apiUrl + '/reservation';
+  private readonly url = this.apiUrl + '/reservation';
 
   getReservationsByFieldId(fieldId: number): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(`${this.url}/field/${fieldId}`);

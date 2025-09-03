@@ -5,25 +5,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { FieldService } from '@field/services/field.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { User } from '@user/interfaces/user';
 
 @Component({
   selector: 'app-field-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonActionComponent, LoadingComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, LoadingComponent],
   templateUrl: './field-form.component.html',
   styleUrl: './field-form.component.scss'
 })
 export class FieldFormComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private fieldService = inject(FieldService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private authService = inject(AuthService);
-  private location = inject(Location);
-  private alertService = inject(AlertService);
+  private readonly fb = inject(FormBuilder);
+  private readonly fieldService = inject(FieldService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  private readonly location = inject(Location);
+  private readonly alertService = inject(AlertService);
 
   fieldForm: FormGroup;
   loading = false;

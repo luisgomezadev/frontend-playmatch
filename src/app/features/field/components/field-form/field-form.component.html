@@ -4,117 +4,85 @@
       <div>
         <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">
           {{
-            editing ? 'Editar cancha' : 'Registrar'
+          editing ? 'Editar cancha' : 'Registrar'
           }}
         </h1>
         <p class="text-gray-600 mt-1 text-base">
           {{ editing ? 'Actualiza los datos de tu cancha' : 'Ingresa la información de tu cancha' }}
         </p>
       </div>
-      <app-button-action
-        text="Volver"
-        color="transparent"
-        icon="fa-solid fa-arrow-left"
-        [hasIcon]="true"
-        (clicked)="goBack()"></app-button-action>
+      <app-button text="Volver" color="transparent" icon="fa-solid fa-arrow-left" [hasIcon]="true"
+        (clicked)="goBack()"></app-button>
     </header>
     @if (loadingForm) {
-      <loading-component text="Cargando información de la cancha" />
+    <app-loading-component text="Cargando información de la cancha" />
     } @else {
-      <form [formGroup]="fieldForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <form [formGroup]="fieldForm" (ngSubmit)="onSubmit()" class="space-y-6">
+      <div>
+        <label class="block text-gray-700 font-medium mb-1" for="name">Nombre</label>
+        <input id="name" formControlName="name" type="text" placeholder="Ingrese el nombre de la cancha"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
+          required />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-gray-700 font-medium mb-1" for="name">Nombre</label>
-          <input
-            id="name"
-            formControlName="name"
-            type="text"
-            placeholder="Ingrese el nombre de la cancha"
+          <label class="block text-gray-700 font-medium mb-1" for="city">Ciudad</label>
+          <input id="city" formControlName="city" type="text" placeholder="Ingrese la ciudad"
             class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
             required />
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-gray-700 font-medium mb-1" for="city">Ciudad</label>
-            <input
-              id="city"
-              formControlName="city"
-              type="text"
-              placeholder="Ingrese la ciudad"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-              required />
-          </div>
-          <div>
-            <label class="block text-gray-700 font-medium mb-1" for="address">Dirección</label>
-            <input
-              id="address"
-              formControlName="address"
-              type="text"
-              placeholder="Ingrese la dirección de la cancha"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-              required />
-          </div>
+        <div>
+          <label class="block text-gray-700 font-medium mb-1" for="address">Dirección</label>
+          <input id="address" formControlName="address" type="text" placeholder="Ingrese la dirección de la cancha"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
+            required />
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label class="block text-gray-700 font-medium mb-1" for="hourlyRate">
-              Precio por hora
-            </label>
-            <input
-              id="hourlyRate"
-              formControlName="hourlyRate"
-              type="number"
-              step="1"
-              min="0"
-              placeholder="Ingrese el precio por hora"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-              required />
-          </div>
-          <div>
-            <label class="block text-gray-700 font-medium mb-1" for="openingHour">
-              Hora de apertura
-            </label>
-            <input
-              id="openingHour"
-              formControlName="openingHour"
-              type="time"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-              required />
-          </div>
-          <div>
-            <label class="block text-gray-700 font-medium mb-1" for="closingHour">
-              Hora de cierre
-            </label>
-            <input
-              id="closingHour"
-              formControlName="closingHour"
-              type="time"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-              required />
-          </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-gray-700 font-medium mb-1" for="hourlyRate">
+            Precio por hora
+          </label>
+          <input id="hourlyRate" formControlName="hourlyRate" type="number" step="1" min="0"
+            placeholder="Ingrese el precio por hora"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
+            required />
         </div>
-        @if (editing) {
-          <div>
-            <label class="block text-gray-700 font-medium mb-1" for="status">Estado</label>
-            <select
-              id="status"
-              formControlName="status"
-              class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
-              required>
-              @for (status of statusOptions; track $index) {
-                <option [value]="status.value">{{ status.label }}</option>
-              }
-            </select>
-          </div>
-        }
+        <div>
+          <label class="block text-gray-700 font-medium mb-1" for="openingHour">
+            Hora de apertura
+          </label>
+          <input id="openingHour" formControlName="openingHour" type="time"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
+            required />
+        </div>
+        <div>
+          <label class="block text-gray-700 font-medium mb-1" for="closingHour">
+            Hora de cierre
+          </label>
+          <input id="closingHour" formControlName="closingHour" type="time"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
+            required />
+        </div>
+      </div>
+      @if (editing) {
+      <div>
+        <label class="block text-gray-700 font-medium mb-1" for="status">Estado</label>
+        <select id="status" formControlName="status"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
+          required>
+          @for (status of statusOptions; track $index) {
+          <option [value]="status.value">{{ status.label }}</option>
+          }
+        </select>
+      </div>
+      }
 
-        <div class="flex justify-end w-full">
-          <app-button-action
-            [text]="editing ? 'Actualizar cancha' : 'Registrar cancha'"
-            color="primary"
-            [loading]="loading"
-            type="submit"></app-button-action>
-        </div>
-      </form>
+      <div class="flex justify-end w-full">
+        <app-button [text]="editing ? 'Actualizar cancha' : 'Registrar cancha'" color="primary" [loading]="loading"
+          type="submit"></app-button>
+      </div>
+    </form>
     }
   </div>
 </section>

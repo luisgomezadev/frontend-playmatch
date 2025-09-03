@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { ReservationFilter } from '@reservation/interfaces/reservation';
 
 @Component({
   selector: 'app-reservation-filter',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonActionComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './reservation-filter.component.html',
   styleUrl: './reservation-filter.component.scss'
 })

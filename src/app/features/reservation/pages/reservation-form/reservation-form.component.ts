@@ -13,7 +13,7 @@ import {
   ReservationRequest,
 } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { LoadingFullComponent } from '@shared/components/loading/loading-full/loading-full.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
@@ -23,7 +23,7 @@ import { User } from '@user/interfaces/user';
   selector: 'app-reservation-form',
   standalone: true,
   imports: [
-    ButtonActionComponent,
+    ButtonComponent,
     RouterModule,
     ReactiveFormsModule,
     TimeFormatPipe,
@@ -36,14 +36,14 @@ import { User } from '@user/interfaces/user';
   styleUrl: './reservation-form.component.scss'
 })
 export class ReservationFormComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private location = inject(Location);
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private reservationService = inject(ReservationService);
-  private router = inject(Router);
-  private alertService = inject(AlertService);
-  private fieldService = inject(FieldService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly reservationService = inject(ReservationService);
+  private readonly router = inject(Router);
+  private readonly alertService = inject(AlertService);
+  private readonly fieldService = inject(FieldService);
 
   user!: User;
   fieldId!: number;

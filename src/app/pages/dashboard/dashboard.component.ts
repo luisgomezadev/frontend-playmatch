@@ -17,9 +17,9 @@ import { UserService } from '@user/services/user.service';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  private authService = inject(AuthService);
-  private userService = inject(UserService);
-  private alertService = inject(AlertService);
+  private readonly authService = inject(AuthService);
+  private readonly userService = inject(UserService);
+  private readonly alertService = inject(AlertService);
 
   userActive!: User;
   sidebarOpen = false;

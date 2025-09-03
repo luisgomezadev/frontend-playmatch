@@ -10,22 +10,21 @@ import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { AsideAuthComponent } from '@shared/components/aside-auth/aside-auth.component';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { REGEX_PATTERNS } from '@shared/utils/regex-utils';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, AsideAuthComponent, ButtonActionComponent],
+  imports: [ReactiveFormsModule, RouterModule, ButtonComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private fb = inject(FormBuilder);
-  private alertService = inject(AlertService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+  private readonly alertService = inject(AlertService);
 
   registerForm: FormGroup;
   loading = false;
@@ -99,7 +98,7 @@ export class RegisterComponent implements OnInit {
     const handleSuccess = () => {
       this.loading = false;
       this.alertService.success('Registro exitoso', 'Ahora puedes iniciar sesión');
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
     };
 
     const loginObservable = this.authService.registerUser(formData);

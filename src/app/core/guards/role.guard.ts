@@ -18,14 +18,14 @@ function checkRole(route: ActivatedRouteSnapshot): Observable<boolean> {
       if (!isAuth || !tokenRole || !allowedRoles.includes(tokenRole)) {
         authService.logout();
         alertService.error('Error', 'No estás autenticado o no tienes permisos para estar en esta vista');
-        router.navigate(['/login']);
+        router.navigate(['/auth/login']);
         return false;
       }
       return true;
     }),
     catchError(() => {
       authService.logout();
-      router.navigate(['/login']);
+      router.navigate(['/auth/login']);
       return of(false);
     })
   );

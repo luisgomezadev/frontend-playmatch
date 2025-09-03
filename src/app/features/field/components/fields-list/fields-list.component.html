@@ -1,4 +1,4 @@
-<section [ngClass]="user ? 'bg-gray-100' : 'bg-white pb-10'">
+<section [ngClass]="user ? 'bg-gray-100' : 'bg-white py-5'">
   <div class="space-y-6 px-3 py-4 md:p-6" [ngClass]="{ 'max-w-7xl mx-auto': !user }">
     <header>
       @if (showHeader) {
@@ -10,7 +10,7 @@
         </p>
       } @else {
         <div
-          class="w-full text-center border py-4 rounded-md shadow bg-gray-100 relative overflow-hidden">
+          class="w-full text-center border py-4 rounded-md shadow bg-gray-100 relative overflow-hidden mb-10">
           <h1 class="text-3xl font-medium text-gray-900 tracking-tight">Canchas disponibles</h1>
           <img
             src="/assets/ball.webp"
@@ -30,9 +30,9 @@
         </div>
       } @else {
         <div>
-          
+
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           @for (field of fields.content; track field.id) {
             <app-field-card [field]="field"></app-field-card>
           }

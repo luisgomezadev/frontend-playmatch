@@ -1,11 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-aside-auth-component',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
+<div class="bg-white rounded-md shadow-2xl w-full z-30 h-screen grid grid-cols-1 md:grid-cols-2">
+  <div class="h-full md:block hidden">
     <div class="bg-primary h-full flex-1 px-5 relative">
       <div class="flex justify-center items-center h-full flex-col">
         <img
@@ -61,6 +55,8 @@ import { Component } from '@angular/core';
         </svg>
       </div>
     </div>
-  `
-})
-export class AsideAuthComponent { }
+  </div>
+  <div>
+    <router-outlet />
+  </div>
+</div>

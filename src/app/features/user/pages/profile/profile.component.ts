@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { User, UserRole } from '@user/interfaces/user';
 import { UserService } from '@user/services/user.service';
@@ -9,15 +9,15 @@ import { UserService } from '@user/services/user.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ButtonActionComponent, ModalComponent],
+  imports: [ButtonComponent, ModalComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
 
-  private authService = inject(AuthService);
-  private userService = inject(UserService);
-  private alertService = inject(AlertService);
+  private readonly authService = inject(AuthService);
+  private readonly userService = inject(UserService);
+  private readonly alertService = inject(AlertService);
 
   user!: User;
   loading = false;

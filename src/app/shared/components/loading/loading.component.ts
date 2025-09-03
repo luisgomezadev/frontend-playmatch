@@ -1,29 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'loading-component',
+  selector: 'app-loading-component',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div
-      class="w-full flex flex-col items-center justify-center mt-5"
-    >
+    <div class="w-full flex flex-col items-center justify-center mt-5">
       <h1 class="text-2xl font-bold text-primary mb-4">PlayMatch</h1>
       <div
-        class="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"
-      ></div>
+        class="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"></div>
 
-      <h2 class="text-lg text-gray-700">
-        {{ text || 'Cargando...' }}{{ dots }}
-      </h2>
+      <h2 class="text-lg text-gray-700">{{ text || 'Cargando...' }}{{ dots }}</h2>
     </div>
-  `,
+  `
 })
-export class LoadingComponent {
-  @Input() text: string = 'Cargando';
-  dots: string = '';
-  private intervalId: any;
+export class LoadingComponent implements OnInit, OnDestroy {
+  @Input() text = 'Cargando';
+  dots = '';
+  private intervalId!: ReturnType<typeof setInterval>;
 
   ngOnInit(): void {
     let count = 0;

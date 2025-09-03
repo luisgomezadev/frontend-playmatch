@@ -24,11 +24,11 @@ import { User, UserRole } from '@user/interfaces/user';
   styleUrl: './fields-list.component.scss'
 })
 export class FieldsListComponent implements OnInit {
-  private fieldService = inject(FieldService);
-  private authService = inject(AuthService);
-  private route = inject(ActivatedRoute);
-  private location = inject(Location);
-  private fb = inject(FormBuilder);
+  private readonly fieldService = inject(FieldService);
+  private readonly authService = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
+  private readonly fb = inject(FormBuilder);
 
   @Input() showHeader = true;
   formFilter!: FormGroup;

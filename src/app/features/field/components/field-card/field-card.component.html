@@ -1,66 +1,62 @@
 <button
-  class="relative w-full h-48 rounded-lg overflow-hidden shadow-lg group"
-  (click)="makeReservation(field.id)"
-  aria-label="Reservar">
-  <img
-    src="/assets/cancha.webp"
-    alt="{{ field.name }}"
-    class="w-full h-full object-cover absolute inset-0" />
+  class="w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+  (click)="makeReservation(field.id)" aria-label="Reservar">
+  <!-- Imagen superior -->
+  <div class="relative w-full h-48">
+    <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-full object-cover" />
+  </div>
 
-  <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col justify-end p-4">
-    <div class="flex justify-between relative">
-      <div>
-        <h2 class="text-2xl font-medium text-white mb-1">{{ field.name }}</h2>
-        <p class="text-gray-200 mb-1 text-left">
-          <i class="fa-solid fa-location-dot"></i>
-          {{ field.city }}
-        </p>
-      </div>
-      <span
-        class="text-base font-medium text-primary bg-black/60 p-1 rounded-md absolute group-hover:bottom-0 -bottom-3 right-0 opacity-0 md:group-hover:opacity-100 transition-all duration-500">
-        Reservar
-        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-      </span>
+  <!-- Contenido inferior -->
+  <div class="p-4">
+    <!-- Precio -->
+    <div class="text-2xl font-bold text-gray-900 mb-1">
+      {{ field.hourlyRate | moneyFormat }} <span class="text-sm font-normal text-gray-600">/ hora</span>
     </div>
+
+    <!-- Nombre -->
+    <h2 class="text-md text-gray-800 truncate mb-1">{{ field.name }}</h2>
+
+    <!-- Ciudad -->
+    <p class="text-sm text-gray-500 mb-3">
+      <i class="fa-solid fa-location-dot mr-1"></i>
+      {{ field.city }}
+    </p>
+
+    <!-- Botón Reservar -->
+    <!-- <div class="flex justify-end">
+      <button
+        class="text-sm font-medium text-primary border border-primary px-3 py-1 rounded hover:bg-primary hover:text-white transition-colors"
+        (click)="makeReservation(field.id); $event.stopPropagation()">
+        Reservar <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+      </button>
+    </div> -->
   </div>
 </button>
 
 @if (showModal) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-3">
   <div
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-all px-3">
-    <div
-      class="bg-white w-full max-w-sm mx-auto rounded-md p-6 relative shadow-2xl animate__animated animate__fadeInUpBig text-center">
-      <button
-        (click)="closeModal()"
-        class="absolute top-2 right-4 h-8 w-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-100 cursor-pointer transition-colors"
-        aria-label="Cerrar modal">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <div class="absolute -top-12 bg-white rounded-full w-56 p-6 left-1/2 -translate-x-1/2">
-        <img
-          src="/assets/logo_sin_fondo.webp"
-          alt="Logo PlayMatch"
-          class="w-full h-full object-cover" />
-      </div>
-      <span class="text-gray-700 text-lg font-medium block mt-12 mb-4">
-        Debes iniciar sesión para poder reservar una cancha.
-      </span>
-      <div class="flex items-center justify-center mt-4 gap-4">
-        <app-button-action
-          text="Iniciar sesión"
-          icon="fa-solid fa-right-to-bracket"
-          color="black"
-          [hasIcon]="true"
-          class="mt-4 w-full"
-          (clicked)="goToLogin()"></app-button-action>
-        <app-button-action
-          text="Registrarse"
-          icon="fa-solid fa-user-plus"
-          color="primary"
-          [hasIcon]="true"
-          class="mt-4 w-full"
-          (clicked)="goToRegister()"></app-button-action>
-      </div>
+    class="bg-white w-full max-w-sm mx-auto rounded-md p-6 relative shadow-2xl animate__animated animate__fadeInUpBig text-center">
+    <button (click)="closeModal()"
+      class="absolute top-2 right-4 h-8 w-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-100 cursor-pointer transition-colors"
+      aria-label="Cerrar modal">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <div class="absolute -top-12 bg-white rounded-full w-56 p-6 left-1/2 -translate-x-1/2">
+      <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" class="w-full h-full object-cover" />
+    </div>
+
+    <span class="text-gray-700 text-lg font-medium block mt-12 mb-4">
+      Debes iniciar sesión para poder reservar una cancha.
+    </span>
+
+    <div class="flex items-center justify-center mt-4 gap-4">
+      <app-button text="Iniciar sesión" icon="fa-solid fa-right-to-bracket" color="black" [hasIcon]="true"
+        class="mt-4 w-full" (clicked)="goToLogin()"></app-button>
+      <app-button text="Crear cuenta" icon="fa-solid fa-user-plus" color="primary" [hasIcon]="true" class="mt-4 w-full"
+        (clicked)="goToRegister()"></app-button>
     </div>
   </div>
+</div>
 }

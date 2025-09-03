@@ -9,7 +9,7 @@ import { BaseHttpService } from '@shared/data-access/base-http.service';
   providedIn: 'root',
 })
 export class UserService extends BaseHttpService {
-  private url = this.apiUrl + '/user';
+  private readonly url = this.apiUrl + '/user';
 
   getUsers(page: number, size: number, role: UserRole): Observable<PagedResponse<User>> {
     const params = new HttpParams().set('page', page).set('size', size).set('role', role);

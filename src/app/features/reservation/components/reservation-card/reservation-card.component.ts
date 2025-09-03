@@ -5,7 +5,7 @@ import { AlertService } from '@core/services/alert.service';
 import { Field } from '@field/interfaces/field';
 import { Reservation, StatusReservation } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
-import { ButtonActionComponent } from '@shared/components/button-action/button-action.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { StatusReservationPipe } from '@shared/pipes/status-reservation.pipe';
@@ -19,7 +19,7 @@ import { User } from '@user/interfaces/user';
     CommonModule,
     StatusReservationPipe,
     TimeFormatPipe,
-    ButtonActionComponent,
+    ButtonComponent,
     MoneyFormatPipe,
     ModalComponent
   ],
@@ -27,8 +27,8 @@ import { User } from '@user/interfaces/user';
   styleUrl: './reservation-card.component.scss'
 })
 export class ReservationCardComponent {
-  private reservationService = inject(ReservationService);
-  private alertService = inject(AlertService);
+  private readonly reservationService = inject(ReservationService);
+  private readonly alertService = inject(AlertService);
 
   @Input() reservation!: Reservation;
   @Input() viewAsField = false;
@@ -174,5 +174,9 @@ export class ReservationCardComponent {
 
   getImageUrl(imageUrl: string): string {
     return imageUrl?.startsWith('http') ? imageUrl : '/assets/profile_icon.webp';
+  }
+
+  getUserName(r: Reservation) {
+    return r.user ? `${r.user.firstName} ${r.user.lastName}` : 'Sin jugador asignado';
   }
 }
