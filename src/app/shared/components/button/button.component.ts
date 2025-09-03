@@ -1,5 +1,14 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {
+  CLASSES_BUTTON,
+  STYLE_BLACK,
+  STYLE_BLUE,
+  STYLE_PRIMARY,
+  STYLE_RED,
+  STYLE_TRANSPARENT,
+  STYLE_YELLOW
+} from '@shared/constants/app.constants';
 
 @Component({
   selector: 'app-button',
@@ -70,18 +79,17 @@ export class ButtonComponent {
   }
 
   get classes(): string {
-    let base =
-      'shadow transition-shadow duration-300 ease-in-out rounded-md disabled:cursor-not-allowed disabled:opacity-50 px-4 py-2 z-10 relative';
+    let base = CLASSES_BUTTON;
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
     if (!this.disabled && this.color != 'transparent') base += ' hover:shadow';
     else base += ' text-sm w-full';
     const styles = {
-      black: 'bg-gray-200 text-black hover:shadow-gray-600',
-      red: 'bg-gray-200 text-red-600 hover:shadow-red-600',
-      primary: 'bg-gray-200 text-green-800 hover:shadow-green-600',
-      blue: 'bg-gray-200 text-blue-600 hover:shadow-blue-600',
-      yellow: 'bg-gray-200 text-yellow-500 hover:shadow-yellow-600',
-      transparent: 'bg-transparent text-black shadow-none hover:bg-gray-100'
+      black: STYLE_BLACK,
+      red: STYLE_RED,
+      primary: STYLE_PRIMARY,
+      blue: STYLE_BLUE,
+      yellow: STYLE_YELLOW,
+      transparent: STYLE_TRANSPARENT
     };
     return `${styles[this.color]} ${base}`;
   }
