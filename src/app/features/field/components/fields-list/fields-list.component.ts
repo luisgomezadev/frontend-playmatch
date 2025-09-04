@@ -7,7 +7,9 @@ import { AuthService } from '@core/services/auth.service';
 import { FieldCardComponent } from '@field/components/field-card/field-card.component';
 import { Field, FieldFilter } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { LoadingFieldListComponent } from '@shared/components/loading/loading-field-list/loading-field-list.component';
+import { PAGE_SIZE_FIELDS } from '@shared/constants/app.constants';
 import { User, UserRole } from '@user/interfaces/user';
 
 @Component({
@@ -18,7 +20,8 @@ import { User, UserRole } from '@user/interfaces/user';
     CommonModule,
     LoadingFieldListComponent,
     FieldCardComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ButtonComponent
   ],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss'
@@ -37,6 +40,8 @@ export class FieldsListComponent implements OnInit {
   user!: User;
   loading = false;
   showModal = false;
+  pageSize = PAGE_SIZE_FIELDS;
+  currentPage = 0;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -50,7 +55,7 @@ export class FieldsListComponent implements OnInit {
       }
     });
     this.initForm();
-    this.loadFields();
+    this.loadFields(0);
   }
 
   private initForm(): void {
@@ -61,9 +66,9 @@ export class FieldsListComponent implements OnInit {
     return user.role == UserRole.PLAYER;
   }
 
-  loadFields() {
+  loadFields(page: number): void {
     this.loading = true;
-    this.fieldService.getFields().subscribe({
+    this.fieldService.getFields(this.filters, page, this.pageSize).subscribe({
       next: data => {
         this.loading = false;
         this.fields = data;
@@ -90,6 +95,17 @@ export class FieldsListComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  applyFilters(): void {
+    this.filters = { ...this.formFilter.value };
+    this.loadFields(0);
+  }
+
+  clean(): void {
+    this.formFilter.reset();
+    this.filters = {};
+    this.loadFields(0);
   }
 
 }

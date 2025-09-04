@@ -23,7 +23,7 @@
             <span class="text-red-500">*</span>
           </label>
           <input id="reservationDate" type="date" formControlName="reservationDate" [min]="today"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+            class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
           @if (
           formReservation.get('reservationDate')?.invalid &&
           formReservation.get('reservationDate')?.touched
@@ -58,7 +58,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium mb-1" for="hours">Horas de reserva</label>
           <select id="hours" formControlName="hours"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
+            class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
             <option value="" disabled selected>Seleccione una opción</option>
             <option value="1">1 hora</option>
             <option value="2">2 horas</option>

@@ -142,7 +142,7 @@ export class ReservationListComponent implements OnInit {
   // --- Inicialización ---
   private initForm(): void {
     this.formFilter = this.fb.group({
-      reservationDate: [''],
+      date: [''],
       status: ['']
     });
   }
