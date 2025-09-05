@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
       @for (placeholder of placeholders; track $index) {
         <article class="space-y-6 p-4 border rounded-md shadow">
           <div class="relative overflow-hidden bg-gray-200 rounded h-40 w-full">
@@ -37,5 +37,5 @@ import { Component } from '@angular/core';
   `
 })
 export class LoadingFieldListComponent {
-  placeholders = Array(4);
+  placeholders = Array(5);
 }
