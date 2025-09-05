@@ -18,7 +18,7 @@
     </header>
     <div class="grid grid-cols-1 md:grid-cols-5 gap-6 w-full">
       <article
-        class="bg-white p-6 rounded-md shadow-md space-y-6 w-full col-span-2"
+        class="bg-white p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-2"
         [formGroup]="formReservation">
         <h2 class="text-xl font-medium tracking-wide text-gray-800">Formulario de reserva</h2>
 
@@ -97,7 +97,7 @@
         </div>
       </article>
 
-      <article class="bg-white p-6 rounded-md shadow-md space-y-6 w-full col-span-3">
+      <article class="bg-white p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-3">
         <app-field-detail-card [field]="field" />
       </article>
     </div>
