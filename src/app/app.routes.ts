@@ -4,6 +4,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { roleChildGuard, roleGuard } from './core/guards/role.guard';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
+import { authPagesGuard } from '@core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,11 +14,13 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [authPagesGuard]
       },
       {
         path: 'register',
-        component: RegisterComponent
+        component: RegisterComponent,
+        canActivate: [authPagesGuard]
       }
     ]
   },
@@ -39,7 +42,7 @@ export const routes: Routes = [
       {
         path: 'field',
         loadComponent: () =>
-          import('./features/field/components/field-detail/field-detail.component').then(
+          import('./features/field/pages/field-detail/field-detail.component').then(
             m => m.FieldDetailComponent
           ),
         data: { roles: ['FIELD_ADMIN'] }
@@ -47,7 +50,7 @@ export const routes: Routes = [
       {
         path: 'field/list',
         loadComponent: () =>
-          import('./features/field/components/fields-list/fields-list.component').then(
+          import('./features/field/pages/fields-list/fields-list.component').then(
             m => m.FieldsListComponent
           ),
         data: { roles: ['FIELD_ADMIN', 'PLAYER'] }
@@ -55,7 +58,7 @@ export const routes: Routes = [
       {
         path: 'field/form',
         loadComponent: () =>
-          import('./features/field/components/field-form/field-form.component').then(
+          import('./features/field/pages/field-form/field-form.component').then(
             m => m.FieldFormComponent
           ),
         data: { roles: ['FIELD_ADMIN'] }
@@ -63,7 +66,7 @@ export const routes: Routes = [
       {
         path: 'field/form/:id',
         loadComponent: () =>
-          import('./features/field/components/field-form/field-form.component').then(
+          import('./features/field/pages/field-form/field-form.component').then(
             m => m.FieldFormComponent
           ),
         data: { roles: ['FIELD_ADMIN'] }

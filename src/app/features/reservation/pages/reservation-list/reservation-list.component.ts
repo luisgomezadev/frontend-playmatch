@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
@@ -21,6 +21,7 @@ import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { PAGE_SIZE_RESERVATIONS } from '@shared/constants/app.constants';
+import { StatusReservationPipe } from '@shared/pipes/status-reservation.pipe';
 import { User, UserRole } from '@user/interfaces/user';
 
 @Component({
@@ -36,15 +37,23 @@ import { User, UserRole } from '@user/interfaces/user';
     ReservationCardComponent,
     ReservationFilterComponent,
     LayoutComponent,
-    PaginationComponent
+    PaginationComponent,
+    StatusReservationPipe
   ],
   templateUrl: './reservation-list.component.html',
   styleUrls: ['./reservation-list.component.scss']
 })
 export class ReservationListComponent implements OnInit {
-  // --- Public properties ---
+  private readonly reservationService = inject(ReservationService);
+  private readonly fieldService = inject(FieldService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly alertService = inject(AlertService);
+
   reservationList!: PagedResponse<Reservation>;
   formFilter!: FormGroup;
+  filters = signal<ReservationFilter>({});
   user!: User;
   showModalFilters = false;
   loading = false;
@@ -53,26 +62,37 @@ export class ReservationListComponent implements OnInit {
   pageSize = PAGE_SIZE_RESERVATIONS;
   field!: Field;
   reservationBy!: 'user' | 'field';
-  filters: ReservationFilter = {};
   selectedType: 'user' | 'field' | null = null;
 
   StatusReservation = StatusReservation;
 
-  // --- Inyecciones ---
-  private readonly reservationService = inject(ReservationService);
-  private readonly fieldService = inject(FieldService);
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
-  private readonly alertService = inject(AlertService);
-
-  // --- Ciclo de vida ---
   ngOnInit(): void {
     this.initForm();
     this.initUser();
   }
 
-  // --- Getters ---
+  // --- Inicialización ---
+  private initForm(): void {
+    this.formFilter = this.formBuilder.group({
+      date: [''],
+      status: ['']
+    });
+  }
+
+  private initUser(): void {
+    this.authService.currentUser$.subscribe(user => {
+      if (!user) return;
+      this.user = user;
+      if (user.role === UserRole.FIELD_ADMIN) {
+        this.reservationBy = 'field';
+        this.getField();
+      } else {
+        this.reservationBy = 'user';
+        this.setFiltersAndFetchReservations();
+      }
+    });
+  }
+
   get isFieldView(): boolean {
     return this.reservationBy === 'field';
   }
@@ -93,7 +113,6 @@ export class ReservationListComponent implements OnInit {
     return this.reservationList?.content?.some(r => r.status === StatusReservation.ACTIVE);
   }
 
-  // --- Acciones de usuario ---
   changePage(newPage: number): void {
     if (newPage >= 0 && newPage < this.reservationList.totalPages) {
       this.currentPage = newPage;
@@ -112,17 +131,19 @@ export class ReservationListComponent implements OnInit {
   }
 
   filter(formFilter: ReservationFilter): void {
-    const { date, status } = formFilter;
-    this.filters.date = date || undefined;
-    this.filters.status = status || undefined;
+    this.filters.set(formFilter);
     this.currentPage = 0;
     this.getReservations(0);
   }
 
   cleanFilter(): void {
-    this.formFilter.reset({ reservationDate: null, status: '' });
-    delete this.filters.date;
-    delete this.filters.status;
+    this.formFilter.reset({ date: null, status: '' });
+    this.filters.update(f => {
+      const copy = { ...f };
+      delete copy.date;
+      delete copy.status;
+      return copy;
+    });
     this.currentPage = 0;
     this.getReservations(0);
   }
@@ -139,32 +160,12 @@ export class ReservationListComponent implements OnInit {
     }
   }
 
-  // --- Inicialización ---
-  private initForm(): void {
-    this.formFilter = this.fb.group({
-      date: [''],
-      status: ['']
-    });
-  }
-
-  private initUser(): void {
-    this.authService.currentUser$.subscribe(user => {
-      if (!user) return;
-      this.user = user;
-      if (user.role === UserRole.FIELD_ADMIN) {
-        this.reservationBy = 'field';
-        this.getField();
-      } else {
-        this.reservationBy = 'user';
-        this.setFiltersAndFetchReservations();
-      }
-    });
-  }
-
   private setFiltersAndFetchReservations(): void {
-    this.filters = this.isReservationField()
-      ? { fieldId: this.field.id }
-      : { userId: this.user.id };
+    if (this.isReservationField()) {
+      this.filters.update(f => ({ ...f, fieldId: this.field.id }));
+    } else {
+      this.filters.update(f => ({ ...f, userId: this.user.id }));
+    }
     this.getReservations(0);
   }
 
@@ -185,7 +186,7 @@ export class ReservationListComponent implements OnInit {
 
   getReservations(page: number): void {
     this.loading = true;
-    this.reservationService.getReservationFiltered(this.filters, page, this.pageSize).subscribe({
+    this.reservationService.getReservationFiltered(this.filters(), page, this.pageSize).subscribe({
       next: data => {
         this.reservationList = data;
         this.loading = false;
@@ -194,7 +195,6 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
-  // --- Helpers ---
   private handleError(err: ErrorResponse): void {
     this.loading = false;
     this.alertService.error('Error', err.error?.message || 'Algo salió mal');

@@ -24,7 +24,7 @@ import { PAGE_SIZE_PLAYERS } from '@shared/constants/app.constants';
 export class PlayersComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly alertService = inject(AlertService);
-  private readonly fb = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
 
   role: UserRole = UserRole.PLAYER;
 
@@ -35,7 +35,7 @@ export class PlayersComponent implements OnInit {
   filterForm: FormGroup;
 
   constructor() {
-    this.filterForm = this.fb.group({
+    this.filterForm = this.formBuilder.group({
       name: [''],
       city: ['']
     });

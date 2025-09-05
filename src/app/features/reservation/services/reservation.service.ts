@@ -15,53 +15,53 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ReservationService extends BaseHttpService {
-  private readonly url = this.apiUrl + '/reservation';
+  private readonly ENDPOINT = this.apiUrl + '/reservation';
 
   getReservationsByFieldId(fieldId: number): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.url}/field/${fieldId}`);
+    return this.http.get<Reservation[]>(`${this.ENDPOINT}/field/${fieldId}`);
   }
 
   getReservationsByUserId(userId: number): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.url}/user/${userId}`);
+    return this.http.get<Reservation[]>(`${this.ENDPOINT}/user/${userId}`);
   }
 
   getReservationsByFieldAndStuts(
     fieldId: number,
     status: StatusReservation
   ): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.url}/field/${fieldId}/status/${status}`);
+    return this.http.get<Reservation[]>(`${this.ENDPOINT}/field/${fieldId}/status/${status}`);
   }
 
   getReservationById(id: number): Observable<Reservation> {
-    return this.http.get<Reservation>(`${this.url}/${id}`);
+    return this.http.get<Reservation>(`${this.ENDPOINT}/${id}`);
   }
 
   createReservation(reservation: ReservationRequest): Observable<Reservation> {
-    return this.http.post<Reservation>(`${this.url}`, reservation);
+    return this.http.post<Reservation>(`${this.ENDPOINT}`, reservation);
   }
 
   finalizeReservationById(id: number): Observable<string> {
-    return this.http.put<string>(`${this.url}/${id}/status/finalize`, null);
+    return this.http.put<string>(`${this.ENDPOINT}/${id}/status/finalize`, null);
   }
 
   canceledReservationById(id: number): Observable<string> {
-    return this.http.put<string>(`${this.url}/${id}/status/canceled`, null);
+    return this.http.put<string>(`${this.ENDPOINT}/${id}/status/canceled`, null);
   }
 
   getCountActiveByUser(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.url}/user/${userId}/active`);
+    return this.http.get<number>(`${this.ENDPOINT}/user/${userId}/active`);
   }
 
   getCountActiveByField(fieldId: number): Observable<number> {
-    return this.http.get<number>(`${this.url}/field/${fieldId}/active`);
+    return this.http.get<number>(`${this.ENDPOINT}/field/${fieldId}/active`);
   }
 
   getCountFinishedByField(fieldId: number): Observable<number> {
-    return this.http.get<number>(`${this.url}/field/${fieldId}/finished`);
+    return this.http.get<number>(`${this.ENDPOINT}/field/${fieldId}/finished`);
   }
 
   getCountCanceledByField(fieldId: number): Observable<number> {
-    return this.http.get<number>(`${this.url}/field/${fieldId}/canceled`);
+    return this.http.get<number>(`${this.ENDPOINT}/field/${fieldId}/canceled`);
   }
 
   getReservationFiltered(
@@ -85,14 +85,14 @@ export class ReservationService extends BaseHttpService {
     }
     params = params.set('page', page.toString());
     params = params.set('size', size.toString());
-    return this.http.get<PagedResponse<Reservation>>(`${this.url}/filter`, { params });
+    return this.http.get<PagedResponse<Reservation>>(`${this.ENDPOINT}/filter`, { params });
   }
 
   getReservationAvailability(reservation: ReservationRequest): Observable<ConfirmedReservation> {
-    return this.http.post<ConfirmedReservation>(`${this.url}/availability`, reservation);
+    return this.http.post<ConfirmedReservation>(`${this.ENDPOINT}/availability`, reservation);
   }
 
   getLastThreeReservationsByField(fieldId: number): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.url}/latest/${fieldId}`);
+    return this.http.get<Reservation[]>(`${this.ENDPOINT}/latest/${fieldId}`);
   }
 }

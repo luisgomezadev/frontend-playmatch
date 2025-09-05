@@ -38,7 +38,7 @@ import { User } from '@user/interfaces/user';
 export class ReservationFormComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly location = inject(Location);
-  private readonly fb = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly reservationService = inject(ReservationService);
   private readonly router = inject(Router);
@@ -76,7 +76,7 @@ export class ReservationFormComponent implements OnInit {
       }
     });
 
-    this.formReservation = this.fb.group({
+    this.formReservation = this.formBuilder.group({
       reservationDate: [this.today, Validators.required],
       hour: ['', Validators.required], // nuevo control para hora
       ampm: ['AM', Validators.required], // nuevo control para AM/PM

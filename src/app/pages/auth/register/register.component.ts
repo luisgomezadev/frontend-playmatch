@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -20,10 +20,10 @@ import { REGEX_PATTERNS } from '@shared/utils/regex-utils';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly fb = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
   private readonly alertService = inject(AlertService);
 
   registerForm: FormGroup;
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
   ];
 
   constructor() {
-    this.registerForm = this.fb.group(
+    this.registerForm = this.formBuilder.group(
       {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
@@ -57,10 +57,6 @@ export class RegisterComponent implements OnInit {
       },
       { validators: this.passwordMatchValidator }
     );
-  }
-
-  ngOnInit(): void {
-    this.authService.redirectIfAuthenticated();
   }
 
   goBack(): void {

@@ -8,7 +8,7 @@ import { FieldService } from '@field/services/field.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LoadingFieldComponent } from '@shared/components/loading/loading-field/loading-field.component';
 import { User, UserRole } from '@user/interfaces/user';
-import { FieldDetailCardComponent } from '../field-detail-card/field-detail-card.component';
+import { FieldDetailCardComponent } from '../../components/field-detail-card/field-detail-card.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 
 @Component({

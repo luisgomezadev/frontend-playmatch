@@ -1,90 +1,86 @@
 <article>
   <div class="hidden lg:block">
-    <div class="grid grid-cols-7 text-center font-medium bg-transparent rounded-t-lg">
+    <div class="grid grid-cols-7 text-center font-medium tracking-wide bg-transparent rounded-t-lg">
       @for (dayName of ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']; track $index) {
-        <div class="py-2">{{ dayName }}</div>
+      <div class="py-2">{{ dayName }}</div>
       }
     </div>
 
     <div class="grid grid-cols-7 gap-3">
       @for (day of calendarDays; track $index) {
-        <button
-          class="border border-gray-200 p-2 h-36 flex flex-col overflow-hidden rounded-xl cursor-pointer hover:bg-gray-100"
-          [ngClass]="{
+      <button
+        class="border border-gray-200 p-2 h-36 flex flex-col overflow-hidden rounded-xl cursor-pointer hover:bg-gray-100"
+        [ngClass]="{
             'bg-white': day.date.getMonth() === currentMonth,
             'grayscale opacity-30': day.date.getMonth() !== currentMonth
-          }"
-          [disabled]="day.date.getMonth() !== currentMonth"
-          (click)="openDayModal(day)">
-          <div class="text-sm font-bold">{{ day.date.getDate() }}</div>
-          <div class="mt-1 space-y-1 overflow-y-auto">
-            @for (res of day.reservations.slice(0, 2); track $index) {
-              <div
-                class="text-xs px-1 py-0.5 rounded truncate flex flex-col bg-green-200 text-green-800">
-                <span>{{ res.user.firstName }} {{ res.user.lastName }}</span>
-                <span>{{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}</span>
-              </div>
-            }
-            @if (day.reservations.length > 2) {
-              <div class="text-xs text-gray-500 italic">
-                {{ day.reservations.length - 2 }} más...
-              </div>
-            }
+          }" [disabled]="day.date.getMonth() !== currentMonth" (click)="openDayModal(day)">
+        <div class="text-sm font-bold">{{ day.date.getDate() }}</div>
+        <div class="mt-1 space-y-1 overflow-y-auto">
+          @for (res of day.reservations.slice(0, 2); track $index) {
+          <div class="text-xs px-1 py-0.5 rounded truncate flex flex-col bg-green-200 text-green-800">
+            <span>{{ res.user.firstName }} {{ res.user.lastName }}</span>
+            <span>{{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}</span>
           </div>
-        </button>
+          }
+          @if (day.reservations.length > 2) {
+          <div class="text-xs text-gray-500 italic">
+            {{ day.reservations.length - 2 }} más...
+          </div>
+          }
+        </div>
+      </button>
       }
     </div>
   </div>
 </article>
 
 @if (showModal) {
-  <div class="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm transition-all">
-    <div
-      class="bg-white w-full sm:w-[45rem] h-full shadow-2xl transform translate-x-0 transition-transform duration-300 animate-slide-in-right overflow-y-auto p-6 relative">
-      <button
-        (click)="closeDayModal()"
-        class="absolute top-6 right-6 h-8 w-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-100 cursor-pointer transition-colors"
-        aria-label="Cerrar modal">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+<div class="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm transition-all">
+  <div
+    class="bg-white w-full sm:w-[45rem] h-full shadow-2xl transform translate-x-0 transition-transform duration-300 animate-slide-in-right overflow-y-auto p-6 relative">
+    <button (click)="closeDayModal()"
+      class="absolute top-6 right-6 h-8 w-8 flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-100 cursor-pointer transition-colors"
+      aria-label="Cerrar modal">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
 
-      <h2 class="text-xl font-medium text-primary mb-4">
-        Reservas activas del día {{ selectedDate | date: 'shortDate' }}
-      </h2>
+    <h2 class="text-xl font-medium tracking-wide text-primary mb-4">
+      Reservas activas del día {{ selectedDate | date: 'shortDate' }}
+    </h2>
 
-      <hr class="mb-4 bg-gray-300" />
+    <hr class="mb-4 bg-gray-300" />
 
-      @if (selectedDayReservations.length) {
-        <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
-          @for (res of selectedDayReservations; track res.id) {
-            <article class="border bg-gray-100 border-gray-200 rounded-xl p-4 shadow-md transition">
-              <div class="flex items-center justify-between">
-                <div>
-                  <p class="text-lg font-semibold text-gray-800">
-                    {{ res.user.firstName }} {{ res.user.lastName }}
-                  </p>
-                  <p class="text-sm text-gray-500">{{ res.user.email }}</p>
-                  <p class="text-sm text-gray-500">{{ res.user.cellphone }}</p>
-                </div>
-                <span class="px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full">
-                  {{ res.hours }} hora(s)
-                </span>
-              </div>
-
-              <div class="mt-3 border-t pt-3">
-                <p class="text-sm">
-                  <span class="font-medium text-gray-700">Hora:</span>
-                  <span class="text-gray-800">
-                    {{ res.startTime | timeFormat }} a {{ res.endTime | timeFormat }}
-                  </span>
-                </p>
-              </div>
-            </article>
-          }
+    @if (selectedDayReservations.length) {
+    <div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+      @for (res of selectedDayReservations; track res.id) {
+      <article class="border bg-gray-100 border-gray-200 rounded-xl p-4 shadow-md transition">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-lg font-semibold text-gray-800">
+              {{ res.user.firstName }} {{ res.user.lastName }}
+            </p>
+            <p class="text-sm text-gray-500">{{ res.user.email }}</p>
+            <p class="text-sm text-gray-500">{{ res.user.cellphone }}</p>
+          </div>
+          <span class="px-3 py-1 text-xs font-medium tracking-wide bg-primary/10 text-primary rounded-full">
+            {{ res.hours }} hora(s)
+          </span>
         </div>
-      } @else {
-        <p class="text-gray-500">No hay reservas para este día.</p>
+
+        <div class="mt-3 border-t pt-3">
+          <p class="text-sm">
+            <span class="font-medium tracking-wide text-gray-700">Hora:</span>
+            <span class="text-gray-800">
+              {{ res.startTime | timeFormat }} a {{ res.endTime | timeFormat }}
+            </span>
+          </p>
+        </div>
+      </article>
       }
     </div>
+    } @else {
+    <p class="text-gray-500">No hay reservas para este día.</p>
+    }
   </div>
+</div>
 }

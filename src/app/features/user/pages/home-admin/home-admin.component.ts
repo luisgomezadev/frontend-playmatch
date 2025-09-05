@@ -65,12 +65,13 @@ export class HomeAdminComponent implements OnInit {
 
   getFieldByAdmin(user: User) {
     this.loading = true;
+    this.loadingReservations = true;
     this.fieldService.getFieldByAdminId(user.id).subscribe({
       next: (field: Field) => {
         if (field) {
           this.fieldName = field.name;
           this.fieldId = field.id;
-          this.loadingReservations = true;
+          this.getLastThreeReservations();
           this.reservationService.getCountActiveByField(field.id).subscribe({
             next: value => {
               this.loading = false;
@@ -89,8 +90,8 @@ export class HomeAdminComponent implements OnInit {
               this.reservationsCanceled = value;
             }
           });
-          this.getLastThreeReservations();
         } else {
+          this.loadingReservations = false;
           this.loading = false;
         }
       }

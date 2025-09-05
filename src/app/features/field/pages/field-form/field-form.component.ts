@@ -17,7 +17,7 @@ import { User } from '@user/interfaces/user';
   styleUrl: './field-form.component.scss'
 })
 export class FieldFormComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
+  private readonly formBuilder = inject(FormBuilder);
   private readonly fieldService = inject(FieldService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
@@ -38,7 +38,7 @@ export class FieldFormComponent implements OnInit {
   ];
 
   constructor() {
-    this.fieldForm = this.fb.group({
+    this.fieldForm = this.formBuilder.group({
       name: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],

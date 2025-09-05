@@ -7,6 +7,7 @@ import {
   STYLE_PRIMARY,
   STYLE_RED,
   STYLE_TRANSPARENT,
+  STYLE_WHITE,
   STYLE_YELLOW
 } from '@shared/constants/app.constants';
 
@@ -26,13 +27,32 @@ import {
       @if (!loading) {
         @if (hasIcon) {
           <div class="flex items-center justify-center gap-3">
-            <i [class]="icon"></i>
+            @if (color === 'white') {
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="icon icon-tabler icons-tabler-outline icon-tabler-filter-2">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 6h16" />
+                <path d="M6 12h12" />
+                <path d="M9 18h6" />
+              </svg>
+            } @else {
+              <i [class]="icon"></i>
+            }
             @if (!onlyIcon) {
-              <span>{{ text }}</span>
+              <span class="tracking-wide">{{ text }}</span>
             }
           </div>
         } @else {
-          <span>{{ text }}</span>
+          <span class="tracking-wide">{{ text }}</span>
         }
       } @else {
         <span class="flex items-center gap-2 justify-center">
@@ -61,7 +81,8 @@ import {
 })
 export class ButtonComponent {
   @Input() text = 'Botón';
-  @Input() color: 'black' | 'red' | 'primary' | 'blue' | 'yellow' | 'transparent' = 'black';
+  @Input() color: 'black' | 'red' | 'primary' | 'blue' | 'yellow' | 'transparent' | 'white' =
+    'black';
   @Input() routerLink: string[] | null = null;
   @Input() type: 'button' | 'submit' = 'button';
   @Input() loading = false;
@@ -89,7 +110,8 @@ export class ButtonComponent {
       primary: STYLE_PRIMARY,
       blue: STYLE_BLUE,
       yellow: STYLE_YELLOW,
-      transparent: STYLE_TRANSPARENT
+      transparent: STYLE_TRANSPARENT,
+      white: STYLE_WHITE
     };
     return `${styles[this.color]} ${base}`;
   }

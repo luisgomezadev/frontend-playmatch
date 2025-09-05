@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
@@ -13,8 +13,8 @@ import { ButtonComponent } from '@shared/components/button/button.component';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
+export class LoginComponent {
+  private readonly formBuilder = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly router = inject(Router);
@@ -24,14 +24,10 @@ export class LoginComponent implements OnInit {
   showPassword = false;
 
   constructor() {
-    this.loginForm = this.fb.group({
+    this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
-  }
-
-  ngOnInit(): void {
-    this.authService.redirectIfAuthenticated();
   }
 
   goBack(): void {

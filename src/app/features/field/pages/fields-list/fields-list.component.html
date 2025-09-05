@@ -1,0 +1,69 @@
+<app-layout
+  [title]="'Canchas disponibles'"
+  [subtitle]="
+    'Explora las canchas disponibles y selecciona la que quieras para reservarla fácilmente.'
+  "
+  [loading]="loading">
+  <div actions>
+    <app-button
+      text="Filtrar"
+      icon="fa-solid fa-filter"
+      [hasIcon]="true"
+      color="white"
+      (clicked)="openModalFilters()" />
+  </div>
+  <h1 class="text-2xl font-medium tracking-wide mb-3 md:block hidden">Resultados</h1>
+  @if (loading) {
+    <div>
+      <app-loading-field-list-component />
+    </div>
+  } @else {
+    @if (filters.city || filters.minPrice || filters.maxPrice) {
+      <div class="flex items-center gap-5">
+        @if (filters.city) {
+          <div class="bg-white px-2 py-1 rounded-lg border border-gray-300 text-sm">
+            <p class="text-gray-600">
+              Ciudad:
+              <span class="font-medium">{{ filters.city }}</span>
+            </p>
+          </div>
+        }
+        @if (filters.minPrice) {
+          <div class="bg-white px-2 py-1 rounded-lg border border-gray-300 text-sm">
+            <p class="text-gray-600">
+              Precio mínimo:
+              <span class="font-medium">{{ filters.minPrice | moneyFormat }}</span>
+            </p>
+          </div>
+        }
+        @if (filters.maxPrice) {
+          <div class="bg-white px-2 py-1 rounded-lg border border-gray-300 text-sm">
+            <p class="text-gray-600">
+              Precio máximo:
+              <span class="font-medium">{{ filters.maxPrice | moneyFormat }}</span>
+            </p>
+          </div>
+        }
+      </div>
+    }
+    @if (fields.content.length === 0) {
+      <div>
+        <span class="text-gray-600">No se encontraron resultados...</span>
+      </div>
+    } @else {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        @for (field of fields.content; track field.id) {
+          <app-field-card [field]="field"></app-field-card>
+        }
+      </div>
+    }
+  }
+</app-layout>
+@if (showModalFilters) {
+  <app-field-filter
+    [showModalFilters]="showModalFilters"
+    [formFilter]="formFilter"
+    (cleanFilter)="cleanFilter()"
+    (filter)="filter($event)"
+    (closed)="closeModalFilters()"></app-field-filter>
+}

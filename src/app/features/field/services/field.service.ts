@@ -9,10 +9,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FieldService extends BaseHttpService {
-  private readonly url = this.apiUrl + '/field';
+  private readonly ENDPOINT = this.apiUrl + '/field';
 
   getFields(filters: FieldFilter, page: number, size: number): Observable<PagedResponse<Field>> {
-    let params = new HttpParams();
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
     if (filters.city) {
       params = params.set('city', filters.city);
@@ -23,32 +23,30 @@ export class FieldService extends BaseHttpService {
     if (filters.maxPrice != null) {
       params = params.set('maxPrice', filters.maxPrice.toString());
     }
-    params = params.set('page', page.toString());
-    params = params.set('size', size.toString());
-    return this.http.get<PagedResponse<Field>>(`${this.url}`, { params });
+    return this.http.get<PagedResponse<Field>>(`${this.ENDPOINT}`, { params });
   }
 
   getFieldsActive(): Observable<Field[]> {
-    return this.http.get<Field[]>(`${this.url}/active`);
+    return this.http.get<Field[]>(`${this.ENDPOINT}/active`);
   }
 
   getFieldById(id: number): Observable<Field> {
-    return this.http.get<Field>(`${this.url}/${id}`);
+    return this.http.get<Field>(`${this.ENDPOINT}/${id}`);
   }
 
   getFieldByAdminId(adminId: number): Observable<Field> {
-    return this.http.get<Field>(`${this.url}/admin/${adminId}`);
+    return this.http.get<Field>(`${this.ENDPOINT}/admin/${adminId}`);
   }
 
   createField(field: FieldRequest): Observable<Field> {
-    return this.http.post<Field>(`${this.url}`, field);
+    return this.http.post<Field>(`${this.ENDPOINT}`, field);
   }
 
   updateField(field: FieldRequest): Observable<Field> {
-    return this.http.put<Field>(`${this.url}`, field);
+    return this.http.put<Field>(`${this.ENDPOINT}`, field);
   }
 
   deleteField(id: number): Observable<string> {
-    return this.http.delete<string>(`${this.url}/${id}`);
+    return this.http.delete<string>(`${this.ENDPOINT}/${id}`);
   }
 }

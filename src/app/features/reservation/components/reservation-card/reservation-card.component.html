@@ -1,23 +1,19 @@
 <article
   class="rounded-md shadow-md hover:shadow-lg transition-all p-5 space-y-4 bg-white border border-gray-100 flex flex-col">
-  <!-- Encabezado -->
   <div class="flex justify-between items-start">
     <div class="space-y-1">
       <p class="text-[11px] text-gray-400 uppercase font-semibold tracking-wide">
         {{ viewAsField ? 'Reservada por' : 'Cancha' }}
       </p>
-      <button
-        class="text-base font-bold text-gray-800 truncate hover:underline"
+      <button class="text-base font-bold text-gray-800 truncate hover:underline"
         (click)="openModal(reservation, viewAsField ? 'user' : 'field')">
         {{
-          viewAsField ? getUserName(reservation) : reservation.field.name || 'Sin cancha asignada'
+        viewAsField ? getUserName(reservation) : reservation.field.name || 'Sin cancha asignada'
         }}
       </button>
     </div>
 
-    <span
-      class="text-xs font-medium px-2.5 py-0.5 rounded-full border text-nowrap shadow-sm"
-      [ngClass]="{
+    <span class="text-xs font-medium tracking-wide px-2.5 py-0.5 rounded-full border text-nowrap shadow-sm" [ngClass]="{
         'bg-green-100 text-green-800 border-green-300':
           reservation.status === StatusReservation.ACTIVE,
         'bg-gray-100 text-gray-700 border-gray-300':
@@ -28,177 +24,150 @@
     </span>
   </div>
 
-  <!-- Info principal -->
   <div class="flex justify-between items-center gap-2 text-sm text-gray-600">
     <div class="space-y-1">
       <p>
         <i class="fa-regular fa-calendar-days mr-1 text-primary"></i>
-        <span class="font-medium text-gray-800">Fecha:</span>
+        <span class="font-medium tracking-wide text-gray-800">Fecha:</span>
         {{ isReservationToday(reservation) }}
       </p>
       <p>
         <i class="fa-regular fa-clock mr-1 text-primary"></i>
-        <span class="font-medium text-gray-800">Hora:</span>
+        <span class="font-medium tracking-wide text-gray-800">Hora:</span>
         {{ reservation.startTime | timeFormat }} - {{ reservation.endTime | timeFormat }}
       </p>
     </div>
 
-    <!-- Botones -->
     <div *ngIf="showButtons(reservation)" class="space-y-3">
       @switch (getReservationStatus(reservation)) {
-        @case ('upcoming') {
-          <app-button text="Cancelar" color="red" (clicked)="cancelReservation(reservation.id)" />
-        }
-        @case ('expired') {
-          <app-button
-            text="Finalizar"
-            color="black"
-            (clicked)="finalizeReservation(reservation.id, getUserName(reservation))" />
-        }
-        @case ('inProgress') {
-          @if (reservationBy === 'field') {
-            <app-button
-              text="Finalizar"
-              color="black"
-              (clicked)="finalizeReservation(reservation.id, getUserName(reservation))" />
-          }
-        }
-        @case ('other') {
-          <app-button text="Cancelar" color="red" (clicked)="cancelReservation(reservation.id)" />
-        }
+      @case ('upcoming') {
+      <app-button text="Cancelar" color="red" (clicked)="cancelReservation(reservation.id)" />
+      }
+      @case ('expired') {
+      <app-button text="Finalizar" color="black"
+        (clicked)="finalizeReservation(reservation.id, getUserName(reservation))" />
+      }
+      @case ('inProgress') {
+      @if (reservationBy === 'field') {
+      <app-button text="Finalizar" color="black"
+        (clicked)="finalizeReservation(reservation.id, getUserName(reservation))" />
+      }
+      }
+      @case ('other') {
+      <app-button text="Cancelar" color="red" (clicked)="cancelReservation(reservation.id)" />
+      }
       }
     </div>
   </div>
 
-  <!-- Estado adicional -->
   <div class="mt-2 space-y-1">
     @if (showInfo(reservation)) {
-      <p
-        *ngIf="isReservationExpired(reservation)"
-        class="text-xs font-semibold text-red-600 flex items-center gap-1">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        Esta reserva ya finalizó. Debe cerrarse.
-      </p>
-      <p
-        *ngIf="getReservationStatus(reservation) === 'upcoming'"
-        class="text-xs font-semibold text-yellow-600 flex items-center gap-1">
-        <i class="fa-solid fa-clock"></i>
-        Próxima a iniciar.
-      </p>
-      <p
-        *ngIf="isInProgressAndActive(reservation)"
-        class="text-xs font-semibold text-green-600 flex items-center gap-1">
-        <i class="fa-solid fa-futbol"></i>
-        En curso.
-      </p>
+    <p *ngIf="isReservationExpired(reservation)" class="text-xs font-semibold text-red-600 flex items-center gap-1">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      Esta reserva ya finalizó. Debe cerrarse.
+    </p>
+    <p *ngIf="getReservationStatus(reservation) === 'upcoming'"
+      class="text-xs font-semibold text-yellow-600 flex items-center gap-1">
+      <i class="fa-solid fa-clock"></i>
+      Próxima a iniciar.
+    </p>
+    <p *ngIf="isInProgressAndActive(reservation)" class="text-xs font-semibold text-green-600 flex items-center gap-1">
+      <i class="fa-solid fa-futbol"></i>
+      En curso.
+    </p>
     } @else {
-      <p class="text-xs text-gray-500 flex items-center gap-1">
-        <i class="fa-regular fa-user"></i>
-        Esta reserva fue realizada por el jugador.
-      </p>
+    <p class="text-xs text-gray-500 flex items-center gap-1">
+      <i class="fa-regular fa-user"></i>
+      Esta reserva fue realizada por el jugador.
+    </p>
     }
   </div>
 </article>
 
-<app-modal
-  [open]="isOpen()"
-  (closed)="onClosed()"
+<app-modal [open]="isOpen()" (closed)="onClosed()"
   [title]="selectedType === 'user' ? 'Información del usuario' : 'Información de la cancha'">
   @if (selectedType === 'user') {
-    <div
-      class="bg-white shadow-md rounded-lg p-6 grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-start">
-      <!-- Imagen -->
-      <div class="flex justify-center md:justify-start">
-        <img
-          [src]="getImageUrl(user.imageUrl)"
-          alt="{{ user.firstName }}"
-          class="w-[140px] h-[140px] rounded-xl object-cover ring-4 ring-primary/20 shadow-sm" />
-      </div>
+  <div class="bg-white shadow-md rounded-lg p-6 grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-start">
+    <div class="flex justify-center md:justify-start">
+      <img [src]="getImageUrl(user.imageUrl)" alt="{{ user.firstName }}"
+        class="w-[140px] h-[140px] rounded-xl object-cover ring-4 ring-primary/20 shadow-sm" />
+    </div>
 
-      <!-- Información del usuario -->
-      <div class="space-y-3">
-        <div>
-          <p class="text-sm text-gray-500">Nombre</p>
-          <p class="text-lg font-medium text-gray-800">
-            {{ user.firstName + ' ' + user.lastName || 'No definido' }}
-          </p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Correo</p>
-          <p class="text-base text-gray-700">{{ user.email || 'No definido' }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Celular</p>
-          <p class="text-base text-gray-700">{{ user.cellphone || 'No definido' }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Ciudad</p>
-          <p class="text-base text-gray-700">{{ user.city || 'No definida' }}</p>
-        </div>
+    <div class="space-y-3">
+      <div>
+        <p class="text-sm text-gray-500">Nombre</p>
+        <p class="text-lg font-medium tracking-wide text-gray-800">
+          {{ user.firstName + ' ' + user.lastName || 'No definido' }}
+        </p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Correo</p>
+        <p class="text-base text-gray-700">{{ user.email || 'No definido' }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Celular</p>
+        <p class="text-base text-gray-700">{{ user.cellphone || 'No definido' }}</p>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Ciudad</p>
+        <p class="text-base text-gray-700">{{ user.city || 'No definida' }}</p>
       </div>
     </div>
+  </div>
   }
   @if (selectedType === 'field') {
-    <div class="bg-white shadow-lg rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-gray-700">
-      <!-- Nombre cancha -->
-      <div class="col-span-1 md:col-span-2">
-        <p class="text-sm text-gray-400 uppercase tracking-wide">Nombre de la cancha</p>
-        <p class="text-xl font-medium text-gray-900">{{ field.name }}</p>
-      </div>
-
-      <!-- Ciudad -->
-      <div>
-        <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
-          <i class="fa-solid fa-city text-primary"></i> Ciudad
-        </p>
-        <p class="text-base text-gray-800">{{ field.city || 'No definida' }}</p>
-      </div>
-
-      <!-- Dirección -->
-      <div>
-        <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
-          <i class="fa-solid fa-location-dot text-primary"></i> Dirección
-        </p>
-        <p class="text-base text-gray-800">{{ field.address || 'No definida' }}</p>
-      </div>
-
-      <!-- Precio -->
-      <div>
-        <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
-          <i class="fa-solid fa-dollar-sign text-primary"></i> Precio por hora
-        </p>
-        <p class="text-lg font-medium text-gray-900">{{ field.hourlyRate | moneyFormat }}</p>
-      </div>
-
-      <!-- Horario -->
-      <div>
-        <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
-          <i class="fa-regular fa-clock text-primary"></i> Horario
-        </p>
-        <p class="text-base text-gray-800">
-          {{ field.openingHour | timeFormat }} - {{ field.closingHour | timeFormat }}
-        </p>
-      </div>
-
-      <!-- Separador -->
-      <div class="col-span-1 md:col-span-2 border-t border-gray-200"></div>
-
-      <!-- Admin -->
-      <div class="col-span-1 md:col-span-2">
-        <p class="text-sm text-gray-400 uppercase tracking-wide">Administrador</p>
-        <p class="text-base font-medium text-gray-900">
-          {{ field.admin?.firstName + ' ' + field.admin?.lastName }}
-        </p>
-      </div>
-
-      <!-- Celular -->
-      <div>
-        <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
-          <i class="fa-solid fa-phone text-primary"></i> Celular
-        </p>
-        <p class="text-base text-gray-800">{{ field.admin?.cellphone }}</p>
-      </div>
+  <div class="bg-white shadow-lg rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8 text-gray-700">
+    <div class="col-span-1 md:col-span-2">
+      <p class="text-sm text-gray-400 uppercase tracking-wide">Nombre de la cancha</p>
+      <p class="text-xl font-medium tracking-wide text-gray-900">{{ field.name }}</p>
     </div>
+
+    <div>
+      <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
+        <i class="fa-solid fa-city text-primary"></i> Ciudad
+      </p>
+      <p class="text-base text-gray-800">{{ field.city || 'No definida' }}</p>
+    </div>
+
+    <div>
+      <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
+        <i class="fa-solid fa-location-dot text-primary"></i> Dirección
+      </p>
+      <p class="text-base text-gray-800">{{ field.address || 'No definida' }}</p>
+    </div>
+
+    <div>
+      <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
+        <i class="fa-solid fa-dollar-sign text-primary"></i> Precio por hora
+      </p>
+      <p class="text-lg font-medium tracking-wide text-gray-900">{{ field.hourlyRate | moneyFormat }}</p>
+    </div>
+
+    <div>
+      <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
+        <i class="fa-regular fa-clock text-primary"></i> Horario
+      </p>
+      <p class="text-base text-gray-800">
+        {{ field.openingHour | timeFormat }} - {{ field.closingHour | timeFormat }}
+      </p>
+    </div>
+
+    <div class="col-span-1 md:col-span-2 border-t border-gray-200"></div>
+
+    <div class="col-span-1 md:col-span-2">
+      <p class="text-sm text-gray-400 uppercase tracking-wide">Administrador</p>
+      <p class="text-base font-medium tracking-wide text-gray-900">
+        {{ field.admin?.firstName + ' ' + field.admin?.lastName }}
+      </p>
+    </div>
+
+    <div>
+      <p class="text-sm text-gray-400 uppercase tracking-wide flex items-center gap-1">
+        <i class="fa-solid fa-phone text-primary"></i> Celular
+      </p>
+      <p class="text-base text-gray-800">{{ field.admin?.cellphone }}</p>
+    </div>
+  </div>
 
   }
 </app-modal>

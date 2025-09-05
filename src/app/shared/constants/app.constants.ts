@@ -11,3 +11,4 @@ export const STYLE_PRIMARY = 'bg-gray-200 text-green-800 hover:shadow-green-600'
 export const STYLE_BLUE = 'bg-gray-200 text-blue-600 hover:shadow-blue-600';
 export const STYLE_YELLOW = 'bg-gray-200 text-yellow-500 hover:shadow-yellow-600';
 export const STYLE_TRANSPARENT = 'bg-transparent text-black shadow-none';
+export const STYLE_WHITE = 'bg-white text-black hover:shadow-gray-600';

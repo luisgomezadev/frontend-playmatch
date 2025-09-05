@@ -13,14 +13,12 @@
         color="primary"
         (clicked)="makeReservation()" />
     } @else {
-      <div class="bg-white rounded-full shadow-md">
-        <app-button
-          text="Filtros"
-          icon="fa-solid fa-filter"
-          [hasIcon]="true"
-          color="transparent"
-          (clicked)="openModalFilters()"></app-button>
-      </div>
+      <app-button
+        text="Filtrar"
+        icon="fa-solid fa-filter"
+        [hasIcon]="true"
+        color="white"
+        (clicked)="openModalFilters()" />
     }
   </div>
   <div loading>
@@ -30,6 +28,26 @@
       }
     </div>
   </div>
+  @if (filters().date || filters().status) {
+    <div class="flex items-center gap-5">
+      @if (filters().date) {
+        <div class="bg-white px-2 py-1 rounded-lg border border-gray-300 text-sm">
+          <p class="text-gray-600">
+            Fecha:
+            <span class="font-medium">{{ filters().date }}</span>
+          </p>
+        </div>
+      }
+      @if (filters().status) {
+        <div class="bg-white px-2 py-1 rounded-lg border border-gray-300 text-sm">
+          <p class="text-gray-600">
+            Estado:
+            <span class="font-medium">{{ filters().status | statusReservation }}</span>
+          </p>
+        </div>
+      }
+    </div>
+  }
   @if (reservationList && reservationList.content.length > 0) {
     <div class="grid gap-6 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1">
       @for (reservation of reservationList.content; track reservation.id) {
@@ -46,7 +64,7 @@
       [totalPages]="reservationList.totalPages || 1"
       (pageChange)="changePage($event)"></app-pagination>
   } @else {
-    <p class="text-gray-600">No se encontró ninguna reserva.</p>
+    <p class="text-gray-600 text-sm">No se encontró ninguna reserva.</p>
   }
 </app-layout>
 @if (showModalFilters) {

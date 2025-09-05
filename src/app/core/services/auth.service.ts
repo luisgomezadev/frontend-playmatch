@@ -24,41 +24,49 @@ export class AuthService extends BaseHttpService {
    * ========== */
 
   loginUser(email: string, password: string): Observable<LoginResponse> {
-    return this.http
-      .post<LoginResponse>(`${this.authUrl}/authenticate`, { email, password })
-      .pipe(
-        tap(response => {
-          this.setToken(response.token);
-          this.currentUser.next(response.user);
-          this.authStatus.next(true);
-        })
-      );
+    return this.http.post<LoginResponse>(`${this.authUrl}/authenticate`, { email, password }).pipe(
+      tap(response => {
+        this.setToken(response.token);
+        this.currentUser.next(response.user);
+        this.authStatus.next(true);
+      })
+    );
   }
 
   logout(): void {
-    this.clearToken();
-    this.currentUser.next(null);
-    this.authStatus.next(false);
+    this.clearSession();
     this.router.navigate(['/home']);
   }
 
   checkAuth(): Observable<boolean> {
     const role = this.getClaimsFromToken()?.role;
+
     if (!role) {
-      this.logout();
+      this.clearSession();
       return of(false);
     }
 
-    if (!this.isTokenExpired(this.getToken()!)) {
+    const token = this.getToken();
+    if (token && !this.isTokenExpired(token)) {
       return of(true);
     }
 
     return this.tryRenewToken().pipe(
       map(renewed => {
-        if (!renewed) this.logout();
+        if (!renewed) this.clearSession();
         return renewed;
+      }),
+      catchError(() => {
+        this.clearSession();
+        return of(false);
       })
     );
+  }
+
+  private clearSession(): void {
+    this.clearToken();
+    this.currentUser.next(null);
+    this.authStatus.next(false);
   }
 
   tryRenewToken(): Observable<boolean> {

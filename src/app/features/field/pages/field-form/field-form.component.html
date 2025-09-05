@@ -2,7 +2,7 @@
   <div class="space-y-6 px-3 py-4 md:p-6">
     <header class="flex justify-between items-center gap-4">
       <div>
-        <h1 class="text-2xl md:text-3xl font-medium text-black tracking-tight">
+        <h1 class="text-2xl md:text-3xl font-medium tracking-wide text-black">
           {{
           editing ? 'Editar cancha' : 'Registrar'
           }}
@@ -19,20 +19,20 @@
     } @else {
     <form [formGroup]="fieldForm" (ngSubmit)="onSubmit()" class="space-y-6">
       <div>
-        <label class="block text-gray-700 font-medium mb-1" for="name">Nombre</label>
+        <label class="block text-gray-700 font-medium tracking-wide mb-1" for="name">Nombre</label>
         <input id="name" formControlName="name" type="text" placeholder="Ingrese el nombre de la cancha"
           class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
           required />
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-gray-700 font-medium mb-1" for="city">Ciudad</label>
+          <label class="block text-gray-700 font-medium tracking-wide mb-1" for="city">Ciudad</label>
           <input id="city" formControlName="city" type="text" placeholder="Ingrese la ciudad"
             class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
             required />
         </div>
         <div>
-          <label class="block text-gray-700 font-medium mb-1" for="address">Dirección</label>
+          <label class="block text-gray-700 font-medium tracking-wide mb-1" for="address">Dirección</label>
           <input id="address" formControlName="address" type="text" placeholder="Ingrese la dirección de la cancha"
             class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
             required />
@@ -40,7 +40,7 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label class="block text-gray-700 font-medium mb-1" for="hourlyRate">
+          <label class="block text-gray-700 font-medium tracking-wide mb-1" for="hourlyRate">
             Precio por hora
           </label>
           <input id="hourlyRate" formControlName="hourlyRate" type="number" step="1" min="0"
@@ -49,7 +49,7 @@
             required />
         </div>
         <div>
-          <label class="block text-gray-700 font-medium mb-1" for="openingHour">
+          <label class="block text-gray-700 font-medium tracking-wide mb-1" for="openingHour">
             Hora de apertura
           </label>
           <input id="openingHour" formControlName="openingHour" type="time"
@@ -57,7 +57,7 @@
             required />
         </div>
         <div>
-          <label class="block text-gray-700 font-medium mb-1" for="closingHour">
+          <label class="block text-gray-700 font-medium tracking-wide mb-1" for="closingHour">
             Hora de cierre
           </label>
           <input id="closingHour" formControlName="closingHour" type="time"
@@ -67,7 +67,7 @@
       </div>
       @if (editing) {
       <div>
-        <label class="block text-gray-700 font-medium mb-1" for="status">Estado</label>
+        <label class="block text-gray-700 font-medium tracking-wide mb-1" for="status">Estado</label>
         <select id="status" formControlName="status"
           class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
           required>
