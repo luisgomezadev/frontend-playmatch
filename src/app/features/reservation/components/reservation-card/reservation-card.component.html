@@ -89,7 +89,7 @@
   @if (selectedType === 'user') {
   <div class="bg-white shadow-md rounded-lg p-6 grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-start">
     <div class="flex justify-center md:justify-start">
-      <img [src]="getImageUrl(user.imageUrl)" alt="{{ user.firstName }}"
+      <img [src]="getImageUrl(user.imageUrl)" alt="Foto de {{ user.fullName }}"
         class="w-[140px] h-[140px] rounded-xl object-cover ring-4 ring-primary/20 shadow-sm" />
     </div>
 
@@ -97,7 +97,7 @@
       <div>
         <p class="text-sm text-gray-500">Nombre</p>
         <p class="text-lg font-medium tracking-wide text-gray-800">
-          {{ user.firstName + ' ' + user.lastName || 'No definido' }}
+          {{ user.fullName || 'No definido' }}
         </p>
       </div>
       <div>
@@ -157,7 +157,7 @@
     <div class="col-span-1 md:col-span-2">
       <p class="text-sm text-gray-400 uppercase tracking-wide">Administrador</p>
       <p class="text-base font-medium tracking-wide text-gray-900">
-        {{ field.admin?.firstName + ' ' + field.admin?.lastName }}
+        {{ field.admin?.fullName }}
       </p>
     </div>
 

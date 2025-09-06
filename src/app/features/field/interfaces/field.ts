@@ -29,6 +29,7 @@ export interface FieldRequest {
 }
 
 export interface FieldFilter {
+  name?: string;
   city?: string;
   minPrice?: number;
   maxPrice?: number;

@@ -14,13 +14,16 @@ export class FieldService extends BaseHttpService {
   getFields(filters: FieldFilter, page: number, size: number): Observable<PagedResponse<Field>> {
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
+    if (filters.name) {
+      params = params.set('name', filters.name);
+    }
     if (filters.city) {
       params = params.set('city', filters.city);
     }
-    if (filters.minPrice != null) {
+    if (filters.minPrice) {
       params = params.set('minPrice', filters.minPrice.toString());
     }
-    if (filters.maxPrice != null) {
+    if (filters.maxPrice) {
       params = params.set('maxPrice', filters.maxPrice.toString());
     }
     return this.http.get<PagedResponse<Field>>(`${this.ENDPOINT}`, { params });

@@ -106,9 +106,7 @@ export class ProfileComponent implements OnInit {
     this.alertService.success('Foto Actualizada', 'Tu imagen de perfil ha sido cambiada.');
 
     // Resetear modal
-    this.showImageModal = false;
-    this.selectedFile = null;
-    this.imagePreview = null;
+    this.onClosed();
 
     // Asignar nuevo usuario localmente
     this.user = updatedUser;

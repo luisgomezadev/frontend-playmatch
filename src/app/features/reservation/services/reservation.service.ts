@@ -69,7 +69,7 @@ export class ReservationService extends BaseHttpService {
     page: number,
     size: number
   ): Observable<PagedResponse<Reservation>> {
-    let params = new HttpParams();
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
 
     if (filters.date) {
       params = params.set('date', filters.date);
@@ -83,9 +83,7 @@ export class ReservationService extends BaseHttpService {
     if (filters.fieldId != null) {
       params = params.set('fieldId', filters.fieldId.toString());
     }
-    params = params.set('page', page.toString());
-    params = params.set('size', size.toString());
-    return this.http.get<PagedResponse<Reservation>>(`${this.ENDPOINT}/filter`, { params });
+    return this.http.get<PagedResponse<Reservation>>(`${this.ENDPOINT}`, { params });
   }
 
   getReservationAvailability(reservation: ReservationRequest): Observable<ConfirmedReservation> {

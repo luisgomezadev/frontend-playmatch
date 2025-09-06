@@ -47,7 +47,7 @@ export class HomeAdminComponent implements OnInit {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
-        this.fullName = `${this.user.firstName} ${this.user.lastName}`;
+        this.fullName = `${this.user.fullName}`;
         this.getFieldByAdmin(user);
       }
     });

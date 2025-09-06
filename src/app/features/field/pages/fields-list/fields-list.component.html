@@ -15,8 +15,16 @@
   @if (loading) {
     <p class="text-gray-200 text-xl">Obteniendo canchas...</p>
   } @else {
-    @if (filters.city || filters.minPrice || filters.maxPrice) {
+    @if (filters.name || filters.city || filters.minPrice || filters.maxPrice) {
       <div class="flex items-center gap-5">
+        @if (filters.name) {
+        <div class="bg-white px-2 py-1 rounded-lg border border-gray-300 text-sm">
+          <p class="text-gray-600">
+            Nombre:
+            <span class="font-medium">{{ filters.name }}</span>
+          </p>
+        </div>
+        }
         @if (filters.city) {
           <div class="bg-white px-2 py-1 rounded-lg border border-gray-300 text-sm">
             <p class="text-gray-600">
@@ -53,6 +61,8 @@
           <app-field-card [field]="field"></app-field-card>
         }
       </div>
+      <app-pagination [currentPage]="currentPage" [totalPages]="fields.totalPages || 1"
+        (pageChange)="changePage($event)"></app-pagination>
     }
   }
 </app-layout>

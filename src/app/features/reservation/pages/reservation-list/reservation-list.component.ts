@@ -18,7 +18,6 @@ import {
 import { ReservationService } from '@reservation/services/reservation.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { PAGE_SIZE_RESERVATIONS } from '@shared/constants/app.constants';
 import { StatusReservationPipe } from '@shared/pipes/status-reservation.pipe';
@@ -32,7 +31,6 @@ import { User, UserRole } from '@user/interfaces/user';
     ReactiveFormsModule,
     RouterModule,
     ButtonComponent,
-    LoadingReservationCardComponent,
     FormsModule,
     ReservationCardComponent,
     ReservationFilterComponent,

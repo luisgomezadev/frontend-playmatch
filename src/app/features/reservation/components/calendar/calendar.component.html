@@ -18,7 +18,7 @@
         <div class="mt-1 space-y-1 overflow-y-auto">
           @for (res of day.reservations.slice(0, 2); track $index) {
           <div class="text-xs px-1 py-0.5 rounded truncate flex flex-col bg-gray-200/90 text-gray-800">
-            <span>{{ res.user.firstName }} {{ res.user.lastName }}</span>
+            <span>{{ res.user.fullName }}</span>
             <span>{{ res.startTime | timeFormat }} - {{ res.endTime | timeFormat }}</span>
           </div>
           }
@@ -57,7 +57,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-lg font-semibold text-gray-200">
-              {{ res.user.firstName }} {{ res.user.lastName }}
+              {{ res.user.fullName }}
             </p>
             <p class="text-sm text-gray-400">{{ res.user.email }}</p>
             <p class="text-sm text-gray-400">{{ res.user.cellphone }}</p>

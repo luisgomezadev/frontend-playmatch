@@ -1,10 +1,12 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { createEmptyPagedResponse } from '@core/interfaces/paged-response';
+import { PagedResponse } from '@core/interfaces/paged-response';
 import { AlertService } from '@core/services/alert.service';
 import { PlayerCardComponent } from '@features/user/components/player-card/player-card.component';
-import { User, UserRole } from '@features/user/interfaces/user';
+import { PlayerFilterComponent } from '@features/user/components/player-filter/player-filter.component';
+import { User, UserFilter, UserRole } from '@features/user/interfaces/user';
 import { UserService } from '@features/user/services/user.service';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { PAGE_SIZE_PLAYERS } from '@shared/constants/app.constants';
@@ -16,7 +18,9 @@ import { PAGE_SIZE_PLAYERS } from '@shared/constants/app.constants';
     LayoutComponent,
     ReactiveFormsModule,
     PlayerCardComponent,
-    PaginationComponent
+    PaginationComponent,
+    ButtonComponent,
+    PlayerFilterComponent
   ],
   templateUrl: './players.component.html',
   styleUrl: './players.component.scss'
@@ -28,29 +32,30 @@ export class PlayersComponent implements OnInit {
 
   role: UserRole = UserRole.PLAYER;
 
-  players = signal(createEmptyPagedResponse<User>());
+  formFilter!: FormGroup;
+  players!: PagedResponse<User>;
+  filters: UserFilter = {};
   currentPage = 0;
   pageSize = PAGE_SIZE_PLAYERS;
   loading = false;
-  filterForm: FormGroup;
+  showModalFilters = false;
 
   constructor() {
-    this.filterForm = this.formBuilder.group({
+    this.formFilter = this.formBuilder.group({
       name: [''],
       city: ['']
     });
   }
 
   ngOnInit(): void {
-    this.getPlayers(this.currentPage);
+    this.loadPlayers(0);
   }
 
-  getPlayers(page: number): void {
+  loadPlayers(page: number): void {
     this.loading = true;
-    this.userService.getUsers(page, this.pageSize, this.role).subscribe({
+    this.userService.getUsers(this.filters, page, this.pageSize, this.role).subscribe({
       next: data => {
-        this.players.set(data);
-        this.currentPage = data.number;
+        this.players = data;
         this.loading = false;
       },
       error: err => {
@@ -63,19 +68,31 @@ export class PlayersComponent implements OnInit {
     });
   }
 
+  openModalFilters(): void {
+    this.showModalFilters = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeModalFilters(): void {
+    this.showModalFilters = false;
+    document.body.style.overflow = '';
+  }
+
+  filter(formFilter: UserFilter): void {
+    this.filters = formFilter;
+    this.loadPlayers(0);
+  }
+
+  cleanFilter(): void {
+    this.formFilter.reset();
+    this.filters = {};
+    this.loadPlayers(0);
+  }
+
   changePage(newPage: number): void {
-    if (newPage >= 0 && newPage < this.players().totalPages) {
-      this.getPlayers(newPage);
+    if (newPage >= 0 && newPage < this.players.totalPages) {
+      this.currentPage = newPage;
+      this.loadPlayers(this.currentPage);
     }
-  }
-
-  applyFilters() {
-    const filters = this.filterForm.value;
-    console.log('Aplicando filtros:', filters);
-    // Aquí llamas a tu API o filtras tu lista local
-  }
-
-  clearFilters() {
-    this.filterForm.reset();
   }
 }

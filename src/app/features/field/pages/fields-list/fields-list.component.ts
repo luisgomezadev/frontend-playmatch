@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { PagedResponse } from '@core/interfaces/paged-response';
@@ -10,7 +10,7 @@ import { Field, FieldFilter } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { LoadingFieldListComponent } from '@shared/components/loading/loading-field-list/loading-field-list.component';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { PAGE_SIZE_FIELDS } from '@shared/constants/app.constants';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { User, UserRole } from '@user/interfaces/user';
@@ -21,13 +21,13 @@ import { User, UserRole } from '@user/interfaces/user';
   imports: [
     RouterModule,
     CommonModule,
-    LoadingFieldListComponent,
     FieldCardComponent,
     ReactiveFormsModule,
     ButtonComponent,
     LayoutComponent,
     FieldFilterComponent,
-    MoneyFormatPipe
+    MoneyFormatPipe,
+    PaginationComponent
   ],
   templateUrl: './fields-list.component.html',
   styleUrl: './fields-list.component.scss'
@@ -38,7 +38,6 @@ export class FieldsListComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
 
-  @Input() showHeader = true;
   formFilter!: FormGroup;
   fields!: PagedResponse<Field>;
   filters: FieldFilter = {};
@@ -50,11 +49,6 @@ export class FieldsListComponent implements OnInit {
   showModalFilters = false;
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      if (params['showHeader'] !== undefined) {
-        this.showHeader = params['showHeader'] !== 'false';
-      }
-    });
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
@@ -65,7 +59,7 @@ export class FieldsListComponent implements OnInit {
   }
 
   private initForm(): void {
-    this.formFilter = this.formBuilder.group({ city: [''], minPrice: [''], maxPrice: [''] });
+    this.formFilter = this.formBuilder.group({ name: [''], city: [''], minPrice: [''], maxPrice: [''] });
   }
 
   isUserPlayer(user: User): boolean {
@@ -105,5 +99,12 @@ export class FieldsListComponent implements OnInit {
     this.formFilter.reset();
     this.filters = {};
     this.loadFields(0);
+  }
+
+  changePage(newPage: number): void {
+    if (newPage >= 0 && newPage < this.fields.totalPages) {
+      this.currentPage = newPage;
+      this.loadFields(this.currentPage);
+    }
   }
 }

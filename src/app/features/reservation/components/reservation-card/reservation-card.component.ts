@@ -177,6 +177,6 @@ export class ReservationCardComponent {
   }
 
   getUserName(r: Reservation) {
-    return r.user ? `${r.user.firstName} ${r.user.lastName}` : 'Sin jugador asignado';
+    return r.user ? `${r.user.fullName}` : 'Sin jugador asignado';
   }
 }
