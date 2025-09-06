@@ -5,7 +5,7 @@
   </div>
   @if (field) {
   <article class="bg-white/5 p-6 rounded-md shadow-md border border-gray-600 space-y-6">
-    <app-field-detail-card [field]="field" />
+    <app-field-info [field]="field" />
     <div class="flex justify-end">
       <app-button text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"
         [routerLink]="['/dashboard/field/form/' + field.id]"></app-button>

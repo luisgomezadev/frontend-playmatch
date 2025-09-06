@@ -184,7 +184,7 @@ export class ReservationListComponent implements OnInit {
 
   getReservations(page: number): void {
     this.loading = true;
-    this.reservationService.getReservationFiltered(this.filters(), page, this.pageSize).subscribe({
+    this.reservationService.getReservations(this.filters(), page, this.pageSize).subscribe({
       next: data => {
         this.reservationList = data;
         this.loading = false;

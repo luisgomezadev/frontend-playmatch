@@ -7,13 +7,13 @@ import { Field, Status } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { User, UserRole } from '@user/interfaces/user';
-import { FieldDetailCardComponent } from '@field/components/field-detail-card/field-detail-card.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
+import { FieldInfoComponent } from '@features/field/components/field-info/field-info.component';
 
 @Component({
   selector: 'app-field-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, FieldDetailCardComponent, ButtonComponent, LayoutComponent],
+  imports: [CommonModule, RouterModule, FieldInfoComponent, ButtonComponent, LayoutComponent],
   templateUrl: './field-detail.component.html',
   styleUrl: './field-detail.component.scss'
 })

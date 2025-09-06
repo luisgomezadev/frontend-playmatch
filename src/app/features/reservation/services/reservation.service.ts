@@ -17,6 +17,28 @@ import { Observable } from 'rxjs';
 export class ReservationService extends BaseHttpService {
   private readonly ENDPOINT = this.apiUrl + '/reservation';
 
+  getReservations(
+    filters: ReservationFilter,
+    page: number,
+    size: number
+  ): Observable<PagedResponse<Reservation>> {
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+
+    if (filters.date) {
+      params = params.set('date', filters.date);
+    }
+    if (filters.status) {
+      params = params.set('status', filters.status);
+    }
+    if (filters.userId != null) {
+      params = params.set('userId', filters.userId.toString());
+    }
+    if (filters.fieldId != null) {
+      params = params.set('fieldId', filters.fieldId.toString());
+    }
+    return this.http.get<PagedResponse<Reservation>>(`${this.ENDPOINT}`, { params });
+  }
+
   getReservationsByFieldId(fieldId: number): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(`${this.ENDPOINT}/field/${fieldId}`);
   }
@@ -62,28 +84,6 @@ export class ReservationService extends BaseHttpService {
 
   getCountCanceledByField(fieldId: number): Observable<number> {
     return this.http.get<number>(`${this.ENDPOINT}/field/${fieldId}/canceled`);
-  }
-
-  getReservationFiltered(
-    filters: ReservationFilter,
-    page: number,
-    size: number
-  ): Observable<PagedResponse<Reservation>> {
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-
-    if (filters.date) {
-      params = params.set('date', filters.date);
-    }
-    if (filters.status) {
-      params = params.set('status', filters.status);
-    }
-    if (filters.userId != null) {
-      params = params.set('userId', filters.userId.toString());
-    }
-    if (filters.fieldId != null) {
-      params = params.set('fieldId', filters.fieldId.toString());
-    }
-    return this.http.get<PagedResponse<Reservation>>(`${this.ENDPOINT}`, { params });
   }
 
   getReservationAvailability(reservation: ReservationRequest): Observable<ConfirmedReservation> {

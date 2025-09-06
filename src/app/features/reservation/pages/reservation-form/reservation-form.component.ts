@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { FieldDetailCardComponent } from '@features/field/components/field-detail-card/field-detail-card.component';
+import { FieldInfoComponent } from '@features/field/components/field-info/field-info.component';
 import { Field } from '@features/field/interfaces/field';
 import { FieldService } from '@features/field/services/field.service';
 import {
@@ -29,7 +29,7 @@ import { User } from '@user/interfaces/user';
     ReactiveFormsModule,
     TimeFormatPipe,
     LoadingComponent,
-    FieldDetailCardComponent,
+    FieldInfoComponent,
     CommonModule,
     ModalComponent,
     LayoutComponent

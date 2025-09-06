@@ -5,12 +5,12 @@ import { StatusDescriptionPipe } from '@shared/pipes/status-description.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 
 @Component({
-  selector: 'app-field-detail-card',
+  selector: 'app-field-info',
   standalone: true,
   imports: [StatusDescriptionPipe, TimeFormatPipe, MoneyFormatPipe],
-  templateUrl: './field-detail-card.component.html',
-  styleUrl: './field-detail-card.component.scss'
+  templateUrl: './field-info.component.html',
+  styleUrl: './field-info.component.scss'
 })
-export class FieldDetailCardComponent {
+export class FieldInfoComponent {
   @Input() field!: Field;
 }
