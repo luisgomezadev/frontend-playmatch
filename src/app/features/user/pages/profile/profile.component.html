@@ -60,6 +60,8 @@
 
 <app-modal [open]="isOpen()" (closed)="onClosed()" [title]="'Actualizar foto de perfil'">
   <input
+    id="profile-file-input"
+    #fileInput
     type="file"
     accept="image/*"
     (change)="onFileSelected($event)"

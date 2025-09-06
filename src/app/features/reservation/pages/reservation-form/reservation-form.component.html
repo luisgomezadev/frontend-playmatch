@@ -65,7 +65,10 @@
 
       <footer class="flex justify-between items-center mt-6 gap-5">
         <div>
-          <span class="text-red-600">* <span class="text-gray-300">Requerido</span></span>
+          <span class="text-red-600">
+            *
+            <span class="text-gray-300">Requerido</span>
+          </span>
         </div>
         <app-button text="Verificar disponibilidad" color="primary" [loading]="loading"
           (clicked)="verifyReservation()"></app-button>
@@ -79,41 +82,51 @@
 </app-layout>
 <app-modal [open]="isOpen()" (closed)="onClosed()" [title]="'Resumen de reserva'">
   @if (confirmedReservation) {
-  <div class="space-y-6 text-gray-700">
-    <div>
+  <div class="space-y-6 text-gray-300">
+    <div class="flex items-center gap-2">
       <i class="fa-solid fa-futbol text-primary"></i>
-      <span class="font-medium tracking-wide">Cancha:</span>
-      {{ confirmedReservation.field?.name }}
+      <div>
+        <span class="font-medium tracking-wide">Cancha:</span>
+        {{ confirmedReservation.field?.name }}
+      </div>
     </div>
-    <div>
+    <div class="flex items-center gap-3">
       <i class="fa-regular fa-calendar text-primary"></i>
-      <span class="font-medium tracking-wide">Fecha:</span>
-      {{ confirmedReservation.reservationDate }}
+      <div>
+        <span class="font-medium tracking-wide">Fecha:</span>
+        {{ confirmedReservation.reservationDate }}
+      </div>
     </div>
-    <div>
+    <div class="flex items-center gap-3">
       <i class="fa-regular fa-clock text-primary"></i>
-      <span class="font-medium tracking-wide">Hora inicio:</span>
-      {{ confirmedReservation.startTime | timeFormat }}
+      <div>
+        <span class="font-medium tracking-wide">Hora inicio:</span>
+        {{ confirmedReservation.startTime | timeFormat }}
+      </div>
     </div>
-    <div>
+    <div class="flex items-center gap-3">
       <i class="fa-regular fa-clock text-primary"></i>
-      <span class="font-medium tracking-wide">Hora fin:</span>
-      {{ confirmedReservation.endTime | timeFormat }}
+      <div>
+        <span class="font-medium tracking-wide">Hora fin:</span>
+        {{ confirmedReservation.endTime | timeFormat }}
+      </div>
     </div>
-    <div>
+    <div class="flex items-center gap-3">
       <i class="fa-solid fa-hourglass-half text-primary"></i>
-      <span class="font-medium tracking-wide">Duración:</span>
-      {{ confirmedReservation.hours }} hora(s)
+      <div>
+        <span class="font-medium tracking-wide">Duración:</span>
+        {{ confirmedReservation.hours }} hora(s)
+      </div>
     </div>
   </div>
   }
 
   <div class="pt-6 flex gap-3">
-    <app-button text="Confirmar reserva" color="blue" (clicked)="confirmReservation()"></app-button>
+    <app-button text="Confirmar reserva" color="primary" (clicked)="confirmReservation()"></app-button>
     <app-button text="Cancelar" color="red" (clicked)="cancelReservation()"></app-button>
   </div>
 </app-modal>
 
 @if (loadingReservation) {
-<app-loading-full-component text="Creando reserva, espere un momento..." />
+<app-loading-component text="Creando reserva, espere un momento..." />
 }

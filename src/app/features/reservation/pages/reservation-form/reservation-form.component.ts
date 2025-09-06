@@ -15,7 +15,7 @@ import {
 import { ReservationService } from '@reservation/services/reservation.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { LoadingFullComponent } from '@shared/components/loading/loading-full/loading-full.component';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { User } from '@user/interfaces/user';
@@ -28,7 +28,7 @@ import { User } from '@user/interfaces/user';
     RouterModule,
     ReactiveFormsModule,
     TimeFormatPipe,
-    LoadingFullComponent,
+    LoadingComponent,
     FieldDetailCardComponent,
     CommonModule,
     ModalComponent,

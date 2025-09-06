@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
@@ -20,11 +20,12 @@ export class ProfileComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly alertService = inject(AlertService);
 
+  @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
+
   user!: User;
   loading = false;
   userRole = UserRole;
 
-  showImageModal = false;
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
@@ -39,19 +40,26 @@ export class ProfileComponent implements OnInit {
   }
 
   openModal() {
-    this.isOpen.set(true);
     document.body.style.overflow = 'hidden';
+    this.isOpen.set(true);
   }
 
   onClosed() {
-    this.isOpen.set(false);
+    // reset de estado
     this.selectedFile = null;
     this.imagePreview = null;
-    document.body.style.overflow = '';
-  }
 
-  public isUserAdmin(user: User): boolean {
-    return user.role == UserRole.FIELD_ADMIN;
+    // limpia el input file de forma segura
+    if (this.fileInput?.nativeElement) {
+      this.fileInput.nativeElement.value = '';
+    } else {
+      // fallback por si el ViewChild no está disponible (p. ej. proyección/dom removido)
+      const el = document.getElementById('profile-file-input') as HTMLInputElement | null;
+      if (el) el.value = '';
+    }
+
+    document.body.style.overflow = '';
+    this.isOpen.set(false);
   }
 
   onFileSelected(event: Event) {
@@ -64,15 +72,8 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  // onCancelImageUpload() {
-  //   this.selectedFile = null;
-  //   this.imagePreview = null;
-  //   this.showImageModal = false;
-  // }
-
   onUploadImage() {
     if (!this.selectedFile) return;
-
     const file = this.selectedFile;
 
     if (!file.type.startsWith('image/')) {
@@ -86,9 +87,7 @@ export class ProfileComponent implements OnInit {
     }
     this.loading = true;
 
-    const uploadObservable = this.userService.uploadUserImage(this.user.id, file);
-
-    uploadObservable.subscribe({
+    this.userService.uploadUserImage(this.user.id, file).subscribe({
       next: (updatedUser) => this.handleSuccess(updatedUser),
       error: (err) => {
         this.alertService.error('Error', err.error?.message || 'Error al subir la imagen');
@@ -98,23 +97,17 @@ export class ProfileComponent implements OnInit {
   }
 
   private handleSuccess(updatedUser: User) {
-
-    // Actualizar el observable del usuario actual
     this.authService.setUser(updatedUser);
-
     this.loading = false;
     this.alertService.success('Foto Actualizada', 'Tu imagen de perfil ha sido cambiada.');
 
-    // Resetear modal
+    // reset y cerrar modal
     this.onClosed();
 
-    // Asignar nuevo usuario localmente
     this.user = updatedUser;
   }
 
   getImageUrl(user: User): string {
-    return user.imageUrl?.startsWith('http')
-      ? user.imageUrl
-      : '/assets/profile_icon.webp';
+    return user.imageUrl?.startsWith('http') ? user.imageUrl : '/assets/profile_icon.webp';
   }
 }

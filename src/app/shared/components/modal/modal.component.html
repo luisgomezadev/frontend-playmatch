@@ -1,21 +1,21 @@
 @if (open || isClosing()) {
   <div class="fixed inset-0 z-50 flex items-center justify-center">
     <div
-      class="fixed inset-0 bg-black/50 backdrop-blur-sm motion-duration-500 motion-ease-spring-smooth"
+      class="fixed inset-0 bg-white/15 backdrop-blur-md motion-duration-500 motion-ease-spring-smooth"
       [class.motion-opacity-in-0]="open && !isClosing()"
       [class.motion-opacity-out-0]="!open && isClosing()"></div>
 
     <div
-      class="relative z-10 w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl motion-duration-500 motion-ease-spring-smooth mx-3"
+      class="relative z-10 w-full max-w-lg rounded-2xl bg-gray-900 p-6 shadow-xl motion-duration-500 motion-ease-spring-smooth mx-3"
       [class.motion-opacity-in-0]="open && !isClosing()"
       [class.motion-translate-y-in-100]="open && !isClosing()"
       [class.motion-opacity-out-0]="!open && isClosing()"
       [class.motion-translate-y-out-100]="!open && isClosing()">
       <div class="flex items-center justify-between gap-4">
-        <h2 class="text-xl font-medium tracking-wide">{{ title }}</h2>
+        <h2 class="text-xl font-medium tracking-wide text-gray-200">{{ title }}</h2>
         <button
           (click)="close()"
-          class="flex items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-100 cursor-pointer transition-colors duration-300 h-8 w-8"
+          class="h-8 w-8 flex items-center justify-center rounded-full border border-gray-400 text-gray-400 hover:bg-gray-100/20 cursor-pointer transition-colors"
           aria-label="Cerrar modal">
           <i class="fa-solid fa-xmark"></i>
         </button>

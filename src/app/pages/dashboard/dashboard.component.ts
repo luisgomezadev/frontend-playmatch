@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Link } from '@core/interfaces/link.interface';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { LoadingFullComponent } from '@shared/components/loading/loading-full/loading-full.component';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { LINKS_DASHBOARD } from '@shared/constants/links.constants';
 import { User, UserRole } from '@user/interfaces/user';
 import { UserService } from '@user/services/user.service';
@@ -12,7 +12,7 @@ import { UserService } from '@user/services/user.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule, CommonModule, LoadingFullComponent],
+  imports: [RouterModule, CommonModule, LoadingComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

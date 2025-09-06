@@ -3,7 +3,8 @@
     class="bg-gray-900 w-full sm:w-96 h-full shadow-2xl transform transition-transform duration-300 animate-slide-in-right overflow-y-auto p-6 relative">
     <header class="flex items-center justify-between mb-4">
       <h2 class="text-2xl font-medium tracking-wide text-primary">Filtros de búsqueda</h2>
-      <button (click)="closeModalFilters()"
+      <button
+        (click)="closeModalFilters()"
         class="h-8 w-8 flex items-center justify-center rounded-full border border-gray-400 text-gray-400 hover:bg-gray-100/20 cursor-pointer transition-colors"
         aria-label="Cerrar modal">
         <i class="fa-solid fa-xmark"></i>
@@ -14,7 +15,11 @@
     <form [formGroup]="formFilter" (ngSubmit)="submitFilter()" class="flex flex-col w-full gap-y-6">
       <div>
         <label for="date" class="text-base mb-1 block text-gray-200">Fecha de reserva</label>
-        <input id="date" type="date" formControlName="date" placeholder="Fecha de reserva"
+        <input
+          id="date"
+          type="date"
+          formControlName="date"
+          placeholder="Fecha de reserva"
           class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
       </div>
 
@@ -22,26 +27,45 @@
         <span class="text-base block mb-1 text-gray-200">Estado</span>
         <div class="grid grid-cols-2 gap-2">
           <input id="statusAll" type="radio" formControlName="status" value="" class="hidden" />
-          <label for="statusAll" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center" [ngClass]="{
-              'bg-transparent text-primary border-primary': formFilter.get('status')?.value === '',
+          <label
+            for="statusAll"
+            class="px-4 py-2 border rounded-lg cursor-pointer transition-colors duration-300 text-center"
+            [ngClass]="{
+              'bg-primary/5 text-primary border-primary': formFilter.get('status')?.value === '',
               'bg-transparent text-gray-400 border-gray-400': formFilter.get('status')?.value !== ''
             }">
             Todas
           </label>
 
-          <input id="statusActive" type="radio" formControlName="status" value="ACTIVE" class="hidden" />
-          <label for="statusActive" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center" [ngClass]="{
-              'bg-transparent text-primary border-primary':
+          <input
+            id="statusActive"
+            type="radio"
+            formControlName="status"
+            value="ACTIVE"
+            class="hidden" />
+          <label
+            for="statusActive"
+            class="px-4 py-2 border rounded-lg cursor-pointer transition-colors duration-300 text-center"
+            [ngClass]="{
+              'bg-primary/5 text-primary border-primary':
                 formFilter.get('status')?.value === 'ACTIVE',
-              'bg-transparent text-gray-400 border-gray-400': formFilter.get('status')?.value !== 'ACTIVE'
+              'bg-transparent text-gray-400 border-gray-400':
+                formFilter.get('status')?.value !== 'ACTIVE'
             }">
             Activa
           </label>
 
-          <input id="statusCanceled" type="radio" formControlName="status" value="CANCELED" class="hidden" />
-          <label for="statusCanceled" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
+          <input
+            id="statusCanceled"
+            type="radio"
+            formControlName="status"
+            value="CANCELED"
+            class="hidden" />
+          <label
+            for="statusCanceled"
+            class="px-4 py-2 border rounded-lg cursor-pointer transition-colors duration-300 text-center"
             [ngClass]="{
-              'bg-transparent text-primary border-primary':
+              'bg-primary/5 text-primary border-primary':
                 formFilter.get('status')?.value === 'CANCELED',
               'bg-transparent text-gray-400 border-gray-400':
                 formFilter.get('status')?.value !== 'CANCELED'
@@ -49,10 +73,17 @@
             Cancelada
           </label>
 
-          <input id="statusFinished" type="radio" formControlName="status" value="FINISHED" class="hidden" />
-          <label for="statusFinished" class="px-4 py-2 border rounded-lg cursor-pointer transition text-center"
+          <input
+            id="statusFinished"
+            type="radio"
+            formControlName="status"
+            value="FINISHED"
+            class="hidden" />
+          <label
+            for="statusFinished"
+            class="px-4 py-2 border rounded-lg cursor-pointer transition-colors duration-300 text-center"
             [ngClass]="{
-              'bg-transparent text-primary border-primary':
+              'bg-primary/5 text-primary border-primary':
                 formFilter.get('status')?.value === 'FINISHED',
               'bg-transparent text-gray-400 border-gray-400':
                 formFilter.get('status')?.value !== 'FINISHED'
@@ -62,11 +93,21 @@
         </div>
       </div>
 
-      <div class="flex justify-end items-center gap-2 pt-3 border-t-2 border-gray-800">
-        <app-button text="Limpiar" icon="fa-solid fa-eraser" [hasIcon]="true" color="red" (clicked)="clean()"
+      <div class="flex justify-end items-center gap-2 pt-3">
+        <app-button
+          text="Limpiar"
+          icon="fa-solid fa-eraser"
+          [hasIcon]="true"
+          color="red"
+          (clicked)="clean()"
           title="Limpiar filtros"></app-button>
 
-        <app-button text="Buscar" type="submit" icon="fa-solid fa-search" [hasIcon]="true" color="primary"
+        <app-button
+          text="Buscar"
+          type="submit"
+          icon="fa-solid fa-search"
+          [hasIcon]="true"
+          color="primary"
           title="Buscar reservas"></app-button>
       </div>
     </form>

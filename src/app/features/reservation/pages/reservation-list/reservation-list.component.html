@@ -60,7 +60,7 @@
       [totalPages]="reservationList.totalPages || 1"
       (pageChange)="changePage($event)"></app-pagination>
   } @else {
-    <p class="text-gray-600 text-sm">No se encontró ninguna reserva.</p>
+    <span class="text-gray-500 text-sm">No se encontró ninguna reserva.</span>
   }
 </app-layout>
 @if (showModalFilters) {

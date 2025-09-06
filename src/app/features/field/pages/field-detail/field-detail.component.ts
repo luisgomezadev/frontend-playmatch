@@ -6,22 +6,14 @@ import { AuthService } from '@core/services/auth.service';
 import { Field, Status } from '@field/interfaces/field';
 import { FieldService } from '@field/services/field.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { LoadingFieldComponent } from '@shared/components/loading/loading-field/loading-field.component';
 import { User, UserRole } from '@user/interfaces/user';
-import { FieldDetailCardComponent } from '../../components/field-detail-card/field-detail-card.component';
+import { FieldDetailCardComponent } from '@field/components/field-detail-card/field-detail-card.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 
 @Component({
   selector: 'app-field-detail',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    FieldDetailCardComponent,
-    ButtonComponent,
-    LoadingFieldComponent,
-    LayoutComponent
-  ],
+  imports: [CommonModule, RouterModule, FieldDetailCardComponent, ButtonComponent, LayoutComponent],
   templateUrl: './field-detail.component.html',
   styleUrl: './field-detail.component.scss'
 })
@@ -79,5 +71,4 @@ export class FieldDetailComponent implements OnInit {
       this.field = field;
     }
   }
-
 }
