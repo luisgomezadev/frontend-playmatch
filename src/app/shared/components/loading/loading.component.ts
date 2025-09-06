@@ -11,7 +11,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
       <div
         class="animate-spin rounded-full h-16 w-16 border-4 border-primary border-t-transparent mb-4"></div>
 
-      <h2 class="text-lg text-gray-700">{{ text || 'Cargando...' }}{{ dots }}</h2>
+      <h2 class="text-lg text-gray-400">{{ text || 'Cargando...' }}{{ dots }}</h2>
     </div>
   `
 })

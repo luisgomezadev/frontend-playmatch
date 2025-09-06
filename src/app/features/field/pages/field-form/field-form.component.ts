@@ -7,13 +7,12 @@ import { AuthService } from '@core/services/auth.service';
 import { FieldService } from '@field/services/field.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { User } from '@user/interfaces/user';
 
 @Component({
   selector: 'app-field-form',
   standalone: true,
-  imports: [ReactiveFormsModule, ButtonComponent, LoadingComponent, LayoutComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, LayoutComponent],
   templateUrl: './field-form.component.html',
   styleUrl: './field-form.component.scss'
 })
