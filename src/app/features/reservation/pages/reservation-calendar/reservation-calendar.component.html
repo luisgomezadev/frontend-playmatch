@@ -14,10 +14,14 @@
     </div>
   </div>
 
-  <div>
-    <app-calendar
-      [reservationList]="reservations"
-      [currentMonth]="currentMonth"
-      [currentYear]="currentYear" />
-  </div>
+  @if (loading) {
+    <p class="text-gray-200 text-xl">Cargando calendario...</p>
+  } @else {
+    <div>
+      <app-calendar
+        [reservationList]="reservations"
+        [currentMonth]="currentMonth"
+        [currentYear]="currentYear" />
+    </div>
+  }
 </app-layout>

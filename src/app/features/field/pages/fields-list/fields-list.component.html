@@ -11,11 +11,9 @@
       color="white"
       (clicked)="openModalFilters()" />
   </div>
-  <h1 class="text-2xl font-medium tracking-wide mb-3 md:block hidden">Resultados</h1>
+  <h1 class="text-2xl font-medium tracking-wide mb-3 md:block hidden text-gray-200">Resultados</h1>
   @if (loading) {
-    <div>
-      <app-loading-field-list-component />
-    </div>
+    <p class="text-gray-200 text-xl">Obteniendo canchas...</p>
   } @else {
     @if (filters.city || filters.minPrice || filters.maxPrice) {
       <div class="flex items-center gap-5">

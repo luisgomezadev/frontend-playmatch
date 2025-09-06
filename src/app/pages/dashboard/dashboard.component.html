@@ -19,9 +19,9 @@
 
   <!-- Menu de navegación en vista escritorio -->
   <aside
-    class="z-40 top-0 left-0 md:w-[200px] bg-white text-black transform transition-transform duration-300 h-full fixed shadow-md hidden md:block">
+    class="z-40 top-0 left-0 md:w-[200px] bg-gray-900 text-gray-200 transform transition-transform duration-300 h-full fixed shadow-md hidden md:block">
     <div class="p-6 text-center hidden md:block shadow-sm">
-      <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" />
+      <img src="/assets/logo_blanco.webp" alt="Logo PlayMatch" />
     </div>
     <nav class="mt-6 relative">
       <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0">
@@ -33,7 +33,7 @@
                 (click)="closeSidebar()"
                 [routerLink]="link.link"
                 routerLinkActive="active"
-                class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-primary transition">
+                class="flex items-center gap-3 py-2 px-4 text-gray-200 rounded-lg hover:bg-primary/60 transition-colors duration-300">
                 <i class="w-6" [class]="link.iconClass"></i>
                 <span>{{ link.name }}</span>
               </a>
@@ -48,7 +48,7 @@
             (click)="closeSidebar()"
             routerLink="profile"
             routerLinkActive="active"
-            class="flex items-center gap-3 py-2 px-4 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-primary transition">
+            class="flex items-center gap-3 py-2 px-4 text-gray-200 rounded-lg hover:bg-primary/60 transition-colors duration-300">
             <i class="w-6" class="fa-solid fa-user w-6"></i>
             <span>Perfil</span>
           </a>
@@ -57,7 +57,7 @@
           <button
             (click)="closeSidebar()"
             (click)="logout()"
-            class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-red-600 transition cursor-pointer w-full">
+            class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-200 hover:bg-red-600/60 transition-colors duration-300 cursor-pointer w-full">
             <i class="fa-solid fa-right-from-bracket w-6"></i>
             <span>Cerrar sesión</span>
           </button>

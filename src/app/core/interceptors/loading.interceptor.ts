@@ -15,8 +15,6 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     finalize(() => {
-      console.log(requests);
-
       requests--;
       if (requests === 0) {
         loadingService.hide();

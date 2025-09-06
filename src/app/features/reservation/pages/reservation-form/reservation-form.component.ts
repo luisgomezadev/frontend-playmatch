@@ -14,6 +14,7 @@ import {
 } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { LoadingFullComponent } from '@shared/components/loading/loading-full/loading-full.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
@@ -30,7 +31,8 @@ import { User } from '@user/interfaces/user';
     LoadingFullComponent,
     FieldDetailCardComponent,
     CommonModule,
-    ModalComponent
+    ModalComponent,
+    LayoutComponent
   ],
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss'

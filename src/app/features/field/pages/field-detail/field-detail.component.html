@@ -1,10 +1,10 @@
 <app-layout [title]="'Mi cancha'" [subtitle]="'Aquí puedes ver los detalles de la cancha que has registrado.'"
   [loading]="loading">
   <div loading>
-    <app-loading-field-component />
+    <p class="text-gray-200 text-xl">Cargando detalles...</p>
   </div>
   @if (field) {
-  <article class="bg-white p-6 rounded-md shadow-md border border-gray-200 space-y-6">
+  <article class="bg-white/5 p-6 rounded-md shadow-md border border-gray-600 space-y-6">
     <app-field-detail-card [field]="field" />
     <div class="flex justify-end">
       <app-button text="Editar" icon="fa-solid fa-pen-to-square" [hasIcon]="true" color="yellow"

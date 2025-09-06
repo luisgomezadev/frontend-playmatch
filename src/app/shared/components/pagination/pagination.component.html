@@ -1,18 +1,20 @@
 <div class="flex justify-center items-center gap-2 mt-6">
   <button
-    class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200"
-    (click)="previous()" [disabled]="currentPage === 0">
+    class="px-3 py-1 bg-gray-900 rounded hover:bg-gray-950 cursor-pointer text-gray-200 md:text-base text-sm disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-900/30 disabled:bg-gray-900/30 transition-colors duration-300"
+    (click)="previous()"
+    [disabled]="currentPage === 0">
     <i class="fa-solid fa-angle-left"></i>
     Anterior
   </button>
 
-  <span class="px-3 font-medium tracking-wide md:text-base text-xs">
+  <span class="px-3 font-medium tracking-wide md:text-base text-xs text-gray-200">
     Página {{ currentPage + 1 }} de {{ totalPages }}
   </span>
 
   <button
-    class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer md:text-base text-sm disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-200"
-    (click)="next()" [disabled]="currentPage + 1 >= totalPages">
+    class="px-3 py-1 bg-gray-900 rounded hover:bg-gray-950 cursor-pointer text-gray-200 md:text-base text-sm disabled:text-gray-500 disabled:cursor-not-allowed disabled:hover:bg-gray-900/30 disabled:bg-gray-900/30 transition-colors duration-300"
+    (click)="next()"
+    [disabled]="currentPage + 1 >= totalPages">
     Siguiente
     <i class="fa-solid fa-angle-right"></i>
   </button>

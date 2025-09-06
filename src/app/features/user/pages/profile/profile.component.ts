@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { User, UserRole } from '@user/interfaces/user';
 import { UserService } from '@user/services/user.service';
@@ -9,7 +10,7 @@ import { UserService } from '@user/services/user.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ButtonComponent, ModalComponent],
+  imports: [ButtonComponent, ModalComponent, LayoutComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -21,6 +22,7 @@ export class ProfileComponent implements OnInit {
 
   user!: User;
   loading = false;
+  userRole = UserRole;
 
   showImageModal = false;
   selectedFile: File | null = null;

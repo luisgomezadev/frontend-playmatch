@@ -8,6 +8,8 @@ import { MONTHS } from '@shared/constants/months.constants';
 import { Field } from '@features/field/interfaces/field';
 import { User } from '@features/user/interfaces/user';
 import { CalendarComponent } from '@features/reservation/components/calendar/calendar.component';
+import { AlertService } from '@core/services/alert.service';
+import { ErrorResponse } from '@core/interfaces/error-response';
 
 @Component({
   selector: 'app-reservation-calendar',
@@ -20,10 +22,12 @@ export class ReservationCalendarComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly fieldService = inject(FieldService);
   private readonly reservationService = inject(ReservationService);
+  private readonly alertService = inject(AlertService);
 
   user!: User;
   field!: Field;
   reservations: Reservation[] = [];
+  loading = true;
 
   months = MONTHS;
   currentMonth = new Date().getMonth();
@@ -39,7 +43,10 @@ export class ReservationCalendarComponent implements OnInit {
 
   loadField(): void {
     this.fieldService.getFieldByAdminId(this.user.id).subscribe(field => {
-      if (!field) return;
+      if (!field) {
+        this.loading = false;
+        return;
+      }
       this.field = field;
       this.loadReservations();
     });
@@ -49,8 +56,17 @@ export class ReservationCalendarComponent implements OnInit {
     this.reservationService
       .getReservationsByFieldAndStuts(this.field.id, StatusReservation.ACTIVE)
       .subscribe({
-        next: data => (this.reservations = data),
-        error: err => console.error(err)
+        next: data => {
+          this.loading = false;
+          this.reservations = data;
+        },
+        error: (err: ErrorResponse) => {
+          this.alertService.error(
+            'Error al cargar las reservas',
+            err.error.message || 'Inténtalo de nuevo más tarde.'
+          );
+          this.loading = false;
+        }
       });
   }
 

@@ -2,7 +2,6 @@
   @apply text-primary bg-primary/10;
 }
 
-/* Anula el hover cuando está activo */
 .active:hover {
-  @apply text-primary bg-primary/10; /* igual que activo */
+  @apply text-primary bg-primary/10;
 }

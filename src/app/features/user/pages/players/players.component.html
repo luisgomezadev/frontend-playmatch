@@ -31,7 +31,7 @@
     </div>
     <div class="col-span-1 md:col-span-5">
       @if (loading) {
-      <p>Obteniendo jugadores...</p>
+      <p class="text-gray-200 text-xl">Obteniendo jugadores...</p>
       } @else {
       <div class="flex flex-col gap-3">
         @for (player of players().content; track player.id) {

@@ -22,11 +22,7 @@
     }
   </div>
   <div loading>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      @for (placeholder of placeholders; track $index) {
-        <app-loading-reservation-card-component />
-      }
-    </div>
+    <p class="text-gray-200 text-xl">Obteniendo reservas...</p>
   </div>
   @if (filters().date || filters().status) {
     <div class="flex items-center gap-5">
