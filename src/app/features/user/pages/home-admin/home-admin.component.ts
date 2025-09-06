@@ -10,7 +10,6 @@ import { Reservation } from '@reservation/interfaces/reservation';
 import { ReservationService } from '@reservation/services/reservation.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { LoadingReservationCardComponent } from '@shared/components/loading/loading-reservation-card/loading-reservation-card.component';
 import { User, UserRole } from '@user/interfaces/user';
 
 @Component({
@@ -21,7 +20,6 @@ import { User, UserRole } from '@user/interfaces/user';
     ReservationCardComponent,
     CommonModule,
     ButtonComponent,
-    LoadingReservationCardComponent,
     LayoutComponent,
     CountReservationCardComponent
   ],
