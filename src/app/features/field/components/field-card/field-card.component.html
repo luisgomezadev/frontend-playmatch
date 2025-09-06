@@ -1,49 +1,66 @@
 <button
-  class="w-full bg-white/5 rounded-lg shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer"
-  (click)="makeReservation(field.id)" aria-label="Reservar" title="Reservar">
-  <div class="relative w-full h-48">
-    <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-full object-cover" />
+  class="w-full bg-white/5 rounded-lg shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-row md:flex-col p-4 md:p-0 gap-x-4 items-center"
+  (click)="makeReservation(field.id)"
+  aria-label="Reservar"
+  title="Reservar">
+  <div class="relative w-32 md:w-full md:h-48">
+    <img src="/assets/cancha.webp" alt="{{ field.name }}" class="w-full h-full object-cover rounded-md md:rounded-none" />
   </div>
 
-  <div class="p-4">
+  <div class="md:p-4 text-start md:text-center md:py-5">
     <div class="text-2xl font-bold text-gray-200 mb-1">
-      {{ field.hourlyRate | moneyFormat }} <span class="text-sm font-normal text-gray-400">/ hora</span>
+      {{ field.hourlyRate | moneyFormat }}
+      <span class="text-sm font-normal text-gray-400">/ hora</span>
     </div>
 
     <h2 class="text-md text-gray-200 truncate mb-1">{{ field.name }}</h2>
 
-    <p class="text-sm text-gray-400 mb-3">
+    <p class="text-sm text-gray-400">
       <i class="fa-solid fa-location-dot mr-1"></i>
       {{ field.city }}
     </p>
-
   </div>
 </button>
 
 @if (showModal) {
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-md px-3">
   <div
-    class="bg-white w-full max-w-sm mx-auto rounded-md p-6 relative shadow-2xl animate__animated animate__fadeInUpBig text-center">
-    <button (click)="closeModal()"
-      class="absolute top-2 right-4 h-8 w-8 flex items-center justify-center rounded-full border border-gray-400 text-gray-400 hover:bg-gray-100/20 cursor-pointer transition-colors"
-      aria-label="Cerrar modal">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
+    class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-md px-3">
+    <div
+      class="bg-white w-full max-w-sm mx-auto rounded-md p-6 relative shadow-2xl animate__animated animate__fadeInUpBig text-center">
+      <button
+        (click)="closeModal()"
+        class="absolute top-2 right-4 h-8 w-8 flex items-center justify-center rounded-full border border-gray-400 text-gray-400 hover:bg-gray-100/20 cursor-pointer transition-colors"
+        aria-label="Cerrar modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
 
-    <div class="absolute -top-12 bg-white rounded-full w-56 p-6 left-1/2 -translate-x-1/2">
-      <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" class="w-full h-full object-cover" />
-    </div>
+      <div class="absolute -top-12 bg-white rounded-full w-56 p-6 left-1/2 -translate-x-1/2">
+        <img
+          src="/assets/logo_sin_fondo.webp"
+          alt="Logo PlayMatch"
+          class="w-full h-full object-cover" />
+      </div>
 
-    <span class="text-gray-700 text-lg font-medium tracking-wide block mt-12 mb-4">
-      Debes iniciar sesión para poder reservar una cancha.
-    </span>
+      <span class="text-gray-700 text-lg font-medium tracking-wide block mt-12 mb-4">
+        Debes iniciar sesión para poder reservar una cancha.
+      </span>
 
-    <div class="flex items-center justify-center mt-4 gap-4">
-      <app-button text="Iniciar sesión" icon="fa-solid fa-right-to-bracket" color="black" [hasIcon]="true"
-        class="mt-4 w-full" (clicked)="goToLogin()"></app-button>
-      <app-button text="Crear cuenta" icon="fa-solid fa-user-plus" color="primary" [hasIcon]="true" class="mt-4 w-full"
-        (clicked)="goToRegister()"></app-button>
+      <div class="flex items-center justify-center mt-4 gap-4">
+        <app-button
+          text="Iniciar sesión"
+          icon="fa-solid fa-right-to-bracket"
+          color="black"
+          [hasIcon]="true"
+          class="mt-4 w-full"
+          (clicked)="goToLogin()"></app-button>
+        <app-button
+          text="Crear cuenta"
+          icon="fa-solid fa-user-plus"
+          color="primary"
+          [hasIcon]="true"
+          class="mt-4 w-full"
+          (clicked)="goToRegister()"></app-button>
+      </div>
     </div>
   </div>
-</div>
 }

@@ -1,8 +1,8 @@
-<section class="bg-gray-100">
+<section class="bg-gray-800">
   <div class="space-y-6 px-3 py-4 md:p-6">
-    <header class="bg-white p-6 rounded-md shadow-md">
-      <h1 class="text-3xl font-bold text-gray-700 tracking-tight">Menú</h1>
-      <p class="text-gray-600 mt-1 text-base">
+    <header class="bg-white/5 p-6 rounded-md shadow-md">
+      <h1 class="text-3xl font-bold text-gray-200 tracking-tight">Menú</h1>
+      <p class="text-gray-400 mt-1 text-base">
         Aquí puedes ver todas las opciones que tienes como
         {{
           role === 'FIELD_ADMIN'
@@ -18,7 +18,7 @@
         @for (link of links; track $index) {
           <a
             [routerLink]="'../' + link.link"
-            class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center text-gray-600">
+            class="bg-white/5 p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center text-gray-400">
             <i [class]="link.iconClass"></i>
             <h2 class="text-lg mt-2">
               {{ link.name }}
@@ -27,13 +27,13 @@
         }
         <a
           routerLink="../profile"
-          class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center text-gray-600">
+          class="bg-white/5 p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center text-gray-400">
           <i class="fa-solid fa-user"></i>
           <h2 class="text-lg mt-2">Perfil</h2>
         </a>
         <button
           (click)="logout()"
-          class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center text-red-600">
+          class="bg-white/5 p-4 rounded-lg shadow hover:shadow-lg transition duration-300 flex flex-col items-center text-center text-red-600">
           <i class="fa-solid fa-right-from-bracket"></i>
           <h2 class="text-lg mt-2">Cerrar sesión</h2>
         </button>
