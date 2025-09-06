@@ -44,20 +44,20 @@
       }
     </div>
   }
-  @if (reservationList && reservationList.content.length > 0) {
+  @if (reservations && reservations.content.length > 0) {
     <div class="grid gap-6 xl:grid-cols-3 lg:grid-cols-2 grid-cols-1">
-      @for (reservation of reservationList.content; track reservation.id) {
+      @for (reservation of reservations.content; track reservation.id) {
         <app-reservation-card
-          [viewAsField]="isFieldView"
+          [viewAsField]="isReservationField()"
           [reservation]="reservation"
           [reservationBy]="reservationBy"
           [isUserAdmin]="isUserAdmin(user)"
-          (loadReservations)="getReservations($event)" />
+          (loadReservations)="loadReservations($event)" />
       }
     </div>
     <app-pagination
       [currentPage]="currentPage"
-      [totalPages]="reservationList.totalPages || 1"
+      [totalPages]="reservations.totalPages || 1"
       (pageChange)="changePage($event)"></app-pagination>
   } @else {
     <span class="text-gray-500 text-sm">No se encontró ninguna reserva.</span>

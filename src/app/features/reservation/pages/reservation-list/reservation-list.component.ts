@@ -49,7 +49,7 @@ export class ReservationListComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly alertService = inject(AlertService);
 
-  reservationList!: PagedResponse<Reservation>;
+  reservations!: PagedResponse<Reservation>;
   formFilter!: FormGroup;
   filters = signal<ReservationFilter>({});
   user!: User;
@@ -91,10 +91,6 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
-  get isFieldView(): boolean {
-    return this.reservationBy === 'field';
-  }
-
   isUserAdmin(user: User): boolean {
     return user.role === UserRole.FIELD_ADMIN;
   }
@@ -107,14 +103,15 @@ export class ReservationListComponent implements OnInit {
     return this.reservationBy === 'field';
   }
 
-  hasActiveReservation(): boolean {
-    return this.reservationList?.content?.some(r => r.status === StatusReservation.ACTIVE);
+  async hasActiveReservation(): Promise<boolean> {
+    const count = await this.reservationService.getCountActiveByUser(this.user.id);
+    return count > 0;
   }
 
   changePage(newPage: number): void {
-    if (newPage >= 0 && newPage < this.reservationList.totalPages) {
+    if (newPage >= 0 && newPage < this.reservations.totalPages) {
       this.currentPage = newPage;
-      this.getReservations(this.currentPage);
+      this.loadReservations(this.currentPage);
     }
   }
 
@@ -131,7 +128,7 @@ export class ReservationListComponent implements OnInit {
   filter(formFilter: ReservationFilter): void {
     this.filters.set(formFilter);
     this.currentPage = 0;
-    this.getReservations(0);
+    this.loadReservations(0);
   }
 
   cleanFilter(): void {
@@ -143,11 +140,13 @@ export class ReservationListComponent implements OnInit {
       return copy;
     });
     this.currentPage = 0;
-    this.getReservations(0);
+    this.loadReservations(0);
   }
 
-  makeReservation(): void {
-    if (this.hasActiveReservation()) {
+  async makeReservation(): Promise<void> {
+    const hasActive = await this.hasActiveReservation();
+
+    if (hasActive) {
       this.alertService.notify(
         'Tienes una reserva activa',
         'Debes cancelarla si deseas hacer una nueva reserva.',
@@ -158,13 +157,14 @@ export class ReservationListComponent implements OnInit {
     }
   }
 
+
   private setFiltersAndFetchReservations(): void {
     if (this.isReservationField()) {
       this.filters.update(f => ({ ...f, fieldId: this.field.id }));
     } else {
       this.filters.update(f => ({ ...f, userId: this.user.id }));
     }
-    this.getReservations(0);
+    this.loadReservations(0);
   }
 
   private getField(): void {
@@ -182,11 +182,11 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
-  getReservations(page: number): void {
+  loadReservations(page: number): void {
     this.loading = true;
     this.reservationService.getReservations(this.filters(), page, this.pageSize).subscribe({
       next: data => {
-        this.reservationList = data;
+        this.reservations = data;
         this.loading = false;
       },
       error: err => this.handleError(err)

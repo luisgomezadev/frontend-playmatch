@@ -64,37 +64,43 @@ export class HomeAdminComponent implements OnInit {
   getFieldByAdmin(user: User) {
     this.loading = true;
     this.loadingReservations = true;
+
     this.fieldService.getFieldByAdminId(user.id).subscribe({
       next: (field: Field) => {
-        if (field) {
-          this.fieldName = field.name;
-          this.fieldId = field.id;
-          this.getLastThreeReservations();
-          this.reservationService.getCountActiveByField(field.id).subscribe({
-            next: value => {
-              this.loading = false;
-              this.reservationsActive = value;
-            }
-          });
-          this.reservationService.getCountFinishedByField(field.id).subscribe({
-            next: value => {
-              this.loading = false;
-              this.reservationsFinished = value;
-            }
-          });
-          this.reservationService.getCountCanceledByField(field.id).subscribe({
-            next: value => {
-              this.loading = false;
-              this.reservationsCanceled = value;
-            }
-          });
-        } else {
+        if (!field) {
           this.loadingReservations = false;
           this.loading = false;
+          return;
         }
+
+        this.fieldName = field.name;
+        this.fieldId = field.id;
+        this.getLastThreeReservations();
+
+        // aquí las demás llamadas como observables
+        this.reservationService.getCountActiveByField(field.id).subscribe({
+          next: value => (this.reservationsActive = value)
+        });
+
+        this.reservationService.getCountFinishedByField(field.id).subscribe({
+          next: value => (this.reservationsFinished = value)
+        });
+
+        this.reservationService.getCountCanceledByField(field.id).subscribe({
+          next: value => {
+            this.reservationsCanceled = value;
+            this.loading = false;
+            this.loadingReservations = false;
+          }
+        });
+      },
+      error: () => {
+        this.loadingReservations = false;
+        this.loading = false;
       }
     });
   }
+
 
   getLastThreeReservations() {
     this.reservationService.getLastThreeReservationsByField(this.fieldId).subscribe({

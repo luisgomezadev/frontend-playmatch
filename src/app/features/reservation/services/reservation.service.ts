@@ -9,7 +9,7 @@ import {
   StatusReservation
 } from '@reservation/interfaces/reservation';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -70,8 +70,8 @@ export class ReservationService extends BaseHttpService {
     return this.http.put<string>(`${this.ENDPOINT}/${id}/status/canceled`, null);
   }
 
-  getCountActiveByUser(userId: number): Observable<number> {
-    return this.http.get<number>(`${this.ENDPOINT}/user/${userId}/active`);
+  async getCountActiveByUser(userId: number): Promise<number> {
+    return await firstValueFrom(this.http.get<number>(`${this.ENDPOINT}/user/${userId}/active`));
   }
 
   getCountActiveByField(fieldId: number): Observable<number> {

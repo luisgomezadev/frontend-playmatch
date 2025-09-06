@@ -7,7 +7,6 @@ import { User } from '@features/user/interfaces/user';
 import { Field } from '@field/interfaces/field';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-field-card',
@@ -77,7 +76,7 @@ export class FieldCardComponent implements OnInit {
   }
 
   async hasActiveReservation(): Promise<boolean> {
-    const count = await firstValueFrom(this.reservationService.getCountActiveByUser(this.user.id));
+    const count = await this.reservationService.getCountActiveByUser(this.user.id);
     return count > 0;
   }
 }

@@ -1,64 +1,74 @@
 @if (loading) {
-<app-loading-component text="Cargando dashboard" />
+  <app-loading-component text="Cargando dashboard" />
 } @else {
-<!-- Menu de navegación en vista movil -->
-<nav
-  class="md:hidden bg-gray-900 border-t-2 border-gray-900 shadow-lg flex justify-center items-center fixed bottom-0 left-0 right-0 z-50">
-  @for (link of links; track $index) {
-  @if (link.viewMovil) {
-  <a [routerLink]="link.link" routerLinkActive="text-primary border-t-2 border-primary"
-    class="flex-1 text-xs text-gray-400 flex flex-col justify-center items-center gap-1 py-4 px-2">
-    <i [class]="link.iconClass"></i>
-    <span>{{ link.name }}</span>
-  </a>
-  }
-  }
-</nav>
-
-<!-- Menu de navegación en vista escritorio -->
-<aside
-  class="z-40 top-0 left-0 md:w-[200px] bg-gray-900 text-gray-200 transform transition-transform duration-300 h-full fixed shadow-md hidden md:block">
-  <div class="p-6 text-center hidden md:block shadow-sm">
-    <img src="/assets/logo_blanco.webp" alt="Logo PlayMatch" />
-  </div>
-  <nav class="mt-6 relative">
-    <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0">
-      <p class="pl-1">Menu</p>
-      @for (link of links; track $index) {
-      @if (link.viewDesktop) {
-      <li>
-        <a (click)="closeSidebar()" [routerLink]="link.link" routerLinkActive="active"
-          class="flex items-center gap-3 py-2 px-4 text-gray-200 rounded-lg hover:bg-primary/60 transition-colors duration-300">
-          <i class="w-6" [class]="link.iconClass"></i>
+  <!-- Menu de navegación en vista movil -->
+  <nav
+    class="md:hidden bg-gray-900 border-t-2 border-gray-900 shadow-lg flex justify-center items-center fixed bottom-0 left-0 right-0 z-50">
+    @for (link of links; track $index) {
+      @if (link.viewMovil) {
+        <a
+          [routerLink]="link.link"
+          routerLinkActive="text-primary border-t-2 border-primary"
+          class="flex-1 text-xs text-gray-400 flex flex-col justify-center items-center gap-1 py-4 px-2">
+          <i [class]="link.iconClass"></i>
           <span>{{ link.name }}</span>
         </a>
-      </li>
       }
-      }
-    </ul>
-    <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0 mt-8">
-      <p class="pl-1">General</p>
-      <li>
-        <a (click)="closeSidebar()" routerLink="profile" routerLinkActive="active"
-          class="flex items-center gap-3 py-2 px-4 text-gray-200 rounded-lg hover:bg-primary/60 transition-colors duration-300">
-          <i class="w-6" class="fa-solid fa-user w-6"></i>
-          <span>Perfil</span>
-        </a>
-      </li>
-      <li>
-        <button (click)="closeSidebar()" (click)="logout()"
-          class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-200 hover:bg-red-600/60 transition-colors duration-300 cursor-pointer w-full">
-          <i class="fa-solid fa-right-from-bracket w-6"></i>
-          <span>Cerrar sesión</span>
-        </button>
-      </li>
-    </ul>
+    }
   </nav>
-</aside>
 
-<main class="w-full relative">
-  <div class="pl-0 md:pl-[200px] pb-16 md:pb-0">
-    <router-outlet></router-outlet>
-  </div>
-</main>
+  <!-- Menu de navegación en vista escritorio -->
+  <aside
+    class="z-40 top-0 left-0 md:w-[200px] bg-gray-900 text-gray-200 transform transition-transform duration-300 h-full fixed shadow-md hidden md:block">
+    <div class="p-6 text-center hidden md:block shadow-sm">
+      <img src="/assets/logo_blanco.webp" alt="Logo PlayMatch" />
+    </div>
+    <nav class="mt-6">
+      <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0">
+        <p class="pl-1">Menu</p>
+        @for (link of links; track $index) {
+          @if (link.viewDesktop) {
+            <li>
+              <a
+                (click)="closeSidebar()"
+                [routerLink]="link.link"
+                routerLinkActive="active"
+                class="flex items-center gap-3 py-2 px-4 text-gray-200 rounded-lg hover:bg-primary/60 transition-colors duration-300">
+                <i class="w-6" [class]="link.iconClass"></i>
+                <span>{{ link.name }}</span>
+              </a>
+            </li>
+          }
+        }
+      </ul>
+      <ul class="flex flex-col gap-2 px-4 pt-4 md:pt-0 mt-8">
+        <p class="pl-1">General</p>
+        <li>
+          <a
+            (click)="closeSidebar()"
+            routerLink="profile"
+            routerLinkActive="active"
+            class="flex items-center gap-3 py-2 px-4 text-gray-200 rounded-lg hover:bg-primary/60 transition-colors duration-300">
+            <i class="w-6" class="fa-solid fa-user w-6"></i>
+            <span>Perfil</span>
+          </a>
+        </li>
+        <li>
+          <button
+            (click)="closeSidebar()"
+            (click)="logout()"
+            class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-200 hover:bg-red-600/60 transition-colors duration-300 cursor-pointer w-full">
+            <i class="fa-solid fa-right-from-bracket w-6"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="w-full">
+    <div class="pl-0 md:pl-[200px] pb-16 md:pb-0">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
 }

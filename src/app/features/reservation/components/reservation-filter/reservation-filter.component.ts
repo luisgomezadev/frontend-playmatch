@@ -9,7 +9,7 @@ import { ReservationFilter } from '@reservation/interfaces/reservation';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './reservation-filter.component.html',
-  styleUrl: './reservation-filter.component.scss'
+  styleUrl: './reservation-filter.component.scss',
 })
 export class ReservationFilterComponent {
   @Input() formFilter!: FormGroup;
