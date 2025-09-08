@@ -21,6 +21,13 @@ import { ModalComponent } from '@shared/components/modal/modal.component';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { User } from '@user/interfaces/user';
 
+import {
+  to24h,
+  generateHourRanges,
+  filterPastHours,
+  toDateFromFormatted
+} from '@reservation/utils/reservation-utils';
+
 @Component({
   selector: 'app-reservation-form',
   standalone: true,
@@ -54,22 +61,19 @@ export class ReservationFormComponent implements OnInit {
   confirmedReservation!: ConfirmedReservation | null;
   reservations: Reservation[] = [];
   field!: Field;
-  showModal = false;
-  showCalendar = false;
-  verifiedReservation = false;
   today = '';
   loading = false;
+  loadingHours = false;
   loadingReservation = false;
   availableHours: TimeSlot[] = [];
   selectedHours: TimeSlot[] = [];
+  verifiedReservation = false;
 
   isOpen = signal(false);
 
   ngOnInit(): void {
     const today = new Date();
-    const offset = today.getTimezoneOffset();
-    today.setMinutes(today.getMinutes() - offset);
-    today.setDate(today.getDate());
+    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
     this.today = today.toISOString().split('T')[0];
 
     this.authService.currentUser$.subscribe(user => {
@@ -90,8 +94,7 @@ export class ReservationFormComponent implements OnInit {
   }
 
   get startTime(): string {
-    if (this.selectedHours.length === 0) return '';
-    return this.to24h(this.selectedHours[0].start);
+    return this.selectedHours.length ? to24h(this.selectedHours[0].start) : '';
   }
 
   get totalHours(): number {
@@ -104,166 +107,102 @@ export class ReservationFormComponent implements OnInit {
 
   getField(): void {
     this.fieldService.getFieldById(this.fieldId).subscribe({
-      next: field => this.field = field
+      next: field => (this.field = field)
     });
   }
 
   getAvailableHours(): void {
     this.selectedHours = [];
-    const date = this.formReservation.get('reservationDate')?.value;
-    if (this.fieldId && date) {
-      this.reservationService.getHoursAvailability(this.fieldId, date).subscribe({
-        next: timeSlots => {
-          const ranges = this.generateHourRanges(timeSlots);
-          this.availableHours = this.filterPastHours(ranges);
-        },
-        error: () => {
-          this.availableHours = [];
-        }
-      });
-    } else {
+    const dateStr = this.formReservation.get('reservationDate')?.value;
+    if (!this.fieldId || !dateStr) {
       this.availableHours = [];
+      return;
     }
-  }
-
-  private filterPastHours(hours: TimeSlot[]): TimeSlot[] {
-    const selectedDate = this.getSelectedDate();
-    const now = new Date();
-    const isToday =
-      selectedDate.getFullYear() === now.getFullYear() &&
-      selectedDate.getMonth() === now.getMonth() &&
-      selectedDate.getDate() === now.getDate();
-
-    if (!isToday) return hours;
-
-    return hours.filter(h => this.toDateFromFormatted(h.start).getTime() > now.getTime());
-  }
-
-  private generateHourRanges(timeSlots: { start: string; end: string }[]): TimeSlot[] {
-    const ranges: TimeSlot[] = [];
-
-    timeSlots.forEach(slot => {
-      let start = this.toHourOnlyDate(slot.start);
-      const end = this.toHourOnlyDate(slot.end);
-
-      while (start.getTime() + 60 * 60 * 1000 <= end.getTime()) {
-        const next = new Date(start.getTime());
-        next.setHours(next.getHours() + 1);
-
-        ranges.push({
-          start: this.formatTime(start),
-          end: this.formatTime(next)
-        });
-
-        start = next;
+    this.loadingHours = true;
+    this.reservationService.getHoursAvailability(this.fieldId, dateStr).subscribe({
+      next: timeSlots => {
+        const ranges = generateHourRanges(timeSlots);
+        this.availableHours = filterPastHours(ranges, this.getSelectedDate());
+        this.loadingHours = false;
+      },
+      error: () => {
+        this.loadingHours = false;
+        this.availableHours = [];
       }
     });
-
-    return ranges;
-  }
-
-  private toHourOnlyDate(time: string): Date {
-    const [hours] = time.split(':').map(Number);
-    const date = new Date();
-    date.setHours(hours, 0, 0, 0);
-    return date;
-  }
-
-  private toDateFromFormatted(time: string): Date {
-    const [hm, suffix] = time.split(' ');
-    const [hours, minutes] = hm.split(':').map(Number);
-    let h = hours % 12;
-    if (suffix === 'PM') h += 12;
-    const date = new Date();
-    date.setHours(h, minutes, 0, 0);
-    return date;
-  }
-
-  private formatTime(date: Date): string {
-    const h = date.getHours();
-    const m = date.getMinutes();
-    const suffix = h >= 12 ? 'PM' : 'AM';
-    const displayHours = h % 12 === 0 ? 12 : h % 12;
-    return `${displayHours}:${m.toString().padStart(2, '0')} ${suffix}`;
   }
 
   toggleHourSelection(hour: TimeSlot) {
     const index = this.selectedHours.findIndex(h => h.start === hour.start && h.end === hour.end);
-
     if (index > -1) {
-      // Si quitamos una hora, quitamos todas las horas posteriores para mantener continuidad
       this.selectedHours = this.selectedHours.slice(0, index);
     } else {
-      if (this.selectedHours.length === 0) {
+      if (!this.selectedHours.length) {
         this.selectedHours.push(hour);
       } else {
         const all = [...this.selectedHours, hour].sort(
-          (a, b) => this.toDateFromFormatted(a.start).getTime() - this.toDateFromFormatted(b.start).getTime()
+          (a, b) => toDateFromFormatted(a.start).getTime() - toDateFromFormatted(b.start).getTime()
         );
-
-        // Validar continuidad
         let isContinuous = true;
         for (let i = 1; i < all.length; i++) {
-          const prevEnd = this.toDateFromFormatted(all[i - 1].end).getTime();
-          const currStart = this.toDateFromFormatted(all[i].start).getTime();
-          if (currStart !== prevEnd) {
+          if (
+            toDateFromFormatted(all[i].start).getTime() !==
+            toDateFromFormatted(all[i - 1].end).getTime()
+          ) {
             isContinuous = false;
             break;
           }
         }
-
         if (isContinuous && all.length <= 3) this.selectedHours = all;
       }
     }
   }
 
-
   verifyReservation() {
-    if (this.formReservation.valid && this.selectedHours.length > 0) {
-      this.loading = true;
-      const reservationData: ReservationRequest = {
-        reservationDate: this.formReservation.value.reservationDate,
-        startTime: this.startTime,
-        hours: this.totalHours,
-        userId: this.user.id,
-        fieldId: this.fieldId
-      };
-
-      this.reservationService.getReservationAvailability(reservationData).subscribe({
-        next: (data: ConfirmedReservation) => {
-          this.loading = false;
-          this.confirmedReservation = data;
-          this.isOpen.set(true);
-        },
-        error: err => {
-          this.loading = false;
-          this.confirmedReservation = null;
-          this.alertService.error('Error al hacer reserva', err.error?.message || 'Algo salió mal');
-        }
-      });
-
-      this.verifiedReservation = true;
-    } else {
+    if (!this.formReservation.valid || !this.selectedHours.length) {
       this.formReservation.markAllAsTouched();
-      if (this.selectedHours.length === 0) {
-        this.alertService.notify('Selecciona alguna hora', 'Debes seleccionar al menos una hora para poder reservar.', 'warning');
-      }
+      if (!this.selectedHours.length)
+        this.alertService.notify(
+          'Selecciona alguna hora',
+          'Debes seleccionar al menos una hora para poder reservar.',
+          'warning'
+        );
+      return;
     }
+
+    this.loading = true;
+    const reservationData: ReservationRequest = {
+      reservationDate: this.formReservation.value.reservationDate,
+      startTime: this.startTime,
+      hours: this.totalHours,
+      userId: this.user.id,
+      fieldId: this.fieldId
+    };
+
+    this.reservationService.getReservationAvailability(reservationData).subscribe({
+      next: data => {
+        this.loading = false;
+        this.confirmedReservation = data;
+        this.isOpen.set(true);
+      },
+      error: err => {
+        this.loading = false;
+        this.confirmedReservation = null;
+        this.alertService.error('Error al hacer reserva', err.error?.message || 'Algo salió mal');
+      }
+    });
+
+    this.verifiedReservation = true;
   }
 
   private getSelectedDate(): Date {
-    const dateStr = this.formReservation.value.reservationDate; // "YYYY-MM-DD"
-    const [year, month, day] = dateStr.split('-').map(Number);
-    return new Date(year, month - 1, day); // mes es 0-index
+    const [year, month, day] = this.formReservation.value.reservationDate.split('-').map(Number);
+    return new Date(year, month - 1, day);
   }
 
   onClosed() {
     this.isOpen.set(false);
     document.body.style.overflow = '';
-  }
-
-  closeCalendar() {
-    this.showCalendar = false;
   }
 
   cancelReservation() {
@@ -273,34 +212,30 @@ export class ReservationFormComponent implements OnInit {
   }
 
   confirmReservation() {
-    if (this.confirmedReservation) {
-      this.loadingReservation = true;
-      const reservationRequest: ReservationRequest = {
-        userId: this.confirmedReservation.user?.id,
-        fieldId: this.confirmedReservation.field?.id,
-        reservationDate: this.confirmedReservation.reservationDate,
-        startTime: this.confirmedReservation.startTime,
-        hours: this.confirmedReservation.hours
-      };
-      this.reservationService.createReservation(reservationRequest).subscribe({
-        next: () => {
-          this.loadingReservation = false;
-          this.alertService.success('Reserva creada', `Has creado una reserva para el día ${reservationRequest.reservationDate}.`);
-          this.router.navigate(['/dashboard/reservation/list']);
-        },
-        error: err => {
-          this.loadingReservation = false;
-          this.alertService.error('Error', err.error?.message || 'Algo salió mal');
-        }
-      });
-    }
-  }
+    if (!this.confirmedReservation) return;
 
-  private to24h(time: string): string {
-    const [hm, suffix] = time.split(' ');
-    const [hours, minutes] = hm.split(':').map(Number);
-    let h = hours % 12;
-    if (suffix === 'PM') h += 12;
-    return `${h.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    this.loadingReservation = true;
+    const reservationRequest: ReservationRequest = {
+      userId: this.confirmedReservation.user?.id,
+      fieldId: this.confirmedReservation.field?.id,
+      reservationDate: this.confirmedReservation.reservationDate,
+      startTime: this.confirmedReservation.startTime,
+      hours: this.confirmedReservation.hours
+    };
+
+    this.reservationService.createReservation(reservationRequest).subscribe({
+      next: () => {
+        this.loadingReservation = false;
+        this.alertService.success(
+          'Reserva creada',
+          `Has creado una reserva para el día ${reservationRequest.reservationDate}.`
+        );
+        this.router.navigate(['/dashboard/reservation/list']);
+      },
+      error: err => {
+        this.loadingReservation = false;
+        this.alertService.error('Error', err.error?.message || 'Algo salió mal');
+      }
+    });
   }
 }

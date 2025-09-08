@@ -103,8 +103,6 @@ export class ButtonComponent {
   get classes(): string {
     let base = CLASSES_BUTTON + ' ' + this.class;
     if (this.onlyIcon) base += ' w-8 h-8 flex items-center justify-center';
-    if (!this.disabled && this.color != 'transparent') base += ' hover:shadow';
-    else base += ' text-sm w-full';
     const styles = {
       black: STYLE_BLACK,
       red: STYLE_RED,

@@ -57,27 +57,38 @@
         <app-button
           text="Hacer reserva"
           color="primary"
+          [disabled]="loadingHours"
           [loading]="loading"
           (clicked)="verifyReservation()"></app-button>
       </footer>
     </article>
     <article
-      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-3"
+      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-3 max-h-72 overflow-y-auto"
       [formGroup]="formReservation">
       <h2 class="text-xl font-medium tracking-wide text-gray-200">Horas disponibles</h2>
-
-      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
-        <button
-          *ngFor="let h of availableHours"
-          (click)="toggleHourSelection(h)"
-          class="px-1 py-1.5 rounded-lg transition border w-full text-sm"
-          [ngClass]="{
-            'bg-primary/10 text-primary border-primary': selectedHours.includes(h),
-            'bg-transparent text-gray-300 border-gray-300': !selectedHours.includes(h)
-          }">
-          {{ h.start }} – {{ h.end }}
-        </button>
-      </div>
+      @if (loadingHours) {
+        <div class="flex justify-center items-center h-32">
+          <i class="fa-solid fa-spinner fa-spin text-gray-300 text-2xl"></i>
+        </div>
+      } @else if (availableHours.length === 0) {
+        <div class="text-gray-400">
+          <i class="fa-solid fa-circle-exclamation text-yellow-600"></i>
+          No hay horas disponibles para la fecha seleccionada.
+        </div>
+      } @else {
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
+          <button
+            *ngFor="let h of availableHours"
+            (click)="toggleHourSelection(h)"
+            class="px-1 py-1.5 rounded-lg transition border w-full text-base font-medium"
+            [ngClass]="{
+              'bg-primary/10 text-primary border-primary': selectedHours.includes(h),
+              'bg-transparent text-gray-300 border-gray-300': !selectedHours.includes(h)
+            }">
+            {{ h.start }} a {{ h.end }}
+          </button>
+        </div>
+      }
     </article>
 
     <article class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-5">
