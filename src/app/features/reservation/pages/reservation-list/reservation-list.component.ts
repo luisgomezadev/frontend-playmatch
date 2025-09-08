@@ -126,7 +126,7 @@ export class ReservationListComponent implements OnInit {
   }
 
   filter(formFilter: ReservationFilter): void {
-    this.filters.set(formFilter);
+    this.filters.set({ ...this.filters(), ...formFilter });
     this.currentPage = 0;
     this.loadReservations(0);
   }
