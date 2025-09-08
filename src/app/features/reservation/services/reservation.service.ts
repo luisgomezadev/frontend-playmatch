@@ -6,7 +6,8 @@ import {
   Reservation,
   ReservationFilter,
   ReservationRequest,
-  StatusReservation
+  StatusReservation,
+  TimeSlot
 } from '@reservation/interfaces/reservation';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { firstValueFrom, Observable } from 'rxjs';
@@ -88,6 +89,11 @@ export class ReservationService extends BaseHttpService {
 
   getReservationAvailability(reservation: ReservationRequest): Observable<ConfirmedReservation> {
     return this.http.post<ConfirmedReservation>(`${this.ENDPOINT}/availability`, reservation);
+  }
+
+  getHoursAvailability(fieldId: number, date: string): Observable<TimeSlot[]> {
+    const params = new HttpParams().set('fieldId', fieldId.toString()).set('date', date);
+    return this.http.get<TimeSlot[]>(`${this.ENDPOINT}/availability/hours`, { params });
   }
 
   getLastThreeReservationsByField(fieldId: number): Observable<Reservation[]> {

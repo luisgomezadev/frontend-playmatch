@@ -1,132 +1,136 @@
-<app-layout [title]="'Hacer reserva'" [subtitle]="'Llena el formulario para programar una nueva reserva.'">
+<app-layout
+  [title]="'Hacer reserva'"
+  [subtitle]="'Llena el formulario para programar una nueva reserva.'">
   <div actions>
-    <app-button text="Volver" icon="fa-solid fa-arrow-left" [hasIcon]="true" color="transparent"
+    <app-button
+      text="Volver"
+      icon="fa-solid fa-arrow-left"
+      [hasIcon]="true"
+      color="transparent"
       (clicked)="goBack()"></app-button>
   </div>
   <div class="grid grid-cols-1 md:grid-cols-5 gap-6 w-full">
-    <article class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-2"
+    <article
+      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-2"
       [formGroup]="formReservation">
-      <h2 class="text-xl font-medium tracking-wide text-gray-200">Formulario de reserva</h2>
+      <h2 class="text-xl font-medium tracking-wide text-gray-200">
+        Selecciona la fecha a reservar
+      </h2>
 
       <div class="mb-4">
         <label class="block text-sm tracking-wide mb-1 text-gray-200" for="reservationDate">
           Fecha de reserva
           <span class="text-red-500">*</span>
         </label>
-        <input id="reservationDate" type="date" formControlName="reservationDate" [min]="today"
+        <input
+          id="reservationDate"
+          type="date"
+          formControlName="reservationDate"
+          [min]="today"
           class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
         @if (
-        formReservation.get('reservationDate')?.invalid &&
-        formReservation.get('reservationDate')?.touched
+          formReservation.get('reservationDate')?.invalid &&
+          formReservation.get('reservationDate')?.touched
         ) {
-        <div class="text-red-500 text-sm">La fecha es requerida y debe ser hoy o futura.</div>
+          <div class="text-red-500 text-sm">La fecha es requerida y debe ser hoy o futura.</div>
         }
       </div>
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1 text-gray-200" for="hour">
-          Hora de inicio
-          <span class="text-red-500">*</span>
-        </label>
-        <div class="flex gap-2">
-          <select id="hour" formControlName="hour"
-            class="flex-1 px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
-            <option *ngFor="let h of hours" [value]="h">{{ h }}</option>
-          </select>
-
-          <select formControlName="ampm"
-            class="w-20 px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
-        </div>
-        <div *ngIf="
-            (formReservation.get('hour')?.invalid && formReservation.get('hour')?.touched) ||
-            (formReservation.get('ampm')?.invalid && formReservation.get('ampm')?.touched)
-          " class="text-red-500 text-sm mt-1">
-          La hora es requerida.
-        </div>
-      </div>
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1 text-gray-200" for="hours">
-          Horas de reserva
-        </label>
-        <select id="hours" formControlName="hours"
-          class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400">
-          <option value="" disabled selected>Seleccione una opción</option>
-          <option value="1">1 hora</option>
-          <option value="2">2 horas</option>
-          <option value="3">3 horas</option>
-        </select>
-
-        @if (formReservation.get('hours')?.invalid && formReservation.get('hours')?.touched) {
-        <div class="text-red-500 text-sm">Seleccione una opción válida (1-3).</div>
-        }
-      </div>
-
-      <footer class="flex justify-between items-center mt-6 gap-5">
+      <p class="text-gray-300">
+        <span class="text-primary">Importante:</span>
+        Solo puedes reservar máximo 3 horas y tienen que ser consecutivas.
+      </p>
+      <footer class="flex justify-between gap-4 items-center">
         <div>
-          <span class="text-red-600">
-            *
-            <span class="text-gray-300">Requerido</span>
-          </span>
+          @if (selectedHours.length > 0) {
+            <span class="text-sm text-gray-400">
+              Reserva:
+              {{ selectedHours[0].start }} a {{ selectedHours[selectedHours.length - 1].end }}
+            </span>
+          } @else {
+            <span class="text-sm text-gray-400"><i class="fa-solid fa-circle-exclamation text-yellow-600"></i> No has seleccionado ninguna hora</span>
+          }
         </div>
-        <app-button text="Verificar disponibilidad" color="primary" [loading]="loading"
+
+        <app-button
+          text="Hacer reserva"
+          color="primary"
+          [loading]="loading"
           (clicked)="verifyReservation()"></app-button>
       </footer>
     </article>
-
-    <article class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-3">
+    <article
+      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-3"
+      [formGroup]="formReservation">
+      <h2 class="text-xl font-medium tracking-wide text-gray-200">Horas disponibles</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
+        @for (h of availableHours; track $index) {
+          <button
+            (click)="toggleHourSelection(h)"
+            class="px-1 py-1.5 rounded-lg transition border w-full text-sm"
+            [ngClass]="{
+              'bg-primary/10 text-primary border-primary': selectedHours.includes(h),
+              'bg-transparent text-gray-300 border-gray-300': !selectedHours.includes(h)
+            }">
+            {{ h.start }} – {{ h.end }}
+          </button>
+        }
+      </div>
+    </article>
+    <article class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-5">
       <app-field-info [field]="field" />
     </article>
   </div>
 </app-layout>
 <app-modal [open]="isOpen()" (closed)="onClosed()" [title]="'Resumen de reserva'">
   @if (confirmedReservation) {
-  <div class="space-y-6 text-gray-300">
-    <div class="flex items-center gap-2">
-      <i class="fa-solid fa-futbol text-primary"></i>
-      <div>
-        <span class="font-medium tracking-wide">Cancha:</span>
-        {{ confirmedReservation.field?.name }}
+    <div class="space-y-6 text-gray-300">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-futbol text-primary"></i>
+        <div>
+          <span class="font-medium tracking-wide">Cancha:</span>
+          {{ confirmedReservation.field?.name }}
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <i class="fa-regular fa-calendar text-primary"></i>
+        <div>
+          <span class="font-medium tracking-wide">Fecha:</span>
+          {{ confirmedReservation.reservationDate }}
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <i class="fa-regular fa-clock text-primary"></i>
+        <div>
+          <span class="font-medium tracking-wide">Hora inicio:</span>
+          {{ confirmedReservation.startTime | timeFormat }}
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <i class="fa-regular fa-clock text-primary"></i>
+        <div>
+          <span class="font-medium tracking-wide">Hora fin:</span>
+          {{ confirmedReservation.endTime | timeFormat }}
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-hourglass-half text-primary"></i>
+        <div>
+          <span class="font-medium tracking-wide">Duración:</span>
+          {{ confirmedReservation.hours }} hora(s)
+        </div>
       </div>
     </div>
-    <div class="flex items-center gap-3">
-      <i class="fa-regular fa-calendar text-primary"></i>
-      <div>
-        <span class="font-medium tracking-wide">Fecha:</span>
-        {{ confirmedReservation.reservationDate }}
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <i class="fa-regular fa-clock text-primary"></i>
-      <div>
-        <span class="font-medium tracking-wide">Hora inicio:</span>
-        {{ confirmedReservation.startTime | timeFormat }}
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <i class="fa-regular fa-clock text-primary"></i>
-      <div>
-        <span class="font-medium tracking-wide">Hora fin:</span>
-        {{ confirmedReservation.endTime | timeFormat }}
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <i class="fa-solid fa-hourglass-half text-primary"></i>
-      <div>
-        <span class="font-medium tracking-wide">Duración:</span>
-        {{ confirmedReservation.hours }} hora(s)
-      </div>
-    </div>
-  </div>
   }
 
   <div class="pt-6 flex gap-3">
-    <app-button text="Confirmar reserva" color="primary" (clicked)="confirmReservation()"></app-button>
+    <app-button
+      text="Confirmar reserva"
+      color="primary"
+      (clicked)="confirmReservation()"></app-button>
     <app-button text="Cancelar" color="red" (clicked)="cancelReservation()"></app-button>
   </div>
 </app-modal>
 
 @if (loadingReservation) {
-<app-loading-component text="Creando reserva, espere un momento..." />
+  <app-loading-component text="Creando reserva, espere un momento..." />
 }

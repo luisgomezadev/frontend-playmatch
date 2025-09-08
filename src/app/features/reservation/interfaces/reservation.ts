@@ -36,6 +36,11 @@ export interface ReservationFilter {
   date?: string;
 }
 
+export interface TimeSlot {
+  start: string;
+  end: string;
+}
+
 export enum StatusReservation {
   ACTIVE = 'ACTIVE',
   CANCELED = 'CANCELED',
