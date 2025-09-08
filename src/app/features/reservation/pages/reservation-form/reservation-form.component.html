@@ -47,7 +47,10 @@
               {{ selectedHours[0].start }} a {{ selectedHours[selectedHours.length - 1].end }}
             </span>
           } @else {
-            <span class="text-sm text-gray-400"><i class="fa-solid fa-circle-exclamation text-yellow-600"></i> No has seleccionado ninguna hora</span>
+            <span class="text-sm text-gray-400">
+              <i class="fa-solid fa-circle-exclamation text-yellow-600"></i>
+              No has seleccionado ninguna hora
+            </span>
           }
         </div>
 
@@ -62,20 +65,21 @@
       class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-3"
       [formGroup]="formReservation">
       <h2 class="text-xl font-medium tracking-wide text-gray-200">Horas disponibles</h2>
+
       <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2">
-        @for (h of availableHours; track $index) {
-          <button
-            (click)="toggleHourSelection(h)"
-            class="px-1 py-1.5 rounded-lg transition border w-full text-sm"
-            [ngClass]="{
-              'bg-primary/10 text-primary border-primary': selectedHours.includes(h),
-              'bg-transparent text-gray-300 border-gray-300': !selectedHours.includes(h)
-            }">
-            {{ h.start }} – {{ h.end }}
-          </button>
-        }
+        <button
+          *ngFor="let h of availableHours"
+          (click)="toggleHourSelection(h)"
+          class="px-1 py-1.5 rounded-lg transition border w-full text-sm"
+          [ngClass]="{
+            'bg-primary/10 text-primary border-primary': selectedHours.includes(h),
+            'bg-transparent text-gray-300 border-gray-300': !selectedHours.includes(h)
+          }">
+          {{ h.start }} – {{ h.end }}
+        </button>
       </div>
     </article>
+
     <article class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-5">
       <app-field-info [field]="field" />
     </article>

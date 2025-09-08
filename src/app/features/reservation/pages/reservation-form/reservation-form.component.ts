@@ -60,10 +60,8 @@ export class ReservationFormComponent implements OnInit {
   today = '';
   loading = false;
   loadingReservation = false;
-  availableHours: TimeSlot[] = []; // ["07:00", "08:00", ...]
+  availableHours: TimeSlot[] = [];
   selectedHours: TimeSlot[] = [];
-
-  hours = Array.from({ length: 12 }, (_, i) => i + 1);
 
   isOpen = signal(false);
 
@@ -72,13 +70,10 @@ export class ReservationFormComponent implements OnInit {
     const offset = today.getTimezoneOffset();
     today.setMinutes(today.getMinutes() - offset);
     today.setDate(today.getDate());
-
     this.today = today.toISOString().split('T')[0];
 
     this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.user = user;
-      }
+      if (user) this.user = user;
     });
 
     this.formReservation = this.formBuilder.group({
@@ -86,9 +81,9 @@ export class ReservationFormComponent implements OnInit {
     });
 
     this.fieldId = +this.route.snapshot.paramMap.get('id')!;
-
     this.getField();
     this.getAvailableHours();
+
     this.formReservation.get('reservationDate')?.valueChanges.subscribe(() => {
       this.getAvailableHours();
     });
@@ -96,11 +91,11 @@ export class ReservationFormComponent implements OnInit {
 
   get startTime(): string {
     if (this.selectedHours.length === 0) return '';
-    return this.to24h(this.selectedHours[0].start); // primera hora en 24h
+    return this.to24h(this.selectedHours[0].start);
   }
 
   get totalHours(): number {
-    return this.selectedHours.length; // máximo 3
+    return this.selectedHours.length;
   }
 
   goBack(): void {
@@ -109,9 +104,7 @@ export class ReservationFormComponent implements OnInit {
 
   getField(): void {
     this.fieldService.getFieldById(this.fieldId).subscribe({
-      next: field => {
-        this.field = field;
-      }
+      next: field => this.field = field
     });
   }
 
@@ -121,7 +114,8 @@ export class ReservationFormComponent implements OnInit {
     if (this.fieldId && date) {
       this.reservationService.getHoursAvailability(this.fieldId, date).subscribe({
         next: timeSlots => {
-          this.availableHours = this.generateHourRanges(timeSlots);
+          const ranges = this.generateHourRanges(timeSlots);
+          this.availableHours = this.filterPastHours(ranges);
         },
         error: () => {
           this.availableHours = [];
@@ -132,25 +126,34 @@ export class ReservationFormComponent implements OnInit {
     }
   }
 
-  private generateHourRanges(
-    timeSlots: { start: string; end: string }[]
-  ): { start: string; end: string }[] {
-    const ranges: { start: string; end: string }[] = [];
+  private filterPastHours(hours: TimeSlot[]): TimeSlot[] {
+    const selectedDate = this.getSelectedDate();
+    const now = new Date();
+    const isToday =
+      selectedDate.getFullYear() === now.getFullYear() &&
+      selectedDate.getMonth() === now.getMonth() &&
+      selectedDate.getDate() === now.getDate();
+
+    if (!isToday) return hours;
+
+    return hours.filter(h => this.toDateFromFormatted(h.start).getTime() > now.getTime());
+  }
+
+  private generateHourRanges(timeSlots: { start: string; end: string }[]): TimeSlot[] {
+    const ranges: TimeSlot[] = [];
 
     timeSlots.forEach(slot => {
-      let start = this.toDate(slot.start);
-      const end = this.toDate(slot.end);
+      let start = this.toHourOnlyDate(slot.start);
+      const end = this.toHourOnlyDate(slot.end);
 
-      while (start < end) {
+      while (start.getTime() + 60 * 60 * 1000 <= end.getTime()) {
         const next = new Date(start.getTime());
         next.setHours(next.getHours() + 1);
 
-        if (next <= end) {
-          ranges.push({
-            start: this.formatTime(start),
-            end: this.formatTime(next)
-          });
-        }
+        ranges.push({
+          start: this.formatTime(start),
+          end: this.formatTime(next)
+        });
 
         start = next;
       }
@@ -159,10 +162,20 @@ export class ReservationFormComponent implements OnInit {
     return ranges;
   }
 
-  private toDate(time: string): Date {
-    const [hours, minutes, seconds] = time.split(':').map(Number);
+  private toHourOnlyDate(time: string): Date {
+    const [hours] = time.split(':').map(Number);
     const date = new Date();
-    date.setHours(hours, minutes, seconds, 0);
+    date.setHours(hours, 0, 0, 0);
+    return date;
+  }
+
+  private toDateFromFormatted(time: string): Date {
+    const [hm, suffix] = time.split(' ');
+    const [hours, minutes] = hm.split(':').map(Number);
+    let h = hours % 12;
+    if (suffix === 'PM') h += 12;
+    const date = new Date();
+    date.setHours(h, minutes, 0, 0);
     return date;
   }
 
@@ -174,56 +187,40 @@ export class ReservationFormComponent implements OnInit {
     return `${displayHours}:${m.toString().padStart(2, '0')} ${suffix}`;
   }
 
-  toggleHourSelection(hour: { start: string; end: string }) {
+  toggleHourSelection(hour: TimeSlot) {
     const index = this.selectedHours.findIndex(h => h.start === hour.start && h.end === hour.end);
 
     if (index > -1) {
-      // Quitar si ya estaba seleccionado
-      this.selectedHours.splice(index, 1);
+      // Si quitamos una hora, quitamos todas las horas posteriores para mantener continuidad
+      this.selectedHours = this.selectedHours.slice(0, index);
     } else {
       if (this.selectedHours.length === 0) {
         this.selectedHours.push(hour);
       } else {
-        // Ordenamos por hora de inicio
         const all = [...this.selectedHours, hour].sort(
-          (a, b) =>
-            this.toDateFromFormatted(a.start).getTime() -
-            this.toDateFromFormatted(b.start).getTime()
+          (a, b) => this.toDateFromFormatted(a.start).getTime() - this.toDateFromFormatted(b.start).getTime()
         );
 
         // Validar continuidad
-        const isContinuous = all.every((h, i) => {
-          if (i === 0) return true;
-          return (
-            this.toDateFromFormatted(h.start).getTime() ===
-            this.toDateFromFormatted(all[i - 1].end).getTime()
-          );
-        });
-
-        if (isContinuous && all.length <= 3) {
-          this.selectedHours = all;
+        let isContinuous = true;
+        for (let i = 1; i < all.length; i++) {
+          const prevEnd = this.toDateFromFormatted(all[i - 1].end).getTime();
+          const currStart = this.toDateFromFormatted(all[i].start).getTime();
+          if (currStart !== prevEnd) {
+            isContinuous = false;
+            break;
+          }
         }
+
+        if (isContinuous && all.length <= 3) this.selectedHours = all;
       }
     }
   }
 
-  private toDateFromFormatted(time: string): Date {
-    // soporta "7:00 AM", "10:00 PM"
-    const [hm, suffix] = time.split(' ');
-    const [hours, minutes] = hm.split(':').map(Number);
-
-    let h = hours % 12;
-    if (suffix === 'PM') h += 12;
-
-    const date = new Date();
-    date.setHours(h, minutes, 0, 0);
-    return date;
-  }
 
   verifyReservation() {
     if (this.formReservation.valid && this.selectedHours.length > 0) {
       this.loading = true;
-
       const reservationData: ReservationRequest = {
         reservationDate: this.formReservation.value.reservationDate,
         startTime: this.startTime,
@@ -249,9 +246,15 @@ export class ReservationFormComponent implements OnInit {
     } else {
       this.formReservation.markAllAsTouched();
       if (this.selectedHours.length === 0) {
-        this.alertService.error('Error al reservar', 'Debes seleccionar al menos una hora para poder reservar.');
+        this.alertService.notify('Selecciona alguna hora', 'Debes seleccionar al menos una hora para poder reservar.', 'warning');
       }
     }
+  }
+
+  private getSelectedDate(): Date {
+    const dateStr = this.formReservation.value.reservationDate; // "YYYY-MM-DD"
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day); // mes es 0-index
   }
 
   onClosed() {
@@ -282,10 +285,7 @@ export class ReservationFormComponent implements OnInit {
       this.reservationService.createReservation(reservationRequest).subscribe({
         next: () => {
           this.loadingReservation = false;
-          this.alertService.success(
-            'Reserva creada',
-            `Has creado una reserva para el día ${reservationRequest.reservationDate}.`
-          );
+          this.alertService.success('Reserva creada', `Has creado una reserva para el día ${reservationRequest.reservationDate}.`);
           this.router.navigate(['/dashboard/reservation/list']);
         },
         error: err => {
@@ -296,14 +296,11 @@ export class ReservationFormComponent implements OnInit {
     }
   }
 
-
   private to24h(time: string): string {
     const [hm, suffix] = time.split(' ');
     const [hours, minutes] = hm.split(':').map(Number);
-
     let h = hours % 12;
     if (suffix === 'PM') h += 12;
-
     return `${h.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   }
 }
