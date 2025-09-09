@@ -8,12 +8,9 @@
       [hasIcon]="true"
       (clicked)="goBack()"></app-button>
   </div>
-  <picture class="py-5 px-10 border border-gray-500 bg-white rounded-full mb-12">
-    <img src="../assets/logo_sin_fondo.webp" alt="Logo PlayMatch" class="w-64 h-auto" />
-  </picture>
 
   <h1 class="text-2xl font-medium tracking-wide text-center mb-6 text-primary">Iniciar sesión</h1>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="w-full md:px-16">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="max-w-md mx-auto w-full">
     <div class="mb-4">
       <label class="block text-sm tracking-wide mb-1 text-gray-200" for="email">
         Correo electrónico

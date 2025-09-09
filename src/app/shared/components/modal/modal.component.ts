@@ -10,6 +10,7 @@ import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 export class ModalComponent {
   @Input() open = false;
   @Input() title = '';
+  @Input() width = 'max-w-lg';
   @Output() closed = new EventEmitter<void>();
 
   isClosing = signal(false);
