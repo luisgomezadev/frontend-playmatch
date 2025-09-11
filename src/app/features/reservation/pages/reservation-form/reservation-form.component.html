@@ -9,31 +9,32 @@
       color="transparent"
       (clicked)="goBack()"></app-button>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-5 gap-6 w-full">
+  <div class="grid grid-cols-1 md:grid-cols-6 gap-6 w-full">
     <article
-      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-2"
+      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-4 md:h-[368px]"
       [formGroup]="formReservation">
       <h2 class="text-xl font-medium tracking-wide text-gray-200">
         Selecciona la fecha a reservar
       </h2>
 
       <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1 text-gray-200" for="reservationDate">
-          Fecha de reserva
-          <span class="text-red-500">*</span>
-        </label>
-        <input
-          id="reservationDate"
-          type="date"
-          formControlName="reservationDate"
-          [min]="today"
-          class="w-full px-3 py-1 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
-        @if (
-          formReservation.get('reservationDate')?.invalid &&
-          formReservation.get('reservationDate')?.touched
-        ) {
-          <div class="text-red-500 text-sm">La fecha es requerida y debe ser hoy o futura.</div>
-        }
+        <div
+          class="flex overflow-x-auto gap-3 pb-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-neutral-700/10 [&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-thumb]:rounded-full">
+          @for (day of next20Days; track $index) {
+            <button
+              (click)="selectDate(day)"
+              class="flex flex-col items-center p-3 sm:p-6 rounded-lg border transition-all min-w-36 select-none"
+              [ngClass]="
+                selectedDate?.getTime() === day.date.getTime()
+                  ? 'bg-primary/80 text-white border-primary'
+                  : 'bg-transparent text-gray-200 border-gray-500 hover:bg-primary/10 hover:border-primary hover:text-white'
+              ">
+              <span class="text-sm sm:text-lg capitalize text-center">{{ day.weekday }}</span>
+              <span class="text-3xl sm:text-4xl font-bold text-center">{{ day.dayNumber }}</span>
+              <span class="text-sm sm:text-lg capitalize text-center">{{ day.monthName }}</span>
+            </button>
+          }
+        </div>
       </div>
       <p class="text-gray-300">
         <span class="text-primary">Importante:</span>
@@ -42,12 +43,12 @@
       <footer class="flex justify-between gap-4 items-center">
         <div>
           @if (selectedHours.length > 0) {
-            <span class="text-sm text-gray-400">
-              Reserva:
+            <span class="text-xs md:text-sm text-gray-400">
+              Reserva de
               {{ selectedHours[0].start }} a {{ selectedHours[selectedHours.length - 1].end }}
             </span>
           } @else {
-            <span class="text-sm text-gray-400">
+            <span class="text-xs md:text-sm text-gray-400">
               <i class="fa-solid fa-circle-exclamation text-yellow-600"></i>
               No has seleccionado ninguna hora
             </span>
@@ -63,7 +64,7 @@
       </footer>
     </article>
     <article
-      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-3 max-h-72 overflow-y-auto"
+      class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-2 overflow-y-auto max-h-60 md:max-h-[368px] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-neutral-700/10 [&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-thumb]:rounded-full"
       [formGroup]="formReservation">
       <h2 class="text-xl font-medium tracking-wide text-gray-200">Horas disponibles</h2>
       @if (loadingHours) {
@@ -76,14 +77,15 @@
           No hay horas disponibles para la fecha seleccionada.
         </div>
       } @else {
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 gap-5">
           <button
             *ngFor="let h of availableHours"
             (click)="toggleHourSelection(h)"
             class="px-1 py-1.5 rounded-lg transition border w-full text-base font-medium"
             [ngClass]="{
               'bg-primary/10 text-primary border-primary': selectedHours.includes(h),
-              'bg-transparent text-gray-300 border-gray-300': !selectedHours.includes(h)
+              'bg-transparent text-gray-300 border-gray-300 hover:border-white hover:bg-white/20':
+                !selectedHours.includes(h)
             }">
             {{ h.start }} a {{ h.end }}
           </button>
@@ -91,7 +93,7 @@
       }
     </article>
 
-    <article class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-5">
+    <article class="bg-white/5 p-6 rounded-md shadow-md space-y-6 w-full col-span-1 md:col-span-6">
       <app-field-info [field]="field" />
     </article>
   </div>

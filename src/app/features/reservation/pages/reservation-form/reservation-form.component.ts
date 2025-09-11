@@ -20,13 +20,20 @@ import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { User } from '@user/interfaces/user';
-
 import {
   to24h,
   generateHourRanges,
   filterPastHours,
   toDateFromFormatted
 } from '@reservation/utils/reservation-utils';
+
+interface DayItem {
+  date: Date;
+  formatted: string;
+  weekday: string;    // Lunes, Martes...
+  dayNumber: number;  // 1, 2, 3...
+  monthName: string;  // Enero, Febrero...
+}
 
 @Component({
   selector: 'app-reservation-form',
@@ -68,6 +75,8 @@ export class ReservationFormComponent implements OnInit {
   availableHours: TimeSlot[] = [];
   selectedHours: TimeSlot[] = [];
   verifiedReservation = false;
+  next20Days: DayItem[] = [];
+  selectedDate: Date | null = null;
 
   isOpen = signal(false);
 
@@ -86,11 +95,12 @@ export class ReservationFormComponent implements OnInit {
 
     this.fieldId = +this.route.snapshot.paramMap.get('id')!;
     this.getField();
-    this.getAvailableHours();
 
     this.formReservation.get('reservationDate')?.valueChanges.subscribe(() => {
       this.getAvailableHours();
     });
+
+    this.generateNext20Days();
   }
 
   get startTime(): string {
@@ -109,6 +119,38 @@ export class ReservationFormComponent implements OnInit {
     this.fieldService.getFieldById(this.fieldId).subscribe({
       next: field => (this.field = field)
     });
+  }
+
+  generateNext20Days() {
+    this.next20Days = [];
+    const today = new Date();
+
+    for (let i = 0; i < 20; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+
+      const weekday = d.toLocaleDateString('es-ES', { weekday: 'long' });
+      const dayNumber = d.getDate(); // 1,2,3...
+      const monthName = d.toLocaleDateString('es-ES', { month: 'long' });
+
+      this.next20Days.push({
+        date: d,
+        formatted: d.toISOString().split('T')[0],
+        weekday: weekday.charAt(0).toUpperCase() + weekday.slice(1),
+        dayNumber,
+        monthName: monthName.charAt(0).toUpperCase() + monthName.slice(1),
+      });
+    }
+
+    if (this.next20Days.length > 0) {
+      this.selectedDate = this.next20Days[0].date;
+      this.formReservation.get('reservationDate')?.setValue(this.next20Days[0].formatted);
+    }
+  }
+
+  selectDate(day: DayItem) {
+    this.selectedDate = day.date;
+    this.formReservation.get('reservationDate')?.setValue(day.formatted);
   }
 
   getAvailableHours(): void {

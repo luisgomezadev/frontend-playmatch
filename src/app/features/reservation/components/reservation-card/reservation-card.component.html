@@ -6,8 +6,9 @@
         {{ viewAsField ? 'Reservada por' : 'Cancha' }}
       </span>
       <button
-        class="text-[1.1rem] font-semibold text-gray-200 truncate hover:underline"
-        (click)="openModal(reservation, viewAsField ? 'user' : 'field')">
+        class="text-[1.1rem] font-medium text-gray-200 truncate hover:underline"
+        (click)="openModal(reservation, viewAsField ? 'user' : 'field')"
+        [title]="viewAsField ? 'Ver información del usuario' : 'Ver información de la cancha'">
         {{
           viewAsField ? getUserName(reservation) : reservation.field.name || 'Sin cancha asignada'
         }}
@@ -101,7 +102,7 @@
   (closed)="onClosed()"
   [title]="selectedType === 'user' ? 'Información del usuario' : 'Información de la cancha'">
   @if (selectedType === 'user') {
-    <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-start">
+    <div class="grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-center">
       <div class="flex justify-center md:justify-start">
         <img
           [src]="getImageUrl(user.imageUrl)"
@@ -117,16 +118,16 @@
           </span>
         </div>
         <div>
-          <span class="text-sm text-gray-400 block">Correo</span>
-          <span class="text-base text-gray-200">{{ user.email || 'No definido' }}</span>
+          <p class="text-base text-gray-200 flex items-center gap-2">
+            <i class="fa-regular fa-envelope text-primary"></i>
+            {{ user.email }}
+          </p>
         </div>
         <div>
-          <span class="text-sm text-gray-400 block">Celular</span>
-          <span class="text-base text-gray-200">{{ user.cellphone || 'No definido' }}</span>
-        </div>
-        <div>
-          <span class="text-sm text-gray-400 block">Ciudad</span>
-          <span class="text-base text-gray-200">{{ user.city || 'No definida' }}</span>
+          <p class="text-base text-gray-200 flex items-center gap-2">
+            <i class="fa-solid fa-mobile-screen-button text-primary"></i>
+            {{ user.cellphone }}
+          </p>
         </div>
       </div>
     </div>

@@ -56,11 +56,13 @@
       <article class="border bg-gray-100/5 border-gray-700 rounded-xl p-4 shadow-md transition">
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-lg font-semibold text-gray-200">
+            <p class="text-lg font-medium text-gray-200">
               {{ res.user.fullName }}
             </p>
-            <p class="text-sm text-gray-400">{{ res.user.email }}</p>
-            <p class="text-sm text-gray-400">{{ res.user.cellphone }}</p>
+            <p class="text-sm text-gray-200 flex items-center gap-1">
+              <i class="fa-solid fa-mobile-screen-button text-primary"></i>
+              <span>{{ res.user.cellphone }}</span>
+            </p>
           </div>
           <span class="px-3 py-1 text-xs font-medium tracking-wide bg-primary/10 text-primary rounded-full">
             {{ res.hours }} hora(s)
