@@ -101,9 +101,9 @@
               *ngFor="let field of fields.controls; let i = index"
               [formGroupName]="i"
               class="bg-slate-100 border border-slate-200 rounded-lg p-4 transition-all hover:shadow-sm animate-fade-in">
-              <div class="flex flex-col sm:flex-row gap-3 items-center">
+              <div class="flex flex-col xl:flex-row gap-3 items-center">
                 <!-- Nombre -->
-                <div class="flex-1">
+                <div class="flex-1 w-full">
                   <input
                     id="nameField"
                     formControlName="name"
@@ -113,11 +113,11 @@
                 </div>
 
                 <!-- Tipo -->
-                <div class="sm:w-24 relative">
+                <div class="w-full xl:w-28 relative">
                   <button
                     type="button"
                     (click)="toggleDropdown(i)"
-                    class="w-full p-3 border border-slate-300 rounded-md bg-white text-left focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent flex justify-between items-center">
+                    class="w-full p-3 border border-slate-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent flex justify-between items-center text-center">
                     {{ getFieldTypeLabel(i) }}
                     <svg
                       class="w-4 h-4 text-slate-400"
@@ -146,7 +146,7 @@
                 </div>
 
                 <!-- Precio -->
-                <div class="sm:w-40">
+                <div class="w-full xl:w-32">
                   <div class="relative">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -174,7 +174,7 @@
                 </div>
 
                 <!-- Botón eliminar -->
-                <div class="hidden items-end sm:flex">
+                <div class="hidden items-end xl:flex">
                   <button
                     type="button"
                     (click)="removeField(i)"
@@ -196,7 +196,7 @@
                     </svg>
                   </button>
                 </div>
-                <div class="sm:hidden mt-1">
+                <div class="xl:hidden mt-1 w-full">
                   <button
                     type="button"
                     class="w-full py-2 px-4 text-red-500 hover:text-red-700 hover:bg-red-50 border border-red-200 rounded-md transition-colors text-sm font-medium">
