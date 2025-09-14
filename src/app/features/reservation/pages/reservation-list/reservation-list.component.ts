@@ -30,6 +30,8 @@ export class ReservationListComponent implements OnInit {
   user!: User;
   venue!: Venue;
 
+  loading = false;
+
   currentDate: Date = new Date();
   reservations: Reservation[] = [];
 
@@ -78,11 +80,12 @@ export class ReservationListComponent implements OnInit {
   /** Carga las reservas de la fecha actual */
   private loadReservations(): void {
     if (!this.venue) return;
-
+    this.loading = true;
     const formattedDate = this.formatDateLocal(this.currentDate);
     this.reservationService.getReservationsByVenueIdAndDate(this.venue.id, formattedDate)
       .subscribe({
         next: data => {
+          this.loading = false;
           this.reservations = data;
         }
       });
