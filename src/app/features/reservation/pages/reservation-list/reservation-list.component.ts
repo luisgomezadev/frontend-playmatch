@@ -9,16 +9,13 @@ import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { User } from '@user/interfaces/user';
 import { Reservation } from '@features/reservation/interfaces/reservation'; // tu interfaz de reserva
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
+import { ErrorResponse } from '@core/interfaces/error-response';
+import { AlertService } from '@core/services/alert.service';
 
 @Component({
   selector: 'app-reservation-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    LayoutComponent,
-    TimeFormatPipe
-  ],
+  imports: [CommonModule, RouterModule, LayoutComponent, TimeFormatPipe],
   templateUrl: './reservation-list.component.html',
   styleUrls: ['./reservation-list.component.scss']
 })
@@ -26,6 +23,7 @@ export class ReservationListComponent implements OnInit {
   private readonly reservationService = inject(ReservationService);
   private readonly venueService = inject(VenueService);
   private readonly authService = inject(AuthService);
+  private readonly alertService = inject(AlertService);
 
   user!: User;
   venue!: Venue;
@@ -49,10 +47,18 @@ export class ReservationListComponent implements OnInit {
   }
 
   private getVenue(): void {
+    this.loading = true;
     this.venueService.getVenueByAdminId(this.user.id).subscribe({
       next: data => {
         this.venue = data;
         this.loadReservations();
+      },
+      error: (err: ErrorResponse) => {
+        this.loading = false;
+        this.alertService.error(
+          'Error al obtener información del complejo deportivo',
+          err.error.message || 'Hubo un error inesperado'
+        );
       }
     });
   }
@@ -82,11 +88,19 @@ export class ReservationListComponent implements OnInit {
     if (!this.venue) return;
     this.loading = true;
     const formattedDate = this.formatDateLocal(this.currentDate);
-    this.reservationService.getReservationsByVenueIdAndDate(this.venue.id, formattedDate)
+    this.reservationService
+      .getReservationsByVenueIdAndDate(this.venue.id, formattedDate)
       .subscribe({
         next: data => {
           this.loading = false;
           this.reservations = data;
+        },
+        error: (err: ErrorResponse) => {
+          this.loading = false;
+          this.alertService.error(
+            'Error al obtener reservas',
+            err.error.message || 'Hubo un error inesperado'
+          );
         }
       });
   }
@@ -97,7 +111,7 @@ export class ReservationListComponent implements OnInit {
 
     this.reservationService.canceledReservation(reservationId).subscribe({
       next: () => this.loadReservations(), // recarga
-      error: (err) => console.error(err)
+      error: err => console.error(err)
     });
   }
 

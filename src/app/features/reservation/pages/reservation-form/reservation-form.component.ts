@@ -4,10 +4,16 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
 import { Field } from '@features/field/interfaces/field';
-import { Reservation, ReservationDuration, ReservationRequest, TimeSlot } from '@features/reservation/interfaces/reservation';
+import {
+  Reservation,
+  ReservationDuration,
+  ReservationRequest,
+  TimeSlot
+} from '@features/reservation/interfaces/reservation';
 import { ReservationService } from '@features/reservation/services/reservation.service';
 import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
+import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
 import { CustomDatePipe } from '@shared/pipes/custom-date.pipe';
 import { FieldTypePipe } from '@shared/pipes/field-type.pipe';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
@@ -31,7 +37,8 @@ interface DayItem {
     TimeFormatPipe,
     FieldTypePipe,
     MoneyFormatPipe,
-    CustomDatePipe
+    CustomDatePipe,
+    LoadingTextComponent
   ],
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss'

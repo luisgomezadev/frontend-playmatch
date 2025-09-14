@@ -55,7 +55,7 @@
           [disabled]="code.length < 6 || loading"
           (click)="getReservationByCode()">
           @if (loading) {
-            Buscando...
+            <app-loading-text-component text="Buscando" />
           } @else {
             Buscar reserva
           }

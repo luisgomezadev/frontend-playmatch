@@ -6,11 +6,12 @@ import { FormsModule } from '@angular/forms';
 import { CustomDatePipe } from '@shared/pipes/custom-date.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { Router, RouterLink } from '@angular/router';
+import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
 
 @Component({
   selector: 'app-reservation-detail',
   standalone: true,
-  imports: [FormsModule, CustomDatePipe, TimeFormatPipe, RouterLink],
+  imports: [FormsModule, CustomDatePipe, TimeFormatPipe, RouterLink, LoadingTextComponent],
   templateUrl: './reservation-detail.component.html',
   styleUrl: './reservation-detail.component.scss'
 })

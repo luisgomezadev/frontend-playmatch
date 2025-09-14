@@ -359,7 +359,11 @@
           <button
             type="submit"
             class="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white disabled:opacity-50 w-full text-base font-medium rounded-xl">
-            Confirmar reserva
+            @if (loadingCreateReservation) {
+              <app-loading-text-component [text]="'Creando reserva'" />
+            } @else {
+              Confirmar reserva
+            }
           </button>
         </div>
       </form>
