@@ -9,14 +9,14 @@ export const LINKS_DASHBOARD = [
   },
   {
     name: "Reservas",
-    link: "reservation/list",
+    link: "reservation",
     iconClass: "fa-solid fa-list",
     viewMovil: true,
     viewDesktop: true
   },
   {
     name: "Calendario",
-    link: "reservation/calendar",
+    link: "calendar",
     iconClass: "fa-solid fa-calendar",
     viewMovil: false,
     viewDesktop: true

@@ -42,4 +42,8 @@ export class VenueService extends BaseHttpService {
   createVenue(venue: VenueRequest): Observable<Venue> {
     return this.http.post<Venue>(`${this.ENDPOINT}`, venue);
   }
+
+  updateVenue(venue: VenueRequest): Observable<Venue> {
+    return this.http.put<Venue>(`${this.ENDPOINT}`, venue);
+  }
 }

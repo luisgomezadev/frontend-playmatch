@@ -5,7 +5,7 @@
     <div class="text-center">
       <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Crear cuenta</h1>
       <p class="text-sm text-slate-500 mt-2">
-        Unete a PlayMatch y empezá a gestionar tus turnos hoy mismo.
+        Unete a PlayMatch y empezá a gestionar tus reservas hoy mismo.
       </p>
     </div>
     <form
@@ -177,9 +177,14 @@
         }
       </div>
       <div>
-        <button type="submit"
+        <button
+          type="submit"
           class="w-full mt-2 bg-gradient-to-r from-slate-700 to-primary text-white py-4 rounded-md hover:scale-105 transition-all duration-300 shadow-lg">
-          Crear cuenta
+          @if (loading) {
+            <app-loading-text-component [text]="'Creando'" />
+          } @else {
+            Crear cuenta
+          }
         </button>
       </div>
     </form>

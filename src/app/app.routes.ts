@@ -62,20 +62,6 @@ export const routes: Routes = [
           )
       },
       {
-        path: 'field',
-        loadComponent: () =>
-          import('./features/field/pages/field-detail/field-detail.component').then(
-            m => m.FieldDetailComponent
-          )
-      },
-      {
-        path: 'field/list',
-        loadComponent: () =>
-          import('./features/field/pages/fields-list/fields-list.component').then(
-            m => m.FieldsListComponent
-          )
-      },
-      {
         path: 'field/form',
         loadComponent: () =>
           import('./features/field/pages/field-form/field-form.component').then(
@@ -83,42 +69,23 @@ export const routes: Routes = [
           )
       },
       {
-        path: 'field/form/:id',
-        loadComponent: () =>
-          import('./features/field/pages/field-form/field-form.component').then(
-            m => m.FieldFormComponent
-          )
-      },
-      {
-        path: 'reservation/list',
+        path: 'reservation',
         loadComponent: () =>
           import('./features/reservation/pages/reservation-list/reservation-list.component').then(
             m => m.ReservationListComponent
           )
       },
       {
-        path: 'reservation/calendar',
+        path: 'calendar',
         loadComponent: () =>
           import(
             './features/reservation/pages/reservation-calendar/reservation-calendar.component'
           ).then(m => m.ReservationCalendarComponent)
       },
       {
-        path: 'reservation/form/field/:id',
-        loadComponent: () =>
-          import('./features/reservation/pages/reservation-form/reservation-form.component').then(
-            m => m.ReservationFormComponent
-          )
-      },
-      {
         path: 'profile',
         loadComponent: () =>
           import('./features/user/pages/profile/profile.component').then(m => m.ProfileComponent)
-      },
-      {
-        path: 'menu',
-        loadComponent: () =>
-          import('./shared/components/menu/menu.component').then(m => m.MenuComponent)
       }
     ]
   },

@@ -4,12 +4,13 @@ import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
+import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, NavbarComponent],
+  imports: [ReactiveFormsModule, RouterModule, NavbarComponent, LoadingTextComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })

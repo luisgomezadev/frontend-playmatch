@@ -16,12 +16,13 @@ export interface Venue {
 
 export interface VenueRequest {
   id: number;
+  code: string;
   name: string;
   city: string;
   address: string;
   openingHour: string;
   closingHour: string;
-  admin?: User;
+  adminId: number;
   status: Status;
   fields: Field[]
 }

@@ -78,7 +78,7 @@ export class ReservationListComponent implements OnInit {
   }
 
   /** Carga las reservas de la fecha actual */
-  private loadReservations(): void {
+  loadReservations(): void {
     if (!this.venue) return;
     this.loading = true;
     const formattedDate = this.formatDateLocal(this.currentDate);
