@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
-import { User, UserRole } from '@user/interfaces/user';
+import { User } from '@user/interfaces/user';
 import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response';
 import { JwtClaims } from '@core/interfaces/jwt-claims';
@@ -141,11 +141,7 @@ export class AuthService extends BaseHttpService {
     if (token && !this.isTokenExpired(token)) {
       const role = this.getClaimsFromToken()?.role;
       if (role) {
-        if (role === UserRole.FIELD_ADMIN) {
-          this.router.navigate(['/dashboard/home-admin']);
-        } else {
-          this.router.navigate(['/dashboard/field/list']);
-        }
+        this.router.navigate(['/dashboard']);
       }
     }
   }

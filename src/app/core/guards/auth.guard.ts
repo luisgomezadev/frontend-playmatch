@@ -10,13 +10,6 @@ export const authPagesGuard: CanActivateFn = () => {
   return authService.checkAuth().pipe(
     map(isAuth => {
       if (isAuth) {
-        // obtener role DESPUÉS de confirmar que estamos autenticados
-        const role = authService.getClaimsFromToken()?.role;
-        if (role === 'PLAYER') {
-          return router.createUrlTree(['/dashboard/field/list']);
-        } else if (role === 'FIELD_ADMIN') {
-          return router.createUrlTree(['/dashboard/home-admin']);
-        }
         return router.createUrlTree(['/dashboard']);
       }
       // no autenticado -> permitir acceso a /auth/login o /auth/register

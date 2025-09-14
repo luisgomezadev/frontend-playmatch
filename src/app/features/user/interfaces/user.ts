@@ -3,7 +3,6 @@ export interface User {
   firstName: string;
   lastName: string;
   fullName: string;
-  city: string;
   cellphone: string;
   email: string;
   imageUrl: string;
@@ -16,6 +15,5 @@ export interface UserFilter {
 }
 
 export enum UserRole {
-  PLAYER = 'PLAYER',
-  FIELD_ADMIN = 'FIELD_ADMIN',
+  USER = 'USER'
 }

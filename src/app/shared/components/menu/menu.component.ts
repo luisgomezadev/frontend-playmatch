@@ -11,10 +11,9 @@ import { AlertService } from '../../../core/services/alert.service';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './menu.component.html',
-  styleUrl: './menu.component.scss',
+  styleUrl: './menu.component.scss'
 })
 export class MenuComponent implements OnInit {
-
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly router = inject(Router);
@@ -29,7 +28,7 @@ export class MenuComponent implements OnInit {
       this.role = claims.role ?? '';
     }
 
-    this.authService.currentUser$.subscribe((user) => {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.userActive = user;
         this.loadLinks();
@@ -43,20 +42,13 @@ export class MenuComponent implements OnInit {
   }
 
   checkScreenSize(): void {
-    if (window.innerWidth > 768){
-      if (this.role === 'FIELD_ADMIN') {
-        this.router.navigate(['/dashboard/home-admin']);
-      } else {
-        this.router.navigate(['/dashboard/field/list']);
-      }
+    if (window.innerWidth > 768) {
+      this.router.navigate(['/dashboard']);
     }
   }
 
   loadLinks() {
-    this.links = LINKS_DASHBOARD.filter(
-      (item) =>
-        item.role === this.role || (item.role === 'all' && item.viewDesktop)
-    );
+    this.links = LINKS_DASHBOARD.filter(item => item.viewDesktop);
   }
 
   logout(): void {

@@ -1,6 +1,6 @@
 <app-layout [title]="'Perfil'" [subtitle]="'Gestiona tu información personal'">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <article class="p-6 bg-white/5 rounded-md shadow-md">
+    <article class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
       <div class="flex flex-col items-center justify-center gap-6 h-full">
         <button
           class="group cursor-pointer relative overflow-hidden rounded-full ring-2 ring-primary/30"
@@ -17,44 +17,61 @@
         </button>
 
         <div class="space-y-1 text-center">
-          <h2 class="text-xl md:text-2xl font-medium text-gray-200">
+          <h2 class="text-xl md:text-2xl font-medium text-slate-800">
             {{ user.fullName }}
           </h2>
-          <p class="text-gray-400 flex items-center gap-1 md:gap-2 text-sm md:text-base">
-            <i class="fa-solid fa-location-dot text-primary text-center"></i>
-            {{ user.city }}, Colombia
-          </p>
         </div>
       </div>
     </article>
 
-    <article class="p-6 bg-white/5 rounded-md shadow-md space-y-6">
-      <h3 class="text-xl font-medium tracking-wide text-gray-200">Información adicional</h3>
+    <article class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-6">
+      <h3 class="text-xl font-medium tracking-wide text-slate-800">Información adicional</h3>
 
-      <div class="divide-y divide-gray-600">
+      <div class="divide-y divide-slate-300">
         <div class="py-3">
-          <p class="text-sm text-gray-400 font-medium tracking-wide">Correo electrónico</p>
-          <p class="text-base text-gray-200 flex items-center gap-2">
+          <p class="text-sm text-slate-600 font-medium tracking-wide">Correo electrónico</p>
+          <p class="text-base text-slate-700 flex items-center gap-2">
             <i class="fa-regular fa-envelope text-primary"></i>
             {{ user.email }}
           </p>
         </div>
         <div class="py-3">
-          <p class="text-sm text-gray-400 font-medium tracking-wide">Celular</p>
-          <p class="text-base font-medium tracking-wide text-gray-200 flex items-center gap-2">
+          <p class="text-sm text-slate-600 font-medium tracking-wide">Celular</p>
+          <p class="text-base font-medium tracking-wide text-slate-700 flex items-center gap-2">
             <i class="fa-solid fa-mobile-screen-button text-primary"></i>
             {{ user.cellphone }}
           </p>
         </div>
         <div class="py-3">
-          <p class="text-sm text-gray-400 font-medium tracking-wide">Rol</p>
-          <p class="text-base text-gray-200 flex items-center gap-2">
+          <p class="text-sm text-slate-600 font-medium tracking-wide">Rol</p>
+          <p class="text-base text-slate-700 flex items-center gap-2">
             <i class="fa-solid fa-user-shield text-primary"></i>
-            {{ user.role === userRole.FIELD_ADMIN ? 'Administrador de cancha' : 'Jugador' }}
+            Administrador de cancha
           </p>
         </div>
       </div>
     </article>
+  </div>
+  <div class="mt-8 pt-6 border-t border-slate-200 sm:hidden">
+    <button
+      class="group flex items-center justify-center gap-3 w-full p-4 text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-200 rounded-xl transition-all duration-200 hover:shadow-md" (click)="logout()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-log-out w-4 h-4 group-hover:scale-110 transition-transform">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" x2="9" y1="12" y2="12"></line>
+      </svg>
+      <span class="font-medium">Cerrar sesión</span>
+    </button>
   </div>
 </app-layout>
 

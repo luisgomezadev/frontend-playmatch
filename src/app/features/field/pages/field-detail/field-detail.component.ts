@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { AlertService } from '@core/services/alert.service';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { Field, Status } from '@field/interfaces/field';
-import { FieldService } from '@field/services/field.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { User, UserRole } from '@user/interfaces/user';
+import { User } from '@user/interfaces/user';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { FieldInfoComponent } from '@features/field/components/field-info/field-info.component';
 
@@ -18,10 +16,7 @@ import { FieldInfoComponent } from '@features/field/components/field-info/field-
   styleUrl: './field-detail.component.scss'
 })
 export class FieldDetailComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
-  private readonly fieldService = inject(FieldService);
   private readonly authService = inject(AuthService);
-  private readonly alertService = inject(AlertService);
 
   user!: User;
   field: Field | null = null;
@@ -33,42 +28,9 @@ export class FieldDetailComponent implements OnInit {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
-        if (this.isUserAdmin(user)) {
-          this.getField();
-        }
       }
     });
 
-    this.fieldId = +this.route.snapshot.paramMap.get('id')!;
-    if (this.fieldId) {
-      this.getField();
-    }
   }
 
-  public isUserAdmin(user: User): boolean {
-    return user.role == UserRole.FIELD_ADMIN;
-  }
-
-  getField() {
-    this.loading = true;
-    this.fieldService.getFieldByAdminId(this.user.id).subscribe({
-      next: (data: Field) => {
-        this.loading = false;
-        this.getFieldDetails(data);
-      },
-      error: err => {
-        this.loading = false;
-        this.alertService.error(
-          'Error',
-          err?.error?.message || 'No se puedo cargar la información de la cancha'
-        );
-      }
-    });
-  }
-
-  getFieldDetails(field: Field) {
-    if (field) {
-      this.field = field;
-    }
-  }
 }

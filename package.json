@@ -19,6 +19,8 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@fontsource-variable/inter": "^5.2.7",
+    "@fontsource/inter": "^5.2.6",
     "@fortawesome/fontawesome-free": "^7.0.0",
     "@fullcalendar/angular": "^6.1.18",
     "@fullcalendar/daygrid": "^6.1.18",

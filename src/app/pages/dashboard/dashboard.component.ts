@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { Link } from '@core/interfaces/link.interface';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { LINKS_DASHBOARD } from '@shared/constants/links.constants';
-import { User, UserRole } from '@user/interfaces/user';
+import { User } from '@user/interfaces/user';
 import { UserService } from '@user/services/user.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule, CommonModule, LoadingComponent],
+  imports: [RouterModule, CommonModule, LoadingComponent, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -55,13 +55,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadLinks() {
-    this.links = LINKS_DASHBOARD.filter(
-      item => item.role === this.userActive?.role || item.role === 'all'
-    );
-  }
-
-  getNameRole(): string {
-    return this.userActive.role == UserRole.FIELD_ADMIN ? 'administrador' : 'jugador';
+    this.links = LINKS_DASHBOARD;
   }
 
   getImageUrl(user: User): string {

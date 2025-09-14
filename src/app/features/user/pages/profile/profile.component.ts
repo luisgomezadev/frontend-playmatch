@@ -110,4 +110,15 @@ export class ProfileComponent implements OnInit {
   getImageUrl(user: User): string {
     return user.imageUrl?.startsWith('http') ? user.imageUrl : '/assets/profile_icon.webp';
   }
+
+  logout(): void {
+    this.alertService
+      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?')
+      .then(confirmed => {
+        if (confirmed) {
+          this.authService.logout();
+          this.alertService.success('Sesión cerrada', 'Has cerrado sesión correctamente.');
+        }
+      });
+  }
 }

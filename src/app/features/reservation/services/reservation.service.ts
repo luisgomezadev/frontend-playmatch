@@ -1,16 +1,8 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PagedResponse } from '@core/interfaces/paged-response';
-import {
-  ConfirmedReservation,
-  Reservation,
-  ReservationFilter,
-  ReservationRequest,
-  StatusReservation,
-  TimeSlot
-} from '@reservation/interfaces/reservation';
+import { Reservation, ReservationRequest, TimeSlot } from '@reservation/interfaces/reservation';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
-import { firstValueFrom, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,85 +10,36 @@ import { firstValueFrom, Observable } from 'rxjs';
 export class ReservationService extends BaseHttpService {
   private readonly ENDPOINT = this.apiUrl + '/reservation';
 
-  getReservations(
-    filters: ReservationFilter,
-    page: number,
-    size: number
-  ): Observable<PagedResponse<Reservation>> {
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-
-    if (filters.date) {
-      params = params.set('date', filters.date);
-    }
-    if (filters.status) {
-      params = params.set('status', filters.status);
-    }
-    if (filters.userId != null) {
-      params = params.set('userId', filters.userId.toString());
-    }
-    if (filters.fieldId != null) {
-      params = params.set('fieldId', filters.fieldId.toString());
-    }
-    return this.http.get<PagedResponse<Reservation>>(`${this.ENDPOINT}`, { params });
-  }
-
   getReservationsByFieldId(fieldId: number): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(`${this.ENDPOINT}/field/${fieldId}`);
   }
 
-  getReservationsByUserId(userId: number): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.ENDPOINT}/user/${userId}`);
+  getReservationsByVenueId(venueId: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.ENDPOINT}/venue/${venueId}`);
   }
 
-  getReservationsByFieldAndStuts(
-    fieldId: number,
-    status: StatusReservation
-  ): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.ENDPOINT}/field/${fieldId}/status/${status}`);
+  getReservationByCode(code: string): Observable<Reservation> {
+    return this.http.get<Reservation>(`${this.ENDPOINT}/code/${code}`);
   }
 
-  getReservationById(id: number): Observable<Reservation> {
-    return this.http.get<Reservation>(`${this.ENDPOINT}/${id}`);
+  getReservationsByVenueIdAndDate(id: number, date: string): Observable<Reservation[]> {
+    const params = new HttpParams().set('date', date);
+    return this.http.get<Reservation[]>(`${this.ENDPOINT}/venue/${id}/date`, { params });
   }
 
   createReservation(reservation: ReservationRequest): Observable<Reservation> {
     return this.http.post<Reservation>(`${this.ENDPOINT}`, reservation);
   }
 
-  finalizeReservationById(id: number): Observable<string> {
-    return this.http.put<string>(`${this.ENDPOINT}/${id}/status/finalize`, null);
+  canceledReservation(id: number): Observable<string> {
+    return this.http.put<string>(`${this.ENDPOINT}/${id}/canceled`, null);
   }
 
-  canceledReservationById(id: number): Observable<string> {
-    return this.http.put<string>(`${this.ENDPOINT}/${id}/status/canceled`, null);
-  }
-
-  async getCountActiveByUser(userId: number): Promise<number> {
-    return await firstValueFrom(this.http.get<number>(`${this.ENDPOINT}/user/${userId}/active`));
-  }
-
-  getCountActiveByField(fieldId: number): Observable<number> {
-    return this.http.get<number>(`${this.ENDPOINT}/field/${fieldId}/active`);
-  }
-
-  getCountFinishedByField(fieldId: number): Observable<number> {
-    return this.http.get<number>(`${this.ENDPOINT}/field/${fieldId}/finished`);
-  }
-
-  getCountCanceledByField(fieldId: number): Observable<number> {
-    return this.http.get<number>(`${this.ENDPOINT}/field/${fieldId}/canceled`);
-  }
-
-  getReservationAvailability(reservation: ReservationRequest): Observable<ConfirmedReservation> {
-    return this.http.post<ConfirmedReservation>(`${this.ENDPOINT}/availability`, reservation);
-  }
-
-  getHoursAvailability(fieldId: number, date: string): Observable<TimeSlot[]> {
-    const params = new HttpParams().set('fieldId', fieldId.toString()).set('date', date);
+  getAvailableHours(venueId: number, fieldId: number, date: string): Observable<TimeSlot[]> {
+    const params = new HttpParams()
+      .set('venueId', venueId.toString())
+      .set('fieldId', fieldId.toString())
+      .set('date', date);
     return this.http.get<TimeSlot[]>(`${this.ENDPOINT}/availability/hours`, { params });
-  }
-
-  getLastThreeReservationsByField(fieldId: number): Observable<Reservation[]> {
-    return this.http.get<Reservation[]>(`${this.ENDPOINT}/latest/${fieldId}`);
   }
 }

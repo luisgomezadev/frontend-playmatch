@@ -6,7 +6,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
   imports: [],
   template: `
     <div
-      class="fixed inset-0 z-50 bg-gray-800/70 backdrop-blur-sm flex flex-col items-center justify-center"
+      class="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center"
     >
       <h1 class="text-2xl font-bold text-primary mb-4">PlayMatch</h1>
       <div

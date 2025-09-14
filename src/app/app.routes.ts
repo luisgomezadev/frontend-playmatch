@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { roleChildGuard, roleGuard } from './core/guards/role.guard';
+import { roleGuard } from './core/guards/role.guard';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { authPagesGuard } from '@core/guards/auth.guard';
@@ -9,109 +9,116 @@ import { authPagesGuard } from '@core/guards/auth.guard';
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'auth',
-    loadComponent: () => import('./pages/auth/auth.component').then(m => m.AuthComponent),
-    children: [
-      {
-        path: 'login',
-        component: LoginComponent,
-        canActivate: [authPagesGuard]
-      },
-      {
-        path: 'register',
-        component: RegisterComponent,
-        canActivate: [authPagesGuard]
-      }
-    ]
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [authPagesGuard]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [authPagesGuard]
+  },
+  {
+    path: 'venue',
+    loadComponent: () =>
+      import('./features/venue/pages/venue-list/venue-list.component').then(
+        m => m.VenueListComponent
+      )
+  },
+  {
+    path: 'reservation',
+    loadComponent: () =>
+      import('./features/reservation/pages/reservation-detail/reservation-detail.component').then(
+        m => m.ReservationDetailComponent
+      )
+  },
+  {
+    path: 'reservation/:code',
+    loadComponent: () =>
+      import('./features/reservation/pages/reservation-form/reservation-form.component').then(
+        m => m.ReservationFormComponent
+      )
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [roleGuard], // valida el acceso base al dashboard
-    canActivateChild: [roleChildGuard], // valida todos los hijos
-    data: { roles: ['PLAYER', 'FIELD_ADMIN'] },
+    canActivate: [roleGuard],
     children: [
       {
-        path: 'home-admin',
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      {
+        path: 'home',
         loadComponent: () =>
-          import('./features/user/pages/home-admin/home-admin.component').then(
-            m => m.HomeAdminComponent
-          ),
-        data: { roles: ['FIELD_ADMIN'] }
+          import('./features/user/pages/home/home.component').then(m => m.HomeComponent)
+      },
+      {
+        path: 'venue',
+        loadComponent: () =>
+          import('./features/venue/pages/venue/venue.component').then(
+            m => m.VenueComponent
+          )
       },
       {
         path: 'field',
         loadComponent: () =>
           import('./features/field/pages/field-detail/field-detail.component').then(
             m => m.FieldDetailComponent
-          ),
-        data: { roles: ['FIELD_ADMIN'] }
+          )
       },
       {
         path: 'field/list',
         loadComponent: () =>
           import('./features/field/pages/fields-list/fields-list.component').then(
             m => m.FieldsListComponent
-          ),
-        data: { roles: ['FIELD_ADMIN', 'PLAYER'] }
+          )
       },
       {
         path: 'field/form',
         loadComponent: () =>
           import('./features/field/pages/field-form/field-form.component').then(
             m => m.FieldFormComponent
-          ),
-        data: { roles: ['FIELD_ADMIN'] }
+          )
       },
       {
         path: 'field/form/:id',
         loadComponent: () =>
           import('./features/field/pages/field-form/field-form.component').then(
             m => m.FieldFormComponent
-          ),
-        data: { roles: ['FIELD_ADMIN'] }
+          )
       },
       {
         path: 'reservation/list',
         loadComponent: () =>
           import('./features/reservation/pages/reservation-list/reservation-list.component').then(
             m => m.ReservationListComponent
-          ),
-        data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
+          )
       },
       {
         path: 'reservation/calendar',
         loadComponent: () =>
           import(
             './features/reservation/pages/reservation-calendar/reservation-calendar.component'
-          ).then(m => m.ReservationCalendarComponent),
-        data: { roles: ['FIELD_ADMIN'] }
+          ).then(m => m.ReservationCalendarComponent)
       },
       {
         path: 'reservation/form/field/:id',
         loadComponent: () =>
           import('./features/reservation/pages/reservation-form/reservation-form.component').then(
             m => m.ReservationFormComponent
-          ),
-        data: { roles: ['PLAYER'] }
-      },
-      {
-        path: 'players',
-        loadComponent: () =>
-          import('./features/user/pages/players/players.component').then(m => m.PlayersComponent),
-        data: { roles: ['PLAYER'] }
+          )
       },
       {
         path: 'profile',
         loadComponent: () =>
-          import('./features/user/pages/profile/profile.component').then(m => m.ProfileComponent),
-        data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
+          import('./features/user/pages/profile/profile.component').then(m => m.ProfileComponent)
       },
       {
         path: 'menu',
         loadComponent: () =>
-          import('./shared/components/menu/menu.component').then(m => m.MenuComponent),
-        data: { roles: ['PLAYER', 'FIELD_ADMIN'] }
+          import('./shared/components/menu/menu.component').then(m => m.MenuComponent)
       }
     ]
   },

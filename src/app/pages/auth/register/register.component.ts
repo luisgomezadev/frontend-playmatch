@@ -10,13 +10,13 @@ import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
-import { ButtonComponent } from '@shared/components/button/button.component';
+import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { REGEX_PATTERNS } from '@shared/utils/regex-utils';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, ButtonComponent],
+  imports: [ReactiveFormsModule, RouterModule, NavbarComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -31,17 +31,11 @@ export class RegisterComponent {
   showPassword = false;
   showConfirmPassword = false;
 
-  roles: { value: string; label: string }[] = [
-    { value: 'PLAYER', label: 'Jugador' },
-    { value: 'FIELD_ADMIN', label: 'Administrador de cancha' }
-  ];
-
   constructor() {
     this.registerForm = this.formBuilder.group(
       {
         firstName: ['', [Validators.required]],
         lastName: ['', [Validators.required]],
-        city: ['Cartagena', [Validators.required]],
         cellphone: ['', [Validators.required, Validators.pattern(REGEX_PATTERNS.cellphone)]],
         email: ['', [Validators.required, Validators.email]],
         password: [
@@ -94,7 +88,7 @@ export class RegisterComponent {
     const handleSuccess = () => {
       this.loading = false;
       this.alertService.success('Registro exitoso', 'Ahora puedes iniciar sesión');
-      this.router.navigate(['/auth/login']);
+      this.router.navigate(['/login']);
     };
 
     const loginObservable = this.authService.registerUser(formData);

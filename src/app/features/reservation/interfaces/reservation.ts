@@ -1,39 +1,26 @@
-import { User } from "@user/interfaces/user";
-import { Field } from "@field/interfaces/field";
-
 export interface Reservation {
   id: number;
-  user: User;
-  field: Field;
-  hours: number;
+  code: string;
+  user: string;
+  cellphone: string;
+  fieldId: number;
+  fieldName: string;
+  venueId: number;
+  venueName: string;
+  duration: ReservationDuration;
   startTime: string;
   endTime: string;
   reservationDate: string;
-  status: StatusReservation;
-}
-
-export interface ConfirmedReservation {
-  user?: User;
-  field?: Field;
-  hours: number;
-  startTime: string;
-  endTime: string;
-  reservationDate: string;
+  status: Status;
 }
 
 export interface ReservationRequest {
-  reservationDate: string;
+  user: string;
+  cellphone: string;
+  fieldId: number;
+  duration: ReservationDuration;
   startTime: string;
-  hours: number;
-  userId?: number;
-  fieldId?: number;
-}
-
-export interface ReservationFilter {
-  fieldId?: number;
-  userId?: number;
-  status?: StatusReservation;
-  date?: string;
+  reservationDate: string;
 }
 
 export interface TimeSlot {
@@ -41,8 +28,13 @@ export interface TimeSlot {
   end: string;
 }
 
-export enum StatusReservation {
+export enum Status {
   ACTIVE = 'ACTIVE',
-  CANCELED = 'CANCELED',
-  FINISHED = 'FINISHED'
+  INACTIVE = 'INACTIVE'
+}
+
+export enum ReservationDuration {
+  MIN_60 = 'MIN_60',
+  MIN_90 = 'MIN_90',
+  MIN_120 = 'MIN_120'
 }

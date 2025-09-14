@@ -1,41 +1,30 @@
-import { Reservation } from "@reservation/interfaces/reservation";
-import { User } from "@user/interfaces/user";
+import { Reservation } from '@reservation/interfaces/reservation';
 
 export interface Field {
   id: number;
   name: string;
-  address: string;
-  city: string;
+  fieldType: FieldType;
   hourlyRate: number;
-  openingHour: string;
-  closingHour: string;
-  status: Status;
-  admin?: User;
-  imageUrl: string;
-  reservations: Reservation[]
+  reservations: Reservation[];
 }
 
 export interface FieldRequest {
   id: number;
   name: string;
-  address: string;
-  city: string;
+  fieldType: FieldType;
   hourlyRate: number;
-  openingHour: string;
-  closingHour: string;
-  status: Status;
-  adminId: number;
-  imageUrl: string;
-}
-
-export interface FieldFilter {
-  name?: string;
-  city?: string;
-  minPrice?: number;
-  maxPrice?: number;
 }
 
 export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE'
+}
+
+export enum FieldType {
+  FIVE_A_SIDE = 'FIVE_A_SIDE',
+  SIX_A_SIDE = 'SIX_A_SIDE',
+  SEVEN_A_SIDE = 'SEVEN_A_SIDE',
+  EIGHT_A_SIDE = 'EIGHT_A_SIDE',
+  NINE_A_SIDE = 'NINE_A_SIDE',
+  ELEVEN_A_SIDE = 'ELEVEN_A_SIDE'
 }

@@ -17,7 +17,7 @@ import { LoadingService } from '@core/services/loading.service';
       top: 0;
       left: 0;
       width: 100%;
-      height: 3px;
+      height: 5px;
       overflow: hidden;
       background: transparent;
       z-index: 9999;
@@ -26,7 +26,7 @@ import { LoadingService } from '@core/services/loading.service';
     .loading-bar {
       height: 100%;
       width: 40%;
-      background: #00BF63; /* azul Tailwind (blue-600) */
+      background: #00BF63;
       animation: indeterminate 1.5s infinite ease-in-out;
     }
 

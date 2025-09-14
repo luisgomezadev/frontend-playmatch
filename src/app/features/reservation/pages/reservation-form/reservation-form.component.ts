@@ -1,123 +1,81 @@
-import { CommonModule, Location } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AlertService } from '@core/services/alert.service';
-import { AuthService } from '@core/services/auth.service';
-import { FieldInfoComponent } from '@features/field/components/field-info/field-info.component';
 import { Field } from '@features/field/interfaces/field';
-import { FieldService } from '@features/field/services/field.service';
-import {
-  ConfirmedReservation,
-  Reservation,
-  ReservationRequest,
-  TimeSlot
-} from '@reservation/interfaces/reservation';
-import { ReservationService } from '@reservation/services/reservation.service';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { LoadingComponent } from '@shared/components/loading/loading.component';
-import { ModalComponent } from '@shared/components/modal/modal.component';
+import { Reservation, ReservationDuration, ReservationRequest, TimeSlot } from '@features/reservation/interfaces/reservation';
+import { ReservationService } from '@features/reservation/services/reservation.service';
+import { Venue } from '@features/venue/interfaces/venue';
+import { VenueService } from '@features/venue/services/venue.service';
+import { CustomDatePipe } from '@shared/pipes/custom-date.pipe';
+import { FieldTypePipe } from '@shared/pipes/field-type.pipe';
+import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
-import { User } from '@user/interfaces/user';
-import {
-  to24h,
-  generateHourRanges,
-  filterPastHours,
-  toDateFromFormatted
-} from '@reservation/utils/reservation-utils';
 
 interface DayItem {
   date: Date;
   formatted: string;
-  weekday: string;    // Lunes, Martes...
-  dayNumber: number;  // 1, 2, 3...
-  monthName: string;  // Enero, Febrero...
+  weekday: string;
+  dayNumber: number;
+  monthName: string;
 }
 
 @Component({
   selector: 'app-reservation-form',
   standalone: true,
   imports: [
-    ButtonComponent,
     RouterModule,
     ReactiveFormsModule,
-    TimeFormatPipe,
-    LoadingComponent,
-    FieldInfoComponent,
     CommonModule,
-    ModalComponent,
-    LayoutComponent
+    TimeFormatPipe,
+    FieldTypePipe,
+    MoneyFormatPipe,
+    CustomDatePipe
   ],
   templateUrl: './reservation-form.component.html',
   styleUrl: './reservation-form.component.scss'
 })
 export class ReservationFormComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
-  private readonly location = inject(Location);
-  private readonly formBuilder = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
+  private readonly venueService = inject(VenueService);
   private readonly reservationService = inject(ReservationService);
-  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly formBuilder = inject(FormBuilder);
   private readonly alertService = inject(AlertService);
-  private readonly fieldService = inject(FieldService);
 
-  user!: User;
-  fieldId!: number;
-  formReservation!: FormGroup;
-  confirmedReservation!: ConfirmedReservation | null;
-  reservations: Reservation[] = [];
-  field!: Field;
-  today = '';
+  venueCode = '';
+  venue!: Venue;
   loading = false;
-  loadingHours = false;
-  loadingReservation = false;
-  availableHours: TimeSlot[] = [];
-  selectedHours: TimeSlot[] = [];
-  verifiedReservation = false;
-  next20Days: DayItem[] = [];
+  loadingCreateReservation = false;
   selectedDate: Date | null = null;
+  selectedDurationEnum: ReservationDuration | null = null;
+  selectedMinutes: number | null = null;
+  selectedStartTime: string | null = null;
+  selectedField: Field | null = null;
+  next20Days: DayItem[] = [];
+  availableRanges: TimeSlot[] = [];
+  availableStartTimes: string[] = [];
+  reservationForm!: FormGroup;
+  successReservation = false;
+  reservationData!: Reservation;
 
-  isOpen = signal(false);
+  durations = [
+    { enum: ReservationDuration.MIN_60, minutes: 60 },
+    { enum: ReservationDuration.MIN_90, minutes: 90 },
+    { enum: ReservationDuration.MIN_120, minutes: 120 }
+  ];
 
   ngOnInit(): void {
-    const today = new Date();
-    today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-    this.today = today.toISOString().split('T')[0];
-
-    this.authService.currentUser$.subscribe(user => {
-      if (user) this.user = user;
-    });
-
-    this.formReservation = this.formBuilder.group({
-      reservationDate: [this.today, Validators.required]
-    });
-
-    this.fieldId = +this.route.snapshot.paramMap.get('id')!;
-    this.getField();
-
-    this.formReservation.get('reservationDate')?.valueChanges.subscribe(() => {
-      this.getAvailableHours();
-    });
-
+    this.venueCode = this.route.snapshot.paramMap.get('code')!;
+    this.getVenue();
     this.generateNext20Days();
+    this.initForm();
   }
 
-  get startTime(): string {
-    return this.selectedHours.length ? to24h(this.selectedHours[0].start) : '';
-  }
-
-  get totalHours(): number {
-    return this.selectedHours.length;
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
-
-  getField(): void {
-    this.fieldService.getFieldById(this.fieldId).subscribe({
-      next: field => (this.field = field)
+  initForm(): void {
+    this.reservationForm = this.formBuilder.group({
+      user: ['', [Validators.required, Validators.minLength(3)]],
+      cellphone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
     });
   }
 
@@ -138,144 +96,144 @@ export class ReservationFormComponent implements OnInit {
         formatted: d.toISOString().split('T')[0],
         weekday: weekday.charAt(0).toUpperCase() + weekday.slice(1),
         dayNumber,
-        monthName: monthName.charAt(0).toUpperCase() + monthName.slice(1),
+        monthName: monthName.charAt(0).toUpperCase() + monthName.slice(1)
       });
-    }
-
-    if (this.next20Days.length > 0) {
-      this.selectedDate = this.next20Days[0].date;
-      this.formReservation.get('reservationDate')?.setValue(this.next20Days[0].formatted);
     }
   }
 
   selectDate(day: DayItem) {
     this.selectedDate = day.date;
-    this.formReservation.get('reservationDate')?.setValue(day.formatted);
+    this.selectedStartTime = null;
+    this.selectedMinutes = null;
+    this.selectedField = null;
+    this.selectedDurationEnum = null;
+    this.reservationForm.reset();
   }
 
-  getAvailableHours(): void {
-    this.selectedHours = [];
-    const dateStr = this.formReservation.get('reservationDate')?.value;
-    if (!this.fieldId || !dateStr) {
-      this.availableHours = [];
+  selectField(field: Field) {
+    this.selectedField = field;
+    this.selectedStartTime = null;
+    this.selectedMinutes = null;
+    this.selectedDurationEnum = null;
+    this.reservationForm.reset();
+  }
+
+  selectDuration(minutes: number) {
+    this.selectedMinutes = minutes;
+    this.selectedStartTime = null;
+    this.reservationForm.reset();
+  }
+
+  getAvailableHours(minutes: number, enumValue: ReservationDuration) {
+    this.selectedMinutes = minutes;
+    this.selectedDurationEnum = enumValue;
+
+    this.reservationForm.reset();
+    this.selectedStartTime = null;
+
+    if (!this.selectedDate || !this.selectedField) return;
+
+    this.reservationService
+      .getAvailableHours(
+        this.venue.id,
+        this.selectedField.id,
+        this.formatDateLocal(this.selectedDate!)
+      )
+      .subscribe(ranges => {
+        this.availableRanges = ranges;
+        this.generateStartTimes();
+      });
+  }
+
+  generateStartTimes() {
+    if (!this.availableRanges.length || !this.selectedMinutes) {
+      this.availableStartTimes = [];
       return;
     }
-    this.loadingHours = true;
-    this.reservationService.getHoursAvailability(this.fieldId, dateStr).subscribe({
-      next: timeSlots => {
-        const ranges = generateHourRanges(timeSlots);
-        this.availableHours = filterPastHours(ranges, this.getSelectedDate());
-        this.loadingHours = false;
-      },
-      error: () => {
-        this.loadingHours = false;
-        this.availableHours = [];
+
+    const minutes = this.selectedMinutes;
+    const step = 30; // intervalos de 30 min
+    const slots: string[] = [];
+
+    // Comprobar si la fecha seleccionada es hoy
+    const now = new Date();
+    const isToday =
+      this.selectedDate &&
+      now.toISOString().split('T')[0] === this.selectedDate.toISOString().split('T')[0];
+
+    this.availableRanges.forEach(r => {
+      const startTime = this.parseTime(r.start);
+      const endTime = this.parseTime(r.end);
+
+      let current = new Date(startTime);
+      const durationMs = minutes * 60 * 1000;
+
+      while (current.getTime() + durationMs <= endTime.getTime()) {
+        // Si es hoy, descartar horas pasadas
+        if (!isToday || current.getTime() >= now.getTime()) {
+          slots.push(this.formatTime(current));
+        }
+
+        current = new Date(current.getTime() + step * 60 * 1000);
       }
     });
+
+    this.availableStartTimes = slots;
   }
 
-  toggleHourSelection(hour: TimeSlot) {
-    const index = this.selectedHours.findIndex(h => h.start === hour.start && h.end === hour.end);
-    if (index > -1) {
-      this.selectedHours = this.selectedHours.slice(0, index);
-    } else {
-      if (!this.selectedHours.length) {
-        this.selectedHours.push(hour);
-      } else {
-        const all = [...this.selectedHours, hour].sort(
-          (a, b) => toDateFromFormatted(a.start).getTime() - toDateFromFormatted(b.start).getTime()
-        );
-        let isContinuous = true;
-        for (let i = 1; i < all.length; i++) {
-          if (
-            toDateFromFormatted(all[i].start).getTime() !==
-            toDateFromFormatted(all[i - 1].end).getTime()
-          ) {
-            isContinuous = false;
-            break;
-          }
-        }
-        if (isContinuous && all.length <= 3) this.selectedHours = all;
-      }
-    }
+  private formatDateLocal(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
-  verifyReservation() {
-    if (!this.formReservation.valid || !this.selectedHours.length) {
-      this.formReservation.markAllAsTouched();
-      if (!this.selectedHours.length)
-        this.alertService.notify(
-          'Selecciona alguna hora',
-          'Debes seleccionar al menos una hora para poder reservar.',
-          'warning'
-        );
-      return;
-    }
+  private parseTime(timeStr: string): Date {
+    const [h, m, s] = timeStr.split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, s ?? 0, 0);
+    return d;
+  }
 
+  private formatTime(date: Date): string {
+    return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false });
+  }
+
+  getVenue(): void {
     this.loading = true;
-    const reservationData: ReservationRequest = {
-      reservationDate: this.formReservation.value.reservationDate,
-      startTime: this.startTime,
-      hours: this.totalHours,
-      userId: this.user.id,
-      fieldId: this.fieldId
-    };
-
-    this.reservationService.getReservationAvailability(reservationData).subscribe({
+    this.venueService.getVenueByCode(this.venueCode).subscribe({
       next: data => {
         this.loading = false;
-        this.confirmedReservation = data;
-        this.isOpen.set(true);
-      },
-      error: err => {
-        this.loading = false;
-        this.confirmedReservation = null;
-        this.alertService.error('Error al hacer reserva', err.error?.message || 'Algo salió mal');
+        this.venue = data;
       }
     });
-
-    this.verifiedReservation = true;
   }
 
-  private getSelectedDate(): Date {
-    const [year, month, day] = this.formReservation.value.reservationDate.split('-').map(Number);
-    return new Date(year, month - 1, day);
-  }
+  onSubmit() {
+    if (this.reservationForm.invalid) {
+      this.reservationForm.markAllAsTouched();
+      return;
+    }
 
-  onClosed() {
-    this.isOpen.set(false);
-    document.body.style.overflow = '';
-  }
+    this.loadingCreateReservation = true;
 
-  cancelReservation() {
-    this.onClosed();
-    this.verifiedReservation = false;
-    this.confirmedReservation = null;
-  }
-
-  confirmReservation() {
-    if (!this.confirmedReservation) return;
-
-    this.loadingReservation = true;
-    const reservationRequest: ReservationRequest = {
-      userId: this.confirmedReservation.user?.id,
-      fieldId: this.confirmedReservation.field?.id,
-      reservationDate: this.confirmedReservation.reservationDate,
-      startTime: this.confirmedReservation.startTime,
-      hours: this.confirmedReservation.hours
+    const payload: ReservationRequest = {
+      user: this.reservationForm.value.user,
+      cellphone: this.reservationForm.value.cellphone,
+      fieldId: this.selectedField!.id,
+      reservationDate: this.formatDateLocal(this.selectedDate!),
+      startTime: this.selectedStartTime!,
+      duration: this.selectedDurationEnum!
     };
 
-    this.reservationService.createReservation(reservationRequest).subscribe({
-      next: () => {
-        this.loadingReservation = false;
-        this.alertService.success(
-          'Reserva creada',
-          `Has creado una reserva para el día ${reservationRequest.reservationDate}.`
-        );
-        this.router.navigate(['/dashboard/reservation/list']);
+    this.reservationService.createReservation(payload).subscribe({
+      next: data => {
+        this.loadingCreateReservation = false;
+        this.successReservation = true;
+        this.reservationData = data;
       },
       error: err => {
-        this.loadingReservation = false;
+        this.loadingCreateReservation = false;
         this.alertService.error('Error', err.error?.message || 'Algo salió mal');
       }
     });

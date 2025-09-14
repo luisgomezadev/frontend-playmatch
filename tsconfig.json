@@ -22,6 +22,9 @@
       "@field/*": [
         "app/features/field/*"
       ],
+      "@venue/*": [
+        "app/features/venue/*"
+      ],
       "@auth/*": [
         "app/features/auth/*"
       ]
