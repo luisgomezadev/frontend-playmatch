@@ -53,6 +53,7 @@ export class ReservationFormComponent implements OnInit {
   venueCode = '';
   venue!: Venue;
   loading = false;
+  loadingHours = false;
   loadingCreateReservation = false;
   selectedDate: Date | null = null;
   selectedDurationEnum: ReservationDuration | null = null;
@@ -138,6 +139,8 @@ export class ReservationFormComponent implements OnInit {
     this.reservationForm.reset();
     this.selectedStartTime = null;
 
+    this.loadingHours = true;
+
     if (!this.selectedDate || !this.selectedField) return;
 
     this.reservationService
@@ -147,6 +150,7 @@ export class ReservationFormComponent implements OnInit {
         this.formatDateLocal(this.selectedDate!)
       )
       .subscribe(ranges => {
+        this.loadingHours = false;
         this.availableRanges = ranges;
         this.generateStartTimes();
       });

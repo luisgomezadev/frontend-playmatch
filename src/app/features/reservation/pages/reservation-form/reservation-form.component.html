@@ -10,9 +10,19 @@
         <p class="text-sm sm:text-lg text-slate-700 font-medium mb-0.5">{{ venue.city }}</p>
         <p class="text-xs sm:text-base text-slate-500 font-normal mb-1">{{ venue.address }}</p>
         <div class="mt-2">
-          <a routerLink="/" class="py-1 px-2 border border-slate-600 hover:border-slate-800 rounded-xl group transition-colors duration-300 flex items-center gap-2 text-slate-800">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          <a
+            routerLink="/"
+            class="py-1 px-2 border border-slate-600 hover:border-slate-800 rounded-xl group transition-colors duration-300 flex items-center gap-2 text-slate-800">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
               class="w-5 h-5 group-hover:scale-105 transition-transform duration-300">
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
@@ -242,44 +252,76 @@
       </header>
       <div
         class="relative max-h-[300px] scrollbar-visible overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 pr-2 my-2">
-        @if (availableStartTimes.length) {
-          <div
-            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-            <button
-              *ngFor="let time of availableStartTimes"
-              (click)="selectedStartTime = time"
-              class="px-4 py-2 border rounded-lg"
-              [ngClass]="
-                selectedStartTime === time
-                  ? 'bg-green-700 text-slate-200 border-primary'
-                  : 'bg-slate-100 text-slate-700 border-gray-500 hover:bg-primary/10 hover:border-primary hover:text-slate-800'
-              ">
-              {{ time | timeFormat }}
-            </button>
+        @if (loadingHours) {
+          <div class="flex justify-center items-center py-16">
+            <svg
+              class="animate-spin h-10 w-10 text-emerald-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24">
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <span class="ml-3 text-emerald-600 font-medium">Cargando horas disponibles…</span>
           </div>
         } @else {
-          <div class="text-center">
-            <div class="flex justify-center mb-4 sm:mb-6">
-              <div
-                class="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-full text-2xl sm:text-3xl lg:text-4xl">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="text-primary w-10 h-10">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                  <path d="M12 9v4" />
-                  <path d="M12 16v.01" />
-                </svg>
-              </div>
+          @if (availableStartTimes.length) {
+            <div
+              class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+              <button
+                *ngFor="let time of availableStartTimes"
+                (click)="selectedStartTime = time"
+                class="px-4 py-2 border rounded-lg"
+                [ngClass]="
+                  selectedStartTime === time
+                    ? 'bg-green-700 text-slate-200 border-primary'
+                    : 'bg-slate-100 text-slate-700 border-gray-500 hover:bg-primary/10 hover:border-primary hover:text-slate-800'
+                ">
+                {{ time | timeFormat }}
+              </button>
             </div>
-            <h3 class="text-base sm:text-lg lg:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
-              ¡Sin horas disponibles!
-            </h3>
-            <p class="text-slate-600 mb-4 sm:mb-6 text-sm sm:text-base lg:text-lg leading-relaxed max-w-md mx-auto">
-              Puedes probar reduciendo el tiempo de duración de la reserva o reservar para otra
-              fecha.
-            </p>
-          </div>
+          } @else {
+            <div class="text-center">
+              <div class="flex justify-center mb-4 sm:mb-6">
+                <div
+                  class="p-3 sm:p-4 lg:p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-full text-2xl sm:text-3xl lg:text-4xl">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="text-primary w-10 h-10">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                    <path d="M12 9v4" />
+                    <path d="M12 16v.01" />
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-base sm:text-lg lg:text-xl font-bold text-slate-900 mb-2 sm:mb-3">
+                ¡Sin horas disponibles!
+              </h3>
+              <p
+                class="text-slate-600 mb-4 sm:mb-6 text-sm sm:text-base lg:text-lg leading-relaxed max-w-md mx-auto">
+                Puedes probar reduciendo el tiempo de duración de la reserva o reservar para otra
+                fecha.
+              </p>
+            </div>
+          }
         }
       </div>
     </section>
