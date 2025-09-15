@@ -1,6 +1,6 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
+
+  private readonly router = inject(Router);
 
   isScrolled = false;
 
@@ -22,6 +24,11 @@ export class NavbarComponent {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+
+  goToPage(page: string):void {
+    this.menuOpen = false;
+    this.router.navigate([page]);
   }
 
 }

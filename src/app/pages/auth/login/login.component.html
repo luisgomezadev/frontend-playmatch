@@ -1,15 +1,15 @@
 <app-navbar />
 <section
-  class="bg-white text-slate-800 z-30 h-screen px-8 w-full flex flex-col items-center justify-center relative">
-  <div class="w-full max-w-md space-y-6 motion-preset-slide-up-sm motion-duration-1000">
-    <div class="text-center">
+  class="min-h-screen pt-24 bg-gradient-to-br from-slate-50 to-slate-100 text-slate-800 z-30 h-screen px-8 w-full flex flex-col items-center justify-center relative">
+  <div class="w-full max-w-md space-y-6 motion-preset-slide-up-sm motion-duration-1000 bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/50 p-8">
+    <header class="text-center mb-8">
       <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Iniciar sesión</h1>
       <p class="text-sm text-slate-500 mt-2">Ingresá a tu cuenta para gestionar tus reservas.</p>
-    </div>
+    </header>
     <form
       [formGroup]="loginForm"
       (ngSubmit)="onSubmit()"
-      class="bg-slate-50 p-6 rounded-lg border border-slate-200 shadow space-y-4">
+      class="space-y-4">
       <div class="mb-4">
         <label class="block text-sm tracking-wide mb-1" for="email">Correo electrónico</label>
         <input

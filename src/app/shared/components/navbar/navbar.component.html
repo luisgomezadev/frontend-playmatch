@@ -1,5 +1,5 @@
 <header
-  class="w-full fixed top-0 left-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm animate-slide-down">
+  class="w-full fixed top-0 left-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm animate-slide-down motion-duration-75">
   <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
     <a
       routerLink="/"
@@ -58,21 +58,26 @@
     <div
       class="md:hidden absolute top-full left-0 right-0 bg-white backdrop-blur-md border-b border-slate-200 transition-all duration-300 ease-in-out overflow-hidden max-h-80 opacity-100 motion-preset-slide-down">
       <nav class="px-4 py-6 space-y-4">
-        <a
-          class="block text-slate-600 hover:text-slate-900 font-medium py-3 px-4 hover:bg-slate-100 rounded-lg transition-all duration-200"
-          routerLink="/login">
+        <button
+          (click)="goToPage('/login')"
+          class="w-full text-slate-600 hover:text-slate-900 font-medium py-3 px-4 hover:bg-slate-100 rounded-lg transition-all duration-200">
           Iniciar sesión
-        </a>
-        <a
-          class="block text-slate-600 hover:text-slate-900 font-medium py-3 px-4 hover:bg-slate-100 rounded-lg transition-all duration-200"
-          routerLink="/register">
+        </button>
+        <button
+          (click)="goToPage('/register')"
+          class="w-full text-slate-600 hover:text-slate-900 font-medium py-3 px-4 hover:bg-slate-100 rounded-lg transition-all duration-200">
           Crear cuenta
-        </a>
-        <a
-          routerLink="/venue"
-          class="block items-center justify-center px-6 py-3 bg-gradient-to-r from-slate-600 to-primary text-white text-base font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg">
+        </button>
+        <button
+          (click)="goToPage('/reservation')"
+          class="w-full items-center justify-center px-6 py-3 bg-gradient-to-r from-slate-50 to-slate-100 text-slate-800 text-base font-medium rounded-xl hover:scale-105 transition-all duration-300">
+          Consultar reserva
+        </button>
+        <button
+          (click)="goToPage('/venue')"
+          class="w-full items-center justify-center px-6 py-3 bg-gradient-to-r from-slate-600 to-primary text-white text-base font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg">
           Ver canchas
-        </a>
+        </button>
       </nav>
     </div>
   }

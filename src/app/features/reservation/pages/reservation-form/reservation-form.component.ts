@@ -242,6 +242,8 @@ export class ReservationFormComponent implements OnInit {
         this.loadingCreateReservation = false;
         this.successReservation = true;
         this.reservationData = data;
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       },
       error: err => {
         this.loadingCreateReservation = false;
