@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { Reservation } from '@reservation/interfaces/reservation';
+import { Venue } from '@features/venue/interfaces/venue';
+import { VenueService } from '@features/venue/services/venue.service';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { User } from '@user/interfaces/user';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-home-admin',
@@ -19,25 +21,48 @@ import { User } from '@user/interfaces/user';
 })
 export class HomeComponent implements OnInit {
   private readonly authService = inject(AuthService);
+  private readonly venueService = inject(VenueService);
 
   user!: User;
-  fullName = '';
-  reservationsActive = 0;
-  reservationsFinished = 0;
-  reservationsCanceled = 0;
-  fieldName = 'No tienes cancha registrada';
-  fieldId = 0;
+  venue!: Venue;
   loading = false;
-  loadingReservations = false;
-  lastThreeReservations: Reservation[] = [];
-  placeholders = Array(3);
+  copySuccess = false;
+
+  urlBase = environment.deploy + 'reservation/'
+  link = '';
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
+        this.getVenue();
       }
     });
+  }
+
+  getVenue(): void {
+    this.loading = true;
+    this.venueService.getVenueByAdminId(this.user.id).subscribe({
+      next: data => {
+        this.loading = false;
+        this.venue = data;
+        this.link = this.urlBase + this.venue.code;
+      }
+    })
+  }
+
+  copyLink(): void {
+    navigator.clipboard.writeText(this.link).then(() => {
+      this.copySuccess = true;
+      setTimeout(() => (this.copySuccess = false), 1500);
+    });
+  }
+
+  get whatsappUrl(): string {
+    const text = encodeURIComponent(
+      `¡Hola! puedes hacer tu reserva fácilmente desde este link: ${this.link}`
+    );
+    return `https://wa.me/?text=${text}`;
   }
 
 }
