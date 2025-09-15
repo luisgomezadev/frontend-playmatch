@@ -1,8 +1,8 @@
 <article
-  class="bg-gradient-to-r from-emerald-100 to-emerald-50 border-l-emerald-500 shadow-xl border border-emerald-300 rounded-2xl p-6 motion-preset-slide-up-sm motion-duration-1000">
+  class="bg-gradient-to-r from-slate-100 to-slate-50 border-l-slate-500 shadow-xl border border-slate-300 rounded-2xl p-6 motion-preset-slide-up-sm motion-duration-1000">
   <header class="flex items-center gap-x-3 text-xl sm:text-2xl">
     <div class="flex flex-col">
-      <h1 class="font-extrabold text-green-800 leading-7">{{ venue.name }}</h1>
+      <h1 class="font-extrabold text-green-700 leading-7">{{ venue.name }}</h1>
       <span class="text-sm text-slate-600">{{ venue.city }}</span>
     </div>
   </header>
@@ -40,7 +40,7 @@
     </button>
     <button
       (click)="goToReservation()"
-      class="bg-green-900 rounded-2xl px-3 py-2 text-white hover:opacity-90 transition-all duration-300 text-center active:scale-95">
+      class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white rounded-2xl px-3 py-2 transition-all duration-300 text-center active:scale-95">
       Reservar
     </button>
   </footer>
