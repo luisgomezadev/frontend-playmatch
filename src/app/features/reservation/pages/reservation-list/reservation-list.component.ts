@@ -11,6 +11,7 @@ import { Reservation } from '@features/reservation/interfaces/reservation';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { ReservationCardComponent } from '@features/reservation/components/reservation-card/reservation-card.component';
+import { ScrollService } from '@core/services/scroll.service';
 
 @Component({
   selector: 'app-reservation-list',
@@ -24,6 +25,7 @@ export class ReservationListComponent implements OnInit {
   private readonly venueService = inject(VenueService);
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
+  private readonly scrollService = inject(ScrollService);
 
   user!: User;
   venue!: Venue;
@@ -34,6 +36,9 @@ export class ReservationListComponent implements OnInit {
   reservations: Reservation[] = [];
 
   ngOnInit(): void {
+
+    this.scrollService.scrollToTop();
+
     this.initUser();
   }
 

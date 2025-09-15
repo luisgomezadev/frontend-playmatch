@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } fr
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
+import { ScrollService } from '@core/services/scroll.service';
 import { Field, FieldType } from '@features/field/interfaces/field';
 import { Status, Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
@@ -24,6 +25,7 @@ export class VenueComponent implements OnInit {
   private readonly venueService = inject(VenueService);
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
+  private readonly scrollService = inject(ScrollService);
 
   venueForm!: FormGroup;
   loading = false;
@@ -43,6 +45,9 @@ export class VenueComponent implements OnInit {
   statusTypes = Object.values(Status); // si quieres mostrar select de estado
 
   ngOnInit(): void {
+
+    this.scrollService.scrollToTop();
+
     this.initForm();
 
     this.authService.currentUser$.subscribe(user => {

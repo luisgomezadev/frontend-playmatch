@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import { ScrollService } from '@core/services/scroll.service';
 import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
@@ -22,6 +23,7 @@ import { environment } from 'environments/environment';
 export class HomeComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly venueService = inject(VenueService);
+  private readonly scrollService = inject(ScrollService);
 
   user!: User;
   venue!: Venue;
@@ -32,6 +34,9 @@ export class HomeComponent implements OnInit {
   link = '';
 
   ngOnInit(): void {
+
+    this.scrollService.scrollToTop();
+
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
