@@ -7,15 +7,15 @@ import { VenueService } from '@features/venue/services/venue.service';
 import { ReservationService } from '@reservation/services/reservation.service';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { User } from '@user/interfaces/user';
-import { Reservation } from '@features/reservation/interfaces/reservation'; // tu interfaz de reserva
-import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
+import { Reservation } from '@features/reservation/interfaces/reservation';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
+import { ReservationCardComponent } from '@features/reservation/components/reservation-card/reservation-card.component';
 
 @Component({
   selector: 'app-reservation-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, TimeFormatPipe],
+  imports: [CommonModule, RouterModule, LayoutComponent, ReservationCardComponent],
   templateUrl: './reservation-list.component.html',
   styleUrls: ['./reservation-list.component.scss']
 })

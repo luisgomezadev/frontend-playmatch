@@ -1,5 +1,5 @@
 <app-layout
-  [title]="'⚙️ Configuración del complejo'"
+  [title]="'⚙️ Configuración de la cancha'"
   [subtitle]="'Personalizá la información de tu complejo deportivo y canchas.'">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
     <div class="space-y-4 sm:space-y-6">
@@ -61,7 +61,7 @@
               id="openingHour"
               type="time"
               formControlName="openingHour"
-              class="w-full p-2 border border-slate-300 rounded-md" />
+              class="w-1/2 sm:w-full p-2 border border-slate-300 rounded-md" />
           </div>
           <div>
             <label class="block text-sm font-medium mb-1" for="closingHour">Hora de cierre</label>
@@ -69,7 +69,7 @@
               id="closingHour"
               type="time"
               formControlName="closingHour"
-              class="w-full p-2 border border-slate-300 rounded-md" />
+              class="w-1/2 sm:w-full p-2 border border-slate-300 rounded-md" />
           </div>
         </div>
 
@@ -200,7 +200,7 @@
                   <button
                     type="button"
                     class="w-full py-2 px-4 text-red-500 hover:text-red-700 hover:bg-red-50 border border-red-200 rounded-md transition-colors text-sm font-medium">
-                    Eliminar servicio
+                    Eliminar cancha
                   </button>
                 </div>
               </div>

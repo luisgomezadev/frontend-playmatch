@@ -76,13 +76,6 @@ export const routes: Routes = [
           )
       },
       {
-        path: 'calendar',
-        loadComponent: () =>
-          import(
-            './features/reservation/pages/reservation-calendar/reservation-calendar.component'
-          ).then(m => m.ReservationCalendarComponent)
-      },
-      {
         path: 'profile',
         loadComponent: () =>
           import('./features/user/pages/profile/profile.component').then(m => m.ProfileComponent)

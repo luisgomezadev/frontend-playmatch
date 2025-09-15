@@ -5,14 +5,14 @@
   <nav
     class="md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/50 shadow-lg grid grid-cols-4 justify-center items-center fixed bottom-0 left-0 right-0 z-50 h-16">
     @for (link of links; track $index) {
-      @if (link.viewMovil) {
-        <div class="flex items-center justify-center">
-          <a [routerLink]="link.link" routerLinkActive="bg-primary text-white"
-            class="text-xs text-slate-800 inline-block py-4 px-2 rounded-xl w-12 text-center">
-            <i [class]="link.iconClass"></i>
-          </a>
-        </div>
-      }
+      <div class="flex items-center justify-center">
+        <a
+          [routerLink]="link.link"
+          routerLinkActive="bg-primary text-white"
+          class="text-xs text-slate-800 inline-block py-4 px-2 rounded-xl w-12 text-center">
+          <i [class]="link.iconClass"></i>
+        </a>
+      </div>
     }
   </nav>
 
@@ -25,29 +25,17 @@
     <nav class="mt-6 flex-1">
       <ul class="flex flex-col gap-4 md:pt-0">
         @for (link of links; track $index) {
-          @if (link.viewDesktop) {
-            <li>
-              <a
-                (click)="closeSidebar()"
-                [routerLink]="link.link"
-                routerLinkActive="active"
-                class="flex items-center gap-3 py-2 px-4 text-slate-800 rounded-lg hover:bg-slate-100 transition-colors duration-300">
-                <i class="w-6" [class]="link.iconClass"></i>
-                <span>{{ link.name }}</span>
-              </a>
-            </li>
-          }
+          <li>
+            <a
+              (click)="closeSidebar()"
+              [routerLink]="link.link"
+              routerLinkActive="active"
+              class="flex items-center gap-3 py-2 px-4 text-slate-800 rounded-lg hover:bg-slate-100 transition-colors duration-300">
+              <i class="w-6" [class]="link.iconClass"></i>
+              <span>{{ link.name }}</span>
+            </a>
+          </li>
         }
-        <li>
-          <a
-            (click)="closeSidebar()"
-            routerLink="profile"
-            routerLinkActive="active"
-            class="flex items-center gap-3 py-2 px-4 text-slate-800 rounded-lg hover:bg-slate-100 transition-colors duration-300">
-            <i class="w-6" class="fa-solid fa-user w-6"></i>
-            <span>Perfil</span>
-          </a>
-        </li>
       </ul>
     </nav>
     <hr class="border-slate-200" />
