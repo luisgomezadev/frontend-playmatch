@@ -1,9 +1,9 @@
 <article
-  class="bg-white border border-slate-300 rounded-2xl shadow-sm p-6 motion-preset-slide-up-sm motion-duration-1000">
+  class="bg-gradient-to-r from-emerald-100 to-emerald-50 border-l-emerald-500 shadow-xl border border-emerald-300 rounded-2xl p-6 motion-preset-slide-up-sm motion-duration-1000">
   <header class="flex items-center gap-x-3 text-xl sm:text-2xl">
     <div class="flex flex-col">
-      <h1 class="font-medium leading-6">{{ venue.name }}</h1>
-      <span class="text-sm text-slate-400">{{ venue.city }}</span>
+      <h1 class="font-extrabold text-green-800 leading-7">{{ venue.name }}</h1>
+      <span class="text-sm text-slate-600">{{ venue.city }}</span>
     </div>
   </header>
   <div class="py-3">
@@ -20,7 +20,7 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-map-pin w-5 h-5 text-slate-700">
+          class="lucide lucide-map-pin w-5 h-5 text-green-800">
           <path
             d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
           <circle cx="12" cy="10" r="3"></circle>
@@ -34,13 +34,13 @@
   </div>
   <footer class="pt-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
     <button
-      class="bg-slate-200 rounded-xl px-3 py-2 hover:bg-slate-300 transition-all duration-300 active:scale-95"
+      class="bg-white border-2 border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 rounded-2xl px-3 py-2 transition-all duration-300 active:scale-95"
       (click)="openModal()">
       Ver detalles
     </button>
     <button
       (click)="goToReservation()"
-      class="bg-slate-900 rounded-xl px-3 py-2 text-white hover:opacity-90 transition-all duration-300 text-center active:scale-95">
+      class="bg-green-900 rounded-2xl px-3 py-2 text-white hover:opacity-90 transition-all duration-300 text-center active:scale-95">
       Reservar
     </button>
   </footer>
@@ -101,12 +101,21 @@
         </div>
         <div
           class="group flex items-center gap-4 p-4 bg-gradient-to-r from-slate-50 to-slate-100/50 border border-slate-200 rounded-xl hover:shadow-md hover:border-slate-300 transition-all duration-200">
-          <div class="p-2 bg-slate-200 rounded-lg group-hover:bg-slate-300 transition-colors mt-0.5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          <div
+            class="p-2 bg-slate-200 rounded-lg group-hover:bg-slate-300 transition-colors mt-0.5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
               class="lucide lucide-map-pin w-5 h-5 text-slate-700">
-              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
-              </path>
+              <path
+                d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
           </div>
@@ -192,7 +201,7 @@
           {{ venue.fields.length }}
         </span>
       </h3>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-4 md:grid-cols-2">
         @for (field of venue.fields; track field.id) {
           <div
             class="group p-5 bg-gradient-to-br from-white via-slate-50 to-slate-100 border border-slate-200 rounded-xl hover:shadow-lg hover:border-slate-300 transition-all duration-300 hover:-translate-y-1 opacity-0 animate-fade-in"
@@ -217,6 +226,10 @@
           </div>
         }
       </div>
+      <span class="block mt-3 text-sm text-slate-600 pl-2">
+        <i class="fa-solid fa-circle-info"></i>
+        El precio de las canchas es por hora
+      </span>
     </div>
   </div>
   <footer class="pt-4 mt-4 border-slate-200 border-t flex items-start justify-end gap-4">
