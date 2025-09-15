@@ -42,7 +42,7 @@ export class VenueComponent implements OnInit {
 
   dropdownIndex: number | null = null;
 
-  statusTypes = Object.values(Status); // si quieres mostrar select de estado
+  statusTypes = Object.values(Status);
 
   ngOnInit(): void {
 
