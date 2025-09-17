@@ -105,7 +105,7 @@
                 <!-- Nombre -->
                 <div class="flex-1 w-full">
                   <input
-                    id="nameField"
+                    [id]="'nameField' + i"
                     formControlName="name"
                     class="w-full p-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent text-slate-900"
                     placeholder="Nombre de la cancha"

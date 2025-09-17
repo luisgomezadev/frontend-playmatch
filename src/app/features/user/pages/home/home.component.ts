@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
 
   get whatsappUrl(): string {
     const text = encodeURIComponent(
-      `¡Hola! puedes hacer tu reserva fácilmente desde este link: ${this.link}`
+      `¡Hola! puedes hacer tu reserva en ${this.venue.name} fácilmente desde este link: ${this.link}`
     );
     return `https://wa.me/?text=${text}`;
   }

@@ -1,29 +1,34 @@
 import { Component, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
+import { Venue } from '@features/venue/interfaces/venue';
+import { VenueService } from '@features/venue/services/venue.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
+import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { User, UserRole } from '@user/interfaces/user';
 import { UserService } from '@user/services/user.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ButtonComponent, ModalComponent, LayoutComponent],
+  imports: [ButtonComponent, ModalComponent, LayoutComponent, TimeFormatPipe],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
+  styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly alertService = inject(AlertService);
+  private readonly venueService = inject(VenueService);
 
   @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
 
   user!: User;
+  venue!: Venue;
   loading = false;
+  loadingVenue = false;
   userRole = UserRole;
 
   selectedFile: File | null = null;
@@ -32,9 +37,20 @@ export class ProfileComponent implements OnInit {
   isOpen = signal(false);
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user) => {
+    this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
+        this.getVenue();
+      }
+    });
+  }
+
+  getVenue(): void {
+    this.loadingVenue = true;
+    this.venueService.getVenueByAdminId(this.user.id).subscribe({
+      next: data => {
+        this.loadingVenue = false;
+        this.venue = data;
       }
     });
   }
@@ -88,11 +104,11 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
 
     this.userService.uploadUserImage(this.user.id, file).subscribe({
-      next: (updatedUser) => this.handleSuccess(updatedUser),
-      error: (err) => {
+      next: updatedUser => this.handleSuccess(updatedUser),
+      error: err => {
         this.alertService.error('Error', err.error?.message || 'Error al subir la imagen');
         this.loading = false;
-      },
+      }
     });
   }
 

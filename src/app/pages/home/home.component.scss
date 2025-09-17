@@ -1,0 +1,38 @@
+.particles-bg {
+  position: fixed; /* Fondo fijo */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.particles-bg::before,
+.particles-bg::after {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(
+    rgba(16, 185, 129, 0.15) 1px,
+    transparent 1px
+  );
+  background-size: 50px 50px;
+  animation: moveParticles 60s linear infinite;
+}
+
+.particles-bg::after {
+  animation-duration: 120s;
+  opacity: 0.5;
+}
+
+@keyframes moveParticles {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-25%, -25%, 0);
+  }
+}
