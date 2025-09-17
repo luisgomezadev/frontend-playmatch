@@ -17,7 +17,7 @@ import { LoadingService } from '@core/services/loading.service';
       top: 0;
       left: 0;
       width: 100%;
-      height: 5px;
+      height: 4px;
       overflow: hidden;
       background: transparent;
       z-index: 9999;
