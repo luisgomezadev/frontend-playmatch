@@ -1,18 +1,36 @@
 <app-navbar />
-<section class="max-w-7xl mx-auto pt-28 pb-16 px-4">
+<main class="max-w-7xl mx-auto pt-28 pb-16 px-4 flex-1">
   <header class="flex items-center justify-between gap-8 mb-8">
-    <div class="flex flex-col">
-      <h1 class="text-slate-900 font-bold text-xl md:text-4xl">Lista de canchas</h1>
-      <h2 class="text-slate-500 text-sm text-pretty">
-        Aqui tienes un listado de canchas registradas donde puedes hacer una reserva
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center gap-3">
+        <h1 class="text-slate-900 font-bold text-2xl md:text-4xl">Canchas disponibles</h1>
+        @if (venues) {
+          <span
+            class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">
+            {{ venues.content.length || 0 }} cancha(s)
+          </span>
+        }
+      </div>
+
+      <h2 class="text-slate-600 text-sm md:text-base leading-relaxed">
+        Explora las canchas registradas y reserva fácilmente tu próximo partido.
       </h2>
     </div>
+
     <div class="hidden sm:block">
       <a
         class="flex items-center justify-center gap-2 bg-slate-200 rounded-xl px-4 py-2 hover:bg-slate-300 transition-all duration-300 leading-4 group hover:scale-105"
         routerLink="/reserva">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
           class="group-hover:-rotate-12 transition-all duration-300">
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
           <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
@@ -58,4 +76,4 @@
       </div>
     }
   }
-</section>
+</main>

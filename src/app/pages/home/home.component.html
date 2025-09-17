@@ -1,23 +1,23 @@
 <app-navbar />
-<section class="relative h-auto md:h-screen w-full pt-32 pb-16 md:pt-32 bg-white">
+<section class="relative h-auto md:h-screen w-full pt-32 pb-16 md:pt-32">
   <div class="flex items-center gap-10 h-full px-4 max-w-7xl mx-auto relative z-20">
     <div
-      class="flex flex-col motion-preset-slide-up motion-duration-1000 max-w-3xl text-center sm:text-start">
+      class="flex flex-col motion-preset-slide-up motion-duration-1000 max-w-[54rem] text-center sm:text-start">
       <h1
         class="text-4xl md:text-[4rem] font-bold md:font-extrabold text-slate-800 mb-4 leading-none md:leading-[1.1] text-pretty">
-        Ahorra
+        Gestiona tus reservas
         <span
           class="bg-gradient-to-r from-primary via-emerald-700 to-green-800 bg-clip-text text-transparent">
-          tiempo de tu día
+          en segundos,
         </span>
-        gestionando tus reservas.
+        sin complicaciones.
       </h1>
-      <p class="text-md sm:text-xl lg:text-2xl leading-relaxed mb-3">
-        <span class="block mb-3 text-slate-700 font-medium">
-          Registra tu cancha, automatiza y gestiona tus reservas sin esfuerzos.
+      <p class="text-md sm:text-xl lg:text-2xl leading-relaxed mb-2">
+        <span class="block text-slate-700 font-medium">
+          Registra tu cancha y gestiona todo tu negocio en un solo lugar.
         </span>
       </p>
-      <div
+      <!-- <div
         class="relative p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-50 via-blue-50/50 to-indigo-50/50 border border-slate-200/50 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
         <div
           class="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 rounded-2xl"></div>
@@ -68,21 +68,21 @@
             </span>
           </span>
         </p>
-      </div>
+      </div> -->
       <div class="flex flex-col gap-3 sm:gap-4 mt-6 sm:mt-12 justify-center lg:justify-start">
         <div
           class="animate-fade-in opacity-0 flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start"
           style="animation-delay: 0.6s; animation-fill-mode: forwards">
           <a
             class="group relative inline-flex items-center justify-center gap-3 py-4 px-8 sm:px-10 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white w-full sm:w-auto rounded-2xl text-lg sm:text-xl font-bold hover:scale-105 hover:shadow-2xl transform transition-all duration-300 shadow-xl overflow-hidden"
-            routerLink="/register">
+            routerLink="/registro">
             <div
               class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-            <span class="relative z-10">Crear mi cuenta GRATIS</span>
+            <span class="relative z-10">Empieza ahora</span>
           </a>
           <a
             class="inline-flex items-center justify-center gap-2 py-4 px-6 sm:px-8 bg-white border-2 border-slate-300 hover:border-slate-400 text-slate-700 hover:text-slate-900 w-full sm:w-auto rounded-2xl text-base sm:text-lg font-semibold hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl"
-            routerLink="/reservation">
+            routerLink="/reserva">
             <span>Consultar reserva</span>
           </a>
         </div>
@@ -90,11 +90,9 @@
     </div>
   </div>
 </section>
-<section
-  class="transition-all duration-700 ease-out opacity-100 translate-y-0"
-  style="transition-delay: 200ms">
+<section>
   <div class="bg-slate-50 p-4 sm:p-10 rounded-xl shadow-sm border border-slate-100">
-    <section class="py-4 sm:py-16 bg-gradient-to-br from-slate-50 to-blue-50">
+    <section class="py-4 sm:py-16 bg-gradient-to-br from-slate-50 to-green-50">
       <div class="w-full sm:max-w-6xl mx-auto px-0 sm:px-6">
         <div class="text-center mb-8 sm:mb-12">
           <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-3">

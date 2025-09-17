@@ -62,13 +62,6 @@ export class VenueComponent implements OnInit {
               this.venueData = venue;
               this.loadVenue(venue);
             }
-          },
-          error: err => {
-            if (err.status === 404) {
-              // no existe → modo crear
-            } else {
-              console.error(err);
-            }
           }
         });
       }

@@ -12,7 +12,7 @@ export const authPagesGuard: CanActivateFn = () => {
       if (isAuth) {
         return router.createUrlTree(['/dashboard']);
       }
-      // no autenticado -> permitir acceso a /auth/login o /auth/register
+      // no autenticado -> permitir acceso a /login o /registro
       return true;
     }),
     // en caso de error dejamos pasar al formulario de login (evita bloquear la ruta)
