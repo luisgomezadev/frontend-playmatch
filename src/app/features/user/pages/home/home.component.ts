@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   loading = false;
   copySuccess = false;
 
-  urlBase = environment.deploy + 'reservation/';
+  urlBase = environment.deploy + 'reserva/';
   link = '';
 
   ngOnInit(): void {
