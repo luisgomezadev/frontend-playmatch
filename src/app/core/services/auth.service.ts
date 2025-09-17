@@ -35,7 +35,7 @@ export class AuthService extends BaseHttpService {
 
   logout(): void {
     this.clearSession();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   checkAuth(): Observable<boolean> {

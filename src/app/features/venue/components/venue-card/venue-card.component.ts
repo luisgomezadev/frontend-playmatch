@@ -30,6 +30,6 @@ export class VenueCardComponent {
 
   goToReservation(): void {
     this.onClosed();
-    this.router.navigate(['/reservation/' + this.venue.code]);
+    this.router.navigate(['/reserva/' + this.venue.code]);
   }
 }

@@ -5,6 +5,7 @@ import { AuthService } from '@core/services/auth.service';
 import { ScrollService } from '@core/services/scroll.service';
 import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
+import { CreateVenueCardComponent } from '@shared/components/create-venue-card/create-venue-card.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { User } from '@user/interfaces/user';
 import { environment } from 'environments/environment';
@@ -12,11 +13,7 @@ import { environment } from 'environments/environment';
 @Component({
   selector: 'app-home-admin',
   standalone: true,
-  imports: [
-    RouterModule,
-    CommonModule,
-    LayoutComponent,
-  ],
+  imports: [RouterModule, CommonModule, LayoutComponent, CreateVenueCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -30,11 +27,10 @@ export class HomeComponent implements OnInit {
   loading = false;
   copySuccess = false;
 
-  urlBase = environment.deploy + 'reservation/'
+  urlBase = environment.deploy + 'reservation/';
   link = '';
 
   ngOnInit(): void {
-
     this.scrollService.scrollToTop();
 
     this.authService.currentUser$.subscribe(user => {
@@ -49,11 +45,13 @@ export class HomeComponent implements OnInit {
     this.loading = true;
     this.venueService.getVenueByAdminId(this.user.id).subscribe({
       next: data => {
+        if (data) {
+          this.venue = data;
+          this.link = this.urlBase + this.venue.code;
+        }
         this.loading = false;
-        this.venue = data;
-        this.link = this.urlBase + this.venue.code;
       }
-    })
+    });
   }
 
   copyLink(): void {
@@ -69,5 +67,4 @@ export class HomeComponent implements OnInit {
     );
     return `https://wa.me/?text=${text}`;
   }
-
 }

@@ -14,26 +14,26 @@ export const routes: Routes = [
     canActivate: [authPagesGuard]
   },
   {
-    path: 'register',
+    path: 'registro',
     component: RegisterComponent,
     canActivate: [authPagesGuard]
   },
   {
-    path: 'venue',
+    path: 'canchas',
     loadComponent: () =>
       import('./features/venue/pages/venue-list/venue-list.component').then(
         m => m.VenueListComponent
       )
   },
   {
-    path: 'reservation',
+    path: 'reserva',
     loadComponent: () =>
       import('./features/reservation/pages/reservation-detail/reservation-detail.component').then(
         m => m.ReservationDetailComponent
       )
   },
   {
-    path: 'reservation/:code',
+    path: 'reserva/:code',
     loadComponent: () =>
       import('./features/reservation/pages/reservation-form/reservation-form.component').then(
         m => m.ReservationFormComponent
@@ -46,37 +46,30 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'inicio',
         pathMatch: 'full'
       },
       {
-        path: 'home',
+        path: 'inicio',
         loadComponent: () =>
           import('./features/user/pages/home/home.component').then(m => m.HomeComponent)
       },
       {
-        path: 'venue',
+        path: 'cancha',
         loadComponent: () =>
           import('./features/venue/pages/venue/venue.component').then(
             m => m.VenueComponent
           )
       },
       {
-        path: 'field/form',
-        loadComponent: () =>
-          import('./features/field/pages/field-form/field-form.component').then(
-            m => m.FieldFormComponent
-          )
-      },
-      {
-        path: 'reservation',
+        path: 'reservas',
         loadComponent: () =>
           import('./features/reservation/pages/reservation-list/reservation-list.component').then(
             m => m.ReservationListComponent
           )
       },
       {
-        path: 'profile',
+        path: 'perfil',
         loadComponent: () =>
           import('./features/user/pages/profile/profile.component').then(m => m.ProfileComponent)
       }

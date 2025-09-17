@@ -12,11 +12,12 @@ import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { ReservationCardComponent } from '@features/reservation/components/reservation-card/reservation-card.component';
 import { ScrollService } from '@core/services/scroll.service';
+import { CreateVenueCardComponent } from '@shared/components/create-venue-card/create-venue-card.component';
 
 @Component({
   selector: 'app-reservation-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, LayoutComponent, ReservationCardComponent],
+  imports: [CommonModule, RouterModule, LayoutComponent, ReservationCardComponent, CreateVenueCardComponent],
   templateUrl: './reservation-list.component.html',
   styleUrls: ['./reservation-list.component.scss']
 })
@@ -31,6 +32,7 @@ export class ReservationListComponent implements OnInit {
   venue!: Venue;
 
   loading = false;
+  loadingVenue = false;
 
   currentDate: Date = new Date();
   reservations: Reservation[] = [];
@@ -52,14 +54,17 @@ export class ReservationListComponent implements OnInit {
   }
 
   private getVenue(): void {
-    this.loading = true;
+    this.loadingVenue = true;
     this.venueService.getVenueByAdminId(this.user.id).subscribe({
       next: data => {
-        this.venue = data;
-        this.loadReservations();
+        this.loadingVenue = false;
+        if (data) {
+          this.venue = data;
+          this.loadReservations();
+        }
       },
       error: (err: ErrorResponse) => {
-        this.loading = false;
+        this.loadingVenue = false;
         this.alertService.error(
           'Error al obtener información del complejo deportivo',
           err.error.message || 'Hubo un error inesperado'

@@ -47,7 +47,7 @@ export class ReservationDetailComponent {
           if (confirmed) {
             this.reservationService.canceledReservation(this.reservationData!.id).subscribe({
               next: () => {
-                this.router.navigate(['/venue']);
+                this.router.navigate(['/canchas']);
                 this.alertService.success(
                   'Reserva cancelada',
                   'Has cancelado la reserva correctamente.'

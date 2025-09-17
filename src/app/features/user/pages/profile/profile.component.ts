@@ -4,6 +4,7 @@ import { AuthService } from '@core/services/auth.service';
 import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { CreateVenueCardComponent } from '@shared/components/create-venue-card/create-venue-card.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
@@ -13,7 +14,13 @@ import { UserService } from '@user/services/user.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ButtonComponent, ModalComponent, LayoutComponent, TimeFormatPipe],
+  imports: [
+    ButtonComponent,
+    ModalComponent,
+    LayoutComponent,
+    TimeFormatPipe,
+    CreateVenueCardComponent
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -49,8 +56,8 @@ export class ProfileComponent implements OnInit {
     this.loadingVenue = true;
     this.venueService.getVenueByAdminId(this.user.id).subscribe({
       next: data => {
+        if (data) this.venue = data;
         this.loadingVenue = false;
-        this.venue = data;
       }
     });
   }

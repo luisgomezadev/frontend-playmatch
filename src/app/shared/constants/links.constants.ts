@@ -2,22 +2,22 @@ export const LINKS_DASHBOARD = [
   // LINKS USUARIO
   {
     name: "Inicio",
-    link: "home",
+    link: "inicio",
     iconClass: "fa-solid fa-house",
   },
   {
     name: "Reservas",
-    link: "reservation",
+    link: "reservas",
     iconClass: "fa-solid fa-list",
   },
   {
     name: "Mi cancha",
-    link: "venue",
+    link: "cancha",
     iconClass: "fa-solid fa-futbol",
   },
   {
     name: "Perfil",
-    link: "profile",
+    link: "perfil",
     iconClass: "fa-solid fa-user",
   }
 ];

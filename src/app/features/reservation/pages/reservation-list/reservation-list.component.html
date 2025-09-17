@@ -1,65 +1,74 @@
 <app-layout [title]="'📆 Reservas'" [subtitle]="'Aquí puedes ver todas tus reservas activas.'">
-  <!-- Encabezado con fecha y flechas -->
-  <div class="flex items-center justify-between sm:justify-between">
-    <div class="flex flex-col">
-      <h3 class="text-lg lg:text-xl font-bold text-slate-900 capitalize leading-tight">
-        {{ formattedDate }}
-      </h3>
-      <p class="text-sm text-slate-500">{{ year }}</p>
-    </div>
-    <div class="flex gap-x-1 sm:gap-x-4 items-center">
-      <button
-        class="text-xs py-2 px-3 bg-slate-200 rounded-full text-slate-600 hover:bg-slate-300 transition-colors duration-300 mr-2 sm:mr-0"
-        (click)="loadReservations()">
-        <i class="fa-solid fa-rotate-right sm:mr-2"></i>
-        <span class="hidden sm:inline-block">Refrescar</span>
-      </button>
-      <button
-        (click)="prevDay()"
-        class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300">
-        <i class="fa-solid fa-arrow-left"></i>
-      </button>
-      <button
-        (click)="nextDay()"
-        class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300">
-        <i class="fa-solid fa-arrow-right"></i>
-      </button>
-    </div>
-  </div>
-  @if (loading) {
-    <div class="flex justify-center items-center py-16">
-      <svg
-        class="animate-spin h-10 w-10 text-emerald-600"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24">
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-      </svg>
-      <span class="ml-3 text-emerald-600 font-medium">Cargando reservas…</span>
-    </div>
-  } @else {
-    <!-- Listado de reservas -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
-      @for (r of reservations; track r.id) {
-        <app-reservation-card [reservation]="r" />
-      }
-    </div>
-    <div
-      *ngIf="!reservations.length"
-      class="flex flex-col items-center justify-center p-8 bg-gradient-to-r from-emerald-50 to-white border border-dashed border-emerald-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-center">
-      <div
-        class="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 mb-4">
-        <i class="fa-solid fa-calendar-check text-3xl"></i>
+  @if (!loadingVenue) {
+    @if (venue) {
+      <!-- Encabezado con fecha y flechas -->
+      <div class="flex items-center justify-between sm:justify-between">
+        <div class="flex flex-col">
+          <h3 class="text-lg lg:text-xl font-bold text-slate-900 capitalize leading-tight">
+            {{ formattedDate }}
+          </h3>
+          <p class="text-sm text-slate-500">{{ year }}</p>
+        </div>
+        <div class="flex gap-x-1 sm:gap-x-4 items-center">
+          <button
+            class="text-xs py-2 px-3 bg-slate-200 rounded-full text-slate-600 hover:bg-slate-300 transition-colors duration-300 mr-2 sm:mr-0"
+            (click)="loadReservations()">
+            <i class="fa-solid fa-rotate-right sm:mr-2"></i>
+            <span class="hidden sm:inline-block">Refrescar</span>
+          </button>
+          <button
+            (click)="prevDay()"
+            class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <button
+            (click)="nextDay()"
+            class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors duration-300">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
       </div>
-      <h3 class="text-lg sm:text-xl font-bold text-emerald-700 mb-1">¡Día libre!</h3>
-      <p class="text-sm sm:text-base text-emerald-600">No hay reservas para este día.</p>
-    </div>
+      @if (loading) {
+        <div class="flex justify-center items-center py-16">
+          <svg
+            class="animate-spin h-10 w-10 text-emerald-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24">
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          <span class="ml-3 text-emerald-600 font-medium">Cargando reservas…</span>
+        </div>
+      } @else {
+        <!-- Listado de reservas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          @for (r of reservations; track r.id) {
+            <app-reservation-card [reservation]="r" />
+          }
+        </div>
+        <div
+          *ngIf="!reservations.length"
+          class="flex flex-col items-center justify-center p-8 bg-gradient-to-r from-emerald-50 to-white border border-dashed border-emerald-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-center">
+          <div
+            class="flex items-center justify-center w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 mb-4">
+            <i class="fa-solid fa-calendar-check text-3xl"></i>
+          </div>
+          <h3 class="text-lg sm:text-xl font-bold text-emerald-700 mb-1">¡Día libre!</h3>
+          <p class="text-sm sm:text-base text-emerald-600">No hay reservas para este día.</p>
+        </div>
+      }
+    } @else {
+      <app-create-venue-card />
+    }
   }
 </app-layout>
