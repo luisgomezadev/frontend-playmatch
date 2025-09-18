@@ -1,5 +1,5 @@
 @if (loading) {
-  <app-loading-component text="Cargando dashboard" />
+  <app-loading-component />
 } @else {
   <!-- Menu de navegación en vista movil -->
   <nav
@@ -22,8 +22,8 @@
     <div class="p-6 text-center hidden md:block shadow-sm">
       <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" />
     </div>
-    <nav class="mt-6 flex-1">
-      <ul class="flex flex-col gap-4 md:pt-0">
+    <nav class="flex-1">
+      <ul class="flex flex-col gap-4">
         @for (link of links; track $index) {
           <li>
             <a

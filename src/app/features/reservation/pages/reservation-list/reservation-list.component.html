@@ -52,7 +52,7 @@
         <!-- Listado de reservas -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           @for (r of reservations; track r.id) {
-            <app-reservation-card [reservation]="r" />
+            <app-reservation-card [reservation]="r" (reservationCanceled)="loadReservations()"/>
           } @empty {
             <div
               class="flex flex-col items-center justify-center p-8 bg-gradient-to-r from-slate-50 to-white border border-dashed border-slate-300 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 text-center sm:col-span-2">

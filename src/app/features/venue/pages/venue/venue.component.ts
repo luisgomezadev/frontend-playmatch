@@ -161,9 +161,8 @@ export class VenueComponent implements OnInit {
     this.dropdownIndex = this.dropdownIndex === index ? null : index;
   }
 
-  selectFieldType(index: number, value: string) {
+  selectFieldType(index: number, value: FieldType) {
     this.fields.at(index).get('fieldType')?.setValue(value);
-    this.dropdownIndex = null;
   }
 
   onSubmit(): void {
