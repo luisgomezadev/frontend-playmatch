@@ -65,20 +65,22 @@ export class HomeComponent implements OnInit {
 
   getReservations(): void {
     this.loadingReservations = true;
-    const today = new Date().toISOString().split('T')[0];
-    this.reservationService.getReservationsByVenueIdAndDate(this.venue.id, today).subscribe({
-      next: data => {
-        this.loadingReservations = false;
-        this.reservations = data;
-      },
-      error: (err: ErrorResponse) => {
-        this.loadingReservations = false;
-        this.alertService.error(
-          'Error al obtener reservas',
-          err.error.message || 'Hubo un error inesperado'
-        );
-      }
-    });
+    const today = new Date();
+    this.reservationService
+      .getReservationsByVenueIdAndDate(this.venue.id, this.formatDateLocal(today))
+      .subscribe({
+        next: data => {
+          this.loadingReservations = false;
+          this.reservations = data;
+        },
+        error: (err: ErrorResponse) => {
+          this.loadingReservations = false;
+          this.alertService.error(
+            'Error al obtener reservas',
+            err.error.message || 'Hubo un error inesperado'
+          );
+        }
+      });
   }
 
   copyLink(): void {
@@ -93,5 +95,12 @@ export class HomeComponent implements OnInit {
       `¡Hola! puedes hacer tu reserva en ${this.venue.name} fácilmente desde este link: ${this.link}`
     );
     return `https://wa.me/?text=${text}`;
+  }
+
+  private formatDateLocal(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }
