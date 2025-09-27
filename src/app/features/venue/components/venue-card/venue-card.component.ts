@@ -3,11 +3,12 @@ import { Venue } from '@features/venue/interfaces/venue';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
   selector: 'app-venue-card',
   standalone: true,
-  imports: [ModalComponent, MoneyFormatPipe],
+  imports: [ModalComponent, MoneyFormatPipe, ButtonComponent],
   templateUrl: './venue-card.component.html',
   styleUrl: './venue-card.component.scss'
 })

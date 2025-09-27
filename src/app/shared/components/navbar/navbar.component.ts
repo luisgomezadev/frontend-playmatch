@@ -10,7 +10,6 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-
   private readonly router = inject(Router);
 
   isScrolled = false;
@@ -26,9 +25,8 @@ export class NavbarComponent {
     this.menuOpen = !this.menuOpen;
   }
 
-  goToPage(page: string):void {
+  goToPage(page: string): void {
     this.menuOpen = false;
     this.router.navigate([page]);
   }
-
 }

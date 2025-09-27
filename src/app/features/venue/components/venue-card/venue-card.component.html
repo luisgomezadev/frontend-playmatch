@@ -26,14 +26,12 @@
     </div>
   </div>
   <footer class="pt-3 border-t border-gray-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <button class="bg-secondary rounded-2xl px-3 py-2 transition-all duration-300 active:scale-95"
-      (click)="openModal()">
-      Ver detalles
-    </button>
-    <button (click)="goToReservation()"
-      class="bg-primary text-white rounded-2xl px-3 py-2 transition-all duration-300 text-center active:scale-95">
-      Reservar
-    </button>
+      <app-button (clicked)="openModal()" color="secondary" text="Ver canchas disponibles">
+        Ver detalles
+      </app-button>
+      <app-button (clicked)="goToReservation()" text="Hacer reserva">
+        Reservar
+      </app-button>
   </footer>
 </article>
 
@@ -199,9 +197,8 @@
     </div>
   </div>
   <footer class="pt-4 mt-4 border-gray-200 border-t flex items-start justify-end gap-4">
-    <button (click)="goToReservation()"
-      class="inline-flex items-center justify-center px-6 py-3 bg-primary text-white text-base font-medium rounded-xl hover:scale-105 transition-transform duration-300 shadow-lg">
+    <app-button (click)="goToReservation()">
       Hacer reserva
-    </button>
+    </app-button>
   </footer>
 </app-modal>

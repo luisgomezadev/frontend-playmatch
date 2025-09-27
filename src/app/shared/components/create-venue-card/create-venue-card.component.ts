@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-create-venue-card',
   standalone: true,
-  imports: [RouterLink],
+  imports: [ButtonComponent],
   template: `
     <article
-      class="bg-gradient-to-br mt-8 from-green-50 to-gray-50 border-2 border-green-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
+      class="bg-gradient-to-br mt-8 from-gray-50 to-gray-50 border-2 border-gray-100 rounded-xl p-6 transition-all duration-200">
       <div class="mt-2 space-y-4 text-center">
         <h3 class="font-semibold text-gray-800 text-lg">Registra tu complejo deportivo</h3>
         <p class="text-sm text-gray-600 leading-relaxed">
@@ -15,9 +16,9 @@ import { RouterLink } from '@angular/router';
           usuarios puedan reservar en línea.
         </p>
 
-        <a
-          routerLink="/dashboard/cancha"
-          class="inline-flex items-center justify-center gap-2 text-sm font-medium px-6 py-3 rounded-lg transition-all duration-200 bg-gradient-to-r from-green-500 to-green-600 shadow-lg text-white">
+        <div class="w-fit mx-auto">
+          <app-button
+          (clicked)="goToPage('/dashboard/cancha')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -33,9 +34,16 @@ import { RouterLink } from '@angular/router';
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
           Crear Cancha
-        </a>
+        </app-button>
+        </div>
       </div>
     </article>
   `
 })
-export class CreateVenueCardComponent {}
+export class CreateVenueCardComponent {
+  private readonly router = inject(Router);
+
+  goToPage(page: string): void {
+    this.router.navigate([page]);
+  }
+}
