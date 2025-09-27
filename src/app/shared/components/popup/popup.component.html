@@ -1,15 +1,16 @@
 @if (!closedPopup) {
-  <div
-    class="fixed bottom-5 right-5 z-50 w-80 py-2 px-3 bg-slate-200 border border-slate-400 rounded-lg shadow-xl text-slate-800 motion-preset-pop motion duration-500">
-    <h1 class="font-medium text-lg tracking-wide">Conexión lenta 🐌</h1>
-    <p class="text-base mt-2 opacity-90 text-pretty">
-      Nuestros datos están alojados en un servicio gratuito en la nube, lo que puede afectar la
-      velocidad de carga al principio.
-    </p>
-    <div class="flex justify-end mt-3">
-      <button class="bg-primary text-slate-100 py-2 px-3 rounded-md" (click)="closedPopup = true; popupService.closePopup()">
-        Entendido
-      </button>
-    </div>
+<div
+  class="fixed bottom-5 right-5 z-50 w-80 py-2 px-3 bg-gray-200 border border-gray-400 rounded-lg shadow-xl text-gray-800 motion-preset-pop motion duration-500">
+  <h1 class="font-medium text-lg tracking-wide">Conexión lenta 🐌</h1>
+  <p class="text-base mt-2 opacity-90 text-pretty">
+    Nuestros datos están alojados en un servicio gratuito en la nube, lo que puede afectar la
+    velocidad de carga al principio.
+  </p>
+  <div class="flex justify-end mt-3">
+    <button class="bg-primary text-gray-100 py-2 px-3 rounded-md"
+      (click)="closedPopup = true; popupService.closePopup()">
+      Entendido
+    </button>
   </div>
+</div>
 }

@@ -28,13 +28,13 @@ body {
    Botones SweetAlert
 ------------------------------ */
 .swal-cancel-btn {
-  @apply bg-slate-200 hover:bg-slate-300
-    transition-all text-slate-900 py-2 px-4 rounded;
+  @apply bg-secondary hover:bg-secondary/90
+    transition-all text-gray-900 py-2 px-4 rounded;
 }
 
 .swal-confirm-btn {
-  @apply bg-slate-800 mr-4 hover:bg-slate-900
-    transition-all text-slate-100 py-2 px-4 rounded;
+  @apply bg-primary mr-4 hover:bg-primary/90
+    transition-all text-gray-100 py-2 px-4 rounded;
 }
 
 /* -----------------------------
@@ -74,11 +74,11 @@ html {
 .shimmer {
   position: relative;
   overflow: hidden;
-  background-color: #e2e8f0;
+  background-color: #d6d8da;
 }
 
 .shimmer::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -150%;

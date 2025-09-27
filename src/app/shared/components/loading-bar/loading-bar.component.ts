@@ -26,7 +26,7 @@ import { LoadingService } from '@core/services/loading.service';
     .loading-bar {
       height: 100%;
       width: 40%;
-      background: #00BF63;
+      background: theme('colors.primary');
       animation: indeterminate 1.5s infinite ease-in-out;
     }
 

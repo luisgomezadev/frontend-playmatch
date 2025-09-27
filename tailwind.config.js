@@ -4,9 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#00BF63',
-        dashblue: '#555DDD',
-        dashred: '#e83737'
+        primary: '#010101',
+        secondary: '#EFEFEF',
       },
       keyframes: {
         'slide-down': {

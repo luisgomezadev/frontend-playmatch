@@ -7,10 +7,10 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
   template: `
     <article
-      class="bg-gradient-to-br mt-8 from-green-50 to-slate-50 border-2 border-green-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
+      class="bg-gradient-to-br mt-8 from-green-50 to-gray-50 border-2 border-green-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
       <div class="mt-2 space-y-4 text-center">
-        <h3 class="font-semibold text-slate-800 text-lg">Registra tu complejo deportivo</h3>
-        <p class="text-sm text-slate-600 leading-relaxed">
+        <h3 class="font-semibold text-gray-800 text-lg">Registra tu complejo deportivo</h3>
+        <p class="text-sm text-gray-600 leading-relaxed">
           Aún no tienes canchas registradas. Crea tu centro deportivo con tus canchas para que los
           usuarios puedan reservar en línea.
         </p>

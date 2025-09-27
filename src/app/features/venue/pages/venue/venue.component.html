@@ -1,5 +1,4 @@
-<app-layout
-  [title]="'⚙️ Configuración de la cancha'"
+<app-layout [title]="'Configuración de la cancha'"
   [subtitle]="'Personalizá la información de tu complejo deportivo y canchas.'">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12">
     <div class="space-y-4 sm:space-y-6">
@@ -9,47 +8,32 @@
           <label class="block text-sm font-medium mb-1" for="name">
             Nombre del complejo deportivo
           </label>
-          <input
-            id="name"
-            formControlName="name"
-            required
-            class="w-full p-2 border border-slate-300 rounded-md"
+          <input id="name" formControlName="name" required class="w-full p-2 border border-gray-300 rounded-md"
             placeholder="Ej: La Monumental" />
         </div>
 
         <!-- Ciudad -->
         <div>
           <label class="block text-sm font-medium mb-1" for="city">Ciudad</label>
-          <input
-            id="city"
-            formControlName="city"
-            required
-            class="w-full p-2 border border-slate-300 rounded-md"
+          <input id="city" formControlName="city" required class="w-full p-2 border border-gray-300 rounded-md"
             placeholder="Ej: Cartagena" />
         </div>
 
         <!-- Dirección -->
         <div>
           <label class="block text-sm font-medium mb-1" for="address">Dirección</label>
-          <input
-            id="address"
-            formControlName="address"
-            required
-            class="w-full p-2 border border-slate-300 rounded-md"
+          <input id="address" formControlName="address" required class="w-full p-2 border border-gray-300 rounded-md"
             placeholder="Ej: Av. Siempre Viva 123" />
         </div>
 
         <!-- URL personalizada -->
         <div>
           <label class="block text-sm font-medium mb-1" for="codeVenue">Tu URL personalizada</label>
-          <p class="text-sm text-slate-600 my-3 leading-relaxed">
+          <p class="text-sm text-gray-600 my-3 leading-relaxed">
             Esta será la web para reservas. Usa solo letras, números o guiones, sin espacios ni
             acentos. Ejemplo: “la-libertadores-cartagena”.
           </p>
-          <input
-            id="codeVenue"
-            formControlName="code"
-            class="w-full p-2 border border-slate-300 rounded-md"
+          <input id="codeVenue" formControlName="code" class="w-full p-2 border border-gray-300 rounded-md"
             placeholder="Ej: lalibertadores-cartagena" />
         </div>
 
@@ -57,28 +41,23 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium mb-1" for="openingHour">Hora de apertura</label>
-            <input
-              id="openingHour"
-              type="time"
-              formControlName="openingHour"
-              class="w-1/2 sm:w-full p-2 border border-slate-300 rounded-md bg-white text-start" />
+            <input id="openingHour" type="time" formControlName="openingHour"
+              class="w-1/2 sm:w-full p-2 border border-gray-300 rounded-md bg-white text-start" />
           </div>
           <div>
             <label class="block text-sm font-medium mb-1" for="closingHour">Hora de cierre</label>
-            <input
-              id="closingHour"
-              type="time"
-              formControlName="closingHour"
-              class="w-1/2 sm:w-full p-2 border border-slate-300 rounded-md bg-white text-start" />
+            <input id="closingHour" type="time" formControlName="closingHour"
+              class="w-1/2 sm:w-full p-2 border border-gray-300 rounded-md bg-white text-start" />
           </div>
         </div>
-        <hr class="border-slate-200 my-3" />
+        <hr class="border-gray-200 my-3" />
         <!-- ⚽️ CANCHAS dinámicas -->
         <div class="mt-5" formArrayName="fields">
           <div class="flex items-center gap-2 mb-4">
-            <div class="p-2 rounded-md bg-slate-200">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-slate-600">
+            <div class="p-2 rounded-md bg-gray-200">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="w-5 h-5 text-gray-600">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                 <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
                 <path d="M3 9h3v6h-3z" />
@@ -87,77 +66,49 @@
                 <path d="M12 5l0 14" />
               </svg>
             </div>
-            <h3 class="text-lg font-semibold text-slate-900">Canchas disponibles</h3>
+            <h3 class="text-lg font-semibold text-gray-900">Canchas disponibles</h3>
           </div>
 
           <div class="space-y-3">
-            <div
-              *ngFor="let field of fields.controls; let i = index"
-              [formGroupName]="i"
-              class="bg-slate-50 border border-slate-300 rounded-lg p-4 transition-all hover:shadow-sm animate-fade-in">
+            <div *ngFor="let field of fields.controls; let i = index" [formGroupName]="i"
+              class="bg-gray-50 border border-gray-300 rounded-lg p-4 transition-all hover:shadow-sm animate-fade-in">
               <!-- 🔹 Fila 1: Nombre + Precio -->
               <div class="flex flex-col xl:flex-row gap-3 items-end">
                 <!-- Nombre (ocupa todo en móvil y la mayor parte en desktop) -->
                 <div class="flex-1 w-full">
-                  <span class="block text-sm font-medium text-slate-700 mb-1">
+                  <span class="block text-sm font-medium text-gray-700 mb-1">
                     Nombre
                   </span>
-                  <input
-                    [id]="'nameField' + i"
-                    formControlName="name"
-                    class="w-full p-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent text-slate-900"
-                    placeholder="Ej: Cancha #1, Cancha Futbol 5"
-                    type="text" />
+                  <input [id]="'nameField' + i" formControlName="name"
+                    class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent text-gray-900"
+                    placeholder="Ej: Cancha #1, Cancha Futbol 5" type="text" />
                 </div>
 
                 <!-- Precio -->
                 <div class="w-full xl:w-32">
-                  <span class="block text-sm font-medium text-slate-700 mb-1">
+                  <span class="block text-sm font-medium text-gray-700 mb-1">
                     Precio
                   </span>
                   <div class="relative">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-dollar-sign absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-dollar-sign absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400">
                       <line x1="12" x2="12" y1="2" y2="22"></line>
                       <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                     </svg>
-                    <input
-                      inputmode="numeric"
-                      min="0"
-                      step="100"
-                      placeholder="Precio"
-                      class="w-full pl-10 pr-3 py-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
-                      type="number"
-                      formControlName="hourlyRate" />
+                    <input inputmode="numeric" min="0" step="100" placeholder="Precio"
+                      class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                      type="number" formControlName="hourlyRate" />
                   </div>
                 </div>
 
                 <!-- Botón eliminar -->
                 <div class="hidden items-end xl:flex">
-                  <button
-                    type="button"
-                    (click)="removeField(i)"
+                  <button type="button" (click)="removeField(i)"
                     class="p-3 cursor-pointer text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
                     title="Eliminar cancha">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                       class="lucide lucide-x w-4 h-4">
                       <path d="M18 6 6 18"></path>
                       <path d="m6 6 12 12"></path>
@@ -169,17 +120,18 @@
               <!-- 🔹 Fila 2: Título y botones tipo de cancha -->
               <div class="mt-3">
                 <!-- Etiqueta -->
-                <span class="block text-sm font-medium text-slate-700 mb-1">
+                <span class="block text-sm font-medium text-gray-700 mb-1">
                   Tipo de cancha
                 </span>
 
                 <!-- Botones -->
                 <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-                  <button *ngFor="let option of fieldTypeOptions" type="button" (click)="selectFieldType(i, option.value)" [ngClass]="{
+                  <button *ngFor="let option of fieldTypeOptions" type="button"
+                    (click)="selectFieldType(i, option.value)" [ngClass]="{
                       'px-3 py-1 rounded-md transition-colors duration-200 border': true,
-                      'text-slate-900 border-slate-900 bg-slate-300/70':
+                      'text-gray-900 border-gray-900 bg-gray-300/70':
                         fields.at(i).get('fieldType')?.value === option.value,
-                      'text-slate-600 hover:bg-slate-100':
+                      'text-gray-600 hover:bg-gray-100':
                         fields.at(i).get('fieldType')?.value !== option.value
                     }">
                     {{ option.label }}
@@ -189,9 +141,7 @@
 
               <!-- Botón eliminar móvil -->
               <div class="xl:hidden mt-2 w-full">
-                <button
-                  type="button"
-                  (click)="removeField(i)"
+                <button type="button" (click)="removeField(i)"
                   class="w-full py-2 px-4 text-red-500 hover:text-red-700 hover:bg-red-50 border border-red-200 rounded-md transition-colors text-sm font-medium">
                   Eliminar cancha
                 </button>
@@ -200,21 +150,11 @@
           </div>
 
           <!-- Botón agregar cancha -->
-          <button
-            type="button"
-            (click)="addField()"
-            class="w-full mt-4 p-4 border-2 cursor-pointer border-dashed border-slate-300 rounded-lg text-slate-600 hover:border-slate-400 hover:text-slate-800 transition-colors group">
+          <button type="button" (click)="addField()"
+            class="w-full mt-4 p-4 border-2 cursor-pointer border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-gray-400 hover:text-gray-800 transition-colors group">
             <div class="flex items-center justify-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-plus w-5 h-5 group-hover:scale-110 transition-transform">
                 <path d="M5 12h14"></path>
                 <path d="M12 5v14"></path>
@@ -226,147 +166,106 @@
 
         <!-- Botón guardar -->
         <div class="flex w-full justify-end gap-4 mt-6">
-          <button
-            type="submit"
-            class="px-4 py-2 rounded-md bg-slate-900 text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer w-full">
+          <button type="submit"
+            class="px-4 py-2 rounded-md bg-primary text-white transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer w-full">
             @if (loading) {
-              <app-loading-text-component text="Guardando" />
+            <app-loading-text-component text="Guardando" />
             } @else {
-              Guardar cambios
+            Guardar cambios
             }
           </button>
         </div>
       </form>
     </div>
     <div>
-      <h3 class="text-slate-800 font-bold mb-4">Vista previa de tu cancha</h3>
-      <div
-        class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-6 animate-fade-in">
+      <h3 class="text-gray-800 font-bold mb-4">Vista previa de tu cancha</h3>
+      <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-6 animate-fade-in">
         @if (venueData) {
-          <div class="flex items-center gap-3 pb-4 border-b border-slate-200">
-            <div class="p-2 bg-blue-50 rounded-lg">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="w-6 h-6 text-blue-600">
+        <div class="flex items-center gap-3 pb-4 border-b border-gray-200">
+          <div class="p-2 bg-gray-50 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="w-6 h-6 text-gray-600">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+              <path d="M12 7l4.76 3.45l-1.76 5.55h-6l-1.76 -5.55z" />
+              <path d="M12 7v-4m3 13l2.5 3m-.74 -8.55l3.74 -1.45m-11.44 7.05l-2.56 2.95m.74 -8.55l-3.74 -1.45" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-semibold text-gray-900 text-lg">{{ venueData.name }}</h3>
+          </div>
+        </div>
+        <div class="flex items-start gap-2">
+          <div class="p-2 bg-gray-50 rounded-lg flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="w-6 h-6 text-gray-600">
+              <path
+                d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+              </path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-gray-900 text-sm">Ubicación</p>
+            <p class="text-gray-700">{{ venueData.address }}</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="p-2 bg-gray-50 rounded-lg flex-shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-info w-6 h-6 text-gray-600">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+              <path d="M12 12l3 2" />
+              <path d="M12 7v5" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-gray-900 text-sm">Horario</p>
+            <p class="text-gray-700 leading-relaxed">
+              {{ venueData.openingHour | timeFormat }} a {{ venueData.closingHour | timeFormat }}
+            </p>
+          </div>
+        </div>
+        <section class="space-y-3 mt-3 border-t border-gray-200 pt-4">
+          <header class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="w-5 h-5 text-gray-800">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                <path d="M12 7l4.76 3.45l-1.76 5.55h-6l-1.76 -5.55z" />
-                <path
-                  d="M12 7v-4m3 13l2.5 3m-.74 -8.55l3.74 -1.45m-11.44 7.05l-2.56 2.95m.74 -8.55l-3.74 -1.45" />
+                <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                <path d="M3 9h3v6h-3z" />
+                <path d="M18 9h3v6h-3z" />
+                <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                <path d="M12 5l0 14" />
               </svg>
+              <h4 class="font-semibold text-gray-900">Canchas</h4>
             </div>
-            <div>
-              <h3 class="font-semibold text-slate-900 text-lg">{{ venueData.name }}</h3>
-            </div>
-          </div>
-          <div class="flex items-start gap-2">
-            <div class="p-2 bg-red-50 rounded-lg flex-shrink-0">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="w-6 h-6 text-red-600">
-                <path
-                  d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-            </div>
-            <div>
-              <p class="font-medium text-slate-900 text-sm">Ubicación</p>
-              <p class="text-slate-700">{{ venueData.address }}</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <div class="p-2 bg-slate-50 rounded-lg flex-shrink-0">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="lucide lucide-info w-6 h-6 text-slate-600">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                <path d="M12 12l3 2" />
-                <path d="M12 7v5" />
-              </svg>
-            </div>
-            <div>
-              <p class="font-medium text-slate-900 text-sm">Horario</p>
-              <p class="text-slate-700 leading-relaxed">
-                {{ venueData.openingHour | timeFormat }} a {{ venueData.closingHour | timeFormat }}
-              </p>
-            </div>
-          </div>
-          <section class="space-y-3 mt-3">
-            <header class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                  class="w-5 h-5 text-emerald-600">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                  <path d="M3 9h3v6h-3z" />
-                  <path d="M18 9h3v6h-3z" />
-                  <path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                  <path d="M12 5l0 14" />
-                </svg>
-                <h4 class="font-semibold text-slate-900">Canchas</h4>
-              </div>
-              <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">
-                {{ venueData.fields.length }} disponible(s)
-              </span>
-            </header>
-            <div class="grid gap-2">
-              @for (field of venueData.fields; track field.id) {
-                <div
-                  class="bg-slate-50 border border-slate-200 rounded-lg p-3 hover:bg-slate-100 transition-colors">
-                  <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="lucide lucide-star w-4 h-4 text-yellow-500 fill-current">
-                        <path
-                          d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
-                      </svg>
-                      <span class="font-medium text-slate-900 capitalize">{{ field.name }}</span>
-                    </div>
-                    <div class="text-right">
-                      <span class="font-bold text-slate-900 text-lg">
-                        {{ field.hourlyRate | moneyFormat }}
-                      </span>
-                    </div>
-                  </div>
+            <span class="text-xs bg-secondary text-black px-2 py-1 rounded-full">
+              {{ venueData.fields.length }} disponible(s)
+            </span>
+          </header>
+          <div class="grid gap-2">
+            @for (field of venueData.fields; track field.id) {
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 hover:bg-gray-100 transition-colors">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="font-medium text-gray-900 capitalize">{{ field.name }}</span>
                 </div>
-              }
+                <div class="text-right">
+                  <span class="font-bold text-gray-900 text-lg">
+                    {{ field.hourlyRate | moneyFormat }}
+                  </span>
+                </div>
+              </div>
             </div>
-          </section>
+            }
+          </div>
+        </section>
         }
       </div>
     </div>

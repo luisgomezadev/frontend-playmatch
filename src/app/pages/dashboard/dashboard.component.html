@@ -1,56 +1,49 @@
 @if (loading) {
-  <app-loading-component />
+<app-loading-component />
 } @else {
-  <!-- Menu de navegación en vista movil -->
-  <nav
-    class="md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/50 shadow-lg grid grid-cols-4 justify-center items-center fixed bottom-0 left-0 right-0 z-50 h-16">
-    @for (link of links; track $index) {
-      <div class="flex items-center justify-center">
-        <a
-          [routerLink]="link.link"
-          routerLinkActive="bg-primary text-white"
-          class="text-xs text-slate-800 inline-block py-4 px-2 rounded-xl w-12 text-center">
-          <i [class]="link.iconClass"></i>
+<!-- Menu de navegación en vista movil -->
+<nav
+  class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50 shadow-lg grid grid-cols-4 justify-center items-center fixed bottom-0 left-0 right-0 z-50 h-16">
+  @for (link of links; track $index) {
+  <div class="flex items-center justify-center">
+    <a [routerLink]="link.link" routerLinkActive="bg-primary text-white"
+      class="text-xs text-gray-800 inline-block py-4 px-2 rounded-xl w-12 text-center">
+      <i [class]="link.iconClass"></i>
+    </a>
+  </div>
+  }
+</nav>
+
+<!-- Menu de navegación en vista escritorio -->
+<aside
+  class="z-40 top-0 left-0 max-w-60 bg-gray-50 text-gray-800 transform transition-transform duration-300 h-full fixed shadow-md hidden md:flex flex-col p-4 space-y-6">
+  <div class="p-6 text-center hidden md:block shadow-sm">
+    <img src="/assets/logo_negro.webp" alt="Logo PlayMatch" class="w-full" />
+  </div>
+  <nav class="flex-1">
+    <ul class="flex flex-col gap-4">
+      @for (link of links; track $index) {
+      <li>
+        <a (click)="closeSidebar()" [routerLink]="link.link" routerLinkActive="active"
+          class="flex items-center gap-3 py-2 px-4 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+          <i class="w-6" [class]="link.iconClass"></i>
+          <span>{{ link.name }}</span>
         </a>
-      </div>
-    }
+      </li>
+      }
+    </ul>
   </nav>
+  <hr class="border-gray-200" />
+  <button (click)="closeSidebar()" (click)="logout()"
+    class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 transition-colors duration-300 cursor-pointer w-full">
+    <i class="fa-solid fa-right-from-bracket w-6"></i>
+    <span>Cerrar sesión</span>
+  </button>
+</aside>
 
-  <!-- Menu de navegación en vista escritorio -->
-  <aside
-    class="z-40 top-0 left-0 max-w-60 bg-slate-50 text-slate-800 transform transition-transform duration-300 h-full fixed shadow-md hidden md:flex flex-col p-4 space-y-6">
-    <div class="p-6 text-center hidden md:block shadow-sm">
-      <img src="/assets/logo_sin_fondo.webp" alt="Logo PlayMatch" />
-    </div>
-    <nav class="flex-1">
-      <ul class="flex flex-col gap-4">
-        @for (link of links; track $index) {
-          <li>
-            <a
-              (click)="closeSidebar()"
-              [routerLink]="link.link"
-              routerLinkActive="active"
-              class="flex items-center gap-3 py-2 px-4 text-slate-800 rounded-lg hover:bg-slate-100 transition-colors duration-300">
-              <i class="w-6" [class]="link.iconClass"></i>
-              <span>{{ link.name }}</span>
-            </a>
-          </li>
-        }
-      </ul>
-    </nav>
-    <hr class="border-slate-200" />
-    <button
-      (click)="closeSidebar()"
-      (click)="logout()"
-      class="flex items-center gap-3 py-2 px-4 rounded-lg text-slate-800 hover:bg-slate-100 transition-colors duration-300 cursor-pointer w-full">
-      <i class="fa-solid fa-right-from-bracket w-6"></i>
-      <span>Cerrar sesión</span>
-    </button>
-  </aside>
-
-  <main class="w-full">
-    <div class="pl-0 md:pl-60 pb-16 md:pb-0">
-      <router-outlet></router-outlet>
-    </div>
-  </main>
+<main class="w-full">
+  <div class="pl-0 md:pl-60 pb-16 md:pb-0">
+    <router-outlet></router-outlet>
+  </div>
+</main>
 }
