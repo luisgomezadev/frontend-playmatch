@@ -53,7 +53,7 @@ ng serve
 
 ## 🌐 Demo en producción
 
-Puedes ver la aplicación desplegada aquí: [PlayMatch](https://playmatch-lgsoftworks.vercel.app)
+Puedes ver la aplicación desplegada aquí: [PlayMatch](https://projectplaymatch.vercel.app)
 
 ---
 
