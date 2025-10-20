@@ -42,7 +42,7 @@ export class ReservationDetailComponent {
   canceledReservation(): void {
     if (this.reservationData) {
       this.alertService
-        .confirm('¿Cancelar reserva?', '¿Estás seguro que deseas cancelar tu reserva?')
+        .confirm('¿Cancelar reserva?', '¿Estás seguro que deseas cancelar tu reserva?', 'Sí, cancelar', 'No')
         .then(confirmed => {
           if (confirmed) {
             this.reservationService.canceledReservation(this.reservationData!.id).subscribe({
