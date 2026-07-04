@@ -38,8 +38,8 @@ export class ButtonComponent {
     else base += ' px-4 py-2 font-medium rounded-lg';
 
     if (this.color === 'primary') {
-      return base + ' bg-primary text-white';
+      return base + ' bg-primary text-white hover:bg-hover-primary';
     }
-    return base + ' bg-secondary text-black';
+    return base + ' bg-secondary text-white hover:bg-hover-secondary';
   }
 }

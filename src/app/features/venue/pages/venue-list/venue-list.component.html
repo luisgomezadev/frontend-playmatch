@@ -5,7 +5,7 @@
       <div class="flex items-center gap-3">
         <h1 class="text-gray-900 font-bold text-2xl md:text-4xl">Canchas disponibles</h1>
         @if (venues) {
-        <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-secondary text-black">
+        <span class="inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-gray-200/80 text-black">
           {{ venues.content.length || 0 }} cancha(s)
         </span>
         }
@@ -17,7 +17,7 @@
     </div>
 
     <div class="hidden sm:block">
-      <a class="flex items-center justify-center gap-2 bg-secondary rounded-xl px-4 py-2 hover:bg-secondary/90 transition-all duration-300 leading-4 group hover:scale-105"
+      <a class="flex items-center justify-center gap-2 bg-secondary rounded-xl px-4 py-2 hover:bg-secondary/90 transition-all duration-300 leading-4 group hover:scale-105 text-white"
         routerLink="/reserva">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

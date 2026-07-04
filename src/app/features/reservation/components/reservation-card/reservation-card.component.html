@@ -14,13 +14,13 @@
         </div>
       </div>
       <span
-        class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-200 text-gray-800">
-        Reservado
+        class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-accent">
+        {{ reservation.code }}
       </span>
     </header>
   </div>
   <div class="pb-4">
-    <div class="bg-secondary/60 backdrop-blur-sm rounded-lg p-4 border border-white/50">
+    <div class="bg-gray-100/60 backdrop-blur-sm rounded-lg p-4 border border-white/50">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-user text-gray-500"></i>
@@ -40,7 +40,7 @@
   <div class="flex gap-2">
     <div class="flex gap-2 flex-1">
       <a
-        href="https://wa.me/3120322322"
+        [href]="'https://wa.me/' + reservation.cellphone"
         target="_blank"
         rel="noopener noreferrer"
         class="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium text-sm transition-all duration-200 active:scale-95"
@@ -52,8 +52,8 @@
         WhatsApp
       </a>
       <a
-        href="tel:3120322322"
-        class="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-secondary text-black rounded-lg font-medium text-sm transition-all duration-200 active:scale-95"
+        [href]="'tel:' + reservation.cellphone"
+        class="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-secondary text-white rounded-lg font-medium text-sm transition-all duration-200 active:scale-95"
         title="Llamar por teléfono">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +72,6 @@
         Llamar
       </a>
     </div>
-    <!-- 🔹 Botón Cancelar -->
     <button
       (click)="openModal()"
       class="flex items-center justify-center gap-2 py-3 px-4 bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 rounded-lg font-medium text-sm transition-all duration-200 active:scale-95">
@@ -117,12 +116,12 @@
         <div class="flex flex-col gap-3 mt-4">
           <button
             (click)="cancelAndNotify()"
-            class="px-4 py-3 rounded bg-primary text-white hover:bg-primary/80 transition-colors text-base shadow-sm">
+            class="px-4 py-3 rounded bg-primary text-white hover:bg-hover-primary transition-colors text-base shadow-sm">
             Cancelar y notificar por WhatsApp
           </button>
           <button
             (click)="cancelWithoutNotify()"
-            class="px-4 py-3 rounded bg-secondary text-black hover:bg-gray-200 transition-colors text-base shadow-sm">
+            class="px-4 py-3 rounded bg-secondary text-white hover:bg-hover-secondary transition-colors text-base shadow-sm">
             Cancelar sin avisar
           </button>
           <button

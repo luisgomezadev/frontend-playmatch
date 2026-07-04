@@ -29,12 +29,12 @@ body {
 ------------------------------ */
 .swal-cancel-btn {
   @apply bg-secondary hover:bg-secondary/90
-    transition-all text-gray-900 py-2 px-4 rounded;
+    transition-all text-white py-2 px-4 rounded;
 }
 
 .swal-confirm-btn {
   @apply bg-primary mr-4 hover:bg-primary/90
-    transition-all text-gray-100 py-2 px-4 rounded;
+    transition-all text-white py-2 px-4 rounded;
 }
 
 /* -----------------------------

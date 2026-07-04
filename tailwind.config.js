@@ -4,8 +4,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#010101',
-        secondary: '#EFEFEF',
+        primary: '#3AAA35',
+        secondary: '#0B2545',
+        accent: '#111827',
+        background: '#F5F7FA',
+        'hover-primary': '#2D9600',
+        'hover-secondary': '#081C35'
       },
       keyframes: {
         'slide-down': {

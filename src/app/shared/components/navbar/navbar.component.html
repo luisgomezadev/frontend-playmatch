@@ -4,23 +4,24 @@
     <!-- Logo -->
     <a routerLink="/"
       class="flex items-center gap-x-3 font-bold text-xl sm:text-2xl hover:opacity-90 transition-all duration-300 group animate-slide-in-left">
-      <img src="assets/icon_playmatch.webp" alt="Logo PlayMatch"
+      <img src="assets/nuevo_logo_sinfondo.webp" alt="Logo PlayMatch"
         class="w-8 md:w-12 h-auto group-hover:scale-105 transition-transform duration-300" />
-      <span>PlayMatch</span>
+      <img src="assets/logo_letras.webp" alt="Logo PlayMatch"
+        class="w-20 md:w-32 h-auto group-hover:scale-105 transition-transform duration-300" />
     </a>
 
     <!-- Menú desktop -->
     <nav class="space-x-2 md:space-x-3 items-center hidden md:flex">
       <a routerLink="/login" routerLinkActive="text-primary"
-        class="px-4 py-3 text-sm font-medium text-black hover:bg-secondary rounded-xl transition-all duration-200">
+        class="px-4 py-3 text-sm font-medium text-accent hover:text-primary rounded-xl transition-all duration-200">
         Iniciar sesión
       </a>
       <a routerLink="/registro" routerLinkActive="text-primary"
-        class="px-4 py-3 text-sm font-medium text-black hover:bg-secondary rounded-xl transition-all duration-200">
+        class="px-4 py-3 text-sm font-medium text-accent hover:text-primary rounded-xl transition-all duration-200">
         Crear cuenta
       </a>
       <a routerLink="/canchas" routerLinkActive="text-primary"
-        class="ml-3 inline-flex items-center justify-center px-6 py-3 bg-primary text-white text-base font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg">
+        class="ml-3 inline-flex items-center justify-center px-6 py-3 bg-primary text-white text-base font-medium rounded-xl hover:bg-hover-primary transition-all duration-300 shadow-sm">
         Ver canchas
       </a>
     </nav>
@@ -53,7 +54,7 @@
         Crear cuenta
       </button>
       <button (click)="goToPage('/reserva')"
-        class="w-full items-center justify-center px-6 py-3 bg-secondary text-black text-base font-medium rounded-xl hover:scale-105 transition-all duration-300">
+        class="w-full items-center justify-center px-6 py-3 bg-secondary text-white text-base font-medium rounded-xl hover:scale-105 transition-all duration-300">
         Consultar reserva
       </button>
       <button (click)="goToPage('/canchas')"
@@ -63,3 +64,7 @@
     </nav>
   </div>
 </header>
+@if (menuOpen) {
+  <button class="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" (click)="toggleMenu()">
+  </button>
+}
