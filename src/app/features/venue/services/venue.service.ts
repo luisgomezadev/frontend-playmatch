@@ -1,30 +1,48 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Venue, VenueFilter, VenueRequest } from '@venue/interfaces/venue';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { PagedResponse } from '@core/interfaces/paged-response';
 import { HttpParams } from '@angular/common/http';
+import { CacheService } from '@core/services/cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VenueService extends BaseHttpService {
+
   private readonly ENDPOINT = this.apiUrl + '/venue';
+  private readonly cacheService = inject(CacheService);
 
   getVenues(
     filters: VenueFilter,
     page: number,
     size: number
   ): Observable<PagedResponse<Venue>> {
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
 
     if (filters.name) {
       params = params.set('name', filters.name);
     }
+
     if (filters.city) {
       params = params.set('city', filters.city);
     }
-    return this.http.get<PagedResponse<Venue>>(`${this.ENDPOINT}`, { params });
+
+    const cacheKey = `venues-${JSON.stringify({
+      page,
+      size,
+      ...filters
+    })}`;
+
+    return this.cacheService.get(
+      cacheKey,
+      () => this.http.get<PagedResponse<Venue>>(this.ENDPOINT, { params })
+    );
+
   }
 
   getVenueById(id: number): Observable<Venue> {
@@ -40,10 +58,15 @@ export class VenueService extends BaseHttpService {
   }
 
   createVenue(venue: VenueRequest): Observable<Venue> {
-    return this.http.post<Venue>(`${this.ENDPOINT}`, venue);
+    return this.http.post<Venue>(this.ENDPOINT, venue).pipe(
+      tap(() => this.cacheService.clearByPrefix('venues-'))
+    );
   }
 
   updateVenue(venue: VenueRequest): Observable<Venue> {
-    return this.http.put<Venue>(`${this.ENDPOINT}`, venue);
+    return this.http.put<Venue>(this.ENDPOINT, venue).pipe(
+      tap(() => this.cacheService.clearByPrefix('venues-'))
+    );
   }
+
 }
