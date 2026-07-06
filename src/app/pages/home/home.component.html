@@ -1,102 +1,201 @@
 <app-navbar />
-<section class="relative h-auto lg:h-screen w-full pt-32 pb-16 md:pt-32 bg-white">
-  <div class="flex items-center justify-center flex-col h-full px-4 max-w-7xl relative z-20 w-full mx-auto">
-    <div class="flex flex-col motion-preset-slide-up motion-duration-1000 text-center lg:max-w-3xl">
-      <h1 class="text-5xl lg:text-7xl font-bold mb-6">
-        Reservas online para tu negocio
-      </h1>
-      <p class="text-md sm:text-xl lg:text-2xl leading-relaxed mb-2">
-        <span class="block text-gray-700 font-medium">
-          Gestiona tus reservas y muestra tu cancha para el mundo
-        </span>
-      </p>
-      <div class="flex flex-col gap-3 sm:gap-4 mt-6 sm:mt-12 justify-center w-full">
-        <div class="animate-fade-in opacity-0 flex flex-col sm:flex-row gap-4 items-center justify-center"
-          style="animation-delay: 0.4s; animation-fill-mode: forwards">
-          <div class="w-full sm:w-fit">
-            <app-button (clicked)="goToRegister()" size="big">
-              <span class="relative z-10">Empieza ahora</span>
-            </app-button>
-          </div>
-          <div class="w-full sm:w-fit">
-            <app-button (clicked)="goToReservationDetail()" size="big" color="secondary">
-              <span>Consultar reserva</span>
-            </app-button>
-          </div>
-        </div>
-      </div>
+<section class="relative overflow-hidden bg-white">
+
+  <div class="absolute inset-0">
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2 h-[500px] w-[900px] rounded-full bg-primary/5 blur-3xl">
+    </div>
+
+    <div
+      class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/5 blur-3xl">
     </div>
   </div>
+
+  <div
+    class="relative max-w-7xl mx-auto px-6 pt-36 pb-24 flex items-center justify-center">
+
+    <div
+      class="max-w-4xl text-center motion-preset-slide-up motion-duration-1000">
+
+      <span
+        class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary">
+
+        Gestión inteligente de reservas
+
+      </span>
+
+      <h1
+        class="mt-8 text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight text-gray-900">
+
+        Haz crecer tu
+        <span class="text-primary">
+          complejo deportivo
+        </span>
+
+        con reservas online.
+
+      </h1>
+
+      <p
+        class="mt-8 mx-auto max-w-2xl text-lg md:text-xl text-gray-600 leading-relaxed">
+
+        Centraliza tus reservas, comparte un enlace con tus clientes y administra tus
+        canchas desde un solo lugar.
+
+      </p>
+
+      <div
+        class="mt-12 flex flex-col sm:flex-row justify-center gap-4">
+
+        <app-button
+          (clicked)="goToRegister()"
+          size="big">
+
+          Empieza gratis
+
+        </app-button>
+
+        <app-button
+          color="secondary"
+          size="big"
+          (clicked)="goToReservationDetail()">
+
+          Consultar reserva
+
+        </app-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
-<section class="px-6 py-20 bg-white relative">
-  <div class="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white"></div>
-  <div class="relative max-w-6xl mx-auto">
+<section class="py-24 bg-gradient-to-b from-gray-50 to-white">
+  <div class="max-w-6xl mx-auto px-6">
+
     <div class="text-center mb-16">
-      <h2 class="text-4xl lg:text-5xl font-black mb-4">
-        Todo lo que necesitas en una plataforma
+      <span class="text-primary font-semibold uppercase tracking-widest text-sm">
+        Características
+      </span>
+
+      <h2 class="mt-3 text-4xl lg:text-5xl font-extrabold text-gray-900">
+        Todo lo que necesitas para
+        <span class="text-primary">
+          gestionar tu cancha
+        </span>
       </h2>
-      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-        Simplifica la gestión de tu cancha con herramientas diseñadas para el éxito
+
+      <p class="mt-5 max-w-2xl mx-auto text-lg text-gray-600 leading-relaxed">
+        PlayMatch reúne todas las herramientas necesarias para administrar
+        reservas de forma sencilla, rápida y profesional.
       </p>
     </div>
-    <div class="grid md:grid-cols-3 gap-8">
+    <div class="grid gap-8 md:grid-cols-3">
+
       <article
-        class="group relative bg-white p-8 rounded-2xl transition-all duration-500 border border-gray-300 hover:-translate-y-2">
-        <div class="relative">
-          <div
-            class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" aria-hidden="true" data-slot="icon" class="w-8 h-8 text-white">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5">
-              </path>
-            </svg>
-          </div>
-          <h3 class="font-bold text-2xl mb-4 text-gray-900">Agenda rápida</h3>
-          <p class="text-gray-600 text-lg leading-relaxed">
-            Tus clientes reservan en 4 clics desde cualquier dispositivo. Sin complicaciones, sin
-            esperas.
-          </p>
+        class="group bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+
+        <div
+          class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+
+          <svg xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke-width="1.5"
+               stroke="currentColor"
+               class="w-8 h-8 text-white">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5">
+            </path>
+
+          </svg>
+
         </div>
+
+        <h3 class="mt-6 text-2xl font-bold text-gray-900">
+          Agenda rápida
+        </h3>
+
+        <p class="mt-4 text-gray-600 leading-7">
+          Tus clientes pueden reservar una cancha en menos de un minuto desde cualquier dispositivo.
+        </p>
+
       </article>
+
       <article
-        class="group relative bg-white p-8 rounded-2xl transition-all duration-500 border border-gray-300 hover:-translate-y-2">
-        <div class="relative">
-          <div
-            class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" aria-hidden="true" data-slot="icon" class="w-8 h-8 text-white">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155">
-              </path>
-            </svg>
-          </div>
-          <h3 class="font-bold text-2xl mb-4 text-gray-900">Recordatorios WhatsApp</h3>
-          <p class="text-gray-600 text-lg leading-relaxed">
-            Evita faltas con notificaciones automáticas. Tus clientes nunca olvidarán sus reservas.
-          </p>
+        class="group bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+
+        <div
+          class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+
+          <svg xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke-width="1.5"
+               stroke="currentColor"
+               class="w-8 h-8 text-white">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155">
+            </path>
+
+          </svg>
+
         </div>
+
+        <h3 class="mt-6 text-2xl font-bold text-gray-900">
+          Comparte tu enlace
+        </h3>
+
+        <p class="mt-4 text-gray-600 leading-7">
+          Envía un enlace único a tus clientes para que reserven desde cualquier lugar y en cualquier momento.
+        </p>
+
       </article>
+
       <article
-        class="group relative bg-white p-8 rounded-2xl transition-all duration-500 border border-gray-300 hover:-translate-y-2">
-        <div class="relative">
-          <div
-            class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" aria-hidden="true" data-slot="icon" class="w-8 h-8 text-white">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z">
-              </path>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-            </svg>
-          </div>
-          <h3 class="font-bold text-2xl mb-4 text-gray-900">Panel intuitivo</h3>
-          <p class="text-gray-600 text-lg leading-relaxed">
-            Controla tus reservas, canchas y horarios fácilmente. Todo en un solo lugar.
-          </p>
+        class="group bg-white border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+
+        <div
+          class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+
+          <svg xmlns="http://www.w3.org/2000/svg"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke-width="1.5"
+               stroke="currentColor"
+               class="w-8 h-8 text-white">
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z">
+            </path>
+
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z">
+            </path>
+
+          </svg>
+
         </div>
+
+        <h3 class="mt-6 text-2xl font-bold text-gray-900">
+          Panel intuitivo
+        </h3>
+
+        <p class="mt-4 text-gray-600 leading-7">
+          Administra tus reservas, horarios y canchas desde un único panel, de manera rápida y organizada.
+        </p>
+
       </article>
+
     </div>
+
   </div>
 </section>
 <app-footer />

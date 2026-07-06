@@ -1,70 +1,115 @@
 <header
-  class="w-full fixed top-0 left-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm animate-slide-down motion-duration-75">
-  <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-    <!-- Logo -->
-    <a routerLink="/"
-      class="flex items-center gap-x-3 font-bold text-xl sm:text-2xl hover:opacity-90 transition-all duration-300 group animate-slide-in-left">
-      <img src="assets/nuevo_logo_sinfondo.webp" alt="Logo PlayMatch"
-        class="w-8 md:w-12 h-auto group-hover:scale-105 transition-transform duration-300" />
-      <img src="assets/logo_letras.webp" alt="Logo PlayMatch"
-        class="w-20 md:w-32 h-auto group-hover:scale-105 transition-transform duration-300" />
-    </a>
+  class="fixed inset-x-0 top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-gray-200 shadow-sm transition-all duration-300 py-2">
 
-    <!-- Menú desktop -->
-    <nav class="space-x-2 md:space-x-3 items-center hidden md:flex">
-      <a routerLink="/login" routerLinkActive="text-primary"
-        class="px-4 py-3 text-sm font-medium text-accent hover:text-primary rounded-xl transition-all duration-200">
-        Iniciar sesión
-      </a>
-      <a routerLink="/registro" routerLinkActive="text-primary"
-        class="px-4 py-3 text-sm font-medium text-accent hover:text-primary rounded-xl transition-all duration-200">
-        Crear cuenta
-      </a>
-      <a routerLink="/canchas" routerLinkActive="text-primary"
-        class="ml-3 inline-flex items-center justify-center px-6 py-3 bg-primary text-white text-base font-medium rounded-xl hover:bg-hover-primary transition-all duration-300 shadow-sm">
-        Ver canchas
-      </a>
-    </nav>
+  <div class="max-w-7xl mx-auto px-4 lg:px-6">
+    <div class="flex items-center justify-between h-18">
 
-    <!-- Botón menú móvil -->
-    <button
-      class="md:hidden text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg p-2 transition-all duration-200"
-      aria-label="Toggle menu" (click)="menuOpen = !menuOpen">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        class="lucide lucide-menu w-5 h-5 transition-transform duration-300">
-        <line x1="4" x2="20" y1="12" y2="12"></line>
-        <line x1="4" x2="20" y1="6" y2="6"></line>
-        <line x1="4" x2="20" y1="18" y2="18"></line>
-      </svg>
-    </button>
+      <a
+        routerLink="/"
+        class="flex items-center gap-3 group">
+
+        <img
+          src="assets/nuevo_logo_sinfondo.webp"
+          alt="Logo PlayMatch"
+          class="w-10 md:w-12 transition-transform duration-300 group-hover:scale-105" />
+
+        <img
+          src="assets/logo_letras.webp"
+          alt="PlayMatch"
+          class="w-28 md:w-36 transition-transform duration-300 group-hover:scale-105" />
+      </a>
+
+      <nav class="hidden md:flex items-center gap-2">
+
+        <a
+          routerLink="/login"
+          routerLinkActive="text-primary bg-gray-100"
+          class="px-5 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200">
+          Iniciar sesión
+        </a>
+
+        <a
+          routerLink="/registro"
+          routerLinkActive="text-primary bg-gray-100"
+          class="px-5 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200">
+          Crear cuenta
+        </a>
+
+        <a
+          routerLink="/canchas"
+          routerLinkActive="opacity-100"
+          class="ml-2 inline-flex items-center justify-center rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-hover-primary hover:shadow-md transition-all duration-300">
+          Ver canchas
+        </a>
+
+      </nav>
+
+      <button
+        (click)="toggleMenu()"
+        aria-label="Abrir menú"
+        [attr.aria-expanded]="menuOpen"
+        class="md:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 hover:text-primary transition">
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2">
+
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 6h16M4 12h16M4 18h16" />
+
+        </svg>
+
+      </button>
+
+    </div>
   </div>
 
-  <!-- Menú móvil siempre en el DOM -->
   <div
-    class="md:hidden overflow-hidden bg-white backdrop-blur-md border-b border-gray-200 transition-all duration-500 ease-in-out shadow-2xl"
-    [ngClass]="menuOpen ? 'max-h-80 py-6' : 'max-h-0 py-0'">
-    <nav class="px-4 space-y-4">
-      <button (click)="goToPage('/login')"
-        class="w-full text-black font-medium py-3 px-4 hover:bg-gray-100 rounded-lg transition-all duration-200">
+    class="md:hidden overflow-hidden bg-white border-t border-gray-100 transition-all duration-300"
+    [ngClass]="menuOpen ? 'max-h-96 py-5' : 'max-h-0 py-0'">
+
+    <nav class="px-4 space-y-3">
+
+      <button
+        (click)="goToPage('/login')"
+        class="w-full rounded-xl px-4 py-3 text-left font-medium text-gray-700 hover:bg-gray-100 transition">
         Iniciar sesión
       </button>
-      <button (click)="goToPage('/registro')"
-        class="w-full text-black font-medium py-3 px-4 hover:bg-gray-100 rounded-lg transition-all duration-200">
+
+      <button
+        (click)="goToPage('/registro')"
+        class="w-full rounded-xl px-4 py-3 text-left font-medium text-gray-700 hover:bg-gray-100 transition">
         Crear cuenta
       </button>
-      <button (click)="goToPage('/reserva')"
-        class="w-full items-center justify-center px-6 py-3 bg-secondary text-white text-base font-medium rounded-xl hover:scale-105 transition-all duration-300">
+
+      <button
+        (click)="goToPage('/reserva')"
+        class="w-full rounded-xl bg-secondary px-4 py-3 font-medium text-white hover:opacity-90 transition">
         Consultar reserva
       </button>
-      <button (click)="goToPage('/canchas')"
-        class="w-full items-center justify-center px-6 py-3 bg-primary text-white text-base font-medium rounded-xl hover:scale-105 transition-all duration-300 shadow-lg">
+
+      <button
+        (click)="goToPage('/canchas')"
+        class="w-full rounded-xl bg-primary px-4 py-3 font-semibold text-white hover:bg-hover-primary transition">
         Ver canchas
       </button>
+
     </nav>
+
   </div>
+
 </header>
+
 @if (menuOpen) {
-  <button class="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm" (click)="toggleMenu()">
+  <button
+    class="fixed inset-0 z-40 bg-black/25 backdrop-blur-[2px]"
+    (click)="toggleMenu()"
+    aria-label="Cerrar menú">
   </button>
 }

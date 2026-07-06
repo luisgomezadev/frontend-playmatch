@@ -1,7 +1,6 @@
 <app-layout [title]="'Reservas'" [subtitle]="'Aquí puedes ver todas tus reservas activas.'">
   @if (!loadingVenue) {
     @if (venue) {
-      <!-- Encabezado con fecha y flechas -->
       <div class="flex items-center justify-between sm:justify-between">
         <div class="flex flex-col">
           <h3 class="text-lg lg:text-xl font-bold text-gray-900 capitalize leading-tight">
@@ -49,7 +48,6 @@
           }
         </div>
       } @else {
-        <!-- Listado de reservas -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
           @for (r of reservations; track r.id) {
             <app-reservation-card [reservation]="r" (reservationCanceled)="loadReservations()"/>

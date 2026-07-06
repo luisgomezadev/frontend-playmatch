@@ -3,64 +3,97 @@
   class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 w-full z-30 px-8 sm:pt-36 pt-24 pb-16 flex items-center justify-center">
   <div
     class="w-full max-w-md space-y-6 motion-preset-slide-up-sm motion-duration-1000 bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200/50 p-8">
-    <div class="text-center">
-      <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Crear cuenta</h1>
-      <p class="text-sm text-gray-500 mt-2">
-        Unete a Play Match y empieza a gestionar tus reservas hoy mismo.
+    <div class="flex flex-col items-center mb-8">
+
+      <h1 class="text-3xl font-bold text-gray-900">
+        Crear cuenta
+      </h1>
+
+      <p class="text-gray-500 text-center mt-2">
+        Únete a PlayMatch y comienza a gestionar las reservas de tu complejo deportivo.
       </p>
+
     </div>
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1" for="firstName">Nombre</label>
-        <input id="firstName" type="text" formControlName="firstName"
-          class="w-full px-4 py-3 text-gray-700 bg-transparent border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-400" />
+
+      <div class="space-y-2">
+        <label for="firstName" class="block text-sm font-medium text-gray-700">
+          Nombre
+        </label>
+
+        <input id="firstName" type="text" formControlName="firstName" autocomplete="given-name"
+          placeholder="Ej: Luis Alberto"
+          class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none" />
+
         @if (registerForm.get('firstName')?.touched && registerForm.get('firstName')?.invalid) {
-        <div class="text-red-500 text-sm mt-1">
-          <span>El nombre es obligatorio.</span>
-        </div>
+        <p class="text-sm text-red-600">
+          El nombre es obligatorio.
+        </p>
         }
       </div>
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1" for="lastName">Apellido</label>
-        <input id="lastName" type="text" formControlName="lastName"
-          class="w-full px-4 py-3 text-gray-700 bg-transparent border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-400" />
+
+      <div class="space-y-2">
+        <label for="lastName" class="block text-sm font-medium text-gray-700">
+          Apellido
+        </label>
+
+        <input id="lastName" type="text" formControlName="lastName" autocomplete="family-name" placeholder="Ej: Gómez"
+          class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none" />
+
         @if (registerForm.get('lastName')?.touched && registerForm.get('lastName')?.invalid) {
-        <div class="text-red-500 text-sm mt-1">
-          <span>La apellido es obligatorio.</span>
-        </div>
+        <p class="text-sm text-red-600">
+          El apellido es obligatorio.
+        </p>
         }
       </div>
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1" for="cellphone">Celular</label>
-        <input id="cellphone" type="text" formControlName="cellphone"
-          class="w-full px-4 py-3 text-gray-700 bg-transparent border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-400" />
+
+      <div class="space-y-2">
+        <label for="cellphone" class="block text-sm font-medium text-gray-700">
+          Celular
+        </label>
+
+        <input id="cellphone" type="tel" formControlName="cellphone" autocomplete="tel" placeholder="Ej: 3001234567"
+          class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none" />
+
         @if (registerForm.get('cellphone')?.touched && registerForm.get('cellphone')?.invalid) {
-        <div class="text-red-500 text-sm mt-1">
-          <span>El número celular es invalido.</span>
-        </div>
+        <p class="text-sm text-red-600">
+          Ingresa un número de celular válido.
+        </p>
         }
       </div>
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1" for="email">Correo electrónico</label>
-        <input id="email" type="email" formControlName="email"
-          class="w-full px-4 py-3 text-gray-700 bg-transparent border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-400" />
+
+      <div class="space-y-2">
+        <label for="email" class="block text-sm font-medium text-gray-700">
+          Correo electrónico
+        </label>
+
+        <input id="email" type="email" formControlName="email" autocomplete="email" placeholder="correo@ejemplo.com"
+          class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none" />
+
         @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
-        <div class="text-red-500 text-sm mt-1">
+        <p class="text-sm text-red-600">
           @if (registerForm.get('email')?.errors?.['required']) {
-          <span>El correo es obligatorio.</span>
+          El correo es obligatorio.
           } @else if (registerForm.get('email')?.errors?.['email']) {
-          <span>El correo no es valido.</span>
+          Ingresa un correo electrónico válido.
           }
-        </div>
+        </p>
         }
       </div>
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1" for="password">Contraseña</label>
+
+      <div class="space-y-2">
+        <label for="password" class="block text-sm font-medium text-gray-700">
+          Contraseña
+        </label>
+
         <div class="relative">
           <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
-            class="w-full px-4 py-3 text-gray-700 bg-transparent border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-400" />
-          <button type="button" (click)="togglePasswordVisibility()"
-            class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600 hover:text-gray-800" tabindex="-1">
+            autocomplete="new-password" placeholder="••••••••"
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 pr-12 text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none" />
+
+          <button type="button" (click)="togglePasswordVisibility()" tabindex="-1"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary transition-colors">
+
             @if (showPassword) {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
@@ -78,20 +111,30 @@
             }
           </button>
         </div>
-        <p class="text-xs text-gray-700 mt-1">
-          Mínimo 8 caracteres, con mayúsculas, minúsculas, número y símbolo.
+
+        <p class="text-xs leading-relaxed text-gray-500">
+          Debe contener al menos
+          <strong>8 caracteres</strong>,
+          una <strong>mayúscula</strong>,
+          una <strong>minúscula</strong>,
+          un <strong>número</strong> y un
+          <strong>carácter especial</strong>.
         </p>
       </div>
-      <div class="mb-4">
-        <label class="block text-sm tracking-wide mb-1" for="confirmPassword">
+
+      <div class="space-y-2">
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">
           Confirmar contraseña
         </label>
+
         <div class="relative">
           <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
-            formControlName="confirmPassword"
-            class="w-full px-4 py-3 text-gray-700 bg-transparent border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-gray-400" />
-          <button type="button" (click)="toggleConfirmPasswordVisibility()"
-            class="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-600 hover:text-gray-800" tabindex="-1">
+            formControlName="confirmPassword" autocomplete="new-password" placeholder="••••••••"
+            class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 pr-12 text-gray-900 placeholder:text-gray-400 transition-all duration-200 focus:border-primary focus:ring-4 focus:ring-primary/10 focus:outline-none" />
+
+          <button type="button" (click)="toggleConfirmPasswordVisibility()" tabindex="-1"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary transition-colors">
+
             @if (showConfirmPassword) {
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
@@ -109,12 +152,14 @@
             }
           </button>
         </div>
+
         @if (
-        registerForm.get('confirmPassword')?.touched && registerForm.hasError('passwordMismatch')
+        registerForm.get('confirmPassword')?.touched &&
+        registerForm.hasError('passwordMismatch')
         ) {
-        <div class="text-red-500 text-sm mt-1">
-          <span>Las contraseñas no coinciden.</span>
-        </div>
+        <p class="text-sm text-red-600">
+          Las contraseñas no coinciden.
+        </p>
         }
       </div>
       <div>
@@ -129,12 +174,17 @@
     </form>
     <hr class="border-gray-200 my-3" />
     <div class="mt-4 text-center">
-      <span class="text-sm text-gray-500">
+      <p class="text-center text-sm text-gray-500">
+
         ¿Ya tienes cuenta?
-        <a routerLink="/login" class="text-gray-700 hover:underline cursor-pointer">
+
+        <a routerLink="/login" class="font-semibold text-primary hover:underline ml-1">
+
           Inicia sesión
+
         </a>
-      </span>
+
+      </p>
     </div>
   </div>
 </section>
