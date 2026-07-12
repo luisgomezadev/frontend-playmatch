@@ -96,7 +96,7 @@ export class ReservationFormComponent implements OnInit {
       d.setDate(today.getDate() + i);
 
       const weekday = d.toLocaleDateString('es-ES', { weekday: 'long' });
-      const dayNumber = d.getDate(); // 1,2,3...
+      const dayNumber = d.getDate();
       const monthName = d.toLocaleDateString('es-ES', { month: 'long' });
 
       this.next20Days.push({
@@ -166,7 +166,6 @@ export class ReservationFormComponent implements OnInit {
     const step = 30; // intervalos de 30 min
     const slots: string[] = [];
 
-    // Comprobar si la fecha seleccionada es hoy
     const now = new Date();
     const isToday =
       this.selectedDate &&
@@ -180,7 +179,6 @@ export class ReservationFormComponent implements OnInit {
       const durationMs = minutes * 60 * 1000;
 
       while (current.getTime() + durationMs <= endTime.getTime()) {
-        // Si es hoy, descartar horas pasadas
         if (!isToday || current.getTime() >= now.getTime()) {
           slots.push(this.formatTime(current));
         }

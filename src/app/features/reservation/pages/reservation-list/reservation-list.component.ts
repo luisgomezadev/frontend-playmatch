@@ -44,7 +44,6 @@ export class ReservationListComponent implements OnInit {
     this.initUser();
   }
 
-  /** Inicializa usuario y venue */
   private initUser(): void {
     this.authService.currentUser$.subscribe(user => {
       if (!user) return;
@@ -73,19 +72,16 @@ export class ReservationListComponent implements OnInit {
     });
   }
 
-  /** Cambiar al día anterior */
   prevDay(): void {
     this.currentDate.setDate(this.currentDate.getDate() - 1);
     this.loadReservations();
   }
 
-  /** Cambiar al día siguiente */
   nextDay(): void {
     this.currentDate.setDate(this.currentDate.getDate() + 1);
     this.loadReservations();
   }
 
-  /** Formatea fecha local yyyy-MM-dd */
   private formatDateLocal(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -93,7 +89,6 @@ export class ReservationListComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  /** Carga las reservas de la fecha actual */
   loadReservations(): void {
     if (!this.venue) return;
     this.loading = true;
@@ -116,16 +111,14 @@ export class ReservationListComponent implements OnInit {
   }
 
   cancelReservation(reservationId: number): void {
-    // ejemplo simple con confirm()
     if (!confirm('¿Seguro que quieres cancelar la reserva?')) return;
 
     this.reservationService.canceledReservation(reservationId).subscribe({
-      next: () => this.loadReservations(), // recarga
+      next: () => this.loadReservations(),
       error: err => console.error(err)
     });
   }
 
-  /** Formatea la fecha para el encabezado */
   get formattedDate(): string {
     return this.currentDate.toLocaleDateString('es-ES', {
       weekday: 'long',

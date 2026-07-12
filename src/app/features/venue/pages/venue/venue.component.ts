@@ -52,10 +52,8 @@ export class VenueComponent implements OnInit {
 
     this.authService.currentUser$.subscribe(user => {
       if (user) {
-        // Setear adminId automático
         this.venueForm.patchValue({ adminId: user.id });
 
-        // 🔹 Buscar si ya existe venue de este admin
         this.venueService.getVenueByAdminId(user.id).subscribe({
           next: venue => {
             if (venue) {
@@ -68,7 +66,6 @@ export class VenueComponent implements OnInit {
     });
   }
 
-  /** 🔹 Inicializa Formulario principal */
   private initForm(): void {
     this.venueForm = this.formBuilder.group({
       id: [null],
@@ -81,23 +78,20 @@ export class VenueComponent implements OnInit {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(50),
-          Validators.pattern(/^[A-Za-z0-9-]+$/) // solo letras, números o guiones
+          Validators.pattern(/^[A-Za-z0-9-]+$/)
         ]
       ],
-      openingHour: ['', Validators.required], // HH:mm
-      closingHour: ['', Validators.required], // HH:mm
+      openingHour: ['', Validators.required],
+      closingHour: ['', Validators.required],
       adminId: [null, Validators.required],
       status: [Status.ACTIVE, Validators.required],
-      fields: this.formBuilder.array([this.createFieldGroup()]) // al menos 1 cancha
+      fields: this.formBuilder.array([this.createFieldGroup()])
     });
   }
 
-  /** 🔹 Cargar datos en el form (modo editar) */
   private loadVenue(venue: Venue): void {
-    // limpiar fields actuales
     this.fields.clear();
 
-    // cargar fields del venue
     venue.fields.forEach((field: Field) => {
       this.fields.push(
         this.formBuilder.group({
@@ -112,7 +106,6 @@ export class VenueComponent implements OnInit {
       );
     });
 
-    // patch general
     this.venueForm.patchValue({
       id: venue.id,
       name: venue.name,
@@ -126,7 +119,6 @@ export class VenueComponent implements OnInit {
     });
   }
 
-  /** 🔹 Crea un FormGroup para cada Field */
   createFieldGroup(): FormGroup {
     return this.formBuilder.group({
       id: [null],
@@ -136,17 +128,14 @@ export class VenueComponent implements OnInit {
     });
   }
 
-  /** 🔹 Getter del FormArray */
   get fields(): FormArray {
     return this.venueForm.get('fields') as FormArray;
   }
 
-  /** 🔹 Agregar cancha */
   addField(): void {
     this.fields.push(this.createFieldGroup());
   }
 
-  /** 🔹 Eliminar cancha */
   removeField(index: number): void {
     this.fields.removeAt(index);
   }
@@ -174,7 +163,6 @@ export class VenueComponent implements OnInit {
     const venueRequest = this.venueForm.value;
 
     if (venueRequest.id) {
-      // 🔹 Update
       this.venueService.updateVenue(venueRequest).subscribe({
         next: res => {
           this.loading = false;
@@ -193,7 +181,6 @@ export class VenueComponent implements OnInit {
         }
       });
     } else {
-      // 🔹 Create
       this.venueService.createVenue(venueRequest).subscribe({
         next: res => {
           this.loading = false;
@@ -202,7 +189,6 @@ export class VenueComponent implements OnInit {
             'Complejo deportivo creado',
             res.name + ' registrado en el sistema, listo para que los usuarios lo puedan reservar.'
           );
-          // patch ID para modo edición
           this.venueForm.patchValue({ id: res.id });
         },
         error: (err: ErrorResponse) => {

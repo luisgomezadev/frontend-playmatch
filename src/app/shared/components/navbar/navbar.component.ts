@@ -18,7 +18,7 @@ export class NavbarComponent {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    this.isScrolled = window.scrollY > 20; // cambia a true si bajamos más de 20px
+    this.isScrolled = window.scrollY > 20;
   }
 
   toggleMenu(): void {

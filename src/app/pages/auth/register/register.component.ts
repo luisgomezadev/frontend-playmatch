@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     if (this.registerForm.invalid || this.registerForm.hasError('passwordMismatch')) return;
 
-    this.registerForm.removeControl('confirmPassword'); // Eliminar confirmPassword antes de enviar
+    this.registerForm.removeControl('confirmPassword');
 
     const formData = this.registerForm.value;
 

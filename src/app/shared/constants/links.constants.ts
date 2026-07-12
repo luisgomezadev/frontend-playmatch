@@ -1,5 +1,4 @@
 export const LINKS_DASHBOARD = [
-  // LINKS USUARIO
   {
     name: "Inicio",
     link: "inicio",

@@ -11,16 +11,14 @@ export class CustomDatePipe implements PipeTransform {
     let date: Date;
 
     if (typeof value === 'string') {
-      // Detectar formato YYYY-MM-DD
       const parts = value.split('-');
       if (parts.length === 3) {
-        // Crear fecha local (año, mes-1, día)
         const year = +parts[0];
         const month = +parts[1] - 1;
         const day = +parts[2];
-        date = new Date(year, month, day); // esto es local
+        date = new Date(year, month, day);
       } else {
-        date = new Date(value); // otros formatos
+        date = new Date(value);
       }
     } else {
       date = value;

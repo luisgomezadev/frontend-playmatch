@@ -70,15 +70,12 @@ export class ProfileComponent implements OnInit {
   }
 
   onClosed() {
-    // reset de estado
     this.selectedFile = null;
     this.imagePreview = null;
 
-    // limpia el input file de forma segura
     if (this.fileInput?.nativeElement) {
       this.fileInput.nativeElement.value = '';
     } else {
-      // fallback por si el ViewChild no está disponible (p. ej. proyección/dom removido)
       const el = document.getElementById('profile-file-input') as HTMLInputElement | null;
       if (el) el.value = '';
     }
@@ -126,7 +123,6 @@ export class ProfileComponent implements OnInit {
     this.loading = false;
     this.alertService.success('Foto Actualizada', 'Tu imagen de perfil ha sido cambiada.');
 
-    // reset y cerrar modal
     this.onClosed();
 
     this.user = updatedUser;
