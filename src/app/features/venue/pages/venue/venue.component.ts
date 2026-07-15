@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
 import { ScrollService } from '@core/services/scroll.service';
-import { Field, FieldType } from '@features/field/interfaces/field';
-import { Status, Venue } from '@features/venue/interfaces/venue';
+import { Field } from '@features/field/interfaces/field';
+import { FieldService } from '@features/field/services/field.service';
+import { Status, Venue, VenueRequest } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
@@ -23,22 +24,15 @@ import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 export class VenueComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly venueService = inject(VenueService);
+  private readonly fieldService = inject(FieldService);
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly scrollService = inject(ScrollService);
 
   venueForm!: FormGroup;
   loading = false;
-  venueData: Venue | null = null;
-
-  fieldTypeOptions = [
-    { value: FieldType.FIVE_A_SIDE, label: '5 vs 5' },
-    { value: FieldType.SIX_A_SIDE, label: '6 vs 6' },
-    { value: FieldType.SEVEN_A_SIDE, label: '7 vs 7' },
-    { value: FieldType.EIGHT_A_SIDE, label: '8 vs 8' },
-    { value: FieldType.NINE_A_SIDE, label: '9 vs 9' },
-    { value: FieldType.ELEVEN_A_SIDE, label: '11 vs 11' }
-  ];
+  venueData = signal<Venue | null>(null);
+  fieldsData: Field[] = [];
 
   dropdownIndex: number | null = null;
 
@@ -57,7 +51,7 @@ export class VenueComponent implements OnInit {
         this.venueService.getVenueByAdminId(user.id).subscribe({
           next: venue => {
             if (venue) {
-              this.venueData = venue;
+              this.venueData.set(venue);
               this.loadVenue(venue);
             }
           }
@@ -84,27 +78,11 @@ export class VenueComponent implements OnInit {
       openingHour: ['', Validators.required],
       closingHour: ['', Validators.required],
       adminId: [null, Validators.required],
-      status: [Status.ACTIVE, Validators.required],
-      fields: this.formBuilder.array([this.createFieldGroup()])
     });
   }
 
   private loadVenue(venue: Venue): void {
-    this.fields.clear();
-
-    venue.fields.forEach((field: Field) => {
-      this.fields.push(
-        this.formBuilder.group({
-          id: [field.id],
-          name: [
-            field.name,
-            [Validators.required, Validators.minLength(3), Validators.maxLength(100)]
-          ],
-          fieldType: [field.fieldType, Validators.required],
-          hourlyRate: [field.hourlyRate, [Validators.required, Validators.min(0)]]
-        })
-      );
-    });
+    this.loadFields(venue.id);
 
     this.venueForm.patchValue({
       id: venue.id,
@@ -114,44 +92,16 @@ export class VenueComponent implements OnInit {
       code: venue.code,
       openingHour: venue.openingHour,
       closingHour: venue.closingHour,
-      adminId: venue.admin ? venue.admin.id : null,
-      status: venue.status
+      adminId: venue.adminId
     });
   }
 
-  createFieldGroup(): FormGroup {
-    return this.formBuilder.group({
-      id: [null],
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      fieldType: [FieldType.FIVE_A_SIDE, Validators.required],
-      hourlyRate: [null, [Validators.required, Validators.min(0)]]
+  loadFields(venueId: number): void {
+    this.fieldService.getFieldsByVenueId(venueId).subscribe({
+      next: fields => {
+        this.fieldsData = fields;
+      }
     });
-  }
-
-  get fields(): FormArray {
-    return this.venueForm.get('fields') as FormArray;
-  }
-
-  addField(): void {
-    this.fields.push(this.createFieldGroup());
-  }
-
-  removeField(index: number): void {
-    this.fields.removeAt(index);
-  }
-
-  getFieldTypeLabel(index: number): string {
-    const currentValue = this.fields.at(index).get('fieldType')?.value;
-    const option = this.fieldTypeOptions.find(opt => opt.value === currentValue);
-    return option ? option.label : 'Seleccionar';
-  }
-
-  toggleDropdown(index: number) {
-    this.dropdownIndex = this.dropdownIndex === index ? null : index;
-  }
-
-  selectFieldType(index: number, value: FieldType) {
-    this.fields.at(index).get('fieldType')?.setValue(value);
   }
 
   onSubmit(): void {
@@ -160,13 +110,26 @@ export class VenueComponent implements OnInit {
       return;
     }
     this.loading = true;
-    const venueRequest = this.venueForm.value;
+    const formValue = this.venueForm.value;
+    const venueId = formValue.id ? formValue.id : null;
 
-    if (venueRequest.id) {
-      this.venueService.updateVenue(venueRequest).subscribe({
+    const request: VenueRequest = {
+
+      name: formValue.name,
+      code: formValue.code,
+      city: formValue.city,
+      address: formValue.address,
+      openingHour: formValue.openingHour,
+      closingHour: formValue.closingHour,
+      adminId: formValue.adminId
+
+    };
+    if (venueId) {
+      this.venueService.updateVenue(request, venueId).subscribe({
         next: res => {
           this.loading = false;
-          this.venueData = res;
+          this.venueData.set(res);
+          this.loadFields(res.id);
           this.alertService.success(
             'Complejo deportivo actualizado',
             'La información de ' + res.name + ' ha sido actualizada.'
@@ -181,13 +144,14 @@ export class VenueComponent implements OnInit {
         }
       });
     } else {
-      this.venueService.createVenue(venueRequest).subscribe({
+      this.venueService.createVenue(request).subscribe({
         next: res => {
           this.loading = false;
-          this.venueData = res;
+          this.venueData.set(res);
+          this.loadFields(res.id);
           this.alertService.success(
             'Complejo deportivo creado',
-            res.name + ' registrado en el sistema, listo para que los usuarios lo puedan reservar.'
+            res.name + ' registrado en el sistema, ahora puedes crear las canchas.'
           );
           this.venueForm.patchValue({ id: res.id });
         },

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
+import { ErrorResponse } from '@core/interfaces/error-response';
 import { Link } from '@core/interfaces/link.interface';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
@@ -38,10 +39,13 @@ export class DashboardComponent implements OnInit {
             this.authService.setUser(user);
             this.loadLinks();
           },
-          error: err => {
-            this.loading = false;
-            console.error('Error obteniendo usuario:', err);
-          }
+          error: (err: ErrorResponse) => {
+          this.loading = false;
+          this.alertService.error(
+            'Error al obtener usuario',
+            err.error.message || 'Hubo un error inesperado'
+          );
+        }
         });
       } else {
         this.loading = false;
@@ -72,7 +76,7 @@ export class DashboardComponent implements OnInit {
 
   logout(): void {
     this.alertService
-      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?')
+      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'No')
       .then(confirmed => {
         if (confirmed) {
           this.authService.logout();

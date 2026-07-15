@@ -5,6 +5,10 @@ import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { FieldTypeToPlayersPipe } from '@shared/pipes/fieldTypeToPlayers.pipe';
+import { FieldService } from '@features/field/services/field.service';
+import { Field } from '@features/field/interfaces/field';
+import { AlertService } from '@core/services/alert.service';
+import { ErrorResponse } from '@core/interfaces/error-response';
 
 @Component({
   selector: 'app-venue-card',
@@ -15,12 +19,32 @@ import { FieldTypeToPlayersPipe } from '@shared/pipes/fieldTypeToPlayers.pipe';
 })
 export class VenueCardComponent {
   private readonly router = inject(Router);
+  private readonly fieldService = inject(FieldService);
+  private readonly alertService = inject(AlertService);
 
   @Input() venue!: Venue;
 
+  fields = signal([] as Field[]);
+
   isOpen = signal(false);
 
+  getFields() {
+    this.fields.set([]);
+    this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
+      next: (fields) => {
+        this.fields.set(fields);
+      },
+      error: (err: ErrorResponse) => {
+          this.alertService.error(
+            'Error al obtener canchas',
+            err.error.message || 'Hubo un error inesperado'
+          );
+        }
+    });
+  }
+
   openModal(): void {
+    this.getFields();
     this.isOpen.set(true);
     document.body.style.overflow = 'hidden';
   }
@@ -34,4 +58,5 @@ export class VenueCardComponent {
     this.onClosed();
     this.router.navigate(['/reserva/' + this.venue.code]);
   }
+
 }

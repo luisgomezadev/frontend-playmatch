@@ -4,7 +4,7 @@
   class="min-h-screen pt-28 pb-20 px-4 bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
 
   <div
-    class="w-full max-w-md bg-white rounded-3xl border border-gray-200 shadow-xl p-8 motion-preset-slide-up-sm motion-duration-1000">
+    class="w-full max-w-md bg-white rounded-3xl border border-gray-100 shadow-lg hover:shadow-xl transition-shadow duration-300 p-8 motion-preset-slide-up-sm motion-duration-1000">
 
     <div class="flex flex-col items-center mb-8">
 
@@ -28,7 +28,7 @@
 
         <div class="relative">
 
-          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary"
             fill="none" viewBox="0 0 24 24" stroke="currentColor">
 
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -37,7 +37,7 @@
           </svg>
 
           <input id="email" type="email" formControlName="email" placeholder="correo@ejemplo.com"
-            class="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" />
+            class="w-full pl-12 pr-4 py-3.5 border border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all" />
 
         </div>
       </div>
@@ -52,7 +52,7 @@
 
         <div class="relative">
 
-          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary"
             fill="none" viewBox="0 0 24 24" stroke="currentColor">
 
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -62,10 +62,10 @@
 
           <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
             placeholder="••••••••"
-            class="w-full pl-12 pr-12 py-3.5 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" />
+            class="w-full pl-12 pr-12 py-3.5 border border-gray-200 bg-gray-50 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white outline-none transition-all" />
 
           <button type="button" (click)="togglePasswordVisibility()" tabindex="-1"
-            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 transition">
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
 
             @if(showPassword){
 
@@ -116,7 +116,7 @@
 
     </form>
 
-    <div class="my-8 border-t border-gray-200"></div>
+    <hr class="my-8 border-gray-100" />
 
     <p class="text-center text-sm text-gray-500">
 

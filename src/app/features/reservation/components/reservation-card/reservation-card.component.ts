@@ -6,19 +6,23 @@ import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { ReservationService } from '@features/reservation/services/reservation.service';
 import { AlertService } from '@core/services/alert.service';
 import { ErrorResponse } from '@core/interfaces/error-response';
+import { FieldService } from '@features/field/services/field.service';
+import { DurationLabelPipe } from '@shared/pipes/duration-label.pipe';
 
 @Component({
   selector: 'app-reservation-card',
   standalone: true,
-  imports: [CommonModule, TimeFormatPipe, FormsModule],
+  imports: [CommonModule, TimeFormatPipe, FormsModule, DurationLabelPipe],
   templateUrl: './reservation-card.component.html',
   styleUrls: ['./reservation-card.component.scss']
 })
 export class ReservationCardComponent {
   private readonly reservationService = inject(ReservationService);
+  private readonly fieldService = inject(FieldService);
   private readonly alertService = inject(AlertService);
 
   @Input() reservation!: Reservation;
+  @Input() fieldName = '';
 
   @Output() reservationCanceled = new EventEmitter<void>();
 
@@ -26,7 +30,7 @@ export class ReservationCardComponent {
   whatsAppMessage = '';
 
   openModal() {
-    this.whatsAppMessage = `Hola ${this.reservation.user}, lamentablemente tuvimos que cancelar tu reserva del día ${this.reservation.reservationDate} a las ${this.reservation.startTime}. Puedes reservar otro día ingresando nuevamente al sitio.`;
+    this.whatsAppMessage = `Hola ${this.reservation.customerName}, lamentablemente tuvimos que cancelar tu reserva del día ${this.reservation.reservationDate} a las ${this.reservation.startTime}. Puedes reservar otro día ingresando nuevamente al sitio.`;
     this.showModal = true;
   }
 
@@ -58,7 +62,7 @@ export class ReservationCardComponent {
       next: () => {
         this.alertService.success(
           'Reserva cancelada',
-          `Has cancelado la reserva de ${this.reservation.user}`
+          `Has cancelado la reserva de ${this.reservation.customerName} del día ${this.reservation.reservationDate} a las ${this.reservation.startTime}.`
         );
 
         this.reservationCanceled.emit();

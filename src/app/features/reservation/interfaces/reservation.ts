@@ -1,7 +1,7 @@
 export interface Reservation {
   id: number;
   code: string;
-  user: string;
+  customerName: string;
   cellphone: string;
   fieldId: number;
   fieldName: string;
@@ -15,7 +15,7 @@ export interface Reservation {
 }
 
 export interface ReservationRequest {
-  user: string;
+  customerName: string;
   cellphone: string;
   fieldId: number;
   duration: ReservationDuration;
@@ -36,5 +36,7 @@ export enum Status {
 export enum ReservationDuration {
   MIN_60 = 'MIN_60',
   MIN_90 = 'MIN_90',
-  MIN_120 = 'MIN_120'
+  MIN_120 = 'MIN_120',
+  MIN_150 = 'MIN_150',
+  MIN_180 = 'MIN_180'
 }

@@ -1,15 +1,13 @@
-import { Reservation } from '@reservation/interfaces/reservation';
-
 export interface Field {
   id: number;
   name: string;
   fieldType: FieldType;
   hourlyRate: number;
-  reservations: Reservation[];
+  venueId: number;
 }
 
 export interface FieldRequest {
-  id: number;
+  venueId: number;
   name: string;
   fieldType: FieldType;
   hourlyRate: number;

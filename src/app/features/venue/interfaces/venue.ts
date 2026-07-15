@@ -1,6 +1,3 @@
-import { Field } from "@features/field/interfaces/field";
-import { User } from "@features/user/interfaces/user";
-
 export interface Venue {
   id: number;
   code: string;
@@ -9,13 +6,10 @@ export interface Venue {
   address: string;
   openingHour: string;
   closingHour: string;
-  admin?: User;
-  status: Status;
-  fields: Field[]
+  adminId?: number;
 }
 
 export interface VenueRequest {
-  id: number;
   code: string;
   name: string;
   city: string;
@@ -23,8 +17,6 @@ export interface VenueRequest {
   openingHour: string;
   closingHour: string;
   adminId: number;
-  status: Status;
-  fields: Field[]
 }
 
 export interface VenueFilter {

@@ -13,6 +13,7 @@ import { AlertService } from '@core/services/alert.service';
 import { ReservationCardComponent } from '@features/reservation/components/reservation-card/reservation-card.component';
 import { ScrollService } from '@core/services/scroll.service';
 import { CreateVenueCardComponent } from '@shared/components/create-venue-card/create-venue-card.component';
+import { FieldService } from '@features/field/services/field.service';
 
 @Component({
   selector: 'app-reservation-list',
@@ -24,12 +25,14 @@ import { CreateVenueCardComponent } from '@shared/components/create-venue-card/c
 export class ReservationListComponent implements OnInit {
   private readonly reservationService = inject(ReservationService);
   private readonly venueService = inject(VenueService);
+  private readonly fieldService = inject(FieldService);
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly scrollService = inject(ScrollService);
 
   user!: User;
   venue!: Venue;
+  fieldsById = new Map<number, string>();
 
   loading = false;
   loadingVenue = false;
@@ -99,6 +102,7 @@ export class ReservationListComponent implements OnInit {
         next: data => {
           this.loading = false;
           this.reservations = data;
+          this.loadFields();
         },
         error: (err: ErrorResponse) => {
           this.loading = false;
@@ -110,12 +114,11 @@ export class ReservationListComponent implements OnInit {
       });
   }
 
-  cancelReservation(reservationId: number): void {
-    if (!confirm('¿Seguro que quieres cancelar la reserva?')) return;
-
-    this.reservationService.canceledReservation(reservationId).subscribe({
-      next: () => this.loadReservations(),
-      error: err => console.error(err)
+  loadFields() {
+    this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
+      next: (fields) => {
+        this.fieldsById = new Map(fields.map(f => [f.id, f.name]));
+      }
     });
   }
 

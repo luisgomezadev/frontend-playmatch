@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { Field } from '@features/field/interfaces/field';
+import { FieldService } from '@features/field/services/field.service';
 import {
   Reservation,
   ReservationDuration,
@@ -45,6 +47,7 @@ interface DayItem {
 })
 export class ReservationFormComponent implements OnInit {
   private readonly venueService = inject(VenueService);
+  private readonly fieldService = inject(FieldService);
   private readonly reservationService = inject(ReservationService);
   private readonly route = inject(ActivatedRoute);
   private readonly formBuilder = inject(FormBuilder);
@@ -66,11 +69,14 @@ export class ReservationFormComponent implements OnInit {
   reservationForm!: FormGroup;
   successReservation = false;
   reservationData!: Reservation;
+  fields: Field[] = [];
 
   durations = [
-    { enum: ReservationDuration.MIN_60, minutes: 60 },
-    { enum: ReservationDuration.MIN_90, minutes: 90 },
-    { enum: ReservationDuration.MIN_120, minutes: 120 }
+    { enum: ReservationDuration.MIN_60, minutes: 60, label: '1 hora' },
+    { enum: ReservationDuration.MIN_90, minutes: 90, label: '1 hora y media' },
+    { enum: ReservationDuration.MIN_120, minutes: 120, label: '2 horas' },
+    { enum: ReservationDuration.MIN_150, minutes: 150, label: '2 horas y media' },
+    { enum: ReservationDuration.MIN_180, minutes: 180, label: '3 horas' }
   ];
 
   ngOnInit(): void {
@@ -82,7 +88,7 @@ export class ReservationFormComponent implements OnInit {
 
   initForm(): void {
     this.reservationForm = this.formBuilder.group({
-      user: ['', [Validators.required, Validators.minLength(3)]],
+      customerName: ['', [Validators.required, Validators.minLength(3)]],
       cellphone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]]
     });
   }
@@ -214,6 +220,22 @@ export class ReservationFormComponent implements OnInit {
       next: data => {
         this.loading = false;
         this.venue = data;
+        this.getFieldsByVenue(data.id);
+      }
+    });
+  }
+
+  getFieldsByVenue(venueId: number) {
+    if (!this.venue) return;
+    this.fieldService.getFieldsByVenueId(venueId).subscribe({
+      next: fields => {
+        this.fields = fields;
+      },
+      error: (err: ErrorResponse) => {
+        this.alertService.error(
+          'Error al obtener canchas',
+          err.error.message || 'Error inesperado'
+        );
       }
     });
   }
@@ -227,7 +249,7 @@ export class ReservationFormComponent implements OnInit {
     this.loadingCreateReservation = true;
 
     const payload: ReservationRequest = {
-      user: this.reservationForm.value.user,
+      customerName: this.reservationForm.value.customerName,
       cellphone: this.reservationForm.value.cellphone,
       fieldId: this.selectedField!.id,
       reservationDate: this.formatDateLocal(this.selectedDate!),

@@ -119,7 +119,7 @@
   </section>
 
   <!-- Paso 2: Sección para elegir cancha -->
-  <section *ngIf="selectedDate && venue.fields.length"
+  <section *ngIf="selectedDate && fields.length"
     class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
     <header class="flex items-center gap-2 mb-4">
       <div class="p-2 rounded-lg bg-gray-100">
@@ -135,7 +135,7 @@
     </header>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-      <button *ngFor="let field of venue.fields" (click)="selectField(field)"
+      <button *ngFor="let field of fields" (click)="selectField(field)"
         class="px-4 py-3 rounded-lg border transition-all select-none text-left" [ngClass]="
             selectedField?.id === field.id
               ? 'bg-primary text-gray-200 border-primary'
@@ -169,14 +169,14 @@
       </div>
       <h2 class="text-base sm:text-lg font-semibold text-black">Paso 3: Elige la duración</h2>
     </header>
-    <div class="flex gap-3">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
       <button *ngFor="let d of durations" (click)="getAvailableHours(d.minutes, d.enum)"
         class="px-4 py-2 rounded-lg border transition-all select-none" [ngClass]="
             selectedDurationEnum === d.enum
               ? 'bg-primary text-gray-200 border-primary'
               : 'bg-gray-100 text-gray-700 border-gray-500 hover:bg-primary/10 hover:border-primary hover:text-gray-800'
           ">
-        {{ d.minutes }} min
+        {{ d.label }}
       </button>
     </div>
   </section>
@@ -282,12 +282,12 @@
     <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1" for="user">
+          <label class="block text-sm font-medium text-gray-700 mb-1" for="customerName">
             Nombre completo
           </label>
-          <input formControlName="user" type="text" required placeholder="Ej: Juan Pérez"
+          <input formControlName="customerName" type="text" required placeholder="Ej: Juan Pérez"
             class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent text-black" />
-          <div *ngIf="reservationForm.get('user')?.invalid && reservationForm.get('user')?.touched"
+          <div *ngIf="reservationForm.get('customerName')?.invalid && reservationForm.get('customerName')?.touched"
             class="text-red-500 text-xs mt-1">
             Ingresa un nombre válido
           </div>

@@ -5,6 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { PagedResponse } from '@core/interfaces/paged-response';
 import { HttpParams } from '@angular/common/http';
 import { CacheService } from '@core/services/cache.service';
+import { Field } from '@features/field/interfaces/field';
 
 @Injectable({
   providedIn: 'root'
@@ -40,13 +41,17 @@ export class VenueService extends BaseHttpService {
 
     return this.cacheService.get(
       cacheKey,
-      () => this.http.get<PagedResponse<Venue>>(this.ENDPOINT, { params })
+      () => this.http.get<PagedResponse<Venue>>(`${this.ENDPOINT}/p`, { params })
     );
 
   }
 
   getVenueById(id: number): Observable<Venue> {
     return this.http.get<Venue>(`${this.ENDPOINT}/${id}`);
+  }
+
+  getVenuePublicById(id: number): Observable<Venue> {
+    return this.http.get<Venue>(`${this.ENDPOINT}/p/${id}`);
   }
 
   getVenueByAdminId(id: number): Observable<Venue> {
@@ -63,8 +68,18 @@ export class VenueService extends BaseHttpService {
     );
   }
 
-  updateVenue(venue: VenueRequest): Observable<Venue> {
-    return this.http.put<Venue>(this.ENDPOINT, venue).pipe(
+  createVenueWithFields(venue: VenueRequest, fields: Field[]): Observable<Venue> {
+    const request = {
+      venue,
+      fields
+    };
+    return this.http.post<Venue>(`${this.ENDPOINT}/with-fields`, request).pipe(
+      tap(() => this.cacheService.clearByPrefix('venues-'))
+    );
+  }
+
+  updateVenue(venue: VenueRequest, id: number): Observable<Venue> {
+    return this.http.put<Venue>(`${this.ENDPOINT}/${id}`, venue).pipe(
       tap(() => this.cacheService.clearByPrefix('venues-'))
     );
   }

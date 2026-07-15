@@ -1,91 +1,76 @@
 <article
-  class="relative overflow-hidden rounded-xl border-2 border-gray-300 bg-white border-l-gray-500 transition-all duration-300 motion-preset-blur-down-md p-4">
-  <div class="">
-    <header class="flex items-center justify-between mb-3">
+  class="relative overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl motion-preset-blur-down-md p-6">
+
+  <header class="flex items-start justify-between mb-6">
+    <div class="flex items-center gap-4">
+      <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-md shrink-0">
+        <i class="fa-solid fa-calendar text-lg"></i>
+      </div>
+      <div>
+        <span class="text-2xl font-extrabold leading-none text-gray-900">
+          {{ reservation.startTime | timeFormat }} – {{ reservation.endTime | timeFormat }}
+        </span>
+        <p class="text-sm text-gray-500 mt-2 capitalize">
+          <span class="font-semibold text-gray-700">{{ fieldName }}</span> · {{ reservation.duration | durationLabel }}
+        </p>
+      </div>
+    </div>
+    <span
+      class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold bg-primary/10 text-primary shrink-0">
+      {{ reservation.code }}
+    </span>
+  </header>
+
+  <div class="rounded-2xl border border-gray-100 bg-gray-50 p-5 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="flex items-center gap-3">
-        <div
-          class="flex items-center justify-center w-12 h-12 rounded-full bg-gray-200 text-gray-700">
-          <i class="fa-solid fa-calendar w-4 h-4"></i>
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
+          <i class="fa-solid fa-user text-sm"></i>
         </div>
-        <div>
-          <span class="text-2xl font-bold text-gray-700">
-            {{ reservation.startTime | timeFormat }}
-          </span>
-        </div>
+        <span class="font-semibold text-gray-900 text-sm truncate">{{ reservation.customerName }}</span>
       </div>
-      <span
-        class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-accent">
-        {{ reservation.code }}
-      </span>
-    </header>
-  </div>
-  <div class="pb-4">
-    <div class="bg-gray-100/60 backdrop-blur-sm rounded-lg p-4 border border-white/50">
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-user text-gray-500"></i>
-          <span class="font-semibold text-black text-sm">{{ reservation.user }}</span>
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
+          <i class="fa-solid fa-phone text-sm"></i>
         </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-phone text-gray-500"></i>
-          <span class="text-gray-800 text-sm font-medium">{{ reservation.cellphone }}</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-futbol text-gray-500"></i>
-          <span class="text-gray-800 text-sm capitalize">{{ reservation.fieldName }}</span>
-        </div>
+        <span class="text-gray-700 text-sm font-medium">{{ reservation.cellphone }}</span>
       </div>
     </div>
   </div>
-  <div class="flex gap-2">
-    <div class="flex gap-2 flex-1">
-      <a
-        [href]="'https://wa.me/' + reservation.cellphone"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-primary hover:bg-primary/90 text-white rounded-lg font-medium text-sm transition-all duration-200 active:scale-95"
-        title="Enviar WhatsApp">
-        <svg class="hidden sm:block w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-          <path
-            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.515z"></path>
-        </svg>
-        WhatsApp
-      </a>
-      <a
-        [href]="'tel:' + reservation.cellphone"
-        class="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-secondary text-white rounded-lg font-medium text-sm transition-all duration-200 active:scale-95"
-        title="Llamar por teléfono">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-phone hidden sm:block w-4 h-4">
-          <path
-            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-        </svg>
-        Llamar
-      </a>
-    </div>
+
+  <div class="grid gap-3 sm:grid-cols-3">
+    <a
+      [href]="'https://wa.me/' + reservation.cellphone"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center justify-center gap-2 rounded-2xl bg-green-600 py-3.5 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-green-700 hover:shadow-lg"
+      title="Enviar WhatsApp">
+      <svg class="hidden sm:block w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+        <path
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.515z"></path>
+      </svg>
+      WhatsApp
+    </a>
+    <a
+      [href]="'tel:' + reservation.cellphone"
+      class="flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-gray-50 py-3.5 font-semibold text-gray-700 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lg"
+      title="Llamar por teléfono">
+      <svg
+        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="w-4 h-4">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+      </svg>
+      Llamar
+    </a>
     <button
       (click)="openModal()"
-      class="flex items-center justify-center gap-2 py-3 px-4 bg-red-100 hover:bg-red-200 text-red-700 hover:text-red-800 rounded-lg font-medium text-sm transition-all duration-200 active:scale-95">
+      class="flex items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 py-3.5 font-semibold text-red-600 transition-all duration-300 hover:-translate-y-1 hover:bg-red-100 hover:shadow-lg"
+      title="Cancelar reserva">
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="lucide lucide-x hidden sm:block w-4 h-4">
+        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="w-4 h-4">
         <path d="M18 6 6 18"></path>
         <path d="m6 6 12 12"></path>
       </svg>
@@ -95,41 +80,36 @@
 </article>
 
 @if (showModal) {
-  <div
-    class="fixed inset-0 h-dvh overflow-hidden z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-    <div
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 max-w-none w-screen">
-      <div
-        class="bg-white rounded-xl shadow p-6 w-full max-w-sm text-center motion-preset-slide-up-sm">
-        <h2 class="text-lg font-semibold text-gray-900 mb-2">¿Cancelar reserva?</h2>
-        <p class="text-gray-700 text-sm mb-4">
-          ¿Querés notificar a
-          <strong>{{ reservation.user }}</strong>
-          por WhatsApp?
-        </p>
-        <textarea
-          class="w-full border rounded p-3 mb-3 text-base text-gray-800 bg-white resize-none"
-          rows="6"
-          [(ngModel)]="whatsAppMessage"
-          placeholder="Mensaje para enviar por WhatsApp"
-          style="min-height: 120px"></textarea>
-        <div class="flex flex-col gap-3 mt-4">
-          <button
-            (click)="cancelAndNotify()"
-            class="px-4 py-3 rounded bg-primary text-white hover:bg-hover-primary transition-colors text-base shadow-sm">
-            Cancelar y notificar por WhatsApp
-          </button>
-          <button
-            (click)="cancelWithoutNotify()"
-            class="px-4 py-3 rounded bg-secondary text-white hover:bg-hover-secondary transition-colors text-base shadow-sm">
-            Cancelar sin avisar
-          </button>
-          <button
-            (click)="closeModal()"
-            class="px-4 py-3 rounded border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors text-base shadow-sm">
-            Volver
-          </button>
-        </div>
+  <div class="fixed inset-0 h-dvh overflow-hidden z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl shadow-xl p-6 w-full max-w-sm text-center motion-preset-slide-up-sm">
+      <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-red-100 text-red-600 mx-auto mb-4">
+        <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+      </div>
+      <h2 class="text-lg font-bold text-gray-900 mb-1">¿Cancelar reserva?</h2>
+      <p class="text-gray-600 text-sm mb-5">
+        ¿Querés notificar a <strong class="text-gray-800">{{ reservation.customerName }}</strong> por WhatsApp?
+      </p>
+      <textarea
+        class="w-full border border-gray-200 rounded-2xl p-4 mb-4 text-sm text-gray-800 bg-gray-50 resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+        rows="4"
+        [(ngModel)]="whatsAppMessage"
+        placeholder="Mensaje para enviar por WhatsApp"></textarea>
+      <div class="flex flex-col gap-3">
+        <button
+          (click)="cancelAndNotify()"
+          class="rounded-2xl bg-primary py-3.5 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          Cancelar y notificar por WhatsApp
+        </button>
+        <button
+          (click)="cancelWithoutNotify()"
+          class="rounded-2xl border border-red-100 bg-red-50 py-3.5 font-semibold text-red-600 transition-all duration-300 hover:-translate-y-1 hover:bg-red-100 hover:shadow-lg">
+          Cancelar sin avisar
+        </button>
+        <button
+          (click)="closeModal()"
+          class="rounded-2xl py-3 font-medium text-gray-500 transition-colors hover:bg-gray-100">
+          Volver
+        </button>
       </div>
     </div>
   </div>

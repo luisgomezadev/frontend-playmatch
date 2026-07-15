@@ -55,10 +55,17 @@ export const routes: Routes = [
           import('./features/user/pages/home/home.component').then(m => m.HomeComponent)
       },
       {
-        path: 'cancha',
+        path: 'complejo-deportivo',
         loadComponent: () =>
           import('./features/venue/pages/venue/venue.component').then(
             m => m.VenueComponent
+          )
+      },
+      {
+        path: 'canchas',
+        loadComponent: () =>
+          import('./features/field/pages/field/field.component').then(
+            m => m.FieldComponent
           )
       },
       {

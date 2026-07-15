@@ -5,14 +5,19 @@ export const LINKS_DASHBOARD = [
     iconClass: "fa-solid fa-house",
   },
   {
+    name: "Complejo deportivo",
+    link: "complejo-deportivo",
+    iconClass: "fa-solid fa-archway",
+  },
+  {
+    name: "Canchas",
+    link: "canchas",
+    iconClass: "fa-solid fa-futbol",
+  },
+    {
     name: "Reservas",
     link: "reservas",
     iconClass: "fa-solid fa-list",
-  },
-  {
-    name: "Mi cancha",
-    link: "cancha",
-    iconClass: "fa-solid fa-futbol",
   },
   {
     name: "Perfil",

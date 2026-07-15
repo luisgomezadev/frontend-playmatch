@@ -7,37 +7,84 @@ import { ButtonComponent } from '../button/button.component';
   standalone: true,
   imports: [ButtonComponent],
   template: `
-    <article
-      class="bg-gradient-to-br mt-8 from-gray-50 to-gray-50 border-2 border-gray-100 rounded-xl p-6 transition-all duration-200">
-      <div class="mt-2 space-y-4 text-center">
-        <h3 class="font-semibold text-gray-800 text-lg">Registra tu complejo deportivo</h3>
-        <p class="text-sm text-gray-600 leading-relaxed">
-          Aún no tienes canchas registradas. Crea tu centro deportivo con tus canchas para que los
-          usuarios puedan reservar en línea.
-        </p>
+    <section class="mt-8">
+  <div
+    class="overflow-hidden rounded-3xl border border-gray-100 bg-gray-100 shadow-lg transition-shadow duration-300 hover:shadow-xl">
 
-        <div class="w-fit mx-auto">
-          <app-button
-          (clicked)="goToPage('/dashboard/cancha')">
+    <div class="flex flex-col gap-8 p-6 md:flex-row md:items-center md:justify-between">
+
+      <div class="flex items-center gap-5">
+
+        <div
+          class="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-md">
+
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            class="h-8 w-8"
             fill="none"
+            viewBox="0 0 24 24"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-plus w-4 h-4">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
+            stroke-width="2">
+
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 5v14M5 12h14" />
+
           </svg>
-          Crear Cancha
-        </app-button>
+
         </div>
+
+        <div>
+
+          <p class="text-sm font-semibold uppercase tracking-wide text-gray-500">
+            Configuración inicial
+          </p>
+
+          <h3 class="mt-1 text-2xl font-bold text-gray-900">
+            Registra tu complejo deportivo
+          </h3>
+
+          <p class="mt-2 max-w-xl text-sm text-gray-500">
+            Aún no tienes complejo deportivo registrado. Crea tu complejo deportivo y añade las canchas para que los usuarios puedan
+            reservar en línea y comenzar a gestionar tus reservas desde PlayMatch.
+          </p>
+
+        </div>
+
       </div>
-    </article>
+
+      <div class="w-full md:w-auto">
+
+        <app-button
+          class="w-full md:w-auto"
+          (clicked)="goToPage('/dashboard/complejo-deportivo')">
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2">
+
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 5v14M5 12h14" />
+
+          </svg>
+
+          Crear complejo deportivo
+
+        </app-button>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
   `
 })
 export class CreateVenueCardComponent {

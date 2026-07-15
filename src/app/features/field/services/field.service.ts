@@ -13,8 +13,16 @@ export class FieldService extends BaseHttpService {
     return this.http.get<Field>(`${this.ENDPOINT}/${id}`);
   }
 
+  getFieldsByVenueId(venueId: number): Observable<Field[]> {
+    return this.http.get<Field[]>(`${this.ENDPOINT}/venue/${venueId}`);
+  }
+
   createField(field: FieldRequest): Observable<Field> {
     return this.http.post<Field>(`${this.ENDPOINT}`, field);
+  }
+
+  updateField(field: FieldRequest, fieldId: number): Observable<Field> {
+    return this.http.put<Field>(`${this.ENDPOINT}/${fieldId}`, field);
   }
 
   deleteFieldById(id: number): Observable<string> {

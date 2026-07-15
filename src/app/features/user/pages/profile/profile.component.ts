@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
+import { FieldService } from '@features/field/services/field.service';
 import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
@@ -31,6 +32,7 @@ export class ProfileComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly alertService = inject(AlertService);
   private readonly venueService = inject(VenueService);
+  private readonly fieldService = inject(FieldService);
 
   @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
 
@@ -62,6 +64,17 @@ export class ProfileComponent implements OnInit {
         this.loadingVenue = false;
       }
     });
+  }
+
+  getFieldsCount(): number {
+    if (!this.venue) return 0;
+    let count = 0;
+    this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
+      next: fields => {
+        count = fields.length;
+      }
+    });
+    return count;
   }
 
   openModal() {
@@ -134,7 +147,7 @@ export class ProfileComponent implements OnInit {
 
   logout(): void {
     this.alertService
-      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?')
+      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'No')
       .then(confirmed => {
         if (confirmed) {
           this.authService.logout();

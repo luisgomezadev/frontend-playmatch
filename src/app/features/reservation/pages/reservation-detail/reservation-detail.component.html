@@ -12,18 +12,6 @@
 
             <div class="flex items-center gap-5">
 
-              <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm">
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor" stroke-width="2">
-
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M8 7V3m8 4V3m-9 8h10m-13 9h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v11a2 2 0 002 2z" />
-
-                </svg>
-
-              </div>
-
               <div>
 
                 <h1 class="text-3xl font-bold">
@@ -165,7 +153,7 @@
                 </p>
 
                 <h3 class="text-xl font-bold text-gray-900">
-                  {{ reservationData.user }}
+                  {{ reservationData.customerName }}
                 </h3>
 
               </div>
@@ -195,15 +183,9 @@
 
                 <h3 class="text-lg font-bold text-gray-900 capitalize">
 
-                  {{ reservationData.reservationDate | customDate }}
+                  {{ reservationData.reservationDate | customDate }} - {{ reservationData.startTime | timeFormat }}
 
                 </h3>
-
-                <span class="mt-2 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
-
-                  {{ reservationData.startTime | timeFormat }}
-
-                </span>
 
               </div>
 
@@ -233,13 +215,13 @@
 
                 <h3 class="text-lg font-bold text-gray-900 capitalize">
 
-                  {{ reservationData.venueName }}
+                  {{ venueName }}
 
                 </h3>
 
                 <p class="text-gray-600">
 
-                  {{ reservationData.fieldName }}
+                  {{ fieldName }}
 
                 </p>
 
