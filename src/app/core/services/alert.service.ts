@@ -5,27 +5,24 @@ import Swal, { SweetAlertIcon } from 'sweetalert2';
 export class AlertService {
 
   confirm(
-    title: string,
-    text: string,
-    confirmButtonText = 'Aceptar',
-    cancelButtonText = 'Cancelar'
-  ): Promise<boolean> {
-    return Swal.fire({
-      title,
-      text,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText,
-      cancelButtonText,
-      customClass: {
-        confirmButton: 'swal-confirm-btn',
-        cancelButton: 'swal-cancel-btn',
-      },
-      buttonsStyling: false
-    }).then(result => result.isConfirmed);
-  }
+  title: string,
+  text: string,
+  confirmButtonText = 'Aceptar',
+  cancelButtonText = 'Cancelar',
+  confirmButtonColor = '#3aaa35',
+  cancelButtonColor = '#0b2545'
+): Promise<boolean> {
+  return Swal.fire({
+    title,
+    text,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor,
+    cancelButtonColor,
+    confirmButtonText,
+    cancelButtonText
+  }).then(result => result.isConfirmed);
+}
 
   success(title: string, text: string): void {
     Swal.fire({

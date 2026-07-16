@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit {
 
   logout(): void {
     this.alertService
-      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'No')
+      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'No', '#dc2626')
       .then(confirmed => {
         if (confirmed) {
           this.authService.logout();

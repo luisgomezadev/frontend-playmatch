@@ -11,7 +11,7 @@
           {{ reservation.startTime | timeFormat }} – {{ reservation.endTime | timeFormat }}
         </span>
         <p class="text-sm text-gray-500 mt-2 capitalize">
-          <span class="font-semibold text-gray-700">{{ fieldName }}</span> · {{ reservation.duration | durationLabel }}
+          <span class="font-semibold text-gray-700">{{ reservation.fieldName }}</span> · {{ reservation.duration | durationLabel }}
         </p>
       </div>
     </div>

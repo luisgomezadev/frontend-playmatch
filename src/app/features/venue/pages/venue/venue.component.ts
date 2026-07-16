@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { EMPTY, switchMap } from 'rxjs';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
@@ -28,6 +30,7 @@ export class VenueComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly scrollService = inject(ScrollService);
+  private readonly destroyRef = inject(DestroyRef);
 
   venueForm!: FormGroup;
   loading = false;
@@ -39,25 +42,32 @@ export class VenueComponent implements OnInit {
   statusTypes = Object.values(Status);
 
   ngOnInit(): void {
-
     this.scrollService.scrollToTop();
 
     this.initForm();
 
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.venueForm.patchValue({ adminId: user.id });
-
-        this.venueService.getVenueByAdminId(user.id).subscribe({
-          next: venue => {
-            if (venue) {
-              this.venueData.set(venue);
-              this.loadVenue(venue);
-            }
+    this.authService.currentUser$
+      .pipe(
+        switchMap(user => {
+          if (!user) return EMPTY;
+          return this.venueService.getMyVenue();
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: venue => {
+          if (venue) {
+            this.venueData.set(venue);
+            this.loadVenue(venue);
           }
-        });
-      }
-    });
+        },
+        error: (err: ErrorResponse) => {
+          this.alertService.error(
+            'Error al obtener complejo deportivo',
+            err.error.message || 'Error inesperado'
+          );
+        }
+      });
   }
 
   private initForm(): void {
@@ -77,7 +87,6 @@ export class VenueComponent implements OnInit {
       ],
       openingHour: ['', Validators.required],
       closingHour: ['', Validators.required],
-      adminId: [null, Validators.required],
     });
   }
 
@@ -92,7 +101,6 @@ export class VenueComponent implements OnInit {
       code: venue.code,
       openingHour: venue.openingHour,
       closingHour: venue.closingHour,
-      adminId: venue.adminId
     });
   }
 
@@ -100,6 +108,12 @@ export class VenueComponent implements OnInit {
     this.fieldService.getFieldsByVenueId(venueId).subscribe({
       next: fields => {
         this.fieldsData = fields;
+      },
+      error: (err: ErrorResponse) => {
+        this.alertService.error(
+          'Error al obtener canchas',
+          err.error.message || 'Error inesperado'
+        );
       }
     });
   }
@@ -114,15 +128,12 @@ export class VenueComponent implements OnInit {
     const venueId = formValue.id ? formValue.id : null;
 
     const request: VenueRequest = {
-
       name: formValue.name,
       code: formValue.code,
       city: formValue.city,
       address: formValue.address,
       openingHour: formValue.openingHour,
       closingHour: formValue.closingHour,
-      adminId: formValue.adminId
-
     };
     if (venueId) {
       this.venueService.updateVenue(request, venueId).subscribe({

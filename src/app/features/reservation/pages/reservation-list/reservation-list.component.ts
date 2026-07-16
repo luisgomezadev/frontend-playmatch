@@ -1,19 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
+import { EMPTY, switchMap } from 'rxjs';
 import { AuthService } from '@core/services/auth.service';
 import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { ReservationService } from '@reservation/services/reservation.service';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { User } from '@user/interfaces/user';
 import { Reservation } from '@features/reservation/interfaces/reservation';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { ReservationCardComponent } from '@features/reservation/components/reservation-card/reservation-card.component';
 import { ScrollService } from '@core/services/scroll.service';
 import { CreateVenueCardComponent } from '@shared/components/create-venue-card/create-venue-card.component';
-import { FieldService } from '@features/field/services/field.service';
 
 @Component({
   selector: 'app-reservation-list',
@@ -25,14 +25,12 @@ import { FieldService } from '@features/field/services/field.service';
 export class ReservationListComponent implements OnInit {
   private readonly reservationService = inject(ReservationService);
   private readonly venueService = inject(VenueService);
-  private readonly fieldService = inject(FieldService);
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly scrollService = inject(ScrollService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  user!: User;
   venue!: Venue;
-  fieldsById = new Map<number, string>();
 
   loading = false;
   loadingVenue = false;
@@ -41,38 +39,33 @@ export class ReservationListComponent implements OnInit {
   reservations: Reservation[] = [];
 
   ngOnInit(): void {
-
     this.scrollService.scrollToTop();
 
-    this.initUser();
-  }
-
-  private initUser(): void {
-    this.authService.currentUser$.subscribe(user => {
-      if (!user) return;
-      this.user = user;
-      this.getVenue();
-    });
-  }
-
-  private getVenue(): void {
     this.loadingVenue = true;
-    this.venueService.getVenueByAdminId(this.user.id).subscribe({
-      next: data => {
-        this.loadingVenue = false;
-        if (data) {
-          this.venue = data;
-          this.loadReservations();
+    this.authService.currentUser$
+      .pipe(
+        switchMap(user => {
+          if (!user) return EMPTY;
+          return this.venueService.getMyVenue();
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: data => {
+          this.loadingVenue = false;
+          if (data) {
+            this.venue = data;
+            this.loadReservations();
+          }
+        },
+        error: (err: ErrorResponse) => {
+          this.loadingVenue = false;
+          this.alertService.error(
+            'Error al obtener información del complejo deportivo',
+            err.error.message || 'Hubo un error inesperado'
+          );
         }
-      },
-      error: (err: ErrorResponse) => {
-        this.loadingVenue = false;
-        this.alertService.error(
-          'Error al obtener información del complejo deportivo',
-          err.error.message || 'Hubo un error inesperado'
-        );
-      }
-    });
+      });
   }
 
   prevDay(): void {
@@ -102,7 +95,6 @@ export class ReservationListComponent implements OnInit {
         next: data => {
           this.loading = false;
           this.reservations = data;
-          this.loadFields();
         },
         error: (err: ErrorResponse) => {
           this.loading = false;
@@ -112,14 +104,6 @@ export class ReservationListComponent implements OnInit {
           );
         }
       });
-  }
-
-  loadFields() {
-    this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
-      next: (fields) => {
-        this.fieldsById = new Map(fields.map(f => [f.id, f.name]));
-      }
-    });
   }
 
   get formattedDate(): string {

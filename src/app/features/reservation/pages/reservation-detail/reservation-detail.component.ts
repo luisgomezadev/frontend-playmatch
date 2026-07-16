@@ -56,7 +56,7 @@ export class ReservationDetailComponent {
   }
 
   getVenueName(venueId: number): void {
-    this.venueService.getVenuePublicById(venueId).subscribe({
+    this.venueService.getVenueById(venueId).subscribe({
       next: venue => {
         this.venueName = venue.name;
       }

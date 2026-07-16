@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { EMPTY, switchMap } from 'rxjs';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
@@ -24,6 +26,7 @@ export class FieldComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly venueService = inject(VenueService);
   private readonly alertService = inject(AlertService);
+  private readonly destroyRef = inject(DestroyRef);
 
   fieldForm = new FormGroup({
     id: new FormControl(),
@@ -45,32 +48,33 @@ export class FieldComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
-      if (!user) return;
-      this.getVenue(user.id);
-    });
-  }
-
-  private getVenue(adminId: number): void {
-    this.venueService.getVenueByAdminId(adminId).subscribe({
-      next: (venue) => {
-        if (venue) {
-          this.venueId.set(venue.id);
-          this.getFields(this.venueId());
-        }
-      },
-      error: (err: ErrorResponse) => {
+    this.authService.currentUser$
+      .pipe(
+        switchMap(user => {
+          if (!user) return EMPTY;
+          return this.venueService.getMyVenue();
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: (venue) => {
+          if (venue) {
+            this.venueId.set(venue.id);
+            this.getFields(this.venueId());
+          }
+        },
+        error: (err: ErrorResponse) => {
           this.alertService.error(
             'Error al obtener complejo deportivo',
             err.error.message || 'Error inesperado'
           );
         }
-    });
+      });
   }
 
   private getFields(venueId: number | null): void {
     if (!venueId) return;
-    this.fieldService.getFieldsByVenueId(venueId).subscribe({
+    this.fieldService.getAllFieldsByVenueId(venueId).subscribe({
       next: (fields: Field[]) => {
         this.fields.set(fields);
       },
@@ -148,19 +152,40 @@ export class FieldComponent implements OnInit {
     });
   }
 
-  deleteField(fieldId: number): void {
+  activateField(fieldId: number): void {
     this.alertService
-      .confirm('¿Eliminar cancha?', '¿Estás seguro de eliminar la cancha? Las reservas de esta cancha no se eliminaran', 'Si, eliminar', 'No')
+      .confirm('Activar cancha?', '¿Estás seguro de activar la cancha?', 'Si, activar', 'No')
       .then(confirmed => {
         if (confirmed) {
-          this.fieldService.deleteFieldById(fieldId).subscribe({
+          this.fieldService.activateById(fieldId).subscribe({
             next: () => {
-              this.alertService.success('Cancha eliminada', 'Has eliminado la cancha correctamente.');
+              this.alertService.success('Cancha activada', 'Has activado la cancha correctamente.');
               this.getFields(this.venueId());
             },
             error: (err: ErrorResponse) => {
               this.alertService.error(
-                'Error al eliminar cancha',
+                'Error al activar cancha',
+                err.error.message || 'Error inesperado'
+              );
+            }
+          });
+        }
+      });
+  }
+
+  deactivateField(fieldId: number): void {
+    this.alertService
+      .confirm('Desactivar cancha?', '¿Estás seguro de eliminar la cancha? La puedes volver a activar cuando quieras', 'Si, desactivar', 'No')
+      .then(confirmed => {
+        if (confirmed) {
+          this.fieldService.deactivateById(fieldId).subscribe({
+            next: () => {
+              this.alertService.success('Cancha desactivada', 'Has desactivado la cancha correctamente.');
+              this.getFields(this.venueId());
+            },
+            error: (err: ErrorResponse) => {
+              this.alertService.error(
+                'Error al desactivar cancha',
                 err.error.message || 'Error inesperado'
               );
             }

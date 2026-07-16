@@ -6,7 +6,6 @@ export interface Venue {
   address: string;
   openingHour: string;
   closingHour: string;
-  adminId?: number;
 }
 
 export interface VenueRequest {
@@ -16,7 +15,6 @@ export interface VenueRequest {
   address: string;
   openingHour: string;
   closingHour: string;
-  adminId: number;
 }
 
 export interface VenueFilter {

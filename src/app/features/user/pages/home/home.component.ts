@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
+import { EMPTY, switchMap } from 'rxjs';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
@@ -11,8 +13,8 @@ import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { CreateVenueCardComponent } from '@shared/components/create-venue-card/create-venue-card.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { User } from '@user/interfaces/user';
 import { environment } from 'environments/environment';
+import { User } from '@features/user/interfaces/user';
 
 @Component({
   selector: 'app-home-admin',
@@ -27,6 +29,7 @@ export class HomeComponent implements OnInit {
   private readonly scrollService = inject(ScrollService);
   private readonly reservationService = inject(ReservationService);
   private readonly alertService = inject(AlertService);
+  private readonly destroyRef = inject(DestroyRef);
 
   user!: User;
   venue!: Venue;
@@ -41,26 +44,33 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.scrollService.scrollToTop();
 
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.getVenue();
-      }
-    });
-  }
-
-  getVenue(): void {
     this.loading = true;
-    this.venueService.getVenueByAdminId(this.user.id).subscribe({
-      next: data => {
-        if (data) {
-          this.venue = data;
-          this.getReservations();
-          this.link = this.urlBase + this.venue.code;
+    this.authService.currentUser$
+      .pipe(
+        switchMap(user => {
+          if (!user) return EMPTY;
+          this.user = user;
+          return this.venueService.getMyVenue();
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: data => {
+          this.loading = false;
+          if (data) {
+            this.venue = data;
+            this.link = this.urlBase + this.venue.code;
+            this.getReservations();
+          }
+        },
+        error: (err: ErrorResponse) => {
+          this.loading = false;
+          this.alertService.error(
+            'Error al obtener complejo deportivo',
+            err.error.message || 'Hubo un error inesperado'
+          );
         }
-        this.loading = false;
-      }
-    });
+      });
   }
 
   getReservations(): void {

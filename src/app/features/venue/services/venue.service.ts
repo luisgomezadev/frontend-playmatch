@@ -41,7 +41,7 @@ export class VenueService extends BaseHttpService {
 
     return this.cacheService.get(
       cacheKey,
-      () => this.http.get<PagedResponse<Venue>>(`${this.ENDPOINT}/p`, { params })
+      () => this.http.get<PagedResponse<Venue>>(`${this.ENDPOINT}`, { params })
     );
 
   }
@@ -50,12 +50,8 @@ export class VenueService extends BaseHttpService {
     return this.http.get<Venue>(`${this.ENDPOINT}/${id}`);
   }
 
-  getVenuePublicById(id: number): Observable<Venue> {
-    return this.http.get<Venue>(`${this.ENDPOINT}/p/${id}`);
-  }
-
-  getVenueByAdminId(id: number): Observable<Venue> {
-    return this.http.get<Venue>(`${this.ENDPOINT}/admin/${id}`);
+  getMyVenue(): Observable<Venue> {
+    return this.http.get<Venue>(`${this.ENDPOINT}/mine`);
   }
 
   getVenueByCode(code: string): Observable<Venue> {

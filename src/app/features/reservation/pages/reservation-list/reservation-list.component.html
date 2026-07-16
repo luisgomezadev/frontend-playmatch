@@ -58,7 +58,6 @@
     @for (r of reservations; track r.id) {
     <app-reservation-card
       [reservation]="r"
-      [fieldName]="fieldsById.get(r.fieldId) ?? 'Cancha'"
       (reservationCanceled)="loadReservations()" />
     } @empty {
     <div

@@ -22,7 +22,6 @@ export class ReservationCardComponent {
   private readonly alertService = inject(AlertService);
 
   @Input() reservation!: Reservation;
-  @Input() fieldName = '';
 
   @Output() reservationCanceled = new EventEmitter<void>();
 

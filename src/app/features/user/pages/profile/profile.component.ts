@@ -1,6 +1,9 @@
-import { Component, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { EMPTY, switchMap } from 'rxjs';
 import { AlertService } from '@core/services/alert.service';
 import { AuthService } from '@core/services/auth.service';
+import { ErrorResponse } from '@core/interfaces/error-response';
 import { FieldService } from '@features/field/services/field.service';
 import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
@@ -33,6 +36,7 @@ export class ProfileComponent implements OnInit {
   private readonly alertService = inject(AlertService);
   private readonly venueService = inject(VenueService);
   private readonly fieldService = inject(FieldService);
+  private readonly destroyRef = inject(DestroyRef);
 
   @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
 
@@ -40,6 +44,7 @@ export class ProfileComponent implements OnInit {
   venue!: Venue;
   loading = false;
   loadingVenue = false;
+  fieldsCount = 0;
   userRole = UserRole;
 
   selectedFile: File | null = null;
@@ -48,33 +53,46 @@ export class ProfileComponent implements OnInit {
   isOpen = signal(false);
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(user => {
-      if (user) {
-        this.user = user;
-        this.getVenue();
-      }
-    });
-  }
-
-  getVenue(): void {
     this.loadingVenue = true;
-    this.venueService.getVenueByAdminId(this.user.id).subscribe({
-      next: data => {
-        if (data) this.venue = data;
-        this.loadingVenue = false;
-      }
-    });
+    this.authService.currentUser$
+      .pipe(
+        switchMap(user => {
+          if (!user) return EMPTY;
+          this.user = user;
+          return this.venueService.getMyVenue();
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe({
+        next: data => {
+          this.loadingVenue = false;
+          if (data) {
+            this.venue = data;
+            this.loadFieldsCount();
+          }
+        },
+        error: (err: ErrorResponse) => {
+          this.loadingVenue = false;
+          this.alertService.error(
+            'Error al obtener complejo deportivo',
+            err.error.message || 'Error inesperado'
+          );
+        }
+      });
   }
 
-  getFieldsCount(): number {
-    if (!this.venue) return 0;
-    let count = 0;
+  private loadFieldsCount(): void {
     this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
       next: fields => {
-        count = fields.length;
+        this.fieldsCount = fields.length;
+      },
+      error: (err: ErrorResponse) => {
+        this.alertService.error(
+          'Error al obtener canchas',
+          err.error.message || 'Error inesperado'
+        );
       }
     });
-    return count;
   }
 
   openModal() {
@@ -147,7 +165,7 @@ export class ProfileComponent implements OnInit {
 
   logout(): void {
     this.alertService
-      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'No')
+      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'Cancelar', '#dc2626')
       .then(confirmed => {
         if (confirmed) {
           this.authService.logout();

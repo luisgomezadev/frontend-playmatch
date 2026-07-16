@@ -4,6 +4,7 @@ export interface Field {
   fieldType: FieldType;
   hourlyRate: number;
   venueId: number;
+  active: boolean;
 }
 
 export interface FieldRequest {
