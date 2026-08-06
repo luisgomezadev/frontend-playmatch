@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { EMPTY, switchMap } from 'rxjs';
@@ -15,11 +15,13 @@ import { CreateVenueCardComponent } from '@shared/components/create-venue-card/c
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { environment } from 'environments/environment';
 import { User } from '@features/user/interfaces/user';
+import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
+import { LoadingIconComponent } from '@shared/components/loading-icon/loading-icon.component';
 
 @Component({
   selector: 'app-home-admin',
   standalone: true,
-  imports: [RouterModule, CommonModule, LayoutComponent, CreateVenueCardComponent],
+  imports: [RouterModule, CommonModule, LayoutComponent, CreateVenueCardComponent, LoadingIconComponent, LoadingTextComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -34,7 +36,7 @@ export class HomeComponent implements OnInit {
   user!: User;
   venue!: Venue;
   reservations!: Reservation[];
-  loading = false;
+  loading = signal<boolean>(true);
   loadingReservations = false;
   copySuccess = false;
 
@@ -44,11 +46,13 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.scrollService.scrollToTop();
 
-    this.loading = true;
     this.authService.currentUser$
       .pipe(
         switchMap(user => {
-          if (!user) return EMPTY;
+          if (!user) {
+            this.loading.set(false);
+            return EMPTY;
+          }
           this.user = user;
           return this.venueService.getMyVenue();
         }),
@@ -56,15 +60,17 @@ export class HomeComponent implements OnInit {
       )
       .subscribe({
         next: data => {
-          this.loading = false;
           if (data) {
+            this.loading.set(false);
             this.venue = data;
             this.link = this.urlBase + this.venue.code;
             this.getReservations();
+          } else {
+            this.loading.set(false);
           }
         },
         error: (err: ErrorResponse) => {
-          this.loading = false;
+          this.loading.set(false);
           this.alertService.error(
             'Error al obtener complejo deportivo',
             err.error.message || 'Hubo un error inesperado'

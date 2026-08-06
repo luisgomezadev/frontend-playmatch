@@ -13,11 +13,12 @@ import { CreateVenueCardComponent } from '@shared/components/create-venue-card/c
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { FieldTypePipe } from '@shared/pipes/field-type.pipe';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
+import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
 
 @Component({
   selector: 'app-field',
   standalone: true,
-  imports: [LayoutComponent, ReactiveFormsModule, CommonModule, MoneyFormatPipe, FieldTypePipe, CreateVenueCardComponent],
+  imports: [LayoutComponent, ReactiveFormsModule, CommonModule, MoneyFormatPipe, FieldTypePipe, CreateVenueCardComponent, LoadingTextComponent],
   templateUrl: './field.component.html',
   styleUrl: './field.component.scss'
 })
@@ -37,6 +38,7 @@ export class FieldComponent implements OnInit {
 
   venueId = signal<number | null>(null);
   fields = signal<Field[]>([]);
+  loading = signal<boolean>(true);
 
   fieldTypeOptions = [
     { value: FieldType.FIVE_A_SIDE, label: 'Fútbol 5' },
@@ -51,7 +53,10 @@ export class FieldComponent implements OnInit {
     this.authService.currentUser$
       .pipe(
         switchMap(user => {
-          if (!user) return EMPTY;
+          if (!user) {
+            this.loading.set(false);
+            return EMPTY;
+          }
           return this.venueService.getMyVenue();
         }),
         takeUntilDestroyed(this.destroyRef)
@@ -64,6 +69,7 @@ export class FieldComponent implements OnInit {
           }
         },
         error: (err: ErrorResponse) => {
+          this.loading.set(false);
           this.alertService.error(
             'Error al obtener complejo deportivo',
             err.error.message || 'Error inesperado'
@@ -77,8 +83,10 @@ export class FieldComponent implements OnInit {
     this.fieldService.getAllFieldsByVenueId(venueId).subscribe({
       next: (fields: Field[]) => {
         this.fields.set(fields);
+        this.loading.set(false);
       },
       error: (err: ErrorResponse) => {
+        this.loading.set(false);
         this.alertService.error(
           'Error al obtener canchas',
           err.error.message || 'Error inesperado'

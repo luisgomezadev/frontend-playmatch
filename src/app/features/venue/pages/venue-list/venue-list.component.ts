@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PagedResponse } from '@core/interfaces/paged-response';
 import { AlertService } from '@core/services/alert.service';
 import { VenueCardComponent } from '@features/venue/components/venue-card/venue-card.component';
@@ -12,7 +12,7 @@ import { RouterLink } from "@angular/router";
 @Component({
   selector: 'app-venue-list',
   standalone: true,
-  imports: [VenueCardComponent, PaginationComponent, NavbarComponent, RouterLink],
+  imports: [VenueCardComponent, PaginationComponent, NavbarComponent, RouterLink, ReactiveFormsModule],
   templateUrl: './venue-list.component.html',
   styleUrl: './venue-list.component.scss'
 })
@@ -27,6 +27,12 @@ export class VenueListComponent implements OnInit {
   loading = false;
   pageSize = 12;
   currentPage = 0;
+  showMobileFilters = false;
+
+  searchForm = new FormGroup({
+    name: new FormControl(''),
+    city: new FormControl('')
+  });
 
   ngOnInit(): void {
     this.initForm();
@@ -61,5 +67,29 @@ export class VenueListComponent implements OnInit {
       this.currentPage = newPage;
       this.loadVenues(this.currentPage);
     }
+  }
+
+  onSearch() {
+    const formValue = this.searchForm.value;
+    this.filters = {
+      name: formValue.name || undefined,
+      city: formValue.city || undefined
+    };
+
+    this.venueService.getVenues(this.filters, 0, this.pageSize).subscribe({
+      next: data => {
+        this.venues = data;
+        this.currentPage = 0; // Reset to first page on new search
+      }
+      ,
+      error: err => {
+        this.alertService.error('Error al buscar complejos deportivos', err.error.message || 'Error desconocido');
+      }
+    });
+  }
+
+  clearSearch() {
+    this.searchForm.reset();
+    this.onSearch(); // opcional: recarga la lista sin filtros
   }
 }

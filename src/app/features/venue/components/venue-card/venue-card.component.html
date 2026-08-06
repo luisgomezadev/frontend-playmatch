@@ -1,18 +1,22 @@
 <article
-  class="bg-white shadow-lg hover:shadow-xl border border-gray-100 rounded-3xl p-6 transition-shadow duration-300 motion-preset-slide-up-sm motion-duration-1000">
-  <header class="flex items-center gap-x-3 text-xl sm:text-2xl">
-    <div class="flex flex-col">
-      <h1 class="font-extrabold text-primary leading-7">{{ venue.name }}</h1>
-      <span class="text-sm text-gray-600">{{ venue.city }}</span>
+  class="bg-white shadow-sm hover:shadow-lg border border-gray-200/70 rounded-2xl p-6 transition-all duration-300 motion-preset-slide-up-sm motion-duration-1000">
+  <header class="flex items-start justify-between gap-x-3">
+    <div class="flex flex-col gap-0.5">
+      <h1 class="font-bold text-lg text-gray-900 leading-snug tracking-tight">{{ venue.name }}</h1>
+      <span class="text-sm text-gray-500 font-medium">{{ venue.city }}</span>
     </div>
+    <span class="shrink-0 inline-flex items-center rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1 border border-emerald-100">
+      Disponible
+    </span>
   </header>
-  <div class="py-3">
+
+  <div class="py-4">
     <div
-      class="group flex items-start gap-4 p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:-translate-y-0.5 hover:shadow-md transition-all duration-300">
-      <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
+      class="group flex items-center gap-3.5 p-3.5 bg-gray-50/80 border border-gray-100 rounded-xl transition-colors duration-300 hover:bg-gray-50">
+      <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          class="w-5 h-5">
+          class="w-4.5 h-4.5">
           <path
             d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
           </path>
@@ -20,25 +24,26 @@
         </svg>
       </div>
       <div class="min-w-0 flex-1">
-        <p class="text-sm font-semibold text-gray-600 mb-1">Dirección</p>
-        <p class="text-gray-900 font-medium break-words leading-relaxed">{{ venue.address }}</p>
+        <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Dirección</p>
+        <p class="text-sm text-gray-800 font-medium break-words leading-snug">{{ venue.address }}</p>
       </div>
     </div>
   </div>
-  <footer class="pt-3 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <app-button (clicked)="openModal()" color="secondary" text="Ver canchas disponibles">
+
+  <footer class="pt-4 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <app-button (clicked)="openModal()" color="secondary" text="Ver canchas disponibles" class="font-medium">
       Ver detalles
     </app-button>
-    <app-button (clicked)="goToReservation()" text="Hacer reserva">
+    <app-button (clicked)="goToReservation()" text="Hacer reserva" class="font-semibold shadow-sm">
       Reservar
     </app-button>
   </footer>
 </article>
 
 <app-modal [open]="isOpen()" (closed)="onClosed()" width="max-w-3xl" [title]="'Información de las canchas disponibles'">
-  <div class="space-y-5">
-    <h3 class="font-bold text-gray-900 flex items-center gap-3 text-lg">
-      <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-white shadow-md shrink-0">
+  <div class="space-y-6">
+    <div class="flex items-center gap-3">
+      <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-white shadow-sm shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="w-5 h-5">
@@ -46,59 +51,45 @@
           <path d="M5 4h4l3 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2" />
         </svg>
       </div>
-      Canchas disponibles
-      <span class="text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-full font-semibold">
-        {{ fields().length }}
-      </span>
-    </h3>
-    <div class="grid gap-4 md:grid-cols-2">
+      <div>
+        <h3 class="font-bold text-gray-900 text-lg leading-tight">Canchas disponibles</h3>
+        <p class="text-xs text-gray-500 mt-0.5">{{ fields().length }} {{ fields().length === 1 ? 'cancha encontrada' : 'canchas encontradas' }}</p>
+      </div>
+    </div>
 
+    <div class="grid gap-3 md:grid-cols-2">
       @for (field of fields(); track field.id) {
-
-      <div class="rounded-2xl border border-gray-100 bg-gray-50 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-white hover:shadow-md">
-
-        <div class="flex justify-between items-start">
-
-          <div>
-
-            <h4 class="text-lg font-bold text-gray-900">
+      <div class="rounded-xl border border-gray-200 bg-white p-4 transition-all duration-200 hover:border-primary/40 hover:shadow-md">
+        <div class="flex justify-between items-start gap-3">
+          <div class="min-w-0">
+            <h4 class="text-base font-bold text-gray-900 truncate">
               {{ field.name }}
             </h4>
-
-            <span class="inline-flex mt-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-
+            <span class="inline-flex mt-1.5 rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
               {{ field.fieldType | fieldTypeToPlayers }}
-
             </span>
-
           </div>
-
-          <div class="text-right">
-
-            <p class="text-xs uppercase text-gray-500">
+          <div class="text-right shrink-0">
+            <p class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold">
               Precio
             </p>
-
-            <p class="text-2xl font-bold text-primary">
+            <p class="text-xl font-bold text-primary leading-tight">
               {{ field.hourlyRate | moneyFormat }}
             </p>
-
           </div>
-
         </div>
-
       </div>
-
       }
-
     </div>
-    <span class="block mt-3 text-sm text-gray-600 pl-2">
-      <i class="fa-solid fa-circle-info"></i>
-      El precio de las canchas es por hora
-    </span>
+
+    <div class="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2.5">
+      <i class="fa-solid fa-circle-info text-gray-400"></i>
+      <span>El precio de las canchas es por hora</span>
+    </div>
   </div>
-  <footer class="pt-4 mt-4 border-gray-100 border-t flex items-start justify-end gap-4">
-    <app-button (click)="goToReservation()">
+
+  <footer class="pt-4 mt-2 border-t border-gray-100 flex items-center justify-end gap-3">
+    <app-button (click)="goToReservation()" class="font-semibold shadow-sm">
       Hacer reserva
     </app-button>
   </footer>

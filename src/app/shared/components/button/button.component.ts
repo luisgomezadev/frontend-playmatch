@@ -40,6 +40,6 @@ export class ButtonComponent {
     if (this.color === 'primary') {
       return base + ' bg-primary text-white hover:bg-hover-primary';
     }
-    return base + ' bg-secondary text-white hover:bg-hover-secondary';
+    return base + ' bg-secondary/10 text-black hover:bg-hover-secondary/15';
   }
 }
