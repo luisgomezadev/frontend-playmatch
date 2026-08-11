@@ -7,8 +7,6 @@ import { CustomDatePipe } from '@shared/pipes/custom-date.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 import { Router, RouterLink } from '@angular/router';
 import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
-import { FieldService } from '@features/field/services/field.service';
-import { VenueService } from '@features/venue/services/venue.service';
 
 @Component({
   selector: 'app-reservation-detail',
@@ -19,16 +17,12 @@ import { VenueService } from '@features/venue/services/venue.service';
 })
 export class ReservationDetailComponent {
   private readonly reservationService = inject(ReservationService);
-  private readonly fieldService = inject(FieldService);
-  private readonly venueService = inject(VenueService);
   private readonly alertService = inject(AlertService);
   private readonly router = inject(Router);
 
   reservationData: Reservation | null = null;
   code = '';
   loading = false;
-  fieldName = '';
-  venueName = '';
 
   getReservationByCode(): void {
     this.loading = true;
@@ -41,24 +35,6 @@ export class ReservationDetailComponent {
           return;
         }
         this.reservationData = data;
-        this.getFieldName(data.fieldId);
-      }
-    });
-  }
-
-  getFieldName(fieldId: number): void {
-    this.fieldService.getFieldById(fieldId).subscribe({
-      next: field => {
-        this.fieldName = field.name;
-        this.getVenueName(field.venueId);
-      }
-    });
-  }
-
-  getVenueName(venueId: number): void {
-    this.venueService.getVenueById(venueId).subscribe({
-      next: venue => {
-        this.venueName = venue.name;
       }
     });
   }

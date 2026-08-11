@@ -5,6 +5,7 @@ export interface Reservation {
   cellphone: string;
   fieldId: number;
   fieldName: string;
+  venueName: string;
   duration: ReservationDuration;
   startTime: string;
   endTime: string;
