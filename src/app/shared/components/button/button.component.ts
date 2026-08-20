@@ -18,7 +18,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ButtonComponent {
   @Input() text = '';
-  @Input() color: 'primary' | 'secondary' = 'primary';
+  @Input() color: 'primary' | 'secondary' | 'white' = 'primary';
   @Input() size: 'big' | 'small' = 'small';
   @Input() routerLink: string[] | null = null;
   @Input() type: 'button' | 'submit' = 'button';
@@ -40,6 +40,11 @@ export class ButtonComponent {
     if (this.color === 'primary') {
       return base + ' bg-primary text-white hover:bg-hover-primary';
     }
+
+    if (this.color === 'white') {
+      return base + ' bg-white/20 text-white bg-opacity-20 hover:bg-opacity-30 border border-white/30 hover:border-white/50';
+    }
+
     return base + ' bg-secondary/10 text-black hover:bg-hover-secondary/15';
   }
 }

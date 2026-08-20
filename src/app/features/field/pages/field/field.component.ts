@@ -23,21 +23,22 @@ import { LoadingTextComponent } from '@shared/components/loading-text/loading-te
   styleUrl: './field.component.scss'
 })
 export class FieldComponent implements OnInit {
-  private readonly fieldService = inject(FieldService);
+
+  fieldService = inject(FieldService);
   private readonly authService = inject(AuthService);
   private readonly venueService = inject(VenueService);
   private readonly alertService = inject(AlertService);
   private readonly destroyRef = inject(DestroyRef);
 
   fieldForm = new FormGroup({
-    id: new FormControl(),
+    id: new FormControl<number | null>(null),
     name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     hourlyRate: new FormControl(0, [Validators.required, Validators.min(0)]),
     fieldType: new FormControl(FieldType.FIVE_A_SIDE, [Validators.required]),
   });
 
   venueId = signal<number | null>(null);
-  fields = signal<Field[]>([]);
+
   loading = signal<boolean>(true);
 
   fieldTypeOptions = [
@@ -63,6 +64,7 @@ export class FieldComponent implements OnInit {
       )
       .subscribe({
         next: (venue) => {
+          this.loading.set(false);
           if (venue) {
             this.venueId.set(venue.id);
             this.getFields(this.venueId());
@@ -80,13 +82,9 @@ export class FieldComponent implements OnInit {
 
   private getFields(venueId: number | null): void {
     if (!venueId) return;
+
     this.fieldService.getAllFieldsByVenueId(venueId).subscribe({
-      next: (fields: Field[]) => {
-        this.fields.set(fields);
-        this.loading.set(false);
-      },
       error: (err: ErrorResponse) => {
-        this.loading.set(false);
         this.alertService.error(
           'Error al obtener canchas',
           err.error.message || 'Error inesperado'
@@ -121,7 +119,6 @@ export class FieldComponent implements OnInit {
             'Cancha actualizada',
             'La información de ' + res.name + ' ha sido actualizada.'
           );
-          this.getFields(this.venueId());
           this.resetFieldForm();
         },
         error: (err: ErrorResponse) => {
@@ -138,7 +135,6 @@ export class FieldComponent implements OnInit {
             'Cancha registrada',
             res.name + ' ha sido creada exitosamente.'
           );
-          this.getFields(this.venueId());
           this.resetFieldForm();
         },
         error: (err: ErrorResponse) => {
@@ -162,13 +158,12 @@ export class FieldComponent implements OnInit {
 
   activateField(fieldId: number): void {
     this.alertService
-      .confirm('Activar cancha?', '¿Estás seguro de activar la cancha?', 'Si, activar', 'No')
+      .confirm('Activar cancha', '¿Estás seguro de activar la cancha?', 'Si, activar', 'No')
       .then(confirmed => {
         if (confirmed) {
           this.fieldService.activateById(fieldId).subscribe({
             next: () => {
               this.alertService.success('Cancha activada', 'Has activado la cancha correctamente.');
-              this.getFields(this.venueId());
             },
             error: (err: ErrorResponse) => {
               this.alertService.error(
@@ -183,13 +178,12 @@ export class FieldComponent implements OnInit {
 
   deactivateField(fieldId: number): void {
     this.alertService
-      .confirm('Desactivar cancha?', '¿Estás seguro de eliminar la cancha? La puedes volver a activar cuando quieras', 'Si, desactivar', 'No')
+      .confirm('Desactivar cancha', '¿Estás seguro de eliminar la cancha? La puedes volver a activar cuando quieras', 'Si, desactivar', 'No')
       .then(confirmed => {
         if (confirmed) {
           this.fieldService.deactivateById(fieldId).subscribe({
             next: () => {
               this.alertService.success('Cancha desactivada', 'Has desactivado la cancha correctamente.');
-              this.getFields(this.venueId());
             },
             error: (err: ErrorResponse) => {
               this.alertService.error(
