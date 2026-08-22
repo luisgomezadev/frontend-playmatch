@@ -1,11 +1,10 @@
 import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { PopupService } from '@core/services/popup.service';
-import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-popup',
   standalone: true,
-  imports: [ButtonComponent],
+  imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './popup.component.html'
 })
