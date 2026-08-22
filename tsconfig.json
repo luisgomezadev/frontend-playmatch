@@ -4,30 +4,14 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@core/*": [
-        "app/core/*"
-      ],
-      "@shared/*": [
-        "app/shared/*"
-      ],
-      "@features/*": [
-        "app/features/*"
-      ],
-      "@user/*": [
-        "app/features/user/*"
-      ],
-      "@reservation/*": [
-        "app/features/reservation/*"
-      ],
-      "@field/*": [
-        "app/features/field/*"
-      ],
-      "@venue/*": [
-        "app/features/venue/*"
-      ],
-      "@auth/*": [
-        "app/features/auth/*"
-      ]
+      "@core/*": ["app/core/*"],
+      "@shared/*": ["app/shared/*"],
+      "@features/*": ["app/features/*"],
+      "@user/*": ["app/features/user/*"],
+      "@reservation/*": ["app/features/reservation/*"],
+      "@field/*": ["app/features/field/*"],
+      "@venue/*": ["app/features/venue/*"],
+      "@auth/*": ["app/features/auth/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,
@@ -44,11 +28,7 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
