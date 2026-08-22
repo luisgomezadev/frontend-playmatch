@@ -1,5 +1,4 @@
-
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { Link } from '@core/interfaces/link.interface';
@@ -15,6 +14,7 @@ import { UserService } from '@user/services/user.service';
   standalone: true,
   imports: [RouterModule, LoadingComponent, RouterLink],
   templateUrl: './dashboard.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
@@ -40,16 +40,16 @@ export class DashboardComponent implements OnInit {
             this.loadLinks();
           },
           error: (err: ErrorResponse) => {
-          this.loading = false;
-          this.alertService.error(
-            'Error al obtener usuario',
-            err.error.message || 'Hubo un error inesperado'
-          );
-        }
+            this.loading = false;
+            this.alertService.error(
+              'Error al obtener usuario',
+              err.error.message || 'Hubo un error inesperado'
+            );
+          }
         });
       } else {
         this.loading = false;
-        this.alertService.error('Error', 'No se pudo obtener el correo del usuario.')
+        this.alertService.error('Error', 'No se pudo obtener el correo del usuario.');
         this.authService.logout();
       }
     } else {
@@ -76,7 +76,13 @@ export class DashboardComponent implements OnInit {
 
   logout(): void {
     this.alertService
-      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'No', '#dc2626')
+      .confirm(
+        '¿Cerrar sesión?',
+        '¿Estás seguro de que deseas cerrar sesión?',
+        'Si, cerrar sesión',
+        'No',
+        '#dc2626'
+      )
       .then(confirmed => {
         if (confirmed) {
           this.authService.logout();

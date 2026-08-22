@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+  signal,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EMPTY, switchMap } from 'rxjs';
@@ -18,12 +25,20 @@ import { LoadingTextComponent } from '@shared/components/loading-text/loading-te
 @Component({
   selector: 'app-field',
   standalone: true,
-  imports: [LayoutComponent, ReactiveFormsModule, CommonModule, MoneyFormatPipe, FieldTypePipe, CreateVenueCardComponent, LoadingTextComponent],
+  imports: [
+    LayoutComponent,
+    ReactiveFormsModule,
+    CommonModule,
+    MoneyFormatPipe,
+    FieldTypePipe,
+    CreateVenueCardComponent,
+    LoadingTextComponent
+  ],
   templateUrl: './field.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './field.component.scss'
 })
 export class FieldComponent implements OnInit {
-
   fieldService = inject(FieldService);
   private readonly authService = inject(AuthService);
   private readonly venueService = inject(VenueService);
@@ -32,9 +47,13 @@ export class FieldComponent implements OnInit {
 
   fieldForm = new FormGroup({
     id: new FormControl<number | null>(null),
-    name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(100)
+    ]),
     hourlyRate: new FormControl(0, [Validators.required, Validators.min(0)]),
-    fieldType: new FormControl(FieldType.FIVE_A_SIDE, [Validators.required]),
+    fieldType: new FormControl(FieldType.FIVE_A_SIDE, [Validators.required])
   });
 
   venueId = signal<number | null>(null);
@@ -63,7 +82,7 @@ export class FieldComponent implements OnInit {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: (venue) => {
+        next: venue => {
           this.loading.set(false);
           if (venue) {
             this.venueId.set(venue.id);
@@ -109,7 +128,7 @@ export class FieldComponent implements OnInit {
       name: this.fieldForm.value.name!,
       hourlyRate: this.fieldForm.value.hourlyRate!,
       fieldType: this.fieldForm.value.fieldType!,
-      venueId: this.venueId()!,
+      venueId: this.venueId()!
     };
 
     if (fieldId) {
@@ -130,7 +149,7 @@ export class FieldComponent implements OnInit {
       });
     } else {
       this.fieldService.createField(fieldRequest).subscribe({
-        next: (res) => {
+        next: res => {
           this.alertService.success(
             'Cancha registrada',
             res.name + ' ha sido creada exitosamente.'
@@ -138,10 +157,7 @@ export class FieldComponent implements OnInit {
           this.resetFieldForm();
         },
         error: (err: ErrorResponse) => {
-          this.alertService.error(
-            'Error al crear cancha',
-            err.error.message || 'Error inesperado'
-          );
+          this.alertService.error('Error al crear cancha', err.error.message || 'Error inesperado');
         }
       });
     }
@@ -178,12 +194,20 @@ export class FieldComponent implements OnInit {
 
   deactivateField(fieldId: number): void {
     this.alertService
-      .confirm('Desactivar cancha', '¿Estás seguro de eliminar la cancha? La puedes volver a activar cuando quieras', 'Si, desactivar', 'No')
+      .confirm(
+        'Desactivar cancha',
+        '¿Estás seguro de eliminar la cancha? La puedes volver a activar cuando quieras',
+        'Si, desactivar',
+        'No'
+      )
       .then(confirmed => {
         if (confirmed) {
           this.fieldService.deactivateById(fieldId).subscribe({
             next: () => {
-              this.alertService.success('Cancha desactivada', 'Has desactivado la cancha correctamente.');
+              this.alertService.success(
+                'Cancha desactivada',
+                'Has desactivado la cancha correctamente.'
+              );
             },
             error: (err: ErrorResponse) => {
               this.alertService.error(

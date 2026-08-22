@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-button',
   standalone: true,
   imports: [RouterModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
       [type]="type"
@@ -42,7 +43,10 @@ export class ButtonComponent {
     }
 
     if (this.color === 'white') {
-      return base + ' bg-white/20 text-white bg-opacity-20 hover:bg-opacity-30 border border-white/30 hover:border-white/50';
+      return (
+        base +
+        ' bg-white/20 text-white bg-opacity-20 hover:bg-opacity-30 border border-white/30 hover:border-white/50'
+      );
     }
 
     return base + ' bg-secondary/10 text-black hover:bg-hover-secondary/15';

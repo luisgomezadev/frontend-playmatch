@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PagedResponse } from '@core/interfaces/paged-response';
 import { AlertService } from '@core/services/alert.service';
@@ -7,13 +7,20 @@ import { Venue, VenueFilter } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
-import { RouterLink } from "@angular/router";
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-venue-list',
   standalone: true,
-  imports: [VenueCardComponent, PaginationComponent, NavbarComponent, RouterLink, ReactiveFormsModule],
+  imports: [
+    VenueCardComponent,
+    PaginationComponent,
+    NavbarComponent,
+    RouterLink,
+    ReactiveFormsModule
+  ],
   templateUrl: './venue-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './venue-list.component.scss'
 })
 export class VenueListComponent implements OnInit {
@@ -80,10 +87,12 @@ export class VenueListComponent implements OnInit {
       next: data => {
         this.venues = data;
         this.currentPage = 0; // Reset to first page on new search
-      }
-      ,
+      },
       error: err => {
-        this.alertService.error('Error al buscar complejos deportivos', err.error.message || 'Error desconocido');
+        this.alertService.error(
+          'Error al buscar complejos deportivos',
+          err.error.message || 'Error desconocido'
+        );
       }
     });
   }

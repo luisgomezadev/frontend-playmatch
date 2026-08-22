@@ -1,5 +1,4 @@
-
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { EMPTY, switchMap } from 'rxjs';
@@ -20,6 +19,7 @@ import { CreateVenueCardComponent } from '@shared/components/create-venue-card/c
   standalone: true,
   imports: [RouterModule, LayoutComponent, ReservationCardComponent, CreateVenueCardComponent],
   templateUrl: './reservation-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./reservation-list.component.scss']
 })
 export class ReservationListComponent implements OnInit {

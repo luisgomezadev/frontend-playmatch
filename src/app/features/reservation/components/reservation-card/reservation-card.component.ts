@@ -1,5 +1,11 @@
-
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Reservation } from '@features/reservation/interfaces/reservation';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
@@ -14,6 +20,7 @@ import { DurationLabelPipe } from '@shared/pipes/duration-label.pipe';
   standalone: true,
   imports: [TimeFormatPipe, FormsModule, DurationLabelPipe],
   templateUrl: './reservation-card.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./reservation-card.component.scss']
 })
 export class ReservationCardComponent {

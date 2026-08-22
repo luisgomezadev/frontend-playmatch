@@ -1,8 +1,8 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { FooterComponent } from '@shared/components/footer/footer.component';
 import { PopupComponent } from '@shared/components/popup/popup.component';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
@@ -10,10 +10,10 @@ import { ButtonComponent } from '@shared/components/button/button.component';
   standalone: true,
   imports: [NavbarComponent, FooterComponent, PopupComponent, ButtonComponent],
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-
   private readonly router = inject(Router);
 
   ngOnInit(): void {
@@ -27,5 +27,4 @@ export class HomeComponent implements OnInit {
   goToReservationDetail(): void {
     this.router.navigate(['/reserva']);
   }
-
 }

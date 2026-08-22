@@ -1,4 +1,13 @@
-import { Component, DestroyRef, inject, OnInit, signal, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+  ElementRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EMPTY, switchMap } from 'rxjs';
 import { AlertService } from '@core/services/alert.service';
@@ -28,6 +37,7 @@ import { UserService } from '@user/services/user.service';
     LoadingTextComponent
   ],
   templateUrl: './profile.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
@@ -165,7 +175,13 @@ export class ProfileComponent implements OnInit {
 
   logout(): void {
     this.alertService
-      .confirm('¿Cerrar sesión?', '¿Estás seguro de que deseas cerrar sesión?', 'Si, cerrar sesión', 'Cancelar', '#dc2626')
+      .confirm(
+        '¿Cerrar sesión?',
+        '¿Estás seguro de que deseas cerrar sesión?',
+        'Si, cerrar sesión',
+        'Cancelar',
+        '#dc2626'
+      )
       .then(confirmed => {
         if (confirmed) {
           this.authService.logout();

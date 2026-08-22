@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
@@ -43,6 +43,7 @@ interface DayItem {
     LoadingTextComponent
   ],
   templateUrl: './reservation-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './reservation-form.component.scss'
 })
 export class ReservationFormComponent implements OnInit {

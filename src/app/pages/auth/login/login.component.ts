@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
@@ -21,6 +21,7 @@ import { NavbarComponent } from '@shared/components/navbar/navbar.component';
     ButtonComponent
   ],
   templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {

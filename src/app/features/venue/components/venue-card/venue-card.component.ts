@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Venue } from '@features/venue/interfaces/venue';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
@@ -15,6 +15,7 @@ import { ErrorResponse } from '@core/interfaces/error-response';
   standalone: true,
   imports: [ModalComponent, MoneyFormatPipe, ButtonComponent, FieldTypeToPlayersPipe],
   templateUrl: './venue-card.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './venue-card.component.scss'
 })
 export class VenueCardComponent {
@@ -31,15 +32,15 @@ export class VenueCardComponent {
   getFields() {
     this.fields.set([]);
     this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
-      next: (fields) => {
+      next: fields => {
         this.fields.set(fields);
       },
       error: (err: ErrorResponse) => {
-          this.alertService.error(
-            'Error al obtener canchas',
-            err.error.message || 'Hubo un error inesperado'
-          );
-        }
+        this.alertService.error(
+          'Error al obtener canchas',
+          err.error.message || 'Hubo un error inesperado'
+        );
+      }
     });
   }
 
@@ -58,5 +59,4 @@ export class VenueCardComponent {
     this.onClosed();
     this.router.navigate(['/reserva/' + this.venue.code]);
   }
-
 }

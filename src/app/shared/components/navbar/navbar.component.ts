@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
@@ -7,6 +7,7 @@ import { Router, RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule, CommonModule],
   templateUrl: './navbar.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {

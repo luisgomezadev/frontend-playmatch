@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  signal,
+  ChangeDetectionStrategy
+} from '@angular/core';
 
 @Component({
   selector: 'app-modal',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './modal.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './modal.component.html'
 })
 export class ModalComponent {
   @Input() open = false;

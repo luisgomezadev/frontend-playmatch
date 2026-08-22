@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
   imports: [],
-  templateUrl: './pagination.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './pagination.component.html'
 })
 export class PaginationComponent {
   @Input() currentPage = 0;

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -7,6 +7,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   imports: [],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
@@ -18,7 +19,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
       ])
     ])
   ]
-
 })
 export class LayoutComponent {
   @Input() title = '';

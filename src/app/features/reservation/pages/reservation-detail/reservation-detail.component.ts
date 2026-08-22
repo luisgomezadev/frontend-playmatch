@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { Reservation } from '@features/reservation/interfaces/reservation';
 import { ReservationService } from '@features/reservation/services/reservation.service';
@@ -13,6 +13,7 @@ import { LoadingTextComponent } from '@shared/components/loading-text/loading-te
   standalone: true,
   imports: [FormsModule, CustomDatePipe, TimeFormatPipe, RouterLink, LoadingTextComponent],
   templateUrl: './reservation-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './reservation-detail.component.scss'
 })
 export class ReservationDetailComponent {
@@ -42,7 +43,12 @@ export class ReservationDetailComponent {
   canceledReservation(): void {
     if (this.reservationData) {
       this.alertService
-        .confirm('¿Cancelar reserva?', '¿Estás seguro que deseas cancelar tu reserva?', 'Sí, cancelar', 'No')
+        .confirm(
+          '¿Cancelar reserva?',
+          '¿Estás seguro que deseas cancelar tu reserva?',
+          'Sí, cancelar',
+          'No'
+        )
         .then(confirmed => {
           if (confirmed) {
             this.reservationService.canceledReservation(this.reservationData!.id).subscribe({

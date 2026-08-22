@@ -1,5 +1,11 @@
-
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { EMPTY, switchMap } from 'rxjs';
@@ -19,8 +25,15 @@ import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 @Component({
   selector: 'app-venue',
   standalone: true,
-  imports: [LayoutComponent, ReactiveFormsModule, LoadingTextComponent, TimeFormatPipe, MoneyFormatPipe],
+  imports: [
+    LayoutComponent,
+    ReactiveFormsModule,
+    LoadingTextComponent,
+    TimeFormatPipe,
+    MoneyFormatPipe
+  ],
   templateUrl: './venue.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./venue.component.scss']
 })
 export class VenueComponent implements OnInit {
@@ -86,7 +99,7 @@ export class VenueComponent implements OnInit {
         ]
       ],
       openingHour: ['', Validators.required],
-      closingHour: ['', Validators.required],
+      closingHour: ['', Validators.required]
     });
   }
 
@@ -100,7 +113,7 @@ export class VenueComponent implements OnInit {
       address: venue.address,
       code: venue.code,
       openingHour: venue.openingHour,
-      closingHour: venue.closingHour,
+      closingHour: venue.closingHour
     });
   }
 
@@ -133,7 +146,7 @@ export class VenueComponent implements OnInit {
       city: formValue.city,
       address: formValue.address,
       openingHour: formValue.openingHour,
-      closingHour: formValue.closingHour,
+      closingHour: formValue.closingHour
     };
     if (venueId) {
       this.venueService.updateVenue(request, venueId).subscribe({

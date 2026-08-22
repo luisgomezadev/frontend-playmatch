@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-loading-component',
   standalone: true,
   imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
       class="fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center space-y-5">

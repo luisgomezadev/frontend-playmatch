@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -28,6 +28,7 @@ import { REGEX_PATTERNS } from '@shared/utils/regex-utils';
     ButtonComponent
   ],
   templateUrl: './register.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit {
