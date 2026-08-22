@@ -7,10 +7,12 @@ import { LoadingService } from '@core/services/loading.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div *ngIf="loadingService.loading$ | async" class="loading-bar-container">
-      <div class="loading-bar"></div>
-    </div>
-  `,
+    @if (loadingService.loading$ | async) {
+      <div class="loading-bar-container">
+        <div class="loading-bar"></div>
+      </div>
+    }
+    `,
   styles: [`
     .loading-bar-container {
       position: fixed;

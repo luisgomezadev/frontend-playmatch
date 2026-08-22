@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
 @Component({
   selector: 'app-venue',
   standalone: true,
-  imports: [LayoutComponent, ReactiveFormsModule, CommonModule, LoadingTextComponent, TimeFormatPipe, MoneyFormatPipe],
+  imports: [LayoutComponent, ReactiveFormsModule, LoadingTextComponent, TimeFormatPipe, MoneyFormatPipe],
   templateUrl: './venue.component.html',
   styleUrls: ['./venue.component.scss']
 })

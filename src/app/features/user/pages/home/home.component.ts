@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -21,7 +21,7 @@ import { LoadingIconComponent } from '@shared/components/loading-icon/loading-ic
 @Component({
   selector: 'app-home-admin',
   standalone: true,
-  imports: [RouterModule, CommonModule, LayoutComponent, CreateVenueCardComponent, LoadingIconComponent, LoadingTextComponent],
+  imports: [RouterModule, LayoutComponent, CreateVenueCardComponent, LoadingIconComponent, LoadingTextComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

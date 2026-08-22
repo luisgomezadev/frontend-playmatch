@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Reservation } from '@features/reservation/interfaces/reservation';
@@ -12,7 +12,7 @@ import { DurationLabelPipe } from '@shared/pipes/duration-label.pipe';
 @Component({
   selector: 'app-reservation-card',
   standalone: true,
-  imports: [CommonModule, TimeFormatPipe, FormsModule, DurationLabelPipe],
+  imports: [TimeFormatPipe, FormsModule, DurationLabelPipe],
   templateUrl: './reservation-card.component.html',
   styleUrls: ['./reservation-card.component.scss']
 })

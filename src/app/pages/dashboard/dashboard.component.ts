@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
@@ -13,7 +13,7 @@ import { UserService } from '@user/services/user.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterModule, CommonModule, LoadingComponent, RouterLink],
+  imports: [RouterModule, LoadingComponent, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
