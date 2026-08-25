@@ -1,8 +1,6 @@
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User, UserFilter, UserRole } from '@user/interfaces/user';
-import { PagedResponse } from '@core/interfaces/paged-response';
+import { User} from '@user/interfaces/user';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 
 @Injectable({
@@ -10,22 +8,6 @@ import { BaseHttpService } from '@shared/data-access/base-http.service';
 })
 export class UserService extends BaseHttpService {
   private readonly ENDPOINT = this.apiUrl + '/user';
-
-  getUsers(
-    filters: UserFilter,
-    page: number,
-    size: number,
-    role: UserRole
-  ): Observable<PagedResponse<User>> {
-    let params = new HttpParams().set('page', page).set('size', size).set('role', role);
-    if (filters.name) {
-      params = params.set('name', filters.name);
-    }
-    if (filters.city) {
-      params = params.set('city', filters.city);
-    }
-    return this.http.get<PagedResponse<User>>(this.ENDPOINT, { params });
-  }
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>(`${this.ENDPOINT}/me`);
