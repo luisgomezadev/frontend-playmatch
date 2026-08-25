@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit {
             this.loading.set(false);
             this.venue = data;
             this.link = this.urlBase + this.venue.code;
-            this.getReservations();
+            this.getCountReservationsToday();
           } else {
             this.loading.set(false);
             this.loadingReservations.set(false);
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  getReservations(): void {
+  getCountReservationsToday(): void {
     const today = new Date();
     this.reservationService
       .countReservationsByVenueIdAndDate(this.venue.id, this.formatDateLocal(today))
@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit {
         error: (err: ErrorResponse) => {
           this.loadingReservations.set(false);
           this.alertService.error(
-            'Error al obtener reservas',
+            'Error al obtener el número de reservas',
             err.error.message || 'Hubo un error inesperado'
           );
         }
