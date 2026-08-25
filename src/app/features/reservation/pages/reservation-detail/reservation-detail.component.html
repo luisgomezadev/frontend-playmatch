@@ -40,10 +40,10 @@
           </p>
         </div>
 
-        <button (click)="getReservationByCode()" [disabled]="code.length < 6 || loading"
+        <button (click)="getReservationByCode()" [disabled]="code.length < 6 || loading()"
           class="w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:shadow-md hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:brightness-100">
 
-          @if (loading) {
+          @if (loading()) {
           <app-loading-text-component text="Buscando" />
           } @else {
           Buscar reserva

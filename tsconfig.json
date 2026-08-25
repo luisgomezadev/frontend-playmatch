@@ -1,17 +1,17 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "src",
+    "rootDir": "./src",
     "paths": {
-      "@core/*": ["app/core/*"],
-      "@shared/*": ["app/shared/*"],
-      "@features/*": ["app/features/*"],
-      "@user/*": ["app/features/user/*"],
-      "@reservation/*": ["app/features/reservation/*"],
-      "@field/*": ["app/features/field/*"],
-      "@venue/*": ["app/features/venue/*"],
-      "@auth/*": ["app/features/auth/*"]
+      "@core/*": ["./src/app/core/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@features/*": ["./src/app/features/*"],
+      "@user/*": ["./src/app/features/user/*"],
+      "@reservation/*": ["./src/app/features/reservation/*"],
+      "@field/*": ["./src/app/features/field/*"],
+      "@venue/*": ["./src/app/features/venue/*"],
+      "@auth/*": ["./src/app/features/auth/*"],
+      "@environments/*": ["./src/environments/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

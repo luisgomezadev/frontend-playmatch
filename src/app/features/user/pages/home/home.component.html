@@ -1,8 +1,7 @@
-<app-layout [title]="'Hola, ' + user.firstName" [subtitle]="'Aquí puedes ver un resumen general de tus reservas.'">
+@if (user()) {
+  <app-layout [title]="'Hola, ' + user()!.firstName" [subtitle]="'Aquí puedes ver un resumen general de tus reservas.'">
   @if (loading()) {
-  <div class="flex items-center justify-center py-12">
-    <app-loading-text-component text="Cargando información" />
-  </div>
+  <app-home-skeleton />
   } @else {
   @if (venue) {
   <div class="space-y-6">
@@ -29,16 +28,22 @@
               </p>
 
               <div class="flex items-end gap-2 mt-0.5">
-                @if (loadingReservations) {
+                @if (loadingReservations()) {
                   <app-loading-icon-component />
                 } @else {
                   <span class="text-4xl font-extrabold leading-none text-gray-900 tracking-tight">
-                    {{ reservations.length }}
+                    {{ countReservations() }}
                   </span>
                 }
-                <span class="pb-0.5 text-base font-medium text-gray-500">
-                  {{ reservations.length === 1 ? 'reserva' : 'reservas' }}
-                </span>
+                @if (!loadingReservations()) {
+                  <span class="pb-0.5 text-base font-medium text-gray-500">
+                    {{ countReservations() === 1 ? 'reserva' : 'reservas' }}
+                  </span>
+                } @else {
+                  <span class="pb-0.5 text-base font-medium text-gray-500">
+                    reservas
+                  </span>
+                }
               </div>
 
               <p class="mt-1.5 text-sm text-gray-500">
@@ -277,3 +282,4 @@
   }
   }
 </app-layout>
+}

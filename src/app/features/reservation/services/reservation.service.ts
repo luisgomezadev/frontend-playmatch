@@ -27,6 +27,11 @@ export class ReservationService extends BaseHttpService {
     return this.http.get<Reservation[]>(`${this.ENDPOINT}/venue/${id}/date`, { params });
   }
 
+  countReservationsByVenueIdAndDate(venueId: number, date: string): Observable<number> {
+    const params = new HttpParams().set('date', date);
+    return this.http.get<number>(`${this.ENDPOINT}/venue/${venueId}/date/count`, { params });
+  }
+
   createReservation(reservation: ReservationRequest): Observable<Reservation> {
     return this.http.post<Reservation>(`${this.ENDPOINT}`, reservation);
   }

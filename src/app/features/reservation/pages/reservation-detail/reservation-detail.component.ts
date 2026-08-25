@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { AlertService } from '@core/services/alert.service';
 import { Reservation } from '@features/reservation/interfaces/reservation';
 import { ReservationService } from '@features/reservation/services/reservation.service';
@@ -23,14 +23,14 @@ export class ReservationDetailComponent {
 
   reservationData: Reservation | null = null;
   code = '';
-  loading = false;
+  loading = signal<boolean>(false);
 
   getReservationByCode(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.reservationData = null;
     this.reservationService.getReservationByCode(this.code).subscribe({
       next: data => {
-        this.loading = false;
+        this.loading.set(false);
         if (!data) {
           this.alertService.notify('', 'No se encontró ninguna reserva con ese código', 'warning');
           return;

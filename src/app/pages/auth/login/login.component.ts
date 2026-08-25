@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   private readonly router = inject(Router);
 
   loginForm: FormGroup;
-  loading = false;
+  loading = signal<boolean>(false);
   showPassword = false;
 
   constructor() {
@@ -56,11 +56,11 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.invalid) return;
 
-    this.loading = true;
+    this.loading.set(true);
     const { email, password } = this.loginForm.value;
 
     const handleError = (err: ErrorResponse) => {
-      this.loading = false;
+      this.loading.set(false);
       this.alertService.error(
         'Error al iniciar sesión',
         err?.error?.message || 'Falló la autenticación'
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     };
 
     const handleSuccess = () => {
-      this.loading = false;
+      this.loading.set(false);
       this.authService.redirectIfAuthenticated();
     };
 

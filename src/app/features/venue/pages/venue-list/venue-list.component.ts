@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { PagedResponse } from '@core/interfaces/paged-response';
 import { AlertService } from '@core/services/alert.service';
@@ -8,6 +8,7 @@ import { VenueService } from '@features/venue/services/venue.service';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
+import { VenueCardSkeletonComponent } from '@features/venue/components/venue-card-skeleton/venue-card-skeleton.component';
 
 @Component({
   selector: 'app-venue-list',
@@ -17,7 +18,8 @@ import { RouterLink } from '@angular/router';
     PaginationComponent,
     NavbarComponent,
     RouterLink,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    VenueCardSkeletonComponent
   ],
   templateUrl: './venue-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,7 +33,7 @@ export class VenueListComponent implements OnInit {
   formFilter!: FormGroup;
   venues!: PagedResponse<Venue>;
   filters: VenueFilter = {};
-  loading = false;
+  loading = signal<boolean>(true);
   pageSize = 12;
   currentPage = 0;
   showMobileFilters = false;
@@ -51,14 +53,13 @@ export class VenueListComponent implements OnInit {
   }
 
   loadVenues(page: number): void {
-    this.loading = true;
     this.venueService.getVenues(this.filters, page, this.pageSize).subscribe({
       next: data => {
-        this.loading = false;
+        this.loading.set(false);
         this.venues = data;
       },
       error: err => {
-        this.loading = false;
+        this.loading.set(false);
         this.alertService.error('Error cargando canchas', err.error.message || 'Error desconocido');
       }
     });

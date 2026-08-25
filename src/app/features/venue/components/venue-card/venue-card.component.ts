@@ -9,11 +9,12 @@ import { FieldService } from '@features/field/services/field.service';
 import { Field } from '@features/field/interfaces/field';
 import { AlertService } from '@core/services/alert.service';
 import { ErrorResponse } from '@core/interfaces/error-response';
+import { FieldCardSkeletonComponent } from '@features/field/components/field-card-skeleton/field-card-skeleton.component';
 
 @Component({
   selector: 'app-venue-card',
   standalone: true,
-  imports: [ModalComponent, MoneyFormatPipe, ButtonComponent, FieldTypeToPlayersPipe],
+  imports: [ModalComponent, MoneyFormatPipe, ButtonComponent, FieldTypeToPlayersPipe, FieldCardSkeletonComponent],
   templateUrl: './venue-card.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './venue-card.component.scss'
@@ -27,15 +28,20 @@ export class VenueCardComponent {
 
   fields = signal([] as Field[]);
 
+  loadingFields = signal(false);
+
   isOpen = signal(false);
 
   getFields() {
     this.fields.set([]);
+    this.loadingFields.set(true);
     this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
       next: fields => {
+        this.loadingFields.set(false);
         this.fields.set(fields);
       },
       error: (err: ErrorResponse) => {
+        this.loadingFields.set(false);
         this.alertService.error(
           'Error al obtener canchas',
           err.error.message || 'Hubo un error inesperado'
@@ -56,6 +62,14 @@ export class VenueCardComponent {
   }
 
   goToReservation(): void {
+    if (!this.venue.hasFields) {
+      this.alertService.notify(
+        'No hay canchas disponibles',
+        'Este lugar no tiene canchas disponibles para reservar',
+        'warning'
+      );
+      return;
+    }
     this.onClosed();
     this.router.navigate(['/reserva/' + this.venue.code]);
   }

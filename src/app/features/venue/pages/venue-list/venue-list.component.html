@@ -119,10 +119,10 @@
     </aside>
 
     <div class="flex-1 min-w-0">
-      @if (loading) {
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @if (loading()) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         @for (skeleton of [1, 2, 3]; track $index) {
-        <div class="shimmer bg-gray-100 rounded-xl h-48"></div>
+          <app-venue-card-skeleton />
         }
       </div>
       } @else {
@@ -133,7 +133,7 @@
             {{ venues.content.length }} {{ venues.content.length === 1 ? 'resultado' : 'resultados' }}
           </h3>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           @for (venue of venues.content; track venue.id) {
           <app-venue-card [venue]="venue" />
           }

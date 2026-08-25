@@ -19,10 +19,10 @@ import { Venue } from '@features/venue/interfaces/venue';
 import { VenueService } from '@features/venue/services/venue.service';
 import { CreateVenueCardComponent } from '@shared/components/create-venue-card/create-venue-card.component';
 import { LayoutComponent } from '@shared/components/layout/layout.component';
-import { environment } from 'environments/environment';
+import { environment } from '@environments/environment';
 import { User } from '@features/user/interfaces/user';
-import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
 import { LoadingIconComponent } from '@shared/components/loading-icon/loading-icon.component';
+import { HomeSkeletonComponent } from '@features/user/components/home-skeleton/home-skeleton.component';
 
 @Component({
   selector: 'app-home-admin',
@@ -32,7 +32,7 @@ import { LoadingIconComponent } from '@shared/components/loading-icon/loading-ic
     LayoutComponent,
     CreateVenueCardComponent,
     LoadingIconComponent,
-    LoadingTextComponent
+    HomeSkeletonComponent
   ],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,12 +46,13 @@ export class HomeComponent implements OnInit {
   private readonly alertService = inject(AlertService);
   private readonly destroyRef = inject(DestroyRef);
 
-  user!: User;
+  user = signal<User | null>(null);
   venue!: Venue;
   reservations!: Reservation[];
   loading = signal<boolean>(true);
-  loadingReservations = false;
+  loadingReservations = signal<boolean>(true);
   copySuccess = false;
+  countReservations = signal<number>(0);
 
   urlBase = environment.deploy + 'reserva/';
   link = '';
@@ -64,9 +65,10 @@ export class HomeComponent implements OnInit {
         switchMap(user => {
           if (!user) {
             this.loading.set(false);
+            this.loadingReservations.set(false);
             return EMPTY;
           }
-          this.user = user;
+          this.user.set(user);
           return this.venueService.getMyVenue();
         }),
         takeUntilDestroyed(this.destroyRef)
@@ -80,10 +82,12 @@ export class HomeComponent implements OnInit {
             this.getReservations();
           } else {
             this.loading.set(false);
+            this.loadingReservations.set(false);
           }
         },
         error: (err: ErrorResponse) => {
           this.loading.set(false);
+          this.loadingReservations.set(false);
           this.alertService.error(
             'Error al obtener complejo deportivo',
             err.error.message || 'Hubo un error inesperado'
@@ -93,17 +97,16 @@ export class HomeComponent implements OnInit {
   }
 
   getReservations(): void {
-    this.loadingReservations = true;
     const today = new Date();
     this.reservationService
-      .getReservationsByVenueIdAndDate(this.venue.id, this.formatDateLocal(today))
+      .countReservationsByVenueIdAndDate(this.venue.id, this.formatDateLocal(today))
       .subscribe({
-        next: data => {
-          this.loadingReservations = false;
-          this.reservations = data;
+        next: count => {
+          this.countReservations.set(count);
+          this.loadingReservations.set(false);
         },
         error: (err: ErrorResponse) => {
-          this.loadingReservations = false;
+          this.loadingReservations.set(false);
           this.alertService.error(
             'Error al obtener reservas',
             err.error.message || 'Hubo un error inesperado'

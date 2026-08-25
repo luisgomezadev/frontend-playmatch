@@ -52,9 +52,9 @@ export class ProfileComponent implements OnInit {
 
   user!: User;
   venue!: Venue;
-  loading = false;
-  loadingVenue = false;
-  fieldsCount = 0;
+  loading = signal<boolean>(false);
+  loadingVenue = signal<boolean>(false);
+  fieldsCount = signal<number>(0);
   userRole = UserRole;
 
   selectedFile: File | null = null;
@@ -63,7 +63,7 @@ export class ProfileComponent implements OnInit {
   isOpen = signal(false);
 
   ngOnInit(): void {
-    this.loadingVenue = true;
+    this.loadingVenue.set(true);
     this.authService.currentUser$
       .pipe(
         switchMap(user => {
@@ -75,14 +75,14 @@ export class ProfileComponent implements OnInit {
       )
       .subscribe({
         next: data => {
-          this.loadingVenue = false;
+          this.loadingVenue.set(false);
           if (data) {
             this.venue = data;
             this.loadFieldsCount();
           }
         },
         error: (err: ErrorResponse) => {
-          this.loadingVenue = false;
+          this.loadingVenue.set(false);
           this.alertService.error(
             'Error al obtener complejo deportivo',
             err.error.message || 'Error inesperado'
@@ -94,7 +94,7 @@ export class ProfileComponent implements OnInit {
   private loadFieldsCount(): void {
     this.fieldService.getFieldsByVenueId(this.venue.id).subscribe({
       next: fields => {
-        this.fieldsCount = fields.length;
+        this.fieldsCount.set(fields.length);
       },
       error: (err: ErrorResponse) => {
         this.alertService.error(
@@ -148,20 +148,20 @@ export class ProfileComponent implements OnInit {
       this.alertService.error('Error', 'El archivo debe ser menor a 2MB.');
       return;
     }
-    this.loading = true;
+    this.loading.set(true);
 
     this.userService.uploadUserImage(this.user.id, file).subscribe({
       next: updatedUser => this.handleSuccess(updatedUser),
       error: err => {
         this.alertService.error('Error', err.error?.message || 'Error al subir la imagen');
-        this.loading = false;
+        this.loading.set(false);
       }
     });
   }
 
   private handleSuccess(updatedUser: User) {
     this.authService.setUser(updatedUser);
-    this.loading = false;
+    this.loading.set(false);
     this.alertService.success('Foto Actualizada', 'Tu imagen de perfil ha sido cambiada.');
 
     this.onClosed();

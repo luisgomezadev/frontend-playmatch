@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
@@ -56,9 +56,9 @@ export class ReservationFormComponent implements OnInit {
 
   venueCode = '';
   venue!: Venue;
-  loading = false;
-  loadingHours = false;
-  loadingCreateReservation = false;
+  loading = signal<boolean>(false);
+  loadingHours = signal<boolean>(false);
+  loadingCreateReservation = signal<boolean>(false);
   selectedDate: Date | null = null;
   selectedDurationEnum: ReservationDuration | null = null;
   selectedMinutes: number | null = null;
@@ -146,7 +146,7 @@ export class ReservationFormComponent implements OnInit {
     this.reservationForm.reset();
     this.selectedStartTime = null;
 
-    this.loadingHours = true;
+    this.loadingHours.set(true);
 
     if (!this.selectedDate || !this.selectedField) return;
 
@@ -157,7 +157,7 @@ export class ReservationFormComponent implements OnInit {
         this.formatDateLocal(this.selectedDate!)
       )
       .subscribe(ranges => {
-        this.loadingHours = false;
+        this.loadingHours.set(false);
         this.availableRanges = ranges;
         this.generateStartTimes();
       });
@@ -216,10 +216,10 @@ export class ReservationFormComponent implements OnInit {
   }
 
   getVenue(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.venueService.getVenueByCode(this.venueCode).subscribe({
       next: data => {
-        this.loading = false;
+        this.loading.set(false);
         this.venue = data;
         this.getFieldsByVenue(data.id);
       }
@@ -247,7 +247,7 @@ export class ReservationFormComponent implements OnInit {
       return;
     }
 
-    this.loadingCreateReservation = true;
+    this.loadingCreateReservation.set(true);
 
     const payload: ReservationRequest = {
       customerName: this.reservationForm.value.customerName,
@@ -260,14 +260,14 @@ export class ReservationFormComponent implements OnInit {
 
     this.reservationService.createReservation(payload).subscribe({
       next: data => {
-        this.loadingCreateReservation = false;
+        this.loadingCreateReservation.set(false);
         this.successReservation = true;
         this.reservationData = data;
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
       },
       error: err => {
-        this.loadingCreateReservation = false;
+        this.loadingCreateReservation.set(false);
         this.alertService.error('Error', err.error?.message || 'Algo salió mal');
       }
     });

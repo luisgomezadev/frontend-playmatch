@@ -6,6 +6,7 @@ export interface Venue {
   address: string;
   openingHour: string;
   closingHour: string;
+  hasFields: boolean;
 }
 
 export interface VenueRequest {

@@ -101,7 +101,7 @@
       <div class="mt-6">
         <app-button type="submit" size="big" [disabled]="loginForm.invalid">
 
-          @if (loading) {
+          @if (loading()) {
 
           <app-loading-text-component text="Ingresando" />
 

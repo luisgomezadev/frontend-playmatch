@@ -33,19 +33,19 @@ export class ButtonComponent {
 
   get classes(): string {
     let base =
-      'w-full inline-flex items-center justify-center gap-2 hover:shadow-md transform transition-all duration-300 disabled:opacity-60 disabled:hover:shadow-none';
+      'w-full inline-flex items-center justify-center gap-2 hover:shadow-md transform transition-all duration-300 disabled:opacity-60 disabled:hover:shadow-none disabled:cursor-not-allowed';
 
     if (this.size === 'big') base += ' py-4 px-6 sm:px-10 font-semibold text-lg rounded-2xl';
     else base += ' px-4 py-2 font-medium rounded-lg';
 
     if (this.color === 'primary') {
-      return base + ' bg-primary text-white hover:bg-hover-primary';
+      return base + ' bg-primary text-white hover:bg-hover-primary disabled:hover:bg-primary';
     }
 
     if (this.color === 'white') {
       return (
         base +
-        ' bg-white/20 text-white bg-opacity-20 hover:bg-opacity-30 border border-white/30 hover:border-white/50'
+        ' bg-white/90 text-black hover:bg-hover-white/90'
       );
     }
 

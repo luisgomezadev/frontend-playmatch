@@ -27,14 +27,8 @@ export class UserService extends BaseHttpService {
     return this.http.get<PagedResponse<User>>(this.ENDPOINT, { params });
   }
 
-  getUserById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.ENDPOINT}/${id}`);
-  }
-
-  getUserByEmail(email: string): Observable<User> {
-    return this.http.get<User>(`${this.ENDPOINT}/by-email`, {
-      params: { email }
-    });
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.ENDPOINT}/me`);
   }
 
   updateUser(user: User): Observable<User> {

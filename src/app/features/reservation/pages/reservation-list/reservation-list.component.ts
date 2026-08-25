@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { EMPTY, switchMap } from 'rxjs';
@@ -32,16 +32,16 @@ export class ReservationListComponent implements OnInit {
 
   venue!: Venue;
 
-  loading = false;
-  loadingVenue = false;
+  loading = signal<boolean>(false);
+  loadingVenue = signal<boolean>(false);
 
   currentDate: Date = new Date();
-  reservations: Reservation[] = [];
+  reservations = signal<Reservation[]>([]);
 
   ngOnInit(): void {
     this.scrollService.scrollToTop();
 
-    this.loadingVenue = true;
+    this.loadingVenue.set(true);
     this.authService.currentUser$
       .pipe(
         switchMap(user => {
@@ -52,14 +52,14 @@ export class ReservationListComponent implements OnInit {
       )
       .subscribe({
         next: data => {
-          this.loadingVenue = false;
+          this.loadingVenue.set(false);
           if (data) {
             this.venue = data;
             this.loadReservations();
           }
         },
         error: (err: ErrorResponse) => {
-          this.loadingVenue = false;
+          this.loadingVenue.set(false);
           this.alertService.error(
             'Error al obtener información del complejo deportivo',
             err.error.message || 'Hubo un error inesperado'
@@ -87,17 +87,17 @@ export class ReservationListComponent implements OnInit {
 
   loadReservations(): void {
     if (!this.venue) return;
-    this.loading = true;
+    this.loading.set(true);
     const formattedDate = this.formatDateLocal(this.currentDate);
     this.reservationService
       .getReservationsByVenueIdAndDate(this.venue.id, formattedDate)
       .subscribe({
         next: data => {
-          this.loading = false;
-          this.reservations = data;
+          this.loading.set(false);
+          this.reservations.set(data);
         },
         error: (err: ErrorResponse) => {
-          this.loading = false;
+          this.loading.set(false);
           this.alertService.error(
             'Error al obtener reservas',
             err.error.message || 'Hubo un error inesperado'

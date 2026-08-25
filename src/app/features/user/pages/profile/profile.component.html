@@ -202,7 +202,7 @@
 
         </div>
 
-        @if (loadingVenue) {
+        @if (loadingVenue()) {
 
         <div class="grid sm:grid-cols-2 gap-4">
           <div class="flex items-center gap-4 p-4 bg-gray-100 border border-gray-200 rounded-xl">
@@ -407,7 +407,7 @@
                 </p>
 
                 <h4 class="mt-1 text-lg font-semibold text-gray-900">
-                  {{ fieldsCount }}
+                  {{ fieldsCount() }} {{ fieldsCount() === 1 ? 'cancha' : 'canchas' }}
                 </h4>
 
               </div>
@@ -446,7 +446,7 @@
   <div class="flex justify-center mt-6 space-x-2">
     <app-button (clicked)="onClosed()" text="Cancelar" color="secondary">Cancelar</app-button>
     <app-button (clicked)="onUploadImage()" color="primary" text="Actualizar imagen" [disabled]="!selectedFile">
-      @if (loading) {
+      @if (loading()) {
       <app-loading-text-component text="Actualizando foto" />
       } @else {
       Actualizar foto

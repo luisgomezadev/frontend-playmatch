@@ -20,7 +20,7 @@ import { CreateVenueCardComponent } from '@shared/components/create-venue-card/c
 import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { FieldTypePipe } from '@shared/pipes/field-type.pipe';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
-import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
+import { FieldManagementSkeletonComponent } from '@features/field/components/field-management-skeleton/field-management-skeleton.component';
 
 @Component({
   selector: 'app-field',
@@ -32,7 +32,7 @@ import { LoadingTextComponent } from '@shared/components/loading-text/loading-te
     MoneyFormatPipe,
     FieldTypePipe,
     CreateVenueCardComponent,
-    LoadingTextComponent
+    FieldManagementSkeletonComponent
   ],
   templateUrl: './field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

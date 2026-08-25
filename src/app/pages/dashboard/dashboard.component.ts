@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { ErrorResponse } from '@core/interfaces/error-response';
 import { Link } from '@core/interfaces/link.interface';
@@ -24,23 +24,23 @@ export class DashboardComponent implements OnInit {
 
   userActive!: User;
   sidebarOpen = false;
-  loading = true;
-  links: Link[] = [];
+  loading = signal<boolean>(true);
+  links = signal<Link[]>([]);
 
   ngOnInit(): void {
     const claims = this.authService.getClaimsFromToken();
     if (claims) {
       const email = claims.sub;
       if (typeof email === 'string') {
-        this.userService.getUserByEmail(email).subscribe({
+        this.userService.getCurrentUser().subscribe({
           next: (user: User) => {
-            this.loading = false;
             this.userActive = user;
             this.authService.setUser(user);
             this.loadLinks();
+            this.loading.set(false);
           },
           error: (err: ErrorResponse) => {
-            this.loading = false;
+            this.loading.set(false);
             this.alertService.error(
               'Error al obtener usuario',
               err.error.message || 'Hubo un error inesperado'
@@ -48,18 +48,18 @@ export class DashboardComponent implements OnInit {
           }
         });
       } else {
-        this.loading = false;
+        this.loading.set(false);
         this.alertService.error('Error', 'No se pudo obtener el correo del usuario.');
         this.authService.logout();
       }
     } else {
       this.authService.logout();
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 
   loadLinks() {
-    this.links = LINKS_DASHBOARD;
+    this.links.set(LINKS_DASHBOARD);
   }
 
   getImageUrl(user: User): string {
@@ -74,13 +74,18 @@ export class DashboardComponent implements OnInit {
     this.sidebarOpen = false;
   }
 
+  onLogoutClick(): void {
+    this.closeSidebar();
+    this.logout();
+  }
+
   logout(): void {
     this.alertService
       .confirm(
         '¿Cerrar sesión?',
         '¿Estás seguro de que deseas cerrar sesión?',
         'Si, cerrar sesión',
-        'No',
+        'Cancelar',
         '#dc2626'
       )
       .then(confirmed => {

@@ -46,9 +46,9 @@ export class VenueComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   venueForm!: FormGroup;
-  loading = false;
+  loading = signal<boolean>(false);
   venueData = signal<Venue | null>(null);
-  fieldsData: Field[] = [];
+  fieldsData = signal<Field[]>([]);
 
   dropdownIndex: number | null = null;
 
@@ -120,7 +120,7 @@ export class VenueComponent implements OnInit {
   loadFields(venueId: number): void {
     this.fieldService.getFieldsByVenueId(venueId).subscribe({
       next: fields => {
-        this.fieldsData = fields;
+        this.fieldsData.set(fields);
       },
       error: (err: ErrorResponse) => {
         this.alertService.error(
@@ -136,7 +136,7 @@ export class VenueComponent implements OnInit {
       this.venueForm.markAllAsTouched();
       return;
     }
-    this.loading = true;
+    this.loading.set(true);
     const formValue = this.venueForm.value;
     const venueId = formValue.id ? formValue.id : null;
 
@@ -151,7 +151,7 @@ export class VenueComponent implements OnInit {
     if (venueId) {
       this.venueService.updateVenue(request, venueId).subscribe({
         next: res => {
-          this.loading = false;
+          this.loading.set(false);
           this.venueData.set(res);
           this.loadFields(res.id);
           this.alertService.success(
@@ -160,7 +160,7 @@ export class VenueComponent implements OnInit {
           );
         },
         error: (err: ErrorResponse) => {
-          this.loading = false;
+          this.loading.set(false);
           this.alertService.error(
             'Error al actualizar complejo',
             err.error.message || 'Error inesperado'
@@ -170,7 +170,7 @@ export class VenueComponent implements OnInit {
     } else {
       this.venueService.createVenue(request).subscribe({
         next: res => {
-          this.loading = false;
+          this.loading.set(false);
           this.venueData.set(res);
           this.loadFields(res.id);
           this.alertService.success(
@@ -180,7 +180,7 @@ export class VenueComponent implements OnInit {
           this.venueForm.patchValue({ id: res.id });
         },
         error: (err: ErrorResponse) => {
-          this.loading = false;
+          this.loading.set(false);
           this.alertService.error(
             'Error al registrar complejo',
             err.error.message || 'Error inesperado'

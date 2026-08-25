@@ -1,10 +1,10 @@
-@if (loading) {
-<app-loading-component />
+@if (loading()) {
+  <app-loading-component />
 } @else {
 <!-- Menu de navegación en vista movil -->
 <nav
   class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50 shadow-lg grid grid-cols-4 justify-center items-center fixed bottom-0 left-0 right-0 z-50 h-16">
-  @for (link of links; track $index) {
+  @for (link of links(); track $index) {
   <div class="flex items-center justify-center">
     <a [routerLink]="link.link" routerLinkActive="bg-primary text-white"
       class="text-xs text-gray-800 inline-block py-4 px-2 rounded-xl w-12 text-center">
@@ -22,7 +22,7 @@
   </div>
   <nav class="flex-1">
     <ul class="flex flex-col gap-4">
-      @for (link of links; track $index) {
+      @for (link of links(); track $index) {
       <li>
         <a (click)="closeSidebar()" [routerLink]="link.link" routerLinkActive="active"
           class="flex items-center gap-3 py-2 px-4 text-gray-800 rounded-lg hover:bg-gray-100 transition-colors duration-300">
@@ -34,7 +34,7 @@
     </ul>
   </nav>
   <hr class="border-gray-200" />
-  <button (click)="closeSidebar()" (click)="logout()"
+  <button (click)="onLogoutClick()"
     class="flex items-center gap-3 py-2 px-4 rounded-lg text-gray-800 hover:bg-gray-100 transition-colors duration-300 cursor-pointer w-full">
     <i class="fa-solid fa-right-from-bracket w-6"></i>
     <span>Cerrar sesión</span>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
   private readonly alertService = inject(AlertService);
 
   registerForm: FormGroup;
-  loading = false;
+  loading = signal<boolean>(false);
   showPassword = false;
   showConfirmPassword = false;
 
@@ -93,15 +93,15 @@ export class RegisterComponent implements OnInit {
 
     const formData = this.registerForm.value;
 
-    this.loading = true;
+    this.loading.set(true);
 
     const handleError = (err: ErrorResponse) => {
-      this.loading = false;
+      this.loading.set(false);
       this.alertService.error('Error al registrar', err?.error?.message || 'Falló el registro');
     };
 
     const handleSuccess = () => {
-      this.loading = false;
+      this.loading.set(false);
       this.alertService.success('Registro exitoso', 'Ahora puedes iniciar sesión');
       this.router.navigate(['/login']);
     };
