@@ -7,12 +7,12 @@
         <i class="fa-solid fa-calendar text-lg"></i>
       </div>
       <div>
-        <span class="text-2xl font-extrabold leading-none text-gray-900">
+        <span class="text-lg md:text-2xl font-extrabold leading-none text-gray-900">
           {{ reservation.startTime | timeFormat }} – {{ reservation.endTime | timeFormat }}
         </span>
-        <p class="text-sm text-gray-500 mt-2 capitalize">
-          <span class="font-semibold text-gray-700">{{ reservation.fieldName }}</span> · {{ reservation.duration | durationLabel }}
-        </p>
+        <span class="text-sm text-neutral-500 block">
+          <span class="font-medium text-neutral-700">{{ reservation.fieldName }}</span> · {{ reservation.duration | durationLabel }}
+        </span>
       </div>
     </div>
     <span

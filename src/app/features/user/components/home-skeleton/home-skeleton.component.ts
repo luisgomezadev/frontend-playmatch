@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
   template: `
     <div class="flex flex-col gap-6">
       <!-- Banner: reservas de hoy -->
-      <div class="rounded-lg border border-gray-200 bg-white p-6 flex items-center justify-between gap-6">
-        <div class="flex items-center gap-4">
+      <div class="rounded-lg border border-gray-200 bg-white p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4 w-full md:w-auto">
           <div class="shimmer w-14 h-14 rounded-lg shrink-0"></div>
           <div class="flex flex-col gap-2">
             <div class="shimmer h-3 w-32 rounded"></div>
@@ -16,11 +16,11 @@ import { Component } from '@angular/core';
               <div class="shimmer h-7 w-8 rounded"></div>
               <div class="shimmer h-4 w-20 rounded"></div>
             </div>
-            <div class="shimmer h-3.5 w-64 rounded"></div>
+            <div class="shimmer h-3.5 w-64 rounded hidden md:block"></div>
           </div>
         </div>
 
-        <div class="shimmer h-11 w-40 rounded-lg shrink-0"></div>
+        <div class="shimmer h-11 rounded-lg shrink-0 w-full md:w-40"></div>
       </div>
 
       <!-- Accesos rápidos -->

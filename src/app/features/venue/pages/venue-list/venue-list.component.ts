@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal, effect } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { createEmptyPagedResponse, PagedResponse } from '@core/interfaces/paged-response';
 import { AlertService } from '@core/services/alert.service';
@@ -30,18 +30,25 @@ export class VenueListComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   private readonly alertService = inject(AlertService);
 
-  formFilter!: FormGroup;
-  venues = signal<PagedResponse<Venue>>(createEmptyPagedResponse());
-  filters: VenueFilter = {};
-  loading = signal<boolean>(true);
-  pageSize = 12;
-  currentPage = 0;
-  showMobileFilters = false;
+  protected formFilter!: FormGroup;
+  protected venues = signal<PagedResponse<Venue>>(createEmptyPagedResponse());
+  protected filters = signal<VenueFilter>({});
+  protected loading = signal<boolean>(true);
+  protected currentPage = signal<number>(0); 
+  protected pageSize = signal<number>(6);
+  protected showMobileFilters = signal<boolean>(false);
 
-  searchForm = new FormGroup({
+  protected searchForm = new FormGroup({
     name: new FormControl(''),
     city: new FormControl('')
   });
+
+  constructor() {
+    effect(() => {
+      const currentPage = this.currentPage();
+      this.loadVenues(currentPage);
+    });
+  }
 
   ngOnInit(): void {
     this.initForm();
@@ -53,44 +60,45 @@ export class VenueListComponent implements OnInit {
   }
 
   loadVenues(page: number): void {
-    this.venueService.getVenues(this.filters, page, this.pageSize).subscribe({
+    this.venueService.getVenues(this.filters(), page, this.pageSize()).subscribe({
       next: data => {
-        this.loading.set(false);
         this.venues.set(data);
       },
       error: err => {
-        this.loading.set(false);
         this.alertService.error('Error cargando canchas', err.error.message || 'Error desconocido');
+      },
+      complete: () => {
+        this.loading.set(false);
       }
     });
   }
 
   filter(formFilter: VenueFilter): void {
-    this.filters = formFilter;
+    this.filters.set(formFilter);
     this.loadVenues(0);
   }
 
   changePage(newPage: number): void {
     const venues = this.venues();
     if (venues !== null && newPage >= 0 && newPage < venues.totalPages) {
-      this.currentPage = newPage;
-      this.loadVenues(this.currentPage);
+      this.currentPage.set(newPage);
     }
   }
 
-  onSearch() {
+  onSearch(): void {
     const formValue = this.searchForm.value;
-    this.filters = {
+    
+    this.filters.set({
       name: formValue.name || undefined,
       city: formValue.city || undefined
-    };
+    });
 
     this.loading.set(true);
 
-    this.venueService.getVenues(this.filters, 0, this.pageSize).subscribe({
+    this.venueService.getVenues(this.filters(), 0, this.pageSize()).subscribe({
       next: data => {
         this.venues.set(data);
-        this.currentPage = 0;
+        this.currentPage.set(0);
       },
       error: err => {
         this.alertService.error(
@@ -99,14 +107,19 @@ export class VenueListComponent implements OnInit {
         );
       },
       complete: () => {
-        this.showMobileFilters = false;
+        this.showMobileFilters.set(false);
         this.loading.set(false);
       }
     });
   }
 
-  clearSearch() {
+  clearSearch(): void {
     this.searchForm.reset();
     this.onSearch();
   }
+
+  toggleMobileFilters(): void {
+    this.showMobileFilters.update(current => !current);
+  }
+  
 }

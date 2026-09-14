@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
   reservations!: Reservation[];
   loading = signal<boolean>(true);
   loadingReservations = signal<boolean>(true);
-  copySuccess = false;
+  copySuccess = signal<boolean>(false);
   countReservations = signal<number>(0);
 
   urlBase = environment.deploy + 'reserva/';
@@ -117,8 +117,8 @@ export class DashboardComponent implements OnInit {
 
   copyLink(): void {
     navigator.clipboard.writeText(this.link).then(() => {
-      this.copySuccess = true;
-      setTimeout(() => (this.copySuccess = false), 1500);
+      this.copySuccess.set(true);
+      setTimeout(() => this.copySuccess.set(false), 1500);
     });
   }
 
