@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { User } from '@user/interfaces/user';
@@ -6,9 +6,7 @@ import { BehaviorSubject, catchError, map, Observable, of, tap } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response';
 import { JwtClaims } from '@core/interfaces/jwt-claims';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class AuthService extends BaseHttpService {
   private readonly router = inject(Router);
   private readonly tokenKey = 'token';

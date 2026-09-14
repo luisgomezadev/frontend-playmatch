@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Service } from '@angular/core';
 import { Venue, VenueFilter, VenueRequest } from '@venue/interfaces/venue';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { Observable, tap } from 'rxjs';
@@ -7,9 +7,7 @@ import { HttpParams } from '@angular/common/http';
 import { CacheService } from '@core/services/cache.service';
 import { Field } from '@features/field/interfaces/field';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class VenueService extends BaseHttpService {
 
   private readonly ENDPOINT = this.apiUrl + '/venue';

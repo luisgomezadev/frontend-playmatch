@@ -1,12 +1,10 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Service, computed, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Field, FieldRequest } from '@field/interfaces/field';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class FieldService extends BaseHttpService {
   private readonly ENDPOINT = this.apiUrl + '/field';
 

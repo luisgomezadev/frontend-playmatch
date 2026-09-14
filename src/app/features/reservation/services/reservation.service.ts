@@ -1,12 +1,10 @@
 import { HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { Reservation, ReservationRequest, TimeSlot } from '@reservation/interfaces/reservation';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class ReservationService extends BaseHttpService {
   private readonly ENDPOINT = this.apiUrl + '/reservation';
 

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AlertService {
 
   confirm(

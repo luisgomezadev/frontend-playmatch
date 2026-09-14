@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 
 interface CacheEntry<T> {
@@ -6,9 +6,7 @@ interface CacheEntry<T> {
   observable: Observable<T>;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class CacheService {
 
   private readonly DEFAULT_TTL = 5 * 60 * 1000;

@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Service } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User} from '@user/interfaces/user';
 import { BaseHttpService } from '@shared/data-access/base-http.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Service()
 export class UserService extends BaseHttpService {
   private readonly ENDPOINT = this.apiUrl + '/user';
 
