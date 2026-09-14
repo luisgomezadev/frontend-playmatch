@@ -6,7 +6,7 @@
         <div class="h-8 sm:h-10 bg-gray-200 rounded w-2/3 mb-2 shimmer"></div>
         <div class="h-4 sm:h-6 bg-gray-200 rounded w-1/3 mb-2 shimmer"></div>
         <div class="h-3 sm:h-5 bg-gray-200 rounded w-1/2 mb-3 shimmer"></div>
-        <div class="h-8 bg-gray-200 rounded-xl w-24 shimmer"></div>
+        <div class="h-8 bg-gray-200 rounded-lg w-24 shimmer"></div>
       </div>
     } @else {
       <div class="flex-1 text-center flex flex-col items-center justify-center">
@@ -18,7 +18,7 @@
         <p class="text-xs sm:text-base text-gray-600 font-normal mb-1">{{ venue.address }}</p>
         <div class="mt-2">
           <a routerLink="/canchas"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-gray-300 bg-white text-gray-700 font-medium hover:border-primary hover:text-primary hover:shadow-md transition-all duration-300">
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium hover:border-primary hover:text-primary hover:shadow-md transition-all duration-300">
 
             <i class="fa-solid fa-arrow-left"></i>
             <span>Volver al listado de canchas</span>
@@ -72,7 +72,7 @@
   <main class="max-w-5xl mx-auto px-1 sm:px-4 py-4 sm:py-8 space-y-8">
 
     <!-- Paso 1: Sección para elegir día -->
-    <section class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
+    <section class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
       <header class="flex items-center gap-2">
         <div class="p-2 rounded-lg bg-gray-100">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -110,7 +110,7 @@
     <!-- Paso 2: Sección para elegir cancha -->
     @if (selectedDate && fields.length) {
       <section
-        class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
+        class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
         <header class="flex items-center gap-2 mb-4">
           <div class="p-2 rounded-lg bg-gray-100">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -147,7 +147,7 @@
     <!-- Paso 3: Sección para elegir la duración -->
     @if (selectedDate && selectedField) {
       <section
-        class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
+        class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
         <header class="flex items-center gap-2 mb-4">
           <div class="p-2 rounded-lg bg-gray-100">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -180,7 +180,7 @@
     <!-- Paso 4: Sección para elegir la hora de inicio -->
     @if (selectedMinutes) {
       <section
-        class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
+        class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
         <header class="flex items-center justify-between gap-2 mb-4">
           <div class="flex items-center gap-2">
             <div class="p-2 rounded-lg bg-gray-100">
@@ -260,7 +260,7 @@
     <!-- Paso 5: Datos del usuario -->
     @if (selectedStartTime) {
       <section
-        class="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
+        class="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 shadow-sm motion-preset-slide-down">
         <header class="flex items-center gap-2 mb-3 sm:mb-4">
           <div class="p-2 bg-gray-50 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -313,7 +313,7 @@
               </div>
               <div class="mt-6">
                 <button type="submit"
-                  class="px-6 py-3 bg-primary hover:bg-primary/90 text-white disabled:opacity-50 w-full text-base font-medium rounded-xl transition-colors duration-300">
+                  class="px-6 py-3 bg-primary hover:bg-primary/90 text-white disabled:opacity-50 w-full text-base font-medium rounded-lg transition-colors duration-300">
                   @if (loadingCreateReservation()) {
                     <app-loading-text-component [text]="'Creando reserva'" />
                   } @else {

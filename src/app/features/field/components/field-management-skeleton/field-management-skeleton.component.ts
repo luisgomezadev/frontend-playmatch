@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
       <div>
         <!-- Header con ícono -->
         <div class="flex items-start gap-3 mb-6">
-          <div class="shimmer w-11 h-11 rounded-xl shrink-0"></div>
+          <div class="shimmer w-11 h-11 rounded-lg shrink-0"></div>
           <div class="flex flex-col gap-2 pt-0.5 flex-1">
             <div class="shimmer h-4 w-48 rounded"></div>
             <div class="shimmer h-3 w-56 rounded"></div>
@@ -41,7 +41,7 @@ import { Component } from '@angular/core';
         </div>
 
         <!-- Botón agregar -->
-        <div class="shimmer h-12 w-full rounded-xl"></div>
+        <div class="shimmer h-12 w-full rounded-lg"></div>
       </div>
 
       <!-- Panel derecho: lista de canchas -->
@@ -55,7 +55,7 @@ import { Component } from '@angular/core';
         <!-- Items de la lista -->
         <div class="flex flex-col gap-3">
           @for (item of [1, 2, 3]; track $index) {
-            <div class="flex items-center justify-between gap-4 rounded-xl border border-gray-200 p-4">
+            <div class="flex items-center justify-between gap-4 rounded-lg border border-gray-200 p-4">
               <div class="flex flex-col gap-2 min-w-0 flex-1">
                 <div class="flex items-center gap-2">
                   <div class="shimmer h-4 w-36 rounded"></div>

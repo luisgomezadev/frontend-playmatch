@@ -10,14 +10,14 @@ import { User } from '@user/interfaces/user';
 import { UserService } from '@user/services/user.service';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-layout',
   standalone: true,
   imports: [RouterModule, LoadingComponent, RouterLink],
-  templateUrl: './dashboard.component.html',
+  templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './layout.component.scss'
 })
-export class DashboardComponent implements OnInit {
+export class LayoutComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly alertService = inject(AlertService);
@@ -86,7 +86,6 @@ export class DashboardComponent implements OnInit {
         '¿Estás seguro de que deseas cerrar sesión?',
         'Si, cerrar sesión',
         'Cancelar',
-        '#dc2626'
       )
       .then(confirmed => {
         if (confirmed) {

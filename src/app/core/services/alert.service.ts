@@ -9,8 +9,8 @@ export class AlertService {
   text: string,
   confirmButtonText = 'Aceptar',
   cancelButtonText = 'Cancelar',
-  confirmButtonColor = '#3aaa35',
-  cancelButtonColor = '#333'
+  confirmButtonColor = '#2D9600',
+  cancelButtonColor = '#374151'
 ): Promise<boolean> {
   return Swal.fire({
     title,

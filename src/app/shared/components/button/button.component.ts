@@ -35,7 +35,7 @@ export class ButtonComponent {
     let base =
       'w-full inline-flex items-center justify-center gap-2 hover:shadow-md transform transition-all duration-300 disabled:opacity-60 disabled:hover:shadow-none disabled:cursor-not-allowed';
 
-    if (this.size === 'big') base += ' py-4 px-6 sm:px-10 font-semibold text-lg rounded-2xl';
+    if (this.size === 'big') base += ' py-4 px-6 sm:px-10 font-semibold text-lg rounded-lg';
     else base += ' px-4 py-2 font-medium rounded-lg';
 
     if (this.color === 'primary') {

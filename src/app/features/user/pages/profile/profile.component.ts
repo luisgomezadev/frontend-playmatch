@@ -180,7 +180,6 @@ export class ProfileComponent implements OnInit {
         '¿Estás seguro de que deseas cerrar sesión?',
         'Si, cerrar sesión',
         'Cancelar',
-        '#dc2626'
       )
       .then(confirmed => {
         if (confirmed) {

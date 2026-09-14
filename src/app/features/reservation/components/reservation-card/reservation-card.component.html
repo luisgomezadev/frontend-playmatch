@@ -1,9 +1,9 @@
 <article
-  class="relative overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl motion-preset-blur-down-md p-6">
+  class="relative overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md transition-shadow duration-300 hover:shadow-md motion-preset-blur-down-md p-6">
 
   <header class="flex items-start justify-between mb-6">
     <div class="flex items-center gap-4">
-      <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white shadow-md shrink-0">
+      <div class="flex h-14 w-14 items-center justify-center rounded-lg bg-primary text-white shadow-md shrink-0">
         <i class="fa-solid fa-calendar text-lg"></i>
       </div>
       <div>
@@ -21,16 +21,16 @@
     </span>
   </header>
 
-  <div class="rounded-2xl border border-gray-100 bg-gray-50 p-5 mb-6">
+  <div class="rounded-lg border border-gray-100 bg-gray-50 p-5 mb-6">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
           <i class="fa-solid fa-user text-sm"></i>
         </div>
         <span class="font-semibold text-gray-900 text-sm truncate">{{ reservation.customerName }}</span>
       </div>
       <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
           <i class="fa-solid fa-phone text-sm"></i>
         </div>
         <span class="text-gray-700 text-sm font-medium">{{ reservation.cellphone }}</span>
@@ -43,7 +43,7 @@
       [href]="'https://wa.me/' + reservation.cellphone"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex items-center justify-center gap-2 rounded-2xl bg-green-600 py-3.5 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-green-700 hover:shadow-lg"
+      class="flex items-center justify-center gap-2 rounded-lg bg-green-600 py-3.5 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-green-700 hover:shadow-md"
       title="Enviar WhatsApp">
       <svg class="hidden sm:block w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
         <path
@@ -53,7 +53,7 @@
     </a>
     <a
       [href]="'tel:' + reservation.cellphone"
-      class="flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-gray-50 py-3.5 font-semibold text-gray-700 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lg"
+      class="flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 py-3.5 font-semibold text-gray-700 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-md"
       title="Llamar por teléfono">
       <svg
         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -65,7 +65,7 @@
     </a>
     <button
       (click)="openModal()"
-      class="flex items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 py-3.5 font-semibold text-red-600 transition-all duration-300 hover:-translate-y-1 hover:bg-red-100 hover:shadow-lg"
+      class="flex items-center justify-center gap-2 rounded-lg border border-red-100 bg-red-50 py-3.5 font-semibold text-red-600 transition-all duration-300 hover:-translate-y-1 hover:bg-red-100 hover:shadow-md"
       title="Cancelar reserva">
       <svg
         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -81,8 +81,8 @@
 
 @if (showModal) {
   <div class="fixed inset-0 h-dvh overflow-hidden z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl shadow-xl p-6 w-full max-w-sm text-center motion-preset-slide-up-sm">
-      <div class="flex items-center justify-center w-14 h-14 rounded-2xl bg-red-100 text-red-600 mx-auto mb-4">
+    <div class="bg-white rounded-lg shadow-md p-6 w-full max-w-sm text-center motion-preset-slide-up-sm">
+      <div class="flex items-center justify-center w-14 h-14 rounded-lg bg-red-100 text-red-600 mx-auto mb-4">
         <i class="fa-solid fa-triangle-exclamation text-lg"></i>
       </div>
       <h2 class="text-lg font-bold text-gray-900 mb-1">¿Cancelar reserva?</h2>
@@ -90,24 +90,24 @@
         ¿Querés notificar a <strong class="text-gray-800">{{ reservation.customerName }}</strong> por WhatsApp?
       </p>
       <textarea
-        class="w-full border border-gray-200 rounded-2xl p-4 mb-4 text-sm text-gray-800 bg-gray-50 resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
+        class="w-full border border-gray-200 rounded-lg p-4 mb-4 text-sm text-gray-800 bg-gray-50 resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
         rows="4"
         [(ngModel)]="whatsAppMessage"
         placeholder="Mensaje para enviar por WhatsApp"></textarea>
       <div class="flex flex-col gap-3">
         <button
           (click)="cancelAndNotify()"
-          class="rounded-2xl bg-primary py-3.5 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+          class="rounded-lg bg-primary py-3.5 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
           Cancelar y notificar por WhatsApp
         </button>
         <button
           (click)="cancelWithoutNotify()"
-          class="rounded-2xl border border-red-100 bg-red-50 py-3.5 font-semibold text-red-600 transition-all duration-300 hover:-translate-y-1 hover:bg-red-100 hover:shadow-lg">
+          class="rounded-lg border border-red-100 bg-red-50 py-3.5 font-semibold text-red-600 transition-all duration-300 hover:-translate-y-1 hover:bg-red-100 hover:shadow-md">
           Cancelar sin avisar
         </button>
         <button
           (click)="closeModal()"
-          class="rounded-2xl py-3 font-medium text-gray-500 transition-colors hover:bg-gray-100">
+          class="rounded-lg py-3 font-medium text-gray-500 transition-colors hover:bg-gray-100">
           Volver
         </button>
       </div>

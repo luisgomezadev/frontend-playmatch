@@ -3,11 +3,11 @@
 } @else {
 <!-- Menu de navegación en vista movil -->
 <nav
-  class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50 shadow-lg grid grid-cols-4 justify-center items-center fixed bottom-0 left-0 right-0 z-50 h-16">
+  class="md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200/50 shadow-md grid grid-cols-5 justify-center items-center fixed bottom-0 left-0 right-0 z-50 h-16">
   @for (link of links(); track $index) {
   <div class="flex items-center justify-center">
     <a [routerLink]="link.link" routerLinkActive="bg-primary text-white"
-      class="text-xs text-gray-800 inline-block py-4 px-2 rounded-xl w-12 text-center">
+      class="text-xs text-gray-800 inline-block py-4 px-2 rounded-lg w-12 text-center">
       <i [class]="link.iconClass"></i>
     </a>
   </div>

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { PagedResponse } from '@core/interfaces/paged-response';
+import { createEmptyPagedResponse, PagedResponse } from '@core/interfaces/paged-response';
 import { AlertService } from '@core/services/alert.service';
 import { VenueCardComponent } from '@features/venue/components/venue-card/venue-card.component';
 import { Venue, VenueFilter } from '@features/venue/interfaces/venue';
@@ -31,7 +31,7 @@ export class VenueListComponent implements OnInit {
   private readonly alertService = inject(AlertService);
 
   formFilter!: FormGroup;
-  venues!: PagedResponse<Venue>;
+  venues = signal<PagedResponse<Venue>>(createEmptyPagedResponse());
   filters: VenueFilter = {};
   loading = signal<boolean>(true);
   pageSize = 12;
@@ -56,7 +56,7 @@ export class VenueListComponent implements OnInit {
     this.venueService.getVenues(this.filters, page, this.pageSize).subscribe({
       next: data => {
         this.loading.set(false);
-        this.venues = data;
+        this.venues.set(data);
       },
       error: err => {
         this.loading.set(false);
@@ -71,7 +71,8 @@ export class VenueListComponent implements OnInit {
   }
 
   changePage(newPage: number): void {
-    if (newPage >= 0 && newPage < this.venues.totalPages) {
+    const venues = this.venues();
+    if (venues !== null && newPage >= 0 && newPage < venues.totalPages) {
       this.currentPage = newPage;
       this.loadVenues(this.currentPage);
     }
@@ -84,22 +85,28 @@ export class VenueListComponent implements OnInit {
       city: formValue.city || undefined
     };
 
+    this.loading.set(true);
+
     this.venueService.getVenues(this.filters, 0, this.pageSize).subscribe({
       next: data => {
-        this.venues = data;
-        this.currentPage = 0; // Reset to first page on new search
+        this.venues.set(data);
+        this.currentPage = 0;
       },
       error: err => {
         this.alertService.error(
           'Error al buscar complejos deportivos',
           err.error.message || 'Error desconocido'
         );
+      },
+      complete: () => {
+        this.showMobileFilters = false;
+        this.loading.set(false);
       }
     });
   }
 
   clearSearch() {
     this.searchForm.reset();
-    this.onSearch(); // opcional: recarga la lista sin filtros
+    this.onSearch();
   }
 }

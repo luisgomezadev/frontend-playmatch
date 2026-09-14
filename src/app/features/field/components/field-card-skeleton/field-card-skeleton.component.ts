@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="rounded-xl border border-gray-200 bg-white shadow-sm p-4">
+    <div class="rounded-lg border border-gray-200 bg-white shadow-sm p-4">
       <div class="flex items-start justify-between gap-4">
         
         <div class="shimmer h-5 w-[70%] rounded"></div>

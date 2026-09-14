@@ -21,6 +21,7 @@ import { LayoutComponent } from '@shared/components/layout/layout.component';
 import { LoadingTextComponent } from '@shared/components/loading-text/loading-text.component';
 import { MoneyFormatPipe } from '@shared/pipes/money-format.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-venue',
@@ -30,7 +31,8 @@ import { TimeFormatPipe } from '@shared/pipes/time-format.pipe';
     ReactiveFormsModule,
     LoadingTextComponent,
     TimeFormatPipe,
-    MoneyFormatPipe
+    MoneyFormatPipe,
+    RouterModule
   ],
   templateUrl: './venue.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,8 +51,6 @@ export class VenueComponent implements OnInit {
   loading = signal<boolean>(false);
   venueData = signal<Venue | null>(null);
   fieldsData = signal<Field[]>([]);
-
-  dropdownIndex: number | null = null;
 
   statusTypes = Object.values(Status);
 

@@ -1,0 +1,277 @@
+@if (user()) {
+<app-layout [title]="'Hola, ' + user()!.firstName" [subtitle]="'Aquí puedes ver un resumen general de tus reservas.'">
+  @if (loading()) {
+  <app-home-skeleton />
+  } @else {
+  @if (venue) {
+  <div class="space-y-6">
+
+    <section
+      class="rounded-lg border border-gray-200/70 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md p-3 md:p-6">
+
+      <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+
+        <div class="flex items-center gap-4">
+
+          <div class="flex h-14 w-14 items-center justify-center rounded-lg bg-primary text-white shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M8 7V3m8 4V3m-9 9h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              Reservas de hoy
+            </p>
+
+            <div class="flex items-end gap-2 mt-0.5">
+              @if (loadingReservations()) {
+              <app-loading-icon-component />
+              } @else {
+              <span class="text-4xl font-extrabold leading-none text-gray-900 tracking-tight">
+                {{ countReservations() }}
+              </span>
+              }
+              @if (!loadingReservations()) {
+              <span class="pb-0.5 text-base font-medium text-gray-500">
+                {{ countReservations() === 1 ? 'reserva' : 'reservas' }}
+              </span>
+              } @else {
+              <span class="pb-0.5 text-base font-medium text-gray-500">
+                reservas
+              </span>
+              }
+            </div>
+
+            <p class="mt-1.5 text-sm text-gray-500 hidden sm:block">
+              Gestiona fácilmente las reservas programadas para hoy.
+            </p>
+          </div>
+
+        </div>
+
+        <a routerLink="/dashboard/reservas"
+          class="group inline-flex w-full items-center justify-center gap-2.5 rounded-lg bg-primary px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:shadow-md hover:brightness-110 md:w-auto">
+          <svg xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 6h11M9 12h11M9 18h11M5 6h.01M5 12h.01M5 18h.01" />
+          </svg>
+          Revisar todas
+        </a>
+
+      </div>
+    </section>
+
+    <section
+      class="rounded-lg border border-gray-200/70 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md p-3 md:p-6">
+      <header class="mb-5 flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-gray-900 tracking-tight">
+            Accesos rápidos
+          </h2>
+          <span class="text-sm text-gray-500">
+            Accede rápidamente a las funciones principales.
+          </span>
+        </div>
+      </header>
+
+      <div class="grid gap-4 md:grid-cols-3">
+
+        <a routerLink="/dashboard/reservas"
+          class="group rounded-lg border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-primary/40 hover:shadow-md">
+
+          <div
+            class="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M9 6l11 0" />
+              <path d="M9 12l11 0" />
+              <path d="M9 18l11 0" />
+              <path d="M5 6l0 .01" />
+              <path d="M5 12l0 .01" />
+              <path d="M5 18l0 .01" />
+            </svg>
+          </div>
+
+          <h3 class="text-base font-semibold text-gray-900">
+            Reservas
+          </h3>
+
+          <p class="mt-1.5 text-sm text-gray-500 leading-relaxed">
+            Consulta y administra todas las reservas que tienes registradas.
+          </p>
+
+          <div class="mt-4 flex items-center gap-1.5 text-sm font-semibold text-primary">
+            Abrir
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="m12 5 7 7-7 7" />
+            </svg>
+          </div>
+
+        </a>
+
+        <a routerLink="/dashboard/complejo-deportivo"
+          class="group rounded-lg border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-primary/40 hover:shadow-md">
+
+          <div
+            class="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+              <path d="M12 7l4.76 3.45l-1.76 5.55h-6l-1.76 -5.55z" />
+              <path d="M12 7v-4m3 13l2.5 3m-.74 -8.55l3.74 -1.45m-11.44 7.05l-2.56 2.95m.74 -8.55l-3.74 -1.45" />
+            </svg>
+          </div>
+
+          <h3 class="text-base font-semibold text-gray-900">
+            Mi complejo deportivo
+          </h3>
+
+          <p class="mt-1.5 text-sm text-gray-500 leading-relaxed">
+            Administra la información de tu complejo deportivo y su disponibilidad.
+          </p>
+
+          <div class="mt-4 flex items-center gap-1.5 text-sm font-semibold text-primary">
+            Abrir
+            <svg xmlns="http://www.w3.org/2000/svg"
+              class="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </div>
+
+        </a>
+
+        <div class="rounded-lg border border-dashed border-gray-300 bg-gray-50/60 p-5">
+
+          <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-gray-200 text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+              <polyline points="16 7 22 7 22 13"></polyline>
+            </svg>
+          </div>
+
+          <h3 class="text-base font-semibold text-gray-700">
+            Métricas
+          </h3>
+
+          <p class="mt-1.5 text-sm text-gray-500 leading-relaxed">
+            Visualiza ingresos, reservas y estadísticas de tu negocio.
+          </p>
+
+          <span class="mt-4 inline-flex rounded-full bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-700">
+            Próximamente
+          </span>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section
+      class="rounded-lg border border-gray-200/70 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md p-3 md:p-6">
+      <header class="mb-5 flex items-center gap-3">
+        <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 3h6v6" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 14L21 3" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-gray-900 tracking-tight">
+            Comparte tu enlace
+          </h2>
+          <span class="text-sm text-gray-500">
+            Permite que tus clientes reserven desde cualquier lugar.
+          </span>
+        </div>
+      </header>
+
+      <div class="space-y-5">
+
+        <div>
+          <span class="mb-2 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+            Enlace de reservas
+          </span>
+          <div class="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3.5">
+            <p class="break-all font-mono text-sm text-gray-700">
+              {{ link }}
+            </p>
+          </div>
+        </div>
+
+        <div class="grid gap-3 sm:grid-cols-2">
+
+          <div class="relative">
+            <button type="button" (click)="copyLink()"
+              class="w-full rounded-lg bg-secondary py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:shadow-md hover:brightness-105">
+              Copiar enlace
+            </button>
+
+            @if (copySuccess) {
+            <div
+              class="absolute left-1/2 top-full z-10 mt-2.5 -translate-x-1/2 rounded-lg border border-green-200 bg-green-50 px-3.5 py-1.5 text-xs font-medium text-green-700 shadow-md motion-preset-blur-down-sm">
+              ✅ ¡Enlace copiado!
+            </div>
+            }
+          </div>
+
+          <a [href]="whatsappUrl" target="_blank" rel="noopener noreferrer"
+            class="flex items-center justify-center gap-2 rounded-lg bg-green-600 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-green-700 hover:shadow-md">
+            Compartir por WhatsApp
+          </a>
+
+        </div>
+
+        <div class="rounded-lg border border-blue-100 bg-blue-50/70 p-4">
+          <div class="flex gap-3.5">
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600 text-sm">
+              💡
+            </div>
+            <div>
+              <h3 class="text-sm font-semibold text-gray-900">
+                Consejo
+              </h3>
+              <p class="mt-1 text-sm leading-relaxed text-gray-600">
+                Comparte este enlace en tus redes sociales, perfil de Instagram,
+                estado de WhatsApp o imprímelo como código QR para que tus clientes
+                puedan reservar en segundos.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+  }
+
+  @else {
+  <app-create-venue-card />
+  }
+  }
+</app-layout>
+}

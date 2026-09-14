@@ -7,9 +7,9 @@ import { Component } from '@angular/core';
   template: `
     <div class="flex flex-col gap-6">
       <!-- Banner: reservas de hoy -->
-      <div class="rounded-2xl border border-gray-200 bg-white p-6 flex items-center justify-between gap-6">
+      <div class="rounded-lg border border-gray-200 bg-white p-6 flex items-center justify-between gap-6">
         <div class="flex items-center gap-4">
-          <div class="shimmer w-14 h-14 rounded-xl shrink-0"></div>
+          <div class="shimmer w-14 h-14 rounded-lg shrink-0"></div>
           <div class="flex flex-col gap-2">
             <div class="shimmer h-3 w-32 rounded"></div>
             <div class="flex items-baseline gap-2">
@@ -24,7 +24,7 @@ import { Component } from '@angular/core';
       </div>
 
       <!-- Accesos rápidos -->
-      <div class="rounded-2xl border border-gray-200 bg-white p-6">
+      <div class="rounded-lg border border-gray-200 bg-white p-6">
         <!-- Header -->
         <div class="flex items-start gap-3 mb-6">
           <div class="shimmer w-10 h-10 rounded-lg shrink-0"></div>
@@ -37,7 +37,7 @@ import { Component } from '@angular/core';
         <!-- Cards de accesos -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           @for (item of [1, 2, 3]; track $index) {
-            <div class="rounded-xl border border-gray-200 p-5 flex flex-col gap-4">
+            <div class="rounded-lg border border-gray-200 p-5 flex flex-col gap-4">
               <div class="shimmer w-10 h-10 rounded-lg"></div>
               <div class="flex flex-col gap-2">
                 <div class="shimmer h-4 w-28 rounded"></div>

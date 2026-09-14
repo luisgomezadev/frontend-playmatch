@@ -25,7 +25,7 @@ import { LoadingIconComponent } from '@shared/components/loading-icon/loading-ic
 import { HomeSkeletonComponent } from '@features/user/components/home-skeleton/home-skeleton.component';
 
 @Component({
-  selector: 'app-home-admin',
+  selector: 'app-dashboard',
   standalone: true,
   imports: [
     RouterModule,
@@ -34,11 +34,11 @@ import { HomeSkeletonComponent } from '@features/user/components/home-skeleton/h
     LoadingIconComponent,
     HomeSkeletonComponent
   ],
-  templateUrl: './home.component.html',
+  templateUrl: './dashboard.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './home.component.scss'
+  styleUrl: './dashboard.component.scss'
 })
-export class HomeComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly venueService = inject(VenueService);
   private readonly scrollService = inject(ScrollService);

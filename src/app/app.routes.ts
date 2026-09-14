@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login/login.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { LayoutComponent } from './pages/layout-dashboard/layout.component';
 import { roleGuard } from './core/guards/role.guard';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -41,7 +41,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: LayoutComponent,
     canActivate: [roleGuard],
     children: [
       {
@@ -52,7 +52,7 @@ export const routes: Routes = [
       {
         path: 'inicio',
         loadComponent: () =>
-          import('./features/user/pages/home/home.component').then(m => m.HomeComponent)
+          import('./features/user/pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
       },
       {
         path: 'complejo-deportivo',

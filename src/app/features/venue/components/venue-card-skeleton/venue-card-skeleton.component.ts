@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="rounded-xl overflow-hidden border border-gray-200 bg-white shadow-sm">
+    <div class="rounded-lg overflow-hidden border border-gray-200 bg-white shadow-sm">
       <!-- Imagen con badge y ojo superpuestos -->
       <div class="relative">
         <div class="shimmer w-full h-40"></div>

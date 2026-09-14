@@ -10,11 +10,11 @@ import { ButtonComponent } from '../button/button.component';
   template: `
     <section class="mt-8">
       <div
-        class="overflow-hidden rounded-3xl border border-gray-100 bg-gray-100 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+        class="overflow-hidden rounded-lg border border-gray-100 bg-gray-100 shadow-md transition-shadow duration-300 hover:shadow-md">
         <div class="flex flex-col gap-8 p-6 md:flex-row md:items-center md:justify-between">
           <div class="flex items-center gap-5">
             <div
-              class="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-md">
+              class="flex h-16 w-16 items-center justify-center rounded-lg bg-primary/10 text-primary shadow-md">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-8 w-8"

@@ -24,21 +24,21 @@
         <a
           routerLink="/login"
           routerLinkActive="text-primary bg-gray-100"
-          class="px-5 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200">
+          class="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200">
           Iniciar sesión
         </a>
 
         <a
           routerLink="/registro"
           routerLinkActive="text-primary bg-gray-100"
-          class="px-5 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200">
+          class="px-5 py-2.5 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-primary transition-all duration-200">
           Crear cuenta
         </a>
 
         <a
           routerLink="/canchas"
           routerLinkActive="opacity-100"
-          class="ml-2 inline-flex items-center justify-center rounded-xl bg-primary px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-hover-primary hover:shadow-md transition-all duration-300">
+          class="ml-2 inline-flex items-center justify-center rounded-lg bg-primary px-7 py-3 text-sm font-semibold text-white shadow-sm hover:bg-hover-primary hover:shadow-md transition-all duration-300">
           Ver canchas
         </a>
 
@@ -48,7 +48,7 @@
         (click)="toggleMenu()"
         aria-label="Abrir menú"
         [attr.aria-expanded]="menuOpen"
-        class="md:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 hover:text-primary transition">
+        class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-primary transition">
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -78,25 +78,25 @@
 
       <button
         (click)="goToPage('/login')"
-        class="w-full rounded-xl px-4 py-3 text-left font-medium text-gray-700 hover:bg-gray-100 transition">
+        class="w-full rounded-lg px-4 py-3 text-left font-medium text-gray-700 hover:bg-gray-100 transition">
         Iniciar sesión
       </button>
 
       <button
         (click)="goToPage('/registro')"
-        class="w-full rounded-xl px-4 py-3 text-left font-medium text-gray-700 hover:bg-gray-100 transition">
+        class="w-full rounded-lg px-4 py-3 text-left font-medium text-gray-700 hover:bg-gray-100 transition">
         Crear cuenta
       </button>
 
       <button
         (click)="goToPage('/reserva')"
-        class="w-full rounded-xl bg-secondary px-4 py-3 font-medium text-white hover:opacity-90 transition">
+        class="w-full rounded-lg bg-secondary px-4 py-3 font-medium text-white hover:opacity-90 transition">
         Consultar reserva
       </button>
 
       <button
         (click)="goToPage('/canchas')"
-        class="w-full rounded-xl bg-primary px-4 py-3 font-semibold text-white hover:bg-hover-primary transition">
+        class="w-full rounded-lg bg-primary px-4 py-3 font-semibold text-white hover:bg-hover-primary transition">
         Ver canchas
       </button>
 
