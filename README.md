@@ -13,14 +13,13 @@ Este es el frontend de **PlayMatch**, una aplicación para la gestión de reserv
 - Gestión de reservas de canchas deportivas
 - Autenticación con JWT
 - Interfaz moderna y responsiva
-- Diferentes vistas según el rol del usuario (jugador/admin)
 - Consumo de API REST (PlayMatch Backend)
 
 ---
 
 ## 🚀 Tecnologías utilizadas
 
-- 🅰️ [Angular 17+](https://angular.io/)
+- 🅰️ [Angular 22](https://angular.io/)
 - 🔐 JWT (manejo en frontend)
 - 🎨 [Tailwind CSS](https://tailwindcss.com/)
 - ⚙️ RxJS y servicios para consumo de API
@@ -62,11 +61,5 @@ Puedes ver la aplicación desplegada aquí: [PlayMatch](https://projectplaymatch
 Para propósitos de demo, puedes ingresar con las siguientes credenciales:
 
 #### 👨‍💼 Administrador
-- **Correo:** `luis@gmail.com`
+- **Correo:** `david@gmail.com`
 - **Contraseña:** `Contra-12345`
-
-#### 👤 Jugadores
-- **Jugador 1:** `daniel@gmail.com` / `Contra-12345`
-- **Jugador 2:** `angelo@gmail.com` / `Contra-12345`
-
-🔒 Estos usuarios tienen acceso limitado según su rol.
