@@ -21,22 +21,26 @@ export class ReservationDetailComponent {
   private readonly alertService = inject(AlertService);
   private readonly router = inject(Router);
 
-  reservationData: Reservation | null = null;
-  code = '';
-  loading = signal<boolean>(false);
+  protected reservationData: Reservation | null = null;
+  protected code = '';
+  protected loading = signal<boolean>(false);
+  protected CODE_LENGTH = 6;
 
   getReservationByCode(): void {
     this.loading.set(true);
     this.reservationData = null;
     this.reservationService.getReservationByCode(this.code).subscribe({
       next: data => {
-        this.loading.set(false);
         if (!data) {
           this.alertService.notify('', 'No se encontró ninguna reserva con ese código', 'warning');
           return;
         }
         this.reservationData = data;
-      }
+      },
+      error: () => {
+        this.alertService.error('Error', 'Ocurrió un error al buscar la reserva');
+      },
+      complete: () => this.loading.set(false)
     });
   }
 
