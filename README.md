@@ -1,6 +1,6 @@
 # 🏐 PlayMatch - Frontend Angular
 
-Este es el frontend de **PlayMatch**, una aplicación para la gestión de reservas deportivas. Está desarrollado con [Angular](https://angular.io/), [TypeScript](https://www.typescriptlang.org/) y estilizado con [Tailwind CSS](https://tailwindcss.com/). Se conecta a una API backend protegida con autenticación JWT.
+Este es el frontend de **PlayMatch**, una aplicación para la gestión de reservas de canchas. Está desarrollado con [Angular](https://angular.io/), [TypeScript](https://www.typescriptlang.org/) y estilizado con [Tailwind CSS](https://tailwindcss.com/). Se conecta a una API backend protegida con autenticación JWT.
 
 🔗 **Repositorio del backend**:  
 [PlayMatch Api](https://github.com/luisgomezadev/backend-playmatch)

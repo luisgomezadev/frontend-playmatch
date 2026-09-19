@@ -22,12 +22,21 @@ export class NavbarComponent {
     this.isScrolled = window.scrollY > 20;
   }
 
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeMenu();
+  }
+
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
   }
 
-  goToPage(page: string): void {
+  closeMenu(): void {
     this.menuOpen = false;
+  }
+
+  goToPage(page: string): void {
+    this.closeMenu();
     this.router.navigate([page]);
   }
 }
